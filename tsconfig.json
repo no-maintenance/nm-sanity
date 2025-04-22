@@ -20,7 +20,8 @@
       "vite/client"
     ],
     "paths": {
-      "~/*": ["app/*"]
+      "~/*": ["app/*"],
+      "@/*": ["app/*"]
     },
     "noEmit": true
   }
