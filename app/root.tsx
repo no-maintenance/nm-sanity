@@ -186,6 +186,8 @@ export function Layout({children}: {children: React.ReactNode}) {
   const {pathname} = useLocation();
 
   const isCmsRoute = pathname.includes('/cms');
+  const isProfilerRoute = pathname.includes('/subrequest-profiler');
+  const skipLayout = isCmsRoute || isProfilerRoute;
 
   return (
     <html lang={data?.locale.language.toLowerCase()}>
@@ -198,7 +200,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         <CssVars />
       </head>
       <body className="bg-background text-foreground flex min-h-screen flex-col overflow-x-hidden">
-        {isCmsRoute ? (
+        {skipLayout ? (
           children
         ) : data ? (
           <Analytics.Provider

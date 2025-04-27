@@ -5,9 +5,9 @@ import type {
   Media_Video_Fragment,
 } from 'types/shopify/storefrontapi.generated';
 
-import {useLoaderData} from '@remix-run/react';
-import {flattenConnection} from '@shopify/hydrogen';
-import React, {useCallback, useState} from 'react';
+import {useLoaderData, useNavigation} from '@remix-run/react';
+import {flattenConnection, MediaFile} from '@shopify/hydrogen';
+import React, {Dispatch, ReactNode, RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
 import type {loader} from '~/routes/($locale).products.$productHandle';
 
@@ -24,6 +24,10 @@ import {
   CarouselCounter,
   CarouselItem,
 } from '../ui/carousel';
+import { AnimatePresence, m } from 'motion/react';
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { IconClose } from '../icons/icon-close';
+import { ProgressiveMotionDiv } from '~/components/progressive-motion';
 
 type Media =
   | Media_ExternalVideo_Fragment
@@ -36,47 +40,63 @@ export function MediaGallery(props: {aspectRatio?: AspectRatioData}) {
   const medias = product?.media?.nodes.length
     ? flattenConnection(product.media)
     : [];
-  const [activeMediaId, setActiveMediaId] = useState<null | string>(null);
-  const selectedImage =
-    medias.find((media) => media?.id === activeMediaId) || medias[0];
-
-  if (!selectedImage) return null;
 
   return (
     <div>
       <div className="hidden lg:block">
-        <MainMedia aspectRatio={props.aspectRatio} media={selectedImage} />
+        <DesktopMedia aspectRatio={props.aspectRatio} media={medias} />
       </div>
       <MobileCarousel aspectRatio={props.aspectRatio} medias={medias} />
-      <ThumbnailCarousel
-        medias={medias}
-        selectedImage={selectedImage}
-        setActiveMediaId={setActiveMediaId}
-      />
     </div>
   );
 }
 
-function MainMedia({
+function DesktopMedia({
   aspectRatio,
   media,
 }: {
   aspectRatio?: AspectRatioData;
-  media: Media;
+  media: Media[];
 }) {
+  const [modalIdx, setModalIdx] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
   return (
-    media.__typename === 'MediaImage' &&
-    media.image && (
-      <ShopifyImage
-        aspectRatio={aspectRatio?.value}
-        className={cn('h-auto w-full', aspectRatio?.className)}
-        data={media.image}
-        decoding="sync"
-        fetchpriority="high"
-        loading="eager"
-        sizes="(min-width: 1024px) 50vw, 100vw"
-      />
-    )
+    <div>
+      <ProductModal
+        modalRef={modalRef}
+        modalIdx={modalIdx}
+        setModalIdx={setModalIdx}
+      >
+        {media.map((data, idx) => (
+          <ModalImage
+            key={`modal-image--${data.id}`}
+            modalRef={modalRef}
+            modalIdx={modalIdx}
+            idx={idx + 1}
+          >
+            
+            <MediaFile data={data}
+              className="object-cover w-full h-full  fadeIn"
+            />
+          </ModalImage>
+        ))}
+      </ProductModal>
+      <div className="hidden w-full md:grid gap-y-12 xl:col-start-2 col-span-6  xl:col-span-5">
+        {media.map((data, i) => {
+          return (
+            <button
+              onClick={() => setModalIdx(i + 1)}
+              className={
+                'md:col-span-2 aspect-[4/5] snap-center card-image bg-white dark:bg-background/10 w-mobileGallery md:w-full crosshair-plus'
+              }
+              key={data.id}
+            >
+              <MediaFile data={data} className="object-cover w-full h-full  fadeIn" />
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -93,7 +113,7 @@ function MobileCarousel({
   if (!isActive) {
     return (
       <div className="container lg:hidden">
-        <MainMedia aspectRatio={aspectRatio} media={medias[0]} />
+        <DesktopMedia aspectRatio={aspectRatio} media={medias} />
       </div>
     );
   }
@@ -222,3 +242,80 @@ function ThumbnailCarousel({
     </div>
   );
 }
+
+
+export const ProductModal = ({
+  setModalIdx,
+  modalIdx,
+  children,
+  modalRef,
+}: {
+  children: ReactNode;
+  setModalIdx: Dispatch<number>;
+  modalIdx: number;
+  modalRef: RefObject<HTMLDivElement>;
+}) => {
+  const {location} = useNavigation();
+  useEffect(() => {
+    if (!modalRef.current) return;
+    if (modalIdx) {
+      disableBodyScroll(modalRef.current, {reserveScrollBarGap: true});
+    } else {
+      clearAllBodyScrollLocks();
+    }
+  }, [modalIdx]);
+  useEffect(() => {
+    clearAllBodyScrollLocks();
+  }, [location]);
+  return (
+    <AnimatePresence>
+      {modalIdx && (
+        <ProgressiveMotionDiv
+          onClick={() => setModalIdx(0)}
+          ref={modalRef}
+          className={' fixed left-0 top-0 w-full z-50 h-full overflow-y-auto'}
+        >
+          <button
+            aria-label="Close panel"
+            className={'fixed right-8 top-6 cursor-pointer z-20'}
+            onClick={() => setModalIdx(0)}
+          >
+            <IconClose width={25} height={24} viewBox="0 0 25 24" />
+          </button>
+          <div className={'w-full'}>{children}</div>
+        </ProgressiveMotionDiv>
+      )}
+    </AnimatePresence>
+  );
+};
+
+
+const ModalImage = ({
+  idx,
+  modalIdx,
+  modalRef,
+  children,
+}: {
+  modalRef: RefObject<HTMLDivElement>;
+  idx: number;
+  modalIdx: number;
+  children: ReactNode;
+}) => {
+  const imgRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!imgRef.current || !modalRef.current) return;
+    if (idx === modalIdx) {
+      modalRef.current.scrollTop = imgRef.current.offsetTop;
+    }
+  }, [modalIdx]);
+  return (
+    <div
+      ref={imgRef}
+      className={
+        'md:col-span-2 card-image bg-white dark:bg-background/10 md:w-full crosshair-minus'
+      }
+    >
+      {children}
+    </div>
+  );
+};

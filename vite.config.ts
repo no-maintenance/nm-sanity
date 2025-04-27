@@ -4,6 +4,7 @@ import {oxygen} from '@shopify/mini-oxygen/vite';
 import tailwindcss from '@tailwindcss/vite';
 import {defineConfig} from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import {visualizer} from 'rollup-plugin-visualizer';
 
 import {typegenWatcher} from './types/plugin';
 
@@ -39,6 +40,16 @@ export default defineConfig({
     tsconfigPaths(),
     tailwindcss(),
     typegenWatcher(),
+    visualizer({
+      emitFile: true,
+      // template: 'network',
+      // template: 'raw-data',
+      // template: 'list',
+      // template: 'flamegraph',
+      // template: 'sunburst',
+      brotliSize: true,
+      gzipSize: true,
+    }),
   ],
   build: {
     // Allow a strict Content-Security-Policy
@@ -48,6 +59,7 @@ export default defineConfig({
   resolve: {
     mainFields: ['browser', 'module', 'main'],
   },
+   
   ssr: {
     resolve: {
       conditions: ['workerd', 'worker', 'browser'],

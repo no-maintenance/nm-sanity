@@ -120,14 +120,14 @@ export function ProductCard(props: {
                 />
               </CardMedia>
             )}
-            <CardContent className="p-3 md:px-6 md:py-4">
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4 group-hover/card:underline md:text-lg">
+            <CardContent className="pl-0 pt-2">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4 group-hover/card:underline uppercase ">
                 {product.title}
               </div>
               <div className={priceClass}>
                 {firstVariant.compareAtPrice && (
                   <ShopifyMoney
-                    className="text-muted-foreground text-xs line-through md:text-sm"
+                    className="text-xs line-through md:text-sm"
                     data={firstVariant.compareAtPrice}
                   />
                 )}

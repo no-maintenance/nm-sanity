@@ -16,8 +16,8 @@ export function ShopifyTitleBlock(props: ShopifyTitleBlockProps) {
   if (!product) return null;
 
   return params.productHandle ? (
-    <h1>{product?.title}</h1>
+    <h1 className="max-w-prose text-base whitespace-normal uppercase font-normal my-0">{product?.title}</h1>
   ) : (
-    <h2>{product?.title}</h2>
+    <h2 className="text-base font-bold">{product?.title}</h2>
   );
 }

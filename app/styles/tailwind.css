@@ -8,6 +8,15 @@
   --font-heading: var(--heading-font-family);
   --font-body: var(--heading-body-family);
   --font-extra: var(--heading-extra-family);
+  --text-base: calc(var(--body-base-size) * 1px);
+
+  /* Spacing */
+  --height-nav: 4rem;
+  --gutter: 1rem;
+  --gutter-lg: 1.5rem;
+  --gutter-xl: 2rem;
+
+
 
   /* Animation */
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -56,6 +65,7 @@
 }
 
 @utility container {
+  max-width: none;
   margin-inline: auto;
   padding-inline: 1rem;
 
@@ -82,6 +92,66 @@
   }
 }
 
+@utility p-gutter {
+  padding: var(--gutter, 1rem);
+
+  @variant md {
+    padding: 1.5rem;
+  }
+
+  @variant lg {
+    padding: 2rem;
+  }
+
+  @variant xl {
+    padding: 2.5rem;
+  }
+}
+
+@utility p-gutter-lg {
+  padding: var(--gutter-lg, 1.5rem);
+
+  @variant md {
+    padding: 2rem;
+  }
+
+  @variant lg {
+    padding: 2.5rem;
+  }
+
+  @variant xl {
+    padding: 3rem;
+  }
+}
+
+@utility p-gutter-xl {
+  padding: var(--gutter-xl, 2rem);
+
+  @variant md {
+    padding: 2.5rem;
+  }
+
+  @variant lg {
+    padding: 3rem;
+  }
+
+  @variant xl {
+    padding: 3.5rem;
+  }
+}
+
+@utility space-nav {
+  height: var(--height-nav, 4rem);
+
+  @variant md {
+    height: 6rem;
+  }
+}
+
+@utility space-screen {
+  height: var(--screen-height, 100vh);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -99,7 +169,6 @@
     -webkit-font-smoothing: var(--body-font-webkit-font-smoothing);
     -moz-osx-font-smoothing: var(--body-font-moz-osx-font-smoothing);
   }
-
   button,
   [role='button'] {
     cursor: pointer;

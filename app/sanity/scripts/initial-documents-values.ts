@@ -22,11 +22,11 @@ export const initialDocumentsValues = [
             value: [
               {
                 _key: nanoid(),
-                _type: 'shopifyTitle',
+                _type: 'price',
               },
               {
                 _key: nanoid(),
-                _type: 'price',
+                _type: 'shopifyTitle',
               },
               {
                 _key: nanoid(),

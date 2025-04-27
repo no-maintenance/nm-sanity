@@ -1,0 +1,33 @@
+---
+description: 
+globs: *.tsx
+alwaysApply: false
+---
+
+----------------------------------FRONTEND RULES----------------------------------
+Always use tailwind to style if the codebase is using it. Always use functional react. 
+Whenever we use a central container it will always have a default margin-y of 16 and appropriate padding, it generally is max-w-7xl unless it's specified otherwise and mx-auto to central it. Here's an example:
+<section className="my-16 px-4">
+	<div className="mx-auto max-w-7xl>
+	…
+	</div>
+</section>
+If something has a background we typically display it like this and break pattern when it's a page builder block. Take the example above and slightly tweak it to this
+<section className="my-8 px-4">
+	<div className=“py-8”> //Background layer
+		<div className="mx-auto max-w-7xl>
+		…
+		</div>
+	</div>
+</section>
+
+We always prefer to use grid instead of flex unless it’s two sibling tags, in which case only then would you use a flex Here's an example where we would use flex:
+<div>
+	<img/>
+	<p>Some text</p>
+<div>
+We always use appropriate semantic html
+
+----------------------------------REFACTORING RULES----------------------------------
+Any time you refactor to tailwind, if there's any form of logic with styles, make sure you use the cn utility otherwise it won't work
+Any time there's a charka ui heading without styles, it's the equivalent of a text-4xl by default

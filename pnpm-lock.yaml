@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@formspark/use-formspark':
+        specifier: ^0.1.42
+        version: 0.1.42(react@18.3.1)
       '@portabletext/react':
         specifier: ^3.2.1
         version: 3.2.1(react@18.3.1)
@@ -167,6 +170,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.56.1
+        version: 7.56.1(react@18.3.1)
       react-use:
         specifier: ^17.6.0
         version: 17.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -234,6 +240,9 @@ importers:
       '@total-typescript/ts-reset':
         specifier: ^0.6.1
         version: 0.6.1
+      '@types/body-scroll-lock':
+        specifier: ^3.1.2
+        version: 3.1.2
       '@types/eslint':
         specifier: ^9.6.1
         version: 9.6.1
@@ -258,6 +267,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.30.1
         version: 8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
+      body-scroll-lock:
+        specifier: 4.0.0-beta.0
+        version: 4.0.0-beta.0
       eslint:
         specifier: ^9.24.0
         version: 9.25.1(jiti@2.4.2)
@@ -297,6 +309,9 @@ importers:
       react-compiler-runtime:
         specifier: 19.0.0-beta-ebf51a3-20250411
         version: 19.0.0-beta-ebf51a3-20250411(react@18.3.1)
+      rollup-plugin-visualizer:
+        specifier: ^5.14.0
+        version: 5.14.0(rollup@4.40.0)
       schema-dts:
         specifier: ^1.1.5
         version: 1.1.5
@@ -1901,6 +1916,12 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@formspark/use-formspark@0.1.42':
+    resolution: {integrity: sha512-efC4DtL/L19+GycIWUUdvEacE7lEzHoz1OKmWhCmvShqnJ53MDwC1pEAUEiz0Z0gpGRj+D3E9oY1VvDhWQ8Amg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   '@google/model-viewer@4.1.0':
     resolution: {integrity: sha512-7WB/jS6wfBfRl/tWhsUUvDMKFE1KlKME97coDLlZQfvJD0nCwjhES1lJ+k7wnmf7T3zMvCfn9mIjM/mgZapuig==}
@@ -3867,6 +3888,9 @@ packages:
   '@types/better-sqlite3@7.6.13':
     resolution: {integrity: sha512-NMv9ASNARoKksWtsq/SHakpYAYnhBrQgGD8zkLYk/jaK8jUGn08CfEdTRgYhMypUQAfzSP8W6gNLe0q19/t4VA==}
 
+  '@types/body-scroll-lock@3.1.2':
+    resolution: {integrity: sha512-ELhtuphE/YbhEcpBf/rIV9Tl3/O0A0gpCVD+oYFSS8bWstHFJUgA4nNw1ZakVlRC38XaQEIsBogUZKWIPBvpfQ==}
+
   '@types/cli-progress@3.11.6':
     resolution: {integrity: sha512-cE3+jb9WRlu+uOSAugewNpITJDt1VF8dHOopPO4IABFc3SXYL5WE/+PTz/FCdZRRfIujiWW3n3aMbv1eIGVRWA==}
 
@@ -4519,6 +4543,9 @@ packages:
   body-parser@1.20.3:
     resolution: {integrity: sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
+
+  body-scroll-lock@4.0.0-beta.0:
+    resolution: {integrity: sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
@@ -8297,8 +8324,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-hook-form@7.56.0:
-    resolution: {integrity: sha512-U2QQgx5z2Y8Z0qlXv3W19hWHJgfKdWMz0O/osuY+o+CYq568V2R/JhzC6OAXfR8k24rIN0Muan2Qliaq9eKs/g==}
+  react-hook-form@7.56.1:
+    resolution: {integrity: sha512-qWAVokhSpshhcEuQDSANHx3jiAEFzu2HAaaQIzi/r9FNPm1ioAvuJSD4EuZzWd7Al7nTRKcKPnBKO7sRn+zavQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -8644,6 +8671,19 @@ packages:
     resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
     engines: {node: 20 || >=22}
     hasBin: true
+
+  rollup-plugin-visualizer@5.14.0:
+    resolution: {integrity: sha512-VlDXneTDaKsHIw8yzJAFWtrzguoJ/LnQ+lMpoVfYJ3jJF4Ihe5oYLAqLklIK/35lgUY+1yEzCkHyZ1j4A5w5fA==}
+    engines: {node: '>=18'}
+    hasBin: true
+    peerDependencies:
+      rolldown: 1.x
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
 
   rollup@4.40.0:
     resolution: {integrity: sha512-Noe455xmA96nnqH5piFtLobsGbCij7Tu+tb3c1vYjNbTkfzGqXqQXG3wJaYXkRZuQ0vEYN4bhwg7QnIrqB5B+w==}
@@ -9863,6 +9903,9 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+
+  whatwg-fetch@3.6.20:
+    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -11699,6 +11742,11 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
+  '@formspark/use-formspark@0.1.42(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      whatwg-fetch: 3.6.20
+
   '@google/model-viewer@4.1.0(three@0.172.0)':
     dependencies:
       '@monogrid/gainmap-js': 3.1.0(three@0.172.0)
@@ -12145,9 +12193,9 @@ snapshots:
     dependencies:
       graphql: 16.10.0
 
-  '@hookform/resolvers@3.10.0(react-hook-form@7.56.0(react@18.3.1))':
+  '@hookform/resolvers@3.10.0(react-hook-form@7.56.1(react@18.3.1))':
     dependencies:
-      react-hook-form: 7.56.0(react@18.3.1)
+      react-hook-form: 7.56.1(react@18.3.1)
 
   '@humanfs/core@0.19.1': {}
 
@@ -14450,6 +14498,8 @@ snapshots:
     dependencies:
       '@types/node': 22.14.1
 
+  '@types/body-scroll-lock@3.1.2': {}
+
   '@types/cli-progress@3.11.6':
     dependencies:
       '@types/node': 22.14.1
@@ -15191,6 +15241,8 @@ snapshots:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  body-scroll-lock@4.0.0-beta.0: {}
 
   boolbase@1.0.0: {}
 
@@ -19401,7 +19453,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.20
 
-  react-hook-form@7.56.0(react@18.3.1):
+  react-hook-form@7.56.1(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -19802,6 +19854,15 @@ snapshots:
       glob: 11.0.1
       package-json-from-dist: 1.0.1
 
+  rollup-plugin-visualizer@5.14.0(rollup@4.40.0):
+    dependencies:
+      open: 8.4.2
+      picomatch: 4.0.2
+      source-map: 0.7.4
+      yargs: 17.7.2
+    optionalDependencies:
+      rollup: 4.40.0
+
   rollup@4.40.0:
     dependencies:
       '@types/estree': 1.0.7
@@ -19906,7 +19967,7 @@ snapshots:
 
   sanity-plugin-media@3.0.2(@sanity/ui@2.15.13(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.85.1(@emotion/is-prop-valid@1.2.2)(@types/node@22.14.1)(@types/react@18.3.20)(immer@10.1.1)(jiti@2.4.2)(lightningcss@1.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(yaml@2.7.1))(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
-      '@hookform/resolvers': 3.10.0(react-hook-form@7.56.0(react@18.3.1))
+      '@hookform/resolvers': 3.10.0(react-hook-form@7.56.1(react@18.3.1))
       '@reduxjs/toolkit': 2.7.0(react-redux@9.2.0(@types/react@18.3.20)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@sanity/client': 6.29.0(debug@4.4.0)
       '@sanity/color': 3.0.6
@@ -19926,7 +19987,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-dropzone: 11.7.1(react@18.3.1)
       react-file-icon: 1.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-hook-form: 7.56.0(react@18.3.1)
+      react-hook-form: 7.56.1(react@18.3.1)
       react-is: 18.3.1
       react-redux: 9.2.0(@types/react@18.3.20)(react@18.3.1)(redux@5.0.1)
       react-select: 5.10.1(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -21280,6 +21341,8 @@ snapshots:
   whatwg-encoding@3.1.1:
     dependencies:
       iconv-lite: 0.6.3
+
+  whatwg-fetch@3.6.20: {}
 
   whatwg-mimetype@4.0.0: {}
 
