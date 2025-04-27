@@ -28,6 +28,42 @@ export const countries: Localizations = {
     languageLabel: 'French',
     salesChannel: 'hydrogen',
   },
+  '/de': {
+    country: 'DE',
+    currency: 'EUR',
+    isoCode: 'de-de',
+    label: 'Germany (EUR €)',
+    language: 'DE',
+    languageLabel: 'German',
+    salesChannel: 'hydrogen',
+  },
+  '/ko': {
+    country: 'KR',
+    currency: 'KRW',
+    isoCode: 'ko-kr', 
+    label: 'Korea (KRW ₩)',
+    language: 'KO',
+    languageLabel: 'Korean',
+    salesChannel: 'hydrogen',
+  },
+  '/ja': {
+    country: 'JP',
+    currency: 'JPY',
+    isoCode: 'ja-jp',
+    label: 'Japan (JPY ¥)',
+    language: 'JA', 
+    languageLabel: 'Japanese',
+    salesChannel: 'hydrogen',
+  },
+  '/it': {
+    country: 'IT',
+    currency: 'EUR',
+    isoCode: 'it-it',
+    label: 'Italy (EUR €)',
+    language: 'IT',
+    languageLabel: 'Italian',
+    salesChannel: 'hydrogen',
+  },
 };
 
 export const DEFAULT_LOCALE: I18nLocale = Object.freeze({
