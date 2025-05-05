@@ -18,6 +18,7 @@ export type PriceBlockProps = NonNullable<
   SectionOfType<'productInformationSection'>['richtext']
 >[number] & {
   _type: 'price';
+  showShopifyBrand?: boolean;
 };
 
 export function PriceBlock(props: PriceBlockProps) {
@@ -29,8 +30,8 @@ export function PriceBlock(props: PriceBlockProps) {
   if (variantsContextData?.variants) {
     return (
       <Layout>
-        <VariantPrice variants={variantsContextData?.variants} />
-        <ProductBadges variants={variantsContextData?.variants} />
+        <VariantPrice showShopifyBrand={props.showShopifyBrand} variants={variantsContextData?.variants} />
+        {/* <ProductBadges variants={variantsContextData?.variants} /> */}
       </Layout>
     );
   }
@@ -41,8 +42,8 @@ export function PriceBlock(props: PriceBlockProps) {
 
   return (
     <Layout>
-      <VariantPrice variants={variants} />
-      <ProductBadges variants={variants} />
+      <VariantPrice showShopifyBrand={props.showShopifyBrand} variants={variants} />
+      {/* <ProductBadges variants={variants} /> */}
     </Layout>
   );
 }

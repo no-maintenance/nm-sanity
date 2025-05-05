@@ -207,6 +207,8 @@ export const HEADER_FRAGMENT = defineQuery(`{
   announcementBarColorScheme -> ${COLOR_SCHEME_FRAGMENT},
   autoRotateAnnouncements,
   blur,
+  showCountrySelectorIcon,
+  showSearchIcon,
   colorScheme -> ${COLOR_SCHEME_FRAGMENT},
   desktopLogoWidth,
   "menu": coalesce(
@@ -215,7 +217,9 @@ export const HEADER_FRAGMENT = defineQuery(`{
   )[] ${LINKS_LIST_SELECTION},
   padding,
   showSeparatorLine,
-  sticky 
+  sticky,
+  logoPosition,
+  showHamburgerMenuOnDesktop,
 }`);
 
 const FONT_ASSET_FRAGMENT = defineQuery(`{

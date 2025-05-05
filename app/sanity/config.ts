@@ -21,6 +21,8 @@ import {locations} from './presentation/locations';
 import {schemaTypes} from './schema';
 import {defaultDocumentNode, structure} from './structure';
 import {singletonActions, singletonsTypes} from './structure/singletons';
+import {assist} from '@sanity/assist';
+import { table } from '@sanity/table';
 
 /**
  * Configuration options that will be passed in
@@ -52,14 +54,20 @@ export function defineSanityConfig(
 
   return defineConfig({
     name: 'default',
-    title: 'Fluid',
+    title: 'No Maintenance',
     basePath: SANITY_STUDIO_URL,
     ...config,
     plugins: [
       codeInput(),
+      table(),
       structureTool({structure, defaultDocumentNode}),
       customDocumentActions({shopifyStoreDomain: config.shopifyStoreDomain}),
-      media(),
+      media({
+        creditLine: {
+          enabled: true,
+        },
+        // Configure media plugin to show all images
+      }),
       presentationTool({
         previewUrl: {previewMode: {enable: SANITY_STUDIO_PREVIEW_URL}},
         resolve: {
@@ -96,6 +104,29 @@ export function defineSanityConfig(
           'collection',
         ],
       }),
+      assist({
+        translate: {
+          field: {
+            documentTypes: [
+              'page',
+              'product',
+              'collection',
+              'home',
+              'themeContent',
+              'header',
+              'footer',
+            ],
+            languages: [
+              { id: 'en', title: 'English' },
+              { id: 'fr', title: 'French' },
+              { id: 'de', title: 'German' },
+              { id: 'ko', title: 'Korean' },
+              { id: 'ja', title: 'Japanese' },
+              { id: 'it', title: 'Italian' }
+            ],
+          },
+        },
+      }),
       ...(isDev ? devOnlyPlugins : []),
     ],
     schema: {
@@ -112,21 +143,21 @@ export function defineSanityConfig(
           ? input.filter(({action}) => action && singletonActions.has(action))
           : input,
     },
-    form: {
-      file: {
-        assetSources: (previousAssetSources) => {
-          return previousAssetSources.filter(
-            (assetSource) => assetSource !== mediaAssetSource,
-          );
-        },
-      },
-      image: {
-        assetSources: (previousAssetSources) => {
-          return previousAssetSources.filter(
-            (assetSource) => assetSource === mediaAssetSource,
-          );
-        },
+  form: {
+    file: {
+      assetSources: (previousAssetSources) => {
+        // Allow all asset sources for files except media asset source
+        return previousAssetSources.filter(
+          (assetSource) => assetSource !== mediaAssetSource,
+        );
       },
     },
+    image: {
+      assetSources: (previousAssetSources) => {
+        // Ensure media asset source is included for images
+        return previousAssetSources;
+      },
+    },
+  },
   });
 }

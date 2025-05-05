@@ -21,8 +21,21 @@ export default defineField({
     defineField({
       type: 'image',
       name: 'backgroundImage',
+      
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+      ],
       options: {
         hotspot: true,
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
       },
     }),
     defineField({

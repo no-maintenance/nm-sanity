@@ -17,12 +17,12 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
   const {product} = useProduct();
   const variantsContextData = useProductVariants();
   const showQuantitySelector = props.quantitySelector;
-
+  const containerClass = 'grid gap-4 mt-2';
   if (!product) return null;
 
   if (variantsContextData?.variants) {
     return (
-      <div className="grid gap-4">
+      <div className={containerClass}>
         <VariantSelector
           options={product.options}
           variants={variantsContextData?.variants}
@@ -41,7 +41,7 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
     : [];
 
   return (
-    <div className="grid gap-4">
+    <div className={containerClass}>
       <VariantSelector options={product.options} variants={variants} />
       <AddToCartForm
         showQuantitySelector={showQuantitySelector}

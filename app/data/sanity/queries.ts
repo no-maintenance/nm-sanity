@@ -106,6 +106,7 @@ export const PRODUCT_QUERY = defineQuery(`{
     store {
       gid,
     },
+    sizeChart,
     template -> {
       sections[] {
         _key,

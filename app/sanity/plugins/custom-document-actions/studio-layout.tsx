@@ -1,4 +1,5 @@
 import type {LayoutProps} from 'sanity';
+import React from 'react';
 
 import {createContext, useContext} from 'react';
 
@@ -17,11 +18,10 @@ export function createStudioLayout({
 }: {
   shopifyStoreDomain: string;
 }) {
-  return function CustomStudioLayout(props: LayoutProps) {
-    return (
-      <PluginContext.Provider value={{shopifyStoreDomain}}>
-        {props.renderDefault(props)}
-      </PluginContext.Provider>
-    );
-  };
+  const CustomStudioLayout = React.forwardRef<HTMLDivElement, LayoutProps>((props, ref) => (
+    <PluginContext.Provider value={{shopifyStoreDomain}}>
+      {props.renderDefault(props)}
+    </PluginContext.Provider>
+  ));
+  return CustomStudioLayout;
 }

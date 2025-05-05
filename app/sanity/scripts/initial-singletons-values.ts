@@ -284,6 +284,36 @@ export const initialSingletonsValues = {
           },
         },
       },
+      {
+        _key: nanoid(),
+        _type: 'footerWithNav',
+        copyright: [
+          {
+            _key: DEFAULT_LOCALE.language.toLowerCase(),
+            _type: 'internationalizedArrayStringValue',
+            value: '© NO MAINTENANCE CORP. 2025',
+          },
+        ],
+        menu: [
+          {
+            _key: nanoid(),
+            _type: 'internationalizedArrayHeaderNavigationValue',
+          },
+        ],
+        settings: {
+          _type: 'sectionSettings',
+          colorScheme: {
+            _ref: 'light-color-scheme',
+            _type: 'reference',
+          },
+          hide: false,
+          padding: {
+            _type: 'padding',
+            bottom: 100,
+            top: 100,
+          },
+        },
+      },
     ],
   },
   themeContent: {

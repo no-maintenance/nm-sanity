@@ -4,8 +4,10 @@ import {PortableText} from '@portabletext/react';
 import {useMemo} from 'react';
 
 import type {PriceBlockProps} from '../blocks/price-block';
+import type {ShopifyAccordionBlockProps} from '../blocks/shopify-accordion-block';
 import type {ShopifyDescriptionBlockProps} from '../blocks/shopify-description-block';
 import type {ShopifyTitleBlockProps} from '../blocks/shopify-title-block';
+import type {ProductModalBlockProps} from '../blocks/product-modal-block';
 import type {ExternalLinkAnnotationProps} from '../sanity/richtext/components/external-link-annotation';
 import type {InternalLinkAnnotationProps} from '../sanity/richtext/components/internal-link-annotation';
 import type {FeaturedProductSectionProps} from '../sections/featured-product-section';
@@ -13,6 +15,8 @@ import type {ProductInformationSectionProps} from '../sections/product-informati
 import type {AddToCartButtonBlockProps} from './product-form';
 
 import {PriceBlock} from '../blocks/price-block';
+import ProductModalBlock from '../blocks/product-modal-block';
+import {ShopifyAccordionBlock} from '../blocks/shopify-accordion-block';
 import {ShopifyDescriptionBlock} from '../blocks/shopify-description-block';
 import {ShopifyTitleBlock} from '../blocks/shopify-title-block';
 import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-link-annotation';
@@ -61,13 +65,19 @@ export function ProductDetails({
         shopifyTitle: (props: {value: ShopifyTitleBlockProps}) => (
           <ShopifyTitleBlock {...props.value} />
         ),
+        shopifyAccordion: (props: {value: ShopifyAccordionBlockProps}) => (
+          <ShopifyAccordionBlock {...props.value} />
+        ),
+        productModal: (props: {value: ProductModalBlockProps}) => (
+          <ProductModalBlock value={props.value} />
+        ),
       },
     }),
     [],
   );
 
   return (
-    <div className="container space-y-4 lg:max-w-none lg:px-0">
+    <div className="container space-y-1 lg:max-w-none lg:px-0">
       {data.richtext && (
         <PortableText
           components={Components as PortableTextComponents}

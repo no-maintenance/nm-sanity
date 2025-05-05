@@ -8,12 +8,15 @@ import type {ButtonBlockProps} from '../sanity/richtext/components/button-block'
 import type {ExternalLinkAnnotationProps} from '../sanity/richtext/components/external-link-annotation';
 import type {ImageBlockProps} from '../sanity/richtext/components/image-block';
 import type {InternalLinkAnnotationProps} from '../sanity/richtext/components/internal-link-annotation';
+import type {ShopifyAccordionBlockProps} from '../blocks/shopify-accordion-block';
 
 import {ButtonBlock} from '../sanity/richtext/components/button-block';
 import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-link-annotation';
 import {ImageBlock} from '../sanity/richtext/components/image-block';
 import {InternalLinkAnnotation} from '../sanity/richtext/components/internal-link-annotation';
 import {RichtextLayout} from '../sanity/richtext/rich-text-layout';
+import {FormBuilderBlock} from '~/components/sanity/richtext/components/form-builder-block';
+import {ShopifyAccordionBlock} from '../blocks/shopify-accordion-block';
 
 type RichtextSectionProps = SectionOfType<'richtextSection'>;
 
@@ -53,6 +56,12 @@ export function RichtextSection(
         ),
         image: (props: {value: ImageBlockProps}) => (
           <ImageBlock containerMaxWidth={containerMaxWidth} {...props.value} />
+        ),
+        formBuilder: (props: {value: any}) => (
+          <FormBuilderBlock {...props.value} />
+        ),
+        shopifyAccordion: (props: {value: ShopifyAccordionBlockProps}) => (
+          <ShopifyAccordionBlock {...props.value} />
         ),
       },
     }),

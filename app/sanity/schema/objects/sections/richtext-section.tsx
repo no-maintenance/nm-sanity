@@ -28,7 +28,7 @@ export default defineField({
         max: 1920,
         suffix: 'px',
       },
-    }),
+    }), 
     defineField({
       type: 'sectionSettings',
       name: 'settings',

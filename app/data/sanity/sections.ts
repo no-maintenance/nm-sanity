@@ -28,6 +28,8 @@ export const PRODUCT_INFORMATION_SECTION_FRAGMENT = defineQuery(`{
   _type,
   desktopMediaPosition,
   desktopMediaWidth,
+  galleryStyle,
+  stickyProductInfo,
   mediaAspectRatio,
   "richtext": coalesce(
     richtext[_key == $language][0].value[] ${RICHTEXT_FRAGMENT},

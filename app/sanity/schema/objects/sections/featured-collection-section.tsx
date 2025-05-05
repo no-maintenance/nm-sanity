@@ -9,8 +9,6 @@ export default defineField({
   fields: [
     defineField({
       name: 'heading',
-      description:
-        'Collection title from Shopify will be used if no heading is provided.',
       type: 'internationalizedArrayString',
     }),
     defineField({

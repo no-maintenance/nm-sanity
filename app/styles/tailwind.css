@@ -9,7 +9,8 @@
   --font-body: var(--heading-body-family);
   --font-extra: var(--heading-extra-family);
   --text-base: calc(var(--body-base-size) * 1px);
-
+  --text-fine: calc(var(--body-base-size) * 0.75px);
+  --text-small: calc(var(--body-base-size) * 0.90px);
   /* Spacing */
   --height-nav: 4rem;
   --gutter: 1rem;
@@ -70,15 +71,29 @@
   padding-inline: 1rem;
 
   @variant md {
-    padding-inline: 1.5rem;
+    padding-inline: 1rem;
   }
 
   @variant xl {
     padding-inline: 2rem;
   }
 
-  @variant 2xl {
+  /* @variant 2xl {
     padding-inline: 12rem;
+  } */
+}
+
+@utility container-narrow {
+  max-width: 75rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @variant md {
+    padding-inline: 1rem;
+  }
+
+  @variant xl {
+    padding-inline: 2rem;
   }
 }
 
@@ -92,51 +107,36 @@
   }
 }
 
-@utility p-gutter {
-  padding: var(--gutter, 1rem);
-
-  @variant md {
-    padding: 1.5rem;
+@layer utilities {
+  .animated-underline {
+    position: relative;
+    padding-bottom: 0.25rem; /* equivalent to pb-1 */
   }
 
-  @variant lg {
-    padding: 2rem;
+  .animated-underline.red::after {
+    @apply bg-destructive;
   }
 
-  @variant xl {
-    padding: 2.5rem;
-  }
-}
-
-@utility p-gutter-lg {
-  padding: var(--gutter-lg, 1.5rem);
-
-  @variant md {
-    padding: 2rem;
-  }
-
-  @variant lg {
-    padding: 2.5rem;
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    width: 0;
+    bottom: 0;
+    height: 1px;
+    background: #2e2e2e;
+    transition: width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
-  @variant xl {
-    padding: 3rem;
-  }
-}
-
-@utility p-gutter-xl {
-  padding: var(--gutter-xl, 2rem);
-
-  @variant md {
-    padding: 2.5rem;
+  .animated-underline:hover::after {
+    left: 0;
+    right: auto;
+    width: 100%;
   }
 
-  @variant lg {
-    padding: 3rem;
-  }
-
-  @variant xl {
-    padding: 3.5rem;
+  .underline {
+    @apply underline-offset-4;
   }
 }
 

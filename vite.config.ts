@@ -78,4 +78,7 @@ export default defineConfig({
       include: ['react-compiler-runtime', '@sanity/image-url'],
     },
   },
+  server: {
+    allowedHosts: ['testing.nomaintenance.us'],
+  },
 });

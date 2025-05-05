@@ -8,7 +8,7 @@ import {LayoutTemplate, PanelsTopLeft} from 'lucide-react';
 import {collections} from './collection-structure';
 import {products} from './product-structure';
 import {singleton, SINGLETONS} from './singletons';
-
+import { BookCheck } from 'lucide-react';
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S) => {
   return S.document().views([S.view.form()]);
 };
@@ -21,6 +21,7 @@ export const structure: StructureResolver = (S, context) => {
       S.documentTypeListItem('page').icon(PanelsTopLeft),
       products(S, context),
       collections(S, context),
+      S.documentTypeListItem('storePolicy').icon(BookCheck),
       S.divider(),
       singleton(S, SINGLETONS.header),
       singleton(S, SINGLETONS.footer),

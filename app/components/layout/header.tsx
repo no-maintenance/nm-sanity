@@ -1,76 +1,152 @@
-import type {Variants} from 'motion/react';
-import type {CSSProperties} from 'react';
+import type { Variants } from 'motion/react';
+import type { CSSProperties } from 'react';
 
-import {Link, useLocation} from '@remix-run/react';
-import {getImageDimensions} from '@sanity/asset-utils';
-import {stegaClean} from '@sanity/client/stega';
-import {cx} from 'class-variance-authority';
-import {m, transform, useMotionValueEvent, useTransform} from 'motion/react';
-import React, {Suspense, useEffect, useState} from 'react';
+import { Link, useLocation } from '@remix-run/react';
+import { getImageDimensions } from '@sanity/asset-utils';
+import { stegaClean } from '@sanity/client/stega';
+import { cx } from 'class-variance-authority';
+import { m, transform, useMotionValueEvent, useTransform } from 'motion/react';
+import React, { Suspense, useEffect, useState, useRef, useId, useCallback } from 'react';
 
-import {useBoundedScroll} from '~/hooks/use-bounded-scroll';
-import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
-import {useLocalePath} from '~/hooks/use-locale-path';
-import {cn} from '~/lib/utils';
-import {useRootLoaderData} from '~/root';
+import { useBoundedScroll } from '~/hooks/use-bounded-scroll';
+import { useColorsCssVars } from '~/hooks/use-colors-css-vars';
+import { useLocalePath } from '~/hooks/use-locale-path';
+import { cn } from '~/lib/utils';
+import { useRootLoaderData } from '~/root';
 
-import {ClientOnly} from '../client-only';
-import {headerVariants} from '../cva/header';
-import {IconAccount} from '../icons/icon-account';
-import {DesktopNavigation} from '../navigation/desktop-navigation';
-import {MobileNavigation} from '../navigation/mobile-navigation.client';
-import {IconButton} from '../ui/button';
+import { ClientOnly } from '../client-only';
+import { headerVariants } from '../cva/header';
+import { IconAccount } from '../icons/icon-account';
+import { DesktopNavigation } from '../navigation/desktop-navigation';
+import { MobileNavigation } from '../navigation/mobile-navigation.client';
+import { Button, IconButton } from '../ui/button';
 import CartDrawer from './cart-drawer-wrapper';
-import {Logo} from './header-logo';
+import { Logo as HeaderLogo } from './header-logo';
+import { IconGlobe } from '~/components/icons/icon-globe';
+import { IconSearch } from '~/components/icons/icon-search';
+import { PredictiveSearchResults } from '~/components/search';
+import { PredictiveSearchForm } from '~/components/search';
+import { IconClose } from '~/components/icons/icon-close';
 
 export function Header() {
-  const {sanityRoot} = useRootLoaderData();
+  const { sanityRoot } = useRootLoaderData();
   const data = sanityRoot?.data;
   const header = data?.header;
   const logoWidth = header?.desktopLogoWidth
     ? `${header?.desktopLogoWidth}px`
     : undefined;
-  const homePath = useLocalePath({path: '/'});
+  const showCountrySelectorIcon = header?.showCountrySelectorIcon;
+  const showSearchIcon = header?.showSearchIcon;
+  const showHamburgerMenuOnDesktop = stegaClean(header?.showHamburgerMenuOnDesktop);
+  const homePath = useLocalePath({ path: '/' });
   const colorsCssVars = useColorsCssVars({
     selector: 'header',
     settings: header,
   });
+  const logoPosition = stegaClean(header?.logoPosition);
+  const headerRef = useRef<HTMLElement>(null);
+  
+  // State for mobile navigation
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  
+  // Function to close mobile navigation
+  const closeMobileNav = useCallback(() => {
+    if (mobileNavOpen) {
+      setMobileNavOpen(false);
+    }
+  }, [mobileNavOpen]);
+
+  const NavigationComponent = (
+    <>
+      {!showHamburgerMenuOnDesktop && (
+        <div className="touch:hidden lg:block">
+          <DesktopNavigation data={header?.menu} />
+        </div>
+      )}
+      <div className={cn(
+        "touch:block",
+        !showHamburgerMenuOnDesktop && "lg:hidden",
+      )}>
+        <ClientOnly>
+          {() => (
+            <Suspense>
+              <MobileNavigation 
+                data={header?.menu} 
+                headerRef={headerRef} 
+                open={mobileNavOpen}
+                setOpen={setMobileNavOpen}
+              />
+            </Suspense>
+          )}
+        </ClientOnly>
+      </div>
+    </>
+  );
+
+  const LogoComponent = (
+    <Link className="group" prefetch="intent" to={homePath}>
+      <HeaderLogo
+        className="h-auto w-[var(--logoWidth)]"
+        sizes={logoWidth}
+        style={{
+          '--logoWidth': logoWidth || 'auto',
+        } as CSSProperties}
+      />
+    </Link>
+  );
+
+  const Icons = (
+    <div className="flex items-center">
+      {showCountrySelectorIcon && <CountrySelectorDrawer />}
+      {showSearchIcon && <PredictiveSearchItem closeMobileNav={closeMobileNav} />}
+      <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
+      <CartDrawer />
+    </div>
+  );
 
   return (
-    <HeaderWrapper>
-      <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />
+    <ForwardedHeaderWrapper ref={headerRef}>
+      <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
-        <div className="flex items-center justify-between">
-          <Link className="group" prefetch="intent" to={homePath}>
-            <Logo
-              className="h-auto w-[var(--logoWidth)]"
-              sizes={logoWidth}
-              style={
-                {
-                  '--logoWidth': logoWidth || 'auto',
-                } as CSSProperties
-              }
-            />
-          </Link>
-          <div className="flex items-center">
-            <DesktopNavigation data={header?.menu} />
-            <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
-            <CartDrawer />
-            <ClientOnly fallback={null}>
-              {() => (
-                <Suspense>
-                  <MobileNavigation data={header?.menu} />
-                </Suspense>
-              )}
-            </ClientOnly>
+        <div className={cn(
+          "flex items-center relative gap-4",
+          logoPosition === 'left' && "justify-between",
+          logoPosition === 'center' && "justify-between",
+          logoPosition === 'right' && "flex-row-reverse justify-between"
+        )}>
+          <div className="flex items-center gap-4">
+            {NavigationComponent}
+            {logoPosition === 'left' && LogoComponent}
           </div>
+          {logoPosition === 'center' && (
+            <div className="absolute left-1/2 -translate-x-1/2">
+              {LogoComponent}
+            </div>
+          )}
+          {logoPosition === 'right' && LogoComponent}
+          {Icons}
         </div>
       </div>
-    </HeaderWrapper>
+    </ForwardedHeaderWrapper>
   );
 }
 
-function AccountLink({className}: {className?: string}) {
+function CountrySelectorDrawer() {
+  return (
+    <IconButton asChild>
+      <button>
+        <IconGlobe
+          className={'cursor-pointer'}
+          fill={'transparent'}
+          width={'100%'}
+          height={'100%'}
+          viewBox={'0 0 24 24'}
+        />
+      </button>
+    </IconButton>
+  );
+}
+function AccountLink({ className }: { className?: string }) {
   return (
     <IconButton asChild>
       <Link className={className} to="/account">
@@ -80,8 +156,18 @@ function AccountLink({className}: {className?: string}) {
   );
 }
 
-function HeaderWrapper(props: {children: React.ReactNode}) {
-  const {sanityRoot} = useRootLoaderData();
+function SearchDrawer() {
+  return (
+    <IconButton asChild>
+      <button>
+        <IconSearch className="size-6" />
+      </button>
+    </IconButton>
+  );
+}
+
+function HeaderWrapper(props: { children: React.ReactNode }, ref: React.Ref<HTMLElement>) {
+  const { sanityRoot } = useRootLoaderData();
   const data = sanityRoot?.data;
   const header = data?.header;
   const showSeparatorLine = header?.showSeparatorLine;
@@ -89,10 +175,10 @@ function HeaderWrapper(props: {children: React.ReactNode}) {
   const sticky = stegaClean(header?.sticky);
 
   const headerClassName = cx([
-    'section-padding bg-background text-foreground',
+    'section-padding bg-background text-foreground pointer-events-auto',
     sticky !== 'none' && 'sticky top-0 z-50',
     blur &&
-      'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
+    'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
     headerVariants({
       optional: showSeparatorLine ? 'separator-line' : null,
     }),
@@ -101,27 +187,29 @@ function HeaderWrapper(props: {children: React.ReactNode}) {
   return (
     <>
       {sticky === 'onScrollUp' ? (
-        <HeaderAnimation className={headerClassName}>
+        <HeaderAnimation className={headerClassName} ref={ref}>
           {props.children}
         </HeaderAnimation>
       ) : (
-        <header className={headerClassName}>{props.children}</header>
+        <header className={headerClassName} ref={ref}>{props.children}</header>
       )}
       <HeaderHeightCssVars />
     </>
   );
 }
 
+const ForwardedHeaderWrapper = React.forwardRef(HeaderWrapper);
+
 function HeaderAnimation(props: {
   children: React.ReactNode;
   className: string;
-}) {
-  const {pathname} = useLocation();
+}, ref: React.Ref<HTMLElement>) {
+  const { pathname } = useLocation();
   const [activeVariant, setActiveVariant] = useState<
     'hidden' | 'initial' | 'visible'
   >('initial');
   const desktopHeaderHeight = useHeaderHeigth()?.desktopHeaderHeight || 0;
-  const {scrollYBoundedProgress} = useBoundedScroll(250);
+  const { scrollYBoundedProgress } = useBoundedScroll(250);
   const scrollYBoundedProgressDelayed = useTransform(
     scrollYBoundedProgress,
     [0, 0.75, 1],
@@ -170,25 +258,23 @@ function HeaderAnimation(props: {
     },
   };
 
-  // Header animation inspired by the fantastic Build UI recipes
-  // (Check out the original at: https://buildui.com/recipes/fixed-header)
-  // Credit to the Build UI team for the awesome Header animation.
   return (
-    <>
-      <m.header
-        animate={activeVariant}
-        className={cn(props.className)}
-        initial="visible"
-        transition={{
-          duration: 0.2,
-        }}
-        variants={variants}
-      >
-        {props.children}
-      </m.header>
-    </>
+    <m.header
+      animate={activeVariant}
+      className={cn(props.className)}
+      initial="visible"
+      ref={ref}
+      transition={{
+        duration: 0.2,
+      }}
+      variants={variants}
+    >
+      {props.children}
+    </m.header>
   );
 }
+
+const ForwardedHeaderAnimation = React.forwardRef(HeaderAnimation);
 
 function HeaderHeightCssVars() {
   const desktopHeaderHeight = useHeaderHeigth()?.desktopHeaderHeight || 0;
@@ -203,7 +289,7 @@ function HeaderHeightCssVars() {
 }
 
 function useHeaderHeigth() {
-  const {sanityRoot} = useRootLoaderData();
+  const { sanityRoot } = useRootLoaderData();
   const data = sanityRoot?.data;
   const headerPadding = {
     bottom: data?.header?.padding?.bottom || 0,
@@ -225,5 +311,101 @@ function useHeaderHeigth() {
     headerBorder
   ).toFixed(2);
 
-  return {desktopHeaderHeight};
+  return { desktopHeaderHeight };
+}
+
+
+function PredictiveSearchItem({ closeMobileNav }: { closeMobileNav: () => void }) {
+  const predictiveSearchRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);  
+
+  const handleOpenSearch = () => {
+    setOpen(true);
+    closeMobileNav(); // Close the mobile nav when search opens
+  };
+
+  return (
+    <>
+      <IconButton  asChild>
+        <button onClick={handleOpenSearch}>
+          <IconSearch className="size-6" />
+        </button>
+      </IconButton>
+      {open && (
+        <div
+          className={
+            'fixed w-full left-0 bg-background z-50 px-0 lg:px-gutter shadow-sm'
+          }
+          style={{
+            // Attach directly to the bottom of the header with no gap
+            top: 'var(--desktopHeaderHeight)',
+            // Make sure it stays attached to header during animations/transitions
+            position: 'fixed'
+          }}
+        >
+          <PredictiveSearchForm>
+          {({ fetchResults, inputRef }) => (
+            <>
+              <div className={'flex w-full h-nav items-center'}>
+                <Button
+                  variant={'ghost'}
+                  className={'outline-offset-0 hover:bg-transparent'}
+                  onClick={() =>
+                    setOpen(false)
+                  }
+                >
+                  <IconClose />
+                </Button>
+                &nbsp;
+                <input
+                  autoComplete="off"
+                  autoFocus
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter')
+                      window.location.href = inputRef?.current?.value
+                        ? `/search?q=${inputRef.current?.value}`
+                        : `/search`;
+                  }}
+                  name="q"
+                  onChange={fetchResults}
+                  onFocus={fetchResults}
+                  placeholder="Search"
+                  ref={inputRef}
+                  type="search"
+                  className={'flex-1 h-10 px-2'}
+                />
+                &nbsp;
+                <Button
+                  variant={'ghost'}
+                  className={'outline-offset-0'}
+                  onClick={() => {
+                    window.location.href = inputRef?.current?.value
+                      ? `/search?q=${inputRef.current.value}`
+                      : `/search`;
+                  }}
+                >
+                  Search
+                </Button>
+              </div>
+              {inputRef?.current && inputRef.current.value !== '' && (
+                <div
+                  className={
+                    'h-screen-no-nav overflow-auto hiddenScroll'
+                  }
+                >
+                  <div
+                    ref={predictiveSearchRef}
+                    className={'px-gutter lg:px-0'}
+                  >
+                    <PredictiveSearchResults />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </PredictiveSearchForm>
+      </div>
+      )}
+    </>
+  );
 }

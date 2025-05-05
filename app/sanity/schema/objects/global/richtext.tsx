@@ -60,6 +60,13 @@ export default defineField({
       type: 'image',
       fields: [
         defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+        defineField({
           name: 'maxWidth',
           type: 'rangeSlider',
           options: {
@@ -75,6 +82,9 @@ export default defineField({
       ],
       options: {
         hotspot: true,
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
       },
       initialValue: {
         maxWidth: 900,
@@ -84,6 +94,10 @@ export default defineField({
     defineArrayMember({
       name: 'button',
       type: 'button',
+    }),
+    defineArrayMember({
+      name: 'formBuilder',
+      type: 'formBuilder',
     }),
   ],
 });

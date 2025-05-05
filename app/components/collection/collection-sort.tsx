@@ -99,7 +99,7 @@ export function DesktopSort(props: {sectionSettings?: CmsSectionSettings}) {
       <DropdownMenuTrigger className={cn(iconButtonClass, 'w-auto gap-1 px-2')}>
         <IconSort strokeWidth={1} />
         <span>
-          <span className="px-2 font-medium">
+          <span className="px-2 font-normal">
             {themeContent?.collection?.sortBy}
           </span>
           <span>{(activeItem || items[0]).label}</span>
@@ -210,6 +210,7 @@ function SortRadioItem(props: {
       <>
         <DropdownMenuRadioItem
           className={cn([
+            "pr-8",
             // If the navigation is pending, animate after a delay
             // to avoid flickering when navigation is fast
             pending && 'pointer-events-none animate-pulse delay-500',

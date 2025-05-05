@@ -103,7 +103,7 @@ export function VariantSelector(props: {
 
   return options?.map((option) => (
     <div key={option.name}>
-      <div>{option.name}</div>
+      {/* <div>{option.name}</div> */}
       <Pills handle={selectedVariant?.product?.handle} option={option} />
     </div>
   ));
@@ -158,9 +158,13 @@ function Pills(props: {
   );
 
   return (
-    <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-3">
+    <m.div 
+      className="mt-1 flex items-center gap-x-6"
+      layout
+      layoutRoot
+    >
       {values.map((value) => (
-        <Pill
+        <VariantItem
           handle={props.handle}
           key={value.value}
           onSelectVariant={handleSelectVariant}
@@ -169,9 +173,89 @@ function Pills(props: {
           {...value}
         />
       ))}
-    </div>
+    </m.div>
   );
 }
+
+function VariantItem(props: {
+  handle?: string;
+  isActive: boolean;
+  isAvailable: boolean;
+  onSelectVariant: (value: string, search: string) => void;
+  option: {
+    name: string | undefined;
+    value: string | undefined;
+    values: VariantOptionValue[];
+  };
+  pending: boolean;
+  search: string;
+  value: string;
+}) {
+  const {
+    handle,
+    isActive,
+    isAvailable,
+    onSelectVariant,
+    option,
+    pending,
+    search,
+    value,
+  } = props;
+  const isHydrated = useHydrated();
+  const section = useSection();
+  const layoutId = handle! + option.name + section?.id;
+
+  const buttonClass = cx([
+    'select-none py-1 text-sm disabled:cursor-pointer relative',
+    'focus-visible:outline-hidden focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  ]);
+  
+  const textClass = cx([
+    'transition-all duration-300',
+    isActive && 'font-bold',
+    !isAvailable && 'text-gray-400',
+  ]);
+
+  return isHydrated ? (
+    <m.button
+      className={buttonClass}
+      disabled={pending}
+      onClick={() => onSelectVariant(value, search)}
+      style={{
+        WebkitTapHighlightColor: 'transparent',
+      }}
+    >
+      <m.span className={textClass}>{value}</m.span>
+      
+      {/* Animated underline */}
+      <div className="h-px ">
+        {isActive && (
+          <m.div
+            className="h-full bg-black"
+            layoutId={layoutId}
+            transition={{
+              type: 'spring',
+              bounce: 0.2,
+              duration: 0.6,
+            }}
+          />
+        )}
+      </div>
+    </m.button>
+  ) : (
+    <Link className={buttonClass} to={search}>
+      <span className={textClass}>{value}</span>
+      
+      {/* Static underline for non-JS */}
+      <div className="h-px ">
+        {isActive && (
+          <div className="h-full bg-black" />
+        )}
+      </div>
+    </Link>
+  );
+}
+
 
 function Pill(props: {
   handle?: string;

@@ -4,6 +4,7 @@ import {forwardRef} from 'react';
 import {cn} from '~/lib/utils';
 
 import {IconChevron} from '../icons/icon-chevron';
+import { Minus, Plus } from 'lucide-react';
 
 const Accordion = AccordionPrimitive.Root;
 
@@ -12,7 +13,7 @@ const AccordionItem = forwardRef<
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({className, ...props}, ref) => (
   <AccordionPrimitive.Item
-    className={cn('border-b', className)}
+    className={className}
     ref={ref}
     {...props}
   />
@@ -27,17 +28,15 @@ const AccordionTrigger = forwardRef<
     <div>
       <AccordionPrimitive.Trigger
         className={cn(
-          'group flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline',
+          'group flex flex-1 items-center gap-2 py-4 font-medium transition-all',
           className,
         )}
         ref={ref}
         {...props}
       >
         {children}
-        <IconChevron
-          className="size-3 shrink-0 transition-transform duration-200 group-data-[state='open']:rotate-[180deg]"
-          direction="down"
-        />
+        <Plus className="h-4 w-4 transition-all group-data-[state='open']:hidden" />
+        <Minus className="h-4 w-4 transition-all hidden group-data-[state='open']:block" />
       </AccordionPrimitive.Trigger>
     </div>
   </AccordionPrimitive.Header>
@@ -53,7 +52,7 @@ const AccordionContent = forwardRef<
     ref={ref}
     {...props}
   >
-    <div className={cn('pt-0 pb-4', className)}>{children}</div>
+    <div className={cn('pt-0 pb-4 [&_p:first-child]:mt-0', className)}>{children}</div>
   </AccordionPrimitive.Content>
 ));
 

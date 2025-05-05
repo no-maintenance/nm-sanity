@@ -32,6 +32,20 @@ export default defineField({
       name: 'image',
       type: 'image',
       title: 'Image',
+      options: {
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+      ],
     }),
   ],
 });

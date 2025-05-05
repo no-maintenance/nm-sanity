@@ -1,3 +1,4 @@
+import formFields from '~/sanity/plugins/form-builder/form-fields';
 import colorPicker from '../plugins/color-picker';
 import rangeSlider from '../plugins/range-slider';
 import blogPost from './documents/blog-post';
@@ -9,9 +10,11 @@ import page from './documents/page';
 import product from './documents/product';
 import productTemplate from './documents/product-template';
 import productVariant from './documents/product-variant';
+import storePolicy from './documents/store-policy';
 import fontAsset from './objects/font/font-asset';
 import fontCategory from './objects/font/font-category';
 import socialLinksOnly from './objects/footers/social-links-only';
+import footerWithNav from './objects/footers/footer-with-nav';
 import announcementBar from './objects/global/announcement-bar';
 import aspectRatios from './objects/global/aspect-ratios';
 import bannerRichtext from './objects/global/banner-richtext';
@@ -19,6 +22,7 @@ import contentAlignment from './objects/global/content-alignment';
 import contentPosition from './objects/global/content-position';
 import footersList from './objects/global/footers-list';
 import padding from './objects/global/padding';
+import productModal from './objects/global/product-modal';
 import productRichtext from './objects/global/product-richtext';
 import richtext from './objects/global/richtext';
 import sectionSettings from './objects/global/section-settings';
@@ -32,6 +36,7 @@ import externalLink from './objects/navigation/external-link';
 import headerNavigation from './objects/navigation/header-navigation';
 import internalButton from './objects/navigation/internal-button';
 import internalLink from './objects/navigation/internal-link';
+import internalPolicyLink from './objects/navigation/internal-policy-link';
 import link from './objects/navigation/link';
 import nestedNavigation from './objects/navigation/nested-navigation';
 import carouselSection from './objects/sections/carousel-section';
@@ -58,6 +63,7 @@ import header from './singletons/header';
 import home from './singletons/home';
 import settings from './singletons/settings';
 import themeContent from './singletons/theme-content';
+import formBuilder from '~/sanity/plugins/form-builder/form-builder';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -70,6 +76,7 @@ const documents = [
   blogPost,
   productVariant,
   font,
+  storePolicy,
 ];
 const sections = [
   imageBannerSection,
@@ -83,7 +90,7 @@ const sections = [
   collectionProductGrid,
   collectionBanner,
 ];
-const footers = [socialLinksOnly];
+const footers = [socialLinksOnly, footerWithNav];
 const objects = [
   link,
   padding,
@@ -107,6 +114,7 @@ const objects = [
   anchor,
   headerNavigation,
   internalButton,
+  internalPolicyLink,
   announcementBar,
   rangeSlider,
   colorPicker,
@@ -119,6 +127,9 @@ const objects = [
   shopifyProductVariant,
   shopifyCollection,
   shopifyCollectionRule,
+  formBuilder,
+  formFields,
+  productModal,
 ];
 
 export const schemaTypes = [

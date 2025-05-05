@@ -13,9 +13,9 @@ import {useRootLoaderData} from '~/root';
 
 import {useDevice} from '../../hooks/use-device';
 import {ClientOnly} from '../client-only';
-import {IconBag} from '../icons/icon-bag';
 import {iconButtonClass} from '../ui/button';
 import {CartDrawer} from './cart-drawer.client';
+import { IconCart } from '~/components/icons/icon-cart';
 
 export default function CartDrawerWrapper() {
   const rootData = useRootLoaderData();
@@ -82,7 +82,7 @@ function Badge(props: {cart?: CartApiQueryFragment; count: number}) {
     () => (
       <span className="relative">
         <span className="sr-only">{themeContent?.cart?.heading}</span>
-        <IconBag className="size-6" />
+        <IconCart className="size-6" />
         {count > 0 && (
           <div
             className={cx([

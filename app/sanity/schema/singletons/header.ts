@@ -73,11 +73,46 @@ export default defineType({
       initialValue: 'none',
     }),
     defineField({
+      name: 'showSearchIcon',
+      title: 'Show search icon',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'showCountrySelectorIcon',
+      title: 'Show country selector icon',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: true
+    }),
+    defineField({
       name: 'showSeparatorLine',
       title: 'Show separator line',
       type: 'boolean',
       group: 'settings',
       initialValue: true,
+    }),
+    defineField({
+      name: 'showHamburgerMenuOnDesktop',
+      title: 'Show hamburger menu on desktop',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'logoPosition',
+      title: 'Logo position',
+      type: 'string',
+      group: 'settings',
+      options: {
+        list: [
+          {title: 'Left', value: 'left'},
+          {title: 'Center', value: 'center'},
+          {title: 'Right', value: 'right'},
+        ],
+      },
+      initialValue: 'center',
     }),
     defineField({
       name: 'padding',

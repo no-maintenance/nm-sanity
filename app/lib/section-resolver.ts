@@ -1,4 +1,5 @@
 import {FooterSocialLinksOnly} from '~/components/footers/footer-social-links-only';
+import {FooterWithNav} from '~/components/footers/footer-with-nav';
 import {CarouselSection} from '~/components/sections/carousel-section';
 import {CollectionBannerSection} from '~/components/sections/collection-banner-section';
 import {CollectionListSection} from '~/components/sections/collection-list-section';
@@ -24,4 +25,5 @@ export const sections: {
   relatedProductsSection: RelatedProductsSection,
   richtextSection: RichtextSection,
   socialLinksOnly: FooterSocialLinksOnly,
+  footerWithNav: FooterWithNav,
 };

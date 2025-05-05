@@ -9,5 +9,6 @@ export default defineField({
     {type: 'product'},
     {type: 'collection'},
     {type: 'blogPost'},
+    {type: 'storePolicy'},
   ],
 });

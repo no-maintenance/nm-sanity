@@ -299,3 +299,129 @@ export const FEATURED_COLLECTION_QUERY = `#graphql
   ${IMAGE_FRAGMENT}
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
+
+
+
+
+export const PREDICTIVE_SEARCH_QUERY = `#graphql
+fragment PredictiveCollection on Collection {
+    __typename
+    id
+    title
+    handle
+    image {
+        url
+        altText
+        width
+        height
+    }
+    trackingParameters
+}
+
+fragment PredictiveProduct on Product {
+    __typename
+    id
+    title
+    handle
+    trackingParameters
+    variants(first: 1) {
+        nodes {
+            id
+            image {
+                url
+                altText
+                width
+                height
+            }
+            price {
+                amount
+                currencyCode
+            }
+        }
+    }
+}
+fragment PredictiveQuery on SearchQuerySuggestion {
+    __typename
+    text
+    styledText
+    trackingParameters
+}
+query predictiveSearch(
+    $country: CountryCode
+    $language: LanguageCode
+    $limit: Int!
+    $limitScope: PredictiveSearchLimitScope!
+    $searchTerm: String!
+    $types: [PredictiveSearchType!]
+) @inContext(country: $country, language: $language) {
+    predictiveSearch(
+        limit: $limit,
+        limitScope: $limitScope,
+        query: $searchTerm,
+        types: $types,
+    ) {
+        collections {
+            ...PredictiveCollection
+        }
+        products {
+            ...PredictiveProduct
+        }
+        queries {
+            ...PredictiveQuery
+        }
+    }
+}
+` as const;
+
+
+export const SEARCH_QUERY = `#graphql
+query PaginatedProductsSearch(
+    $country: CountryCode
+    $endCursor: String
+    $first: Int
+    $language: LanguageCode
+    $last: Int
+    $searchTerm: String
+    $startCursor: String
+) @inContext(country: $country, language: $language) {
+    products(
+        first: $first,
+        last: $last,
+        before: $startCursor,
+        after: $endCursor,
+        sortKey: RELEVANCE,
+        query: $searchTerm
+    ) {
+        nodes {
+            ...ProductCard
+        }
+        pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}
+
+${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+
+export const API_ALL_PRODUCTS_QUERY = `#graphql
+query ApiAllProducts(
+    $query: String
+    $count: Int
+    $reverse: Boolean
+    $country: CountryCode
+    $language: LanguageCode
+    $sortKey: ProductSortKeys
+) @inContext(country: $country, language: $language) {
+    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query, ) {
+        nodes {
+            ...ProductCard
+        }
+    }
+}
+${PRODUCT_CARD_FRAGMENT}
+` as const;

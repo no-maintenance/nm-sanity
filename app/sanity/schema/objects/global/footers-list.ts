@@ -10,6 +10,9 @@ export default defineField({
     defineArrayMember({
       type: 'socialLinksOnly',
     }),
+    defineArrayMember({
+      type: 'footerWithNav',
+    }),
   ],
   options: {
     ...sectionOptionInsertMenu,

@@ -67,13 +67,39 @@ export default defineType({
       group: 'brand',
       options: {
         hotspot: true,
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
       },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+      ],
     }),
     defineField({
       name: 'favicon',
       description: 'Will be scaled down to 32 x 32 px',
       group: 'brand',
       type: 'image',
+      options: {
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+      ],
     }),
     defineField({
       name: 'socialSharingImagePreview',
@@ -81,6 +107,20 @@ export default defineType({
         'When you share a link to your store on social media, an image is usually shown in your post. This one will be used if another relevant image cannot be found. (Recommended size: 1200 x 628 px)',
       type: 'image',
       group: 'brand',
+      options: {
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'text',
+          description: 'Important for accessibility and SEO. Describes the content and function of the image.',
+          rows: 2,
+        }),
+      ],
     }),
     defineField({
       name: 'spaceBetweenTemplateSections',

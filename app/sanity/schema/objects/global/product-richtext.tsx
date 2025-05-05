@@ -1,6 +1,8 @@
 import {
   BadgeDollarSign,
+  ChevronDown,
   ExternalLink,
+  FileText,
   Link,
   ShoppingCart,
   Text,
@@ -115,6 +117,13 @@ export default defineField({
           type: 'proxyString',
           options: {field: 'store.priceRange.minVariantPrice'},
         }),
+        defineField({
+          name: 'showShopifyBrand',
+          title: 'Show Brand',
+          type: 'boolean',
+          description: 'Show the brand name alongside the price',
+          initialValue: false,
+        }),
       ],
       icon: () => <BadgeDollarSign size="18px" />,
       preview: {
@@ -146,6 +155,65 @@ export default defineField({
           };
         },
       },
+    }),
+    defineArrayMember({
+      name: 'shopifyAccordion',
+      title: 'Accordion',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Title',
+          type: 'string',
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'contentType',
+          title: 'Content Type',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Product Description', value: 'description' },
+              { title: 'Shipping Information', value: 'shipping' },
+              { title: 'Custom Content', value: 'custom' },
+            ],
+            layout: 'radio',
+          },
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'customContent',
+          title: 'Custom Content',
+          type: 'array',
+          of: [{ type: 'block' }],
+          hidden: ({ parent }) => parent?.contentType !== 'custom',
+        }),
+        defineField({
+          name: 'defaultOpen',
+          title: 'Default Open',
+          type: 'boolean',
+          initialValue: false,
+        }),
+      ],
+      icon: () => <ChevronDown size="18px" />,
+      preview: {
+        select: {
+          title: 'title',
+          contentType: 'contentType',
+        },
+        prepare: ({ title, contentType }) => {
+          return {
+            title: title || 'Accordion',
+            subtitle: contentType ? `Content: ${contentType}` : '',
+          };
+        },
+      },
+    }),
+    defineArrayMember({
+      name: 'productModal',
+      title: 'Modal',
+      type: 'productModal',
+      icon: () => <FileText size="18px" />,
     }),
   ],
 });

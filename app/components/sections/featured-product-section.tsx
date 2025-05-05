@@ -100,7 +100,7 @@ function Grid({
   className?: string;
 }) {
   return (
-    <div className={cn('grid gap-10 lg:grid-cols-2', className)}>
+    <div className={cn('grid gap-10 lg:grid-cols-2 container-narrow', className)}>
       {children}
     </div>
   );

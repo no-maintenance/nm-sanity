@@ -13,7 +13,7 @@ import {
   useSearchParams,
 } from '@remix-run/react';
 import {Pagination} from '@shopify/hydrogen';
-import {Suspense, useCallback, useEffect, useMemo} from 'react';
+import {Suspense, useCallback, useEffect, useMemo, useState} from 'react';
 
 import type {loader} from '~/routes/($locale).collections.$collectionHandle';
 
@@ -29,6 +29,7 @@ import {SortFilter} from '../collection/sort-filter-layout';
 import {ProductCardGrid} from '../product/product-card-grid';
 import {Skeleton} from '../skeleton';
 import {Button} from '../ui/button';
+import {useInView} from '~/hooks/use-in-view';
 
 type CollectionProductGridSectionProps =
   SectionOfType<'collectionProductGridSection'>;
@@ -176,7 +177,6 @@ function ProductsLoadedOnScroll({
   appliedFilters,
   columns,
   hasNextPage,
-  inView,
   nextPageUrl,
   nodes,
   onClearAllFilters,
@@ -197,16 +197,21 @@ function ProductsLoadedOnScroll({
   const navigate = useNavigate();
   const {pending} = useOptimisticNavigationData<boolean>('clear-all-filters');
   const {themeContent} = useSanityThemeContent();
+  const [nextRef, nextInView] = useInView<HTMLDivElement>({ rootMargin: '200px' });
+  const [hasTriggered, setHasTriggered] = useState(false);
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (nextInView && hasNextPage && !hasTriggered) {
+      setHasTriggered(true);
       navigate(nextPageUrl, {
         preventScrollReset: true,
         replace: true,
         state,
       });
+    } else if (!nextInView) {
+      setHasTriggered(false);
     }
-  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
+  }, [nextInView, hasNextPage, nextPageUrl, navigate, state, hasTriggered]);
 
   if (!nodes || nodes.length === 0) {
     return (
@@ -229,12 +234,17 @@ function ProductsLoadedOnScroll({
   }
 
   return (
-    <ProductCardGrid
-      columns={{
-        desktop: columns?.desktop,
-        mobile: columns?.mobile,
-      }}
-      products={nodes}
-    />
+    <>
+      <ProductCardGrid
+        columns={{
+          desktop: columns?.desktop,
+          mobile: columns?.mobile,
+        }}
+        products={nodes}
+      />
+      <div className="mt-6 flex items-center justify-center" ref={nextRef}>
+        {/* This wrapper is observed for inView to trigger next page load */}
+      </div>
+    </>
   );
 }

@@ -37,6 +37,7 @@ import {seoPayload} from './lib/seo.server';
 import {generateFaviconUrls} from './lib/generate-favicon-urls';
 
 import tailwindCss from './styles/tailwind.css?url';
+import { Toaster } from '~/components/ui/sonner';
 
 export type RootLoader = typeof loader;
 
@@ -216,6 +217,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
+        <Toaster />
       </body>
     </html>
   );

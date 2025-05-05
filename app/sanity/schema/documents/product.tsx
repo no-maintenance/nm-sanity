@@ -49,6 +49,11 @@ export default defineType({
       to: [{type: 'productTemplate'}],
       group: 'editorial',
     }),
+    defineField({
+      name: 'sizeChart',
+      title: 'Size Chart',
+      type: 'table',
+    }),
     // Title (proxy)
     defineField({
       name: 'titleProxy',

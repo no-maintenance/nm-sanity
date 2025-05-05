@@ -11,11 +11,15 @@ import type {loader} from '~/routes/($locale).products.$productHandle';
 import {cn, getAspectRatioData} from '~/lib/utils';
 
 import {MediaGallery} from '../product/media-gallery';
+import {SimpleMediaGallery} from '../product/simple-media-gallery';
 import {ProductDetails} from '../product/product-details';
 import {Skeleton} from '../skeleton';
 
 export type ProductInformationSectionProps =
-  SectionOfType<'productInformationSection'>;
+  SectionOfType<'productInformationSection'> & {
+    galleryStyle?: 'scrollable' | 'simple';
+    stickyProductInfo?: boolean;
+  };
 
 type ProductVariantsContextType = {
   variants: ProductVariantFragmentFragment[];
@@ -39,7 +43,13 @@ export function ProductInformationSection(
             <Skeleton>
               <ProductInformationGrid
                 data={stegaClean(data)}
-                mediaGallery={<MediaGallery aspectRatio={aspectRatio} />}
+                mediaGallery={
+                  data.galleryStyle === 'simple' ? (
+                    <SimpleMediaGallery aspectRatio={aspectRatio} />
+                  ) : (
+                    <MediaGallery aspectRatio={aspectRatio} />
+                  )
+                }
                 productDetails={<ProductDetails data={data} />}
               />
             </Skeleton>
@@ -50,7 +60,13 @@ export function ProductInformationSection(
               <Skeleton isError>
                 <ProductInformationGrid
                   data={stegaClean(data)}
-                  mediaGallery={<MediaGallery aspectRatio={aspectRatio} />}
+                  mediaGallery={
+                    data.galleryStyle === 'simple' ? (
+                      <SimpleMediaGallery aspectRatio={aspectRatio} />
+                    ) : (
+                      <MediaGallery aspectRatio={aspectRatio} />
+                    )
+                  }
                   productDetails={<ProductDetails data={data} />}
                 />
               </Skeleton>
@@ -66,7 +82,13 @@ export function ProductInformationSection(
                 <ProductVariantsContext.Provider value={{variants}}>
                   <ProductInformationGrid
                     data={stegaClean(data)}
-                    mediaGallery={<MediaGallery aspectRatio={aspectRatio} />}
+                    mediaGallery={
+                      data.galleryStyle === 'simple' ? (
+                        <SimpleMediaGallery aspectRatio={aspectRatio} />
+                      ) : (
+                        <MediaGallery aspectRatio={aspectRatio} />
+                      )
+                    }
                     productDetails={<ProductDetails data={data} />}
                   />
                 </ProductVariantsContext.Provider>
@@ -81,7 +103,13 @@ export function ProductInformationSection(
   return (
     <ProductInformationGrid
       data={stegaClean(data)}
-      mediaGallery={<MediaGallery aspectRatio={aspectRatio} />}
+      mediaGallery={
+        data.galleryStyle === 'simple' ? (
+          <SimpleMediaGallery aspectRatio={aspectRatio} />
+        ) : (
+          <MediaGallery aspectRatio={aspectRatio} />
+        )
+      }
       productDetails={<ProductDetails data={data} />}
     />
   );
@@ -96,17 +124,26 @@ function ProductInformationGrid({
   mediaGallery: React.ReactNode;
   productDetails: React.ReactNode;
 }) {
-  const desktopMediaPosition = data?.desktopMediaPosition;
-  const desktopMediaWidth = data?.desktopMediaWidth;
+  const isSimpleGallery = data?.galleryStyle === 'simple';
+  const isScrollableGallery = !isSimpleGallery;
+  const shouldStick = isScrollableGallery && data?.stickyProductInfo !== false;
+  
+  // Only apply these settings for simple gallery
+  const desktopMediaPosition = isSimpleGallery ? data?.desktopMediaPosition : null;
+  const desktopMediaWidth = isSimpleGallery ? data?.desktopMediaWidth : null;
+  
   return (
     <div className="lg:container">
       <div className={cn('grid gap-10 lg:grid-cols-12')}>
         <div
           className={cn(
             'lg:col-span-6',
-            desktopMediaPosition === 'right' && 'lg:order-last',
-            desktopMediaWidth === 'small' && 'lg:col-span-5',
-            desktopMediaWidth === 'large' && 'lg:col-span-7',
+            // Only apply position/width for simple gallery
+            isSimpleGallery && desktopMediaPosition === 'right' && 'lg:order-last',
+            isSimpleGallery && desktopMediaWidth === 'small' && 'lg:col-span-5',
+            isSimpleGallery && desktopMediaWidth === 'large' && 'lg:col-span-7',
+            // For scrollable, use default 50/50 split
+            isScrollableGallery && 'lg:col-span-6'
           )}
         >
           {mediaGallery}
@@ -114,11 +151,21 @@ function ProductInformationGrid({
         <div
           className={cn(
             'lg:col-span-6',
-            desktopMediaWidth === 'small' && 'lg:col-span-7',
-            desktopMediaWidth === 'large' && 'lg:col-span-5',
+            // Only apply width adjustments for simple gallery
+            isSimpleGallery && desktopMediaWidth === 'small' && 'lg:col-span-7',
+            isSimpleGallery && desktopMediaWidth === 'large' && 'lg:col-span-5',
+            // For scrollable gallery with sticky behavior
+            shouldStick && 'lg:self-start h-full'
           )}
         >
-          {productDetails}
+          <div 
+            className={cn(
+              shouldStick && 'lg:sticky lg:top-[calc(var(--height-nav)+6rem)] lg:max-h-[calc(100vh-var(--height-nav)-6rem)] lg:overflow-y-auto lg:max-w-lg lg:p-8 mx-auto',
+              'flex flex-col items-start'
+            )}
+          >
+            {productDetails}
+          </div>
         </div>
       </div>
     </div>

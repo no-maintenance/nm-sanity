@@ -12,12 +12,12 @@ export type ShopifyTitleBlockProps = NonNullable<
 export function ShopifyTitleBlock(props: ShopifyTitleBlockProps) {
   const {product} = useProduct();
   const params = useParams();
-
+  const classes = "max-w-prose text-base whitespace-normal uppercase font-normal my-0"
   if (!product) return null;
 
   return params.productHandle ? (
-    <h1 className="max-w-prose text-base whitespace-normal uppercase font-normal my-0">{product?.title}</h1>
+    <h1 className={classes}>{product?.title}</h1>
   ) : (
-    <h2 className="text-base font-bold">{product?.title}</h2>
+    <h2 className={classes}>{product?.title}</h2>
   );
 }
