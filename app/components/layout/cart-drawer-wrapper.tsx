@@ -90,8 +90,8 @@ function Badge(props: {cart?: CartApiQueryFragment; count: number}) {
               'bg-foreground text-background transition-colors',
               'group-active:bg-accent-foreground group-active:text-accent',
               'notouch:group-hover:bg-accent-foreground notouch:group-hover:text-accent',
-              'aspect-square h-auto min-w-[1.35rem] rounded-full p-1',
-              'text-center text-[.7rem] leading-[0] subpixel-antialiased',
+              'aspect-square h-auto min-w-[1rem] rounded-full p-1',
+              'text-center text-[.6rem] leading-[0] subpixel-antialiased',
             ])}
           >
             <span>{count}</span>

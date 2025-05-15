@@ -54,10 +54,6 @@ export function MobileDrawer({
           onCloseAutoFocus={(e) => e.preventDefault()}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          <DrawerHeader className="flex items-center justify-center border-b text-xl font-medium">
-            {heading}
-            <span>({productsCount})</span>
-          </DrawerHeader>
           <div className="size-full overflow-hidden">
             <ScrollArea className="size-full px-6">
               <div className="pt-6">

@@ -89,23 +89,23 @@ export function CartLineItem({
       variants={variants}
     >
       <div className="flex gap-4 py-5">
-        <div className="size-14">
+        <div className="size-17">
           {merchandise.image && (
             <ShopifyImage
               alt={merchandise.title}
-              aspectRatio="1/1"
+              aspectRatio="4/5"
               className="h-auto w-full object-cover object-center"
               data={merchandise.image}
               draggable={false}
               loading="eager"
-              sizes="56px"
+              sizes="80px"
             />
           )}
         </div>
 
         <div className="flex flex-1 justify-between">
           <div className="grid gap-1">
-            <h3 className="font-body text-xl font-medium">
+            <h3 className="text-base uppercase">
               {merchandise?.product?.handle ? (
                 <Link onClick={onClose} to={productPath}>
                   {merchandise?.product?.title || ''}

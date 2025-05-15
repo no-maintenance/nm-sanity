@@ -169,7 +169,6 @@ function CollectionProductSwimlane({data}: {data: ProductSwimlaneSectionProps}) 
 
   // Extract numeric ID from Sanity GID
   const sanityNumericId = extractCollectionId(sanityCollectionGid);
-  console.log('Extracted Sanity Collection ID:', sanityNumericId);
 
   return (
     <Suspense fallback={<ProductSwimlaneLoading count={data.maxProducts || 12} />}>

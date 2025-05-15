@@ -23,7 +23,7 @@ export function ProductSwimlane({
           </Heading>
         </div>
       )}
-      <div className="swimlane hiddenScroll md:scroll-px-8 lg:scroll-px-8 px-4 md:px-6 lg:px-8 xl:px-10">
+      <div className="snap-x swimlane hiddenScroll md:scroll-px-8 lg:scroll-px-8 px-4 md:px-6 lg:px-8 xl:px-10">
         {products.nodes.map((product, idx) => (
           <div className="snap-start w-80 min-w-80" key={product.id}>
             <ProductCard
@@ -47,7 +47,7 @@ export function ProductSwimlaneLoading({
 }: {count?: number} & React.ComponentProps<typeof Section>) {
   return (
     <Section padding="y" {...props}>
-      <div className="swimlane hiddenScroll md:scroll-px-8 lg:scroll-px-8 px-4 md:px-6 lg:px-8 xl:px-10">
+      <div className="snap-x swimlane hiddenScroll md:scroll-px-8 lg:scroll-px-8 px-4 md:px-6 lg:px-8 xl:px-10">
         {Array(count)
           .fill(null)
           .map((_, i) => (
