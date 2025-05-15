@@ -23,7 +23,14 @@ import {
   CarouselContent,
   CarouselCounter,
   CarouselItem,
+  CarouselPagination,
 } from '../ui/carousel';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogOverlay,
+  DialogPortal 
+} from '../ui/dialog';
 import { AnimatePresence, m } from 'motion/react';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { IconClose } from '../icons/icon-close';
@@ -74,9 +81,8 @@ function DesktopMedia({
             modalIdx={modalIdx}
             idx={idx + 1}
           >
-            
             <MediaFile data={data}
-              className="object-cover w-full h-full  fadeIn"
+              className="object-contain w-full h-full max-h-[90vh] fadeIn"
             />
           </ModalImage>
         ))}
@@ -151,13 +157,7 @@ function MobileCarousel({
             );
           })}
         </CarouselContent>
-        <div className="mt-3 flex items-center justify-center">
-          <Badge variant="outline">
-            <CarouselCounter>
-              <span>{medias.length}</span>
-            </CarouselCounter>
-          </Badge>
-        </div>
+        <CarouselPagination />
       </div>
     </Carousel>
   );
@@ -256,36 +256,31 @@ export const ProductModal = ({
   modalRef: RefObject<HTMLDivElement>;
 }) => {
   const {location} = useNavigation();
-  useEffect(() => {
-    if (!modalRef.current) return;
-    if (modalIdx) {
-      disableBodyScroll(modalRef.current, {reserveScrollBarGap: true});
-    } else {
-      clearAllBodyScrollLocks();
-    }
-  }, [modalIdx]);
+
   useEffect(() => {
     clearAllBodyScrollLocks();
   }, [location]);
+
   return (
-    <AnimatePresence>
-      {modalIdx && (
-        <ProgressiveMotionDiv
-          onClick={() => setModalIdx(0)}
+    <Dialog open={!!modalIdx} onOpenChange={(open) => !open && setModalIdx(0)}>
+      <DialogPortal>
+        <DialogOverlay className="bg-white/95 dark:bg-black/95 backdrop-blur-none" />
+        <DialogContent
           ref={modalRef}
-          className={' fixed left-0 top-0 w-full z-50 h-full overflow-y-auto'}
+          variant="full"
+          className="bg-white dark:bg-black"
         >
           <button
             aria-label="Close panel"
-            className={'fixed right-8 top-6 cursor-pointer z-20'}
+            className="fixed right-8 top-6 cursor-pointer z-[9999]"
             onClick={() => setModalIdx(0)}
           >
             <IconClose width={25} height={24} viewBox="0 0 25 24" />
           </button>
-          <div className={'w-full'}>{children}</div>
-        </ProgressiveMotionDiv>
-      )}
-    </AnimatePresence>
+          <div className="w-full h-full">{children}</div>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   );
 };
 
@@ -302,20 +297,30 @@ const ModalImage = ({
   children: ReactNode;
 }) => {
   const imgRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     if (!imgRef.current || !modalRef.current) return;
     if (idx === modalIdx) {
-      modalRef.current.scrollTop = imgRef.current.offsetTop;
+      // Use requestAnimationFrame to ensure DOM is fully updated
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        if (modalRef.current) {
+          modalRef.current.scrollTop = 0;
+        }
+      });
     }
   }, [modalIdx]);
+  
   return (
     <div
       ref={imgRef}
       className={
-        'md:col-span-2 card-image bg-white dark:bg-background/10 md:w-full crosshair-minus'
+        'md:w-full h-screen flex items-center justify-center bg-white dark:bg-black p-4'
       }
     >
-      {children}
+      <div className="max-h-full max-w-full">
+        {children}
+      </div>
     </div>
   );
 };

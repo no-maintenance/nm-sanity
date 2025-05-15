@@ -22,11 +22,40 @@ import { MobileNavigation } from '../navigation/mobile-navigation.client';
 import { Button, IconButton } from '../ui/button';
 import CartDrawer from './cart-drawer-wrapper';
 import { Logo as HeaderLogo } from './header-logo';
-import { IconGlobe } from '~/components/icons/icon-globe';
 import { IconSearch } from '~/components/icons/icon-search';
 import { PredictiveSearchResults } from '~/components/search';
 import { PredictiveSearchForm } from '~/components/search';
 import { IconClose } from '~/components/icons/icon-close';
+import { CountrySelector } from '~/components/layout/country-selector';
+
+// Client-only component to handle scroll events for fluid header
+function FluidHeaderScrollHandler({
+  onScroll,
+}: {
+  onScroll: (scrolled: boolean) => void;
+}) {
+  useEffect(() => {
+    // Check initial scroll position on mount
+    const checkScroll = () => {
+      // Lower threshold to detect scroll sooner
+      const scrolled = window.scrollY > 10;
+      onScroll(scrolled);
+    };
+    
+    // Run once on mount
+    checkScroll();
+    
+    // Set up event listener
+    window.addEventListener('scroll', checkScroll);
+    
+    // Clean up
+    return () => {
+      window.removeEventListener('scroll', checkScroll);
+    };
+  }, [onScroll]);
+  
+  return null;
+}
 
 export function Header() {
   const { sanityRoot } = useRootLoaderData();
@@ -48,6 +77,8 @@ export function Header() {
   
   // State for mobile navigation
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  // State for search open
+  const [searchOpen, setSearchOpen] = useState(false);
   
   // Function to close mobile navigation
   const closeMobileNav = useCallback(() => {
@@ -96,16 +127,25 @@ export function Header() {
   );
 
   const Icons = (
-    <div className="flex items-center">
-      {showCountrySelectorIcon && <CountrySelectorDrawer />}
-      {showSearchIcon && <PredictiveSearchItem closeMobileNav={closeMobileNav} />}
+    <div className="flex items-center md:gap-2">
+      <div className="hidden sm:block">
+        {showCountrySelectorIcon && <CountrySelector isIcon={true} />}
+      </div>
+      <div className="hidden sm:block">
+        {showSearchIcon && (
+          <PredictiveSearchItem 
+            closeMobileNav={closeMobileNav} 
+            onSearchOpenChange={setSearchOpen}
+          />
+        )}
+      </div>
       <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
       <CartDrawer />
     </div>
   );
 
   return (
-    <ForwardedHeaderWrapper ref={headerRef}>
+    <ForwardedHeaderWrapper ref={headerRef} mobileNavOpen={mobileNavOpen} searchOpen={searchOpen}>
       <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
         <div className={cn(
@@ -131,68 +171,114 @@ export function Header() {
   );
 }
 
-function CountrySelectorDrawer() {
-  return (
-    <IconButton asChild>
-      <button>
-        <IconGlobe
-          className={'cursor-pointer'}
-          fill={'transparent'}
-          width={'100%'}
-          height={'100%'}
-          viewBox={'0 0 24 24'}
-        />
-      </button>
-    </IconButton>
-  );
-}
 function AccountLink({ className }: { className?: string }) {
   return (
     <IconButton asChild>
       <Link className={className} to="/account">
-        <IconAccount className="size-6" />
+        <IconAccount className="md:size-6 size-5" />
       </Link>
     </IconButton>
   );
 }
 
-function SearchDrawer() {
-  return (
-    <IconButton asChild>
-      <button>
-        <IconSearch className="size-6" />
-      </button>
-    </IconButton>
-  );
-}
 
-function HeaderWrapper(props: { children: React.ReactNode }, ref: React.Ref<HTMLElement>) {
+function HeaderWrapper(props: { 
+  children: React.ReactNode;
+  mobileNavOpen?: boolean;
+  searchOpen?: boolean;
+}, ref: React.Ref<HTMLElement>) {
   const { sanityRoot } = useRootLoaderData();
+  const { pathname } = useLocation();
   const data = sanityRoot?.data;
   const header = data?.header;
   const showSeparatorLine = header?.showSeparatorLine;
   const blur = header?.blur;
   const sticky = stegaClean(header?.sticky);
+  
+  // Fluid header settings
+  const enableFluidHeader = stegaClean((header as any)?.enableFluidHeader) || false;
+  const fluidHeaderOnHomePage = stegaClean((header as any)?.fluidHeaderOnHomePage) || false;
+  const fluidHeaderTextColor = stegaClean((header as any)?.fluidHeaderTextColor) || 'white';
+  
+  // Check if current page should have fluid header
+  const isHomePage = pathname === '/';
+  const shouldHaveFluidHeader = enableFluidHeader && 
+    ((isHomePage && fluidHeaderOnHomePage));
+  
+  // State to track scroll position for fluid header
+  // Initialize to transparent (false) for fluid headers, solid (true) for regular headers
+  const [isScrolled, setIsScrolled] = useState(!shouldHaveFluidHeader);
+  
+  // Mobile nav state and search state
+  const { mobileNavOpen = false, searchOpen = false } = props;
+  
+  // Generate text color class for transparent header
+  const fluidTextColorClass = 
+    fluidHeaderTextColor === 'white' ? 'text-white' :
+    fluidHeaderTextColor === 'black' ? 'text-black' :
+    'text-foreground';
+
+  // Determine if header should be in solid state (scrolled, nav open, or search open)
+  const isSolidState = isScrolled || mobileNavOpen || searchOpen;
 
   const headerClassName = cx([
-    'section-padding bg-background text-foreground pointer-events-auto',
-    sticky !== 'none' && 'sticky top-0 z-50',
-    blur &&
-    'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
+    'section-padding pointer-events-auto  w-full',
+    // Position: fixed when fluid header, sticky when normal header
+    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-50' : 
+      (sticky !== 'none' ? 'sticky top-0 z-50' : ''),
+    
+    // Apply fluid header styles
+    shouldHaveFluidHeader ? (
+      isSolidState
+        ? 'bg-background text-foreground' 
+        : `bg-transparent ${fluidTextColorClass}`
+    ) : 'bg-background text-foreground',
+    
+    // Only apply blur when not in transparent state
+    (blur && (!shouldHaveFluidHeader || isSolidState)) &&
+      'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
+    
+    // Only apply separator line when not in transparent state or when scrolled
     headerVariants({
-      optional: showSeparatorLine ? 'separator-line' : null,
+      optional: (showSeparatorLine && (!shouldHaveFluidHeader || isSolidState)) ? 'separator-line' : null,
     }),
   ]);
 
+  // Add a class to the document body when using fluid header
+  useEffect(() => {
+    if (shouldHaveFluidHeader) {
+      document.body.classList.add('has-fluid-header');
+    } else {
+      document.body.classList.remove('has-fluid-header');
+    }
+
+    return () => {
+      document.body.classList.remove('has-fluid-header');
+    };
+  }, [shouldHaveFluidHeader]);
+
   return (
     <>
+      {/* Client-only scroll handler for fluid header */}
+      {shouldHaveFluidHeader && (
+        <ClientOnly>
+          {() => (
+            <FluidHeaderScrollHandler onScroll={setIsScrolled} />
+          )}
+        </ClientOnly>
+      )}
+      
       {sticky === 'onScrollUp' ? (
-        <HeaderAnimation className={headerClassName} ref={ref}>
+        <ForwardedHeaderAnimation
+          className={headerClassName}
+          ref={ref}
+        >
           {props.children}
-        </HeaderAnimation>
+        </ForwardedHeaderAnimation>
       ) : (
         <header className={headerClassName} ref={ref}>{props.children}</header>
       )}
+
       <HeaderHeightCssVars />
     </>
   );
@@ -315,20 +401,32 @@ function useHeaderHeigth() {
 }
 
 
-function PredictiveSearchItem({ closeMobileNav }: { closeMobileNav: () => void }) {
+function PredictiveSearchItem({ 
+  closeMobileNav, 
+  onSearchOpenChange
+}: { 
+  closeMobileNav: () => void;
+  onSearchOpenChange?: (open: boolean) => void;
+}) {
   const predictiveSearchRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);  
 
-  const handleOpenSearch = () => {
-    setOpen(true);
-    closeMobileNav(); // Close the mobile nav when search opens
+  const handleToggleSearch = () => {
+    const newOpenState = !open;
+    setOpen(newOpenState);
+    if (onSearchOpenChange) {
+      onSearchOpenChange(newOpenState);
+    }
+    if (newOpenState) {
+      closeMobileNav(); // Close the mobile nav when search opens
+    }
   };
 
   return (
     <>
-      <IconButton  asChild>
-        <button onClick={handleOpenSearch}>
-          <IconSearch className="size-6" />
+      <IconButton asChild>
+        <button onClick={handleToggleSearch}>
+          <IconSearch className="md:size-6 size-5" />
         </button>
       </IconButton>
       {open && (
@@ -346,13 +444,16 @@ function PredictiveSearchItem({ closeMobileNav }: { closeMobileNav: () => void }
           <PredictiveSearchForm>
           {({ fetchResults, inputRef }) => (
             <>
-              <div className={'flex w-full h-nav items-center'}>
+              <div className={'container flex w-full h-nav items-center'}>
                 <Button
                   variant={'ghost'}
                   className={'outline-offset-0 hover:bg-transparent'}
-                  onClick={() =>
-                    setOpen(false)
-                  }
+                  onClick={() => {
+                    setOpen(false);
+                    if (onSearchOpenChange) {
+                      onSearchOpenChange(false);
+                    }
+                  }}
                 >
                   <IconClose />
                 </Button>
@@ -372,7 +473,7 @@ function PredictiveSearchItem({ closeMobileNav }: { closeMobileNav: () => void }
                   placeholder="Search"
                   ref={inputRef}
                   type="search"
-                  className={'flex-1 h-10 px-2'}
+                  className={'flex-1 h-10 px-2 border rounded-sm'}
                 />
                 &nbsp;
                 <Button
@@ -395,7 +496,7 @@ function PredictiveSearchItem({ closeMobileNav }: { closeMobileNav: () => void }
                 >
                   <div
                     ref={predictiveSearchRef}
-                    className={'px-gutter lg:px-0'}
+                    className={'container'}
                   >
                     <PredictiveSearchResults />
                   </div>

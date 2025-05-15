@@ -17,22 +17,30 @@ export function ProductSwimlane({
   return (
     <Section padding="y" {...props}>
       {title && (
-        <Heading size="lead" className={cn('px-gutter pb-gutter')}>
-          {title}
-        </Heading>
+        <div className="container pb-4">
+          <Heading size="lead" >
+            {title}
+          </Heading>
+        </div>
       )}
       <div className="swimlane hiddenScroll md:scroll-px-8 lg:scroll-px-8 px-4 md:px-6 lg:px-8 xl:px-10">
         {products.nodes.map((product, idx) => (
-          <ProductCard
-            product={product}
-            key={product.id}
-            className="snap-start w-80"
-          />
+          <div className="snap-start w-80 min-w-80" key={product.id}>
+            <ProductCard
+              product={product}
+              columns={{
+                desktop: 5,
+                mobile: 1
+              }}
+              className="h-full"
+            />
+          </div>
         ))}
       </div>
     </Section>
   );
 }
+
 export function ProductSwimlaneLoading({
   count = 12,
   ...props
@@ -45,7 +53,7 @@ export function ProductSwimlaneLoading({
           .map((_, i) => (
             <div
               key={i}
-              className="snap-start w-80 aspect-[4/5] bg-neutral-100 animate-pulse"
+              className="snap-start w-80 min-w-80 aspect-[4/5] bg-neutral-100 animate-pulse"
             />
           ))}
       </div>

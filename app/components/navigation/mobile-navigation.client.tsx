@@ -13,7 +13,7 @@ import type {NavigationProps} from './desktop-navigation';
 import type {SanityNestedNavigationProps} from './nested-navigation';
 
 const mobileMenuLinkClass = cn(
-  'inline-flex items-center text-5xl font-medium transition-colors uppercase',
+  'inline-flex items-center md:text-5xl text-4xl font-medium transition-colors uppercase',
   'focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0',
   'animated-underline'
 );
@@ -36,9 +36,6 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
   const {sanityRoot} = useRootLoaderData();
   const showHamburgerMenuOnDesktop = stegaClean(sanityRoot?.data?.header?.showHamburgerMenuOnDesktop);
 
-  const menuStyle = {
-    height: 'calc(100vh - var(--desktopHeaderHeight))',
-  };
 
   const avoidDefaultDomBehavior = (e: Event) => {
     e.preventDefault();
@@ -54,7 +51,7 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
       <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
         <Dialog.Trigger asChild>
           <button className="p-0 focus:outline-none focus-visible:outline-none">
-            <div className="origin-center">
+            <div className="origin-center sm:scale-100 scale-80">
               <Hamburger
                 size={21}
                 distance="lg"
@@ -75,11 +72,7 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
-                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto"
-                    style={{
-                      ...menuStyle,
-                      top: 'var(--desktopHeaderHeight)'
-                    }}
+                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[var(--desktopHeaderHeight)]  sm:h-[calc(100vh-var(--desktopHeaderHeight))] h-[calc(100vh-var(--desktopHeaderHeight)+7px)]"
                   >
                     <div className="flex h-full flex-col">
                       <div className="">
@@ -89,11 +82,7 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
                             showHamburgerMenuOnDesktop ? "lg:hidden" : "block"
                           )}>
                             <div className="origin-center">
-                              <Hamburger
-                                size={20}
-                                label="close menu"
-                                toggled={true}
-                              />
+                            
                             </div>
                           </button>
                         </Dialog.Close>

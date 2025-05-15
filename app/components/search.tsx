@@ -402,7 +402,7 @@ function SearchResultsProductsGrid({
     return (
       <div className="predictive-search-result outline-offset-0" key={type}>
         <Link prefetch="intent" to={categoryUrl} onClick={goToSearchResult}>
-          <Heading size={'copy'} as={'h5'} className={'py-3 font-medium'}>
+          <Heading size={'copy'} as={'h5'} className={'py-3 font-medium uppercase'}>
             {isSuggestions ? 'Suggestions' : type}
           </Heading>
         </Link>

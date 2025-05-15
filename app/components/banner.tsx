@@ -44,7 +44,7 @@ const BannerMedia = forwardRef<
     ref={ref}
     {...props}
   >
-    <div className="[&_img]:h-(--banner-height) [&_img]:w-screen [&_img]:object-cover">
+    <div className="relative h-full w-full [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
       {props.children}
     </div>
   </div>
@@ -89,7 +89,7 @@ const BannerContent = forwardRef<
   return (
     <div
       className={cn(
-        'relative z-3 container flex h-full py-4',
+        'relative z-3 container flex h-full py-4 xl:py-8',
         contentAlignmentVariants({
           required: cleanContentAlignement,
         }),

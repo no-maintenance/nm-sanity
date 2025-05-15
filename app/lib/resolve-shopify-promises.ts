@@ -84,6 +84,13 @@ export function resolveShopifyPromises({
     request,
     storefront,
   });
+  
+  // Add support for product swimlane section
+  const productSwimlaneSectionPromise = resolveProductSwimlaneSectionPromise({
+    document,
+    request,
+    storefront,
+  });
 
   return {
     collectionListPromise,
@@ -91,6 +98,7 @@ export function resolveShopifyPromises({
     featuredCollectionPromise,
     featuredProductPromise,
     relatedProductsPromise,
+    productSwimlaneSectionPromise,
   };
 }
 
@@ -316,4 +324,48 @@ async function resolveCollectionProductGridPromise({
   }
 
   return promise || null;
+}
+
+/**
+ * Resolve collection data for product swimlane sections
+ */
+function resolveProductSwimlaneSectionPromise({
+  document,
+  storefront,
+}: PromiseResolverArgs) {
+  const promises: Promise<FeaturedCollectionQuery>[] = [];
+
+  const sections = getSections(document);
+
+  for (const section of sections || []) {
+    if (section._type === 'productSwimlaneSection' && section.source === 'collection') {
+      const gid = section.collection?.store?.gid;
+      const first = section.maxProducts || 12;
+
+      if (!gid) {
+        continue;
+      }
+
+      const promise = storefront.query(FEATURED_COLLECTION_QUERY, {
+        variables: {
+          country: storefront.i18n.country,
+          first,
+          id: gid,
+          language: storefront.i18n.language,
+        },
+      });
+
+      promises.push(promise);
+    }
+  }
+  
+  if (promises.length === 0) {
+    return undefined;
+  }
+
+  /**
+   * Promise.allSettled is used to resolve all promises even if one of them fails.
+   * This ensures all swimlane sections will be rendered properly even if one fails.
+   */
+  return Promise.allSettled(promises);
 }

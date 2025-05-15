@@ -20,6 +20,7 @@ export const DEFAULT_PRODUCT_TEMPLATE =
   defineQuery(`*[_type == 'productTemplate' && default == true][0] {
     _type,
     name,
+    showBackInStockForm,
     sections[] {
       _key,
       _type,
@@ -108,6 +109,7 @@ export const PRODUCT_QUERY = defineQuery(`{
     },
     sizeChart,
     template -> {
+      showBackInStockForm,
       sections[] {
         _key,
         _type,

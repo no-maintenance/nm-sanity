@@ -31,7 +31,6 @@ export const Burger = (({
   const barHeight = Math.round(barHeightRaw);
 
   const space = distance === 'lg' ? 0.25 : distance === 'sm' ? 0.75 : 0.5;
-  console.log(space, distance);
   const marginRaw = width / (lines * (space + (lines === 3 ? 1 : 1.25)));
   const margin = Math.round(marginRaw);
 

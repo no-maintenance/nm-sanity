@@ -21,6 +21,12 @@ const globalSections = [
   {
     type: 'richtextSection',
   },
+  {
+    type: 'productSwimlaneSection',
+  },
+  {
+    type: 'stickyTileSection',
+  },
 ];
 
 const pdpSections = [

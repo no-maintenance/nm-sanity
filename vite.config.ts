@@ -59,7 +59,7 @@ export default defineConfig({
   resolve: {
     mainFields: ['browser', 'module', 'main'],
   },
-   
+
   ssr: {
     resolve: {
       conditions: ['workerd', 'worker', 'browser'],
@@ -75,7 +75,11 @@ export default defineConfig({
        * Include 'example-dep' in the array below.
        * @see https://vitejs.dev/config/dep-optimization-options
        */
-      include: ['react-compiler-runtime', '@sanity/image-url'],
+      include: [
+        'react-fast-compare',
+        'react-compiler-runtime',
+        '@sanity/image-url',
+      ],
     },
   },
   server: {

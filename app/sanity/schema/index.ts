@@ -47,6 +47,7 @@ import featuredCollectionSection from './objects/sections/featured-collection-se
 import featuredProductSection from './objects/sections/featured-product-section';
 import imageBannerSection from './objects/sections/image-banner-section';
 import productInformationSection from './objects/sections/product-information-section';
+import productSwimlaneSection from './objects/sections/product-swimlane-section';
 import relatedProductsSection from './objects/sections/related-products-section';
 import richtextSection from './objects/sections/richtext-section';
 import inventory from './objects/shopify/inventory';
@@ -64,6 +65,8 @@ import home from './singletons/home';
 import settings from './singletons/settings';
 import themeContent from './singletons/theme-content';
 import formBuilder from '~/sanity/plugins/form-builder/form-builder';
+import stickyTileSection from '~/sanity/schema/objects/sections/sticky-tile-section';
+import tile from '~/sanity/schema/objects/sections/tile';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -85,10 +88,12 @@ const sections = [
   collectionListSection,
   productInformationSection,
   relatedProductsSection,
+  productSwimlaneSection,
   carouselSection,
   richtextSection,
   collectionProductGrid,
   collectionBanner,
+  stickyTileSection,
 ];
 const footers = [socialLinksOnly, footerWithNav];
 const objects = [
@@ -130,6 +135,7 @@ const objects = [
   formBuilder,
   formFields,
   productModal,
+  tile
 ];
 
 export const schemaTypes = [

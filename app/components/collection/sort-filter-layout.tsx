@@ -19,7 +19,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../ui/accordion';
+} from '../ui/accordion-chevron';
 import {Button, IconButton} from '../ui/button';
 import {ScrollArea} from '../ui/scroll-area';
 import {DesktopSort} from './collection-sort';

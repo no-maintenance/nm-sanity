@@ -1,9 +1,10 @@
 import type {ROOT_QUERYResult} from 'types/sanity/sanity.generated';
 
-import {Link} from '@remix-run/react';
+import {Link, useLocation} from '@remix-run/react';
 import {cx} from 'class-variance-authority';
 import Autoplay from 'embla-carousel-autoplay';
 import {useEffect, useMemo} from 'react';
+import {stegaClean} from '@sanity/client/stega';
 
 import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 import {useRootLoaderData} from '~/root';
@@ -24,9 +25,18 @@ type AnnouncementBarProps = NonNullable<
 
 export function AnnouncementBar() {
   const {sanityRoot} = useRootLoaderData();
+  const {pathname} = useLocation();
   const data = sanityRoot?.data;
   const header = data?.header;
   const announcementBar = header?.announcementBar;
+  
+  // Check fluid header settings
+  const enableFluidHeader = stegaClean((header as any)?.enableFluidHeader) || false;
+  const fluidHeaderOnHomePage = stegaClean((header as any)?.fluidHeaderOnHomePage) || false;
+  const isHomePage = pathname === '/';
+  
+  // Determine if fluid header is active for current page
+  const shouldHaveFluidHeader = enableFluidHeader && ((isHomePage && fluidHeaderOnHomePage));
 
   // Add a useEffect to set the announcement bar height as a CSS variable
   useEffect(() => {
@@ -60,7 +70,8 @@ export function AnnouncementBar() {
 
   const isActive = (announcementBar?.length ?? 0) > 1;
 
-  if (!announcementBar) return null;
+  // Don't render the announcement bar if there's no content or if fluid header is active
+  if (!announcementBar || shouldHaveFluidHeader) return null;
 
   return (
     <section className="bg-background text-foreground" id="announcement-bar">

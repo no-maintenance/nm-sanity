@@ -17,6 +17,21 @@ export const IMAGE_FRAGMENT = defineQuery(`{
   crop,
 }`);
 
+export const MUX_VIDEO_FRAGMENT = defineQuery(`{
+  _type,
+  asset -> {
+    _id,
+    _type,
+    playbackId,
+    status,
+    thumbTime,
+    data {
+      aspect_ratio,
+      duration,
+    },
+  },
+}`);
+
 export const COLOR_FRAGMENT = defineQuery(`{
   alpha,
   hex,
@@ -218,6 +233,9 @@ export const HEADER_FRAGMENT = defineQuery(`{
   padding,
   showSeparatorLine,
   sticky,
+  enableFluidHeader,
+  fluidHeaderOnHomePage,
+  fluidHeaderTextColor,
   logoPosition,
   showHamburgerMenuOnDesktop,
 }`);

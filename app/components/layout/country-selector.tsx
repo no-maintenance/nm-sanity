@@ -12,27 +12,42 @@ import {useRootLoaderData} from '~/root';
 
 import {IconCheck} from '../icons/icon-check';
 import {IconChevron} from '../icons/icon-chevron';
-import {Button} from '../ui/button';
+import {Button, IconButton} from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
 } from '../ui/dropdow-menu';
-
-export function CountrySelector() {
+import {IconGlobe} from '../icons/icon-globe';
+export function CountrySelector({isIcon = false}: {isIcon?: boolean}) {
   const locales = getAllLocales();
   const {locale: currentLocale} = useRootLoaderData();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="flex w-full gap-2 sm:w-auto sm:max-w-fit"
-          variant="outline"
-        >
-          {currentLocale.label}
-          <IconChevron className="size-3" direction="down" />
-        </Button>
+        {isIcon ? (
+          <IconButton asChild>
+          <button>
+            <IconGlobe
+              className={'cursor-pointer'}
+              fill={'transparent'}
+              width={'100%'}
+              height={'100%'}
+              viewBox={'0 0 24 24'}
+            />
+          </button>
+        </IconButton>
+        ) : (
+                 <Button
+                 className="flex w-full gap-2 sm:w-auto sm:max-w-fit"
+                 variant="outline"
+               >
+                 {currentLocale.label}
+                 <IconChevron className="size-3" direction="down" />
+               </Button>
+        
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent id="country-selector">
         {locales.map((locale) => (

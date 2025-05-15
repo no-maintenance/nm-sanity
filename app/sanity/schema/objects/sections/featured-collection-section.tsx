@@ -17,6 +17,21 @@ export default defineField({
       to: [{type: 'collection'}],
     }),
     defineField({
+      name: 'displayType',
+      title: 'Display Type',
+      description: 'Choose how to display the products from this collection',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Grid', value: 'grid'},
+          {title: 'Swimlane', value: 'swimlane'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'grid',
+    }),
+    // Grid-specific settings
+    defineField({
       name: 'maxProducts',
       title: 'Maximum products to show',
       type: 'rangeSlider',
@@ -35,6 +50,7 @@ export default defineField({
         max: 5,
       },
       validation: (Rule) => Rule.required().min(1).max(5),
+      hidden: ({parent}) => parent?.displayType === 'swimlane',
     }),
     defineField({
       name: 'viewAll',
@@ -48,22 +64,24 @@ export default defineField({
     }),
   ],
   initialValue: {
+    displayType: 'grid',
     maxProducts: 6,
     desktopColumns: 3,
   },
   preview: {
     select: {
       collection: 'collection.store',
+      displayType: 'displayType',
       settings: 'settings',
     },
-    prepare({collection, settings}) {
+    prepare({collection, displayType, settings}) {
       return {
-        title: collection.title,
-        subtitle: 'Featured Collection',
+        title: collection?.title || 'No collection selected',
+        subtitle: `Featured Collection (${displayType === 'swimlane' ? 'Swimlane View' : 'Grid View'})`,
         media: () =>
           settings?.hide ? (
             <EyeOff />
-          ) : collection.imageUrl ? (
+          ) : collection?.imageUrl ? (
             <img alt={collection.title} src={collection.imageUrl} />
           ) : (
             <ImageIcon />

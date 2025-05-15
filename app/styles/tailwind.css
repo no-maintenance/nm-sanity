@@ -108,6 +108,16 @@
 }
 
 @layer utilities {
+
+  .hiddenScroll {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .swimlane {
+    @apply grid w-full snap-x snap-mandatory scroll-px-6 grid-flow-col justify-start overflow-x-scroll px-6 pb-4 gap-x-3 md:gap-x-6 xl:gap-x-8;
+  }
   .animated-underline {
     position: relative;
     padding-bottom: 0.25rem; /* equivalent to pb-1 */

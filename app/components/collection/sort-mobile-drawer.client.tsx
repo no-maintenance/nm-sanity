@@ -41,9 +41,9 @@ export function MobileDrawer({
   return (
     <div className="touch:block lg:hidden">
       <Drawer onOpenChange={setOpen} open={open}>
-        <DrawerTrigger className={cn(iconButtonClass, 'w-auto gap-2 px-2')}>
+        <DrawerTrigger className={'w-auto gap-2 px-2 flex'}>
           <IconFilters />
-          <span>{heading}</span>
+          <span className='font-medium'>{heading}</span>
         </DrawerTrigger>
         <DrawerContent
           className={cn([

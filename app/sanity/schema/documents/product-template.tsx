@@ -27,6 +27,13 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'showBackInStockForm',
+      title: 'Show Back in Stock Form?',
+      description: 'When enabled, shows a "Notify me when back in stock" form for sold out products',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'sections',
       type: 'productSections',
     }),

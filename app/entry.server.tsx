@@ -67,9 +67,20 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       "'self'",
       'localhost:*',
       'https://lh3.googleusercontent.com',
+      '*.mux.com',
       'data:',
     ],
-    scriptSrc: ["'self'", 'localhost:*', 'https://cdn.shopify.com'],
+    mediaSrc: [
+      "'self'",
+      '*.mux.com',
+      'blob:',
+    ],
+    scriptSrc: [
+      "'self'", 
+      'localhost:*', 
+      'https://cdn.shopify.com',
+      'https://www.gstatic.com',
+    ],
   };
 
   return defaultsCSPHeaders;

@@ -31,7 +31,7 @@ export function RelatedProducts(props: {
   );
 }
 
-function getRecommendedProducts(
+export function getRecommendedProducts(
   data: ProductRecommendationsQuery,
   maxProducts: number,
 ) {

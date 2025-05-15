@@ -23,6 +23,7 @@
   "dependencies": {
     "@formspark/use-formspark": "^0.1.42",
     "@hookform/resolvers": "^5.0.1",
+    "@mux/mux-player-react": "^3.4.0",
     "@portabletext/react": "^3.2.1",
     "@radix-ui/react-accordion": "^1.2.4",
     "@radix-ui/react-checkbox": "^1.1.5",
@@ -84,10 +85,12 @@
     "sanity": "^3.84.0",
     "sanity-plugin-internationalized-array": "^3.1.2",
     "sanity-plugin-media": "^3.0.2",
+    "sanity-plugin-mux-input": "^2.8.0",
     "sonner": "^2.0.3",
     "styled-components": "^6.1.17",
     "tailwind-merge": "^3.2.0",
     "tiny-invariant": "^1.3.3",
+    "usehooks-ts": "^3.1.1",
     "vaul": "^1.1.2",
     "zod": "^3.24.4"
   },

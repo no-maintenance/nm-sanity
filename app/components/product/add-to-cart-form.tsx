@@ -1,6 +1,6 @@
 import type {ProductVariantFragmentFragment} from 'types/shopify/storefrontapi.generated';
 
-import {useNavigation} from '@remix-run/react';
+import {useNavigation, useLoaderData} from '@remix-run/react';
 import {CartForm, OptimisticInput, ShopPayButton} from '@shopify/hydrogen';
 import {useEffect, useState} from 'react';
 import useIdle from 'react-use/esm/useIdle';
@@ -15,6 +15,7 @@ import {useRootLoaderData} from '~/root';
 import {QuantitySelector} from '../quantity-selector';
 import CleanString from '../sanity/clean-string';
 import {Button} from '../ui/button';
+import {SoldOutButton} from '../klaviyo/back-in-stock-button';
 
 export function AddToCartForm(props: {
   showQuantitySelector?: boolean | null;
@@ -29,6 +30,9 @@ export function AddToCartForm(props: {
   const [quantity, setQuantity] = useState(1);
   const cartPath = useLocalePath({path: '/cart'});
   const navigationIsLoading = navigation.state !== 'idle';
+  const { cmsProduct } = useLoaderData<any>();
+  const template = cmsProduct?.data?.product?.template || cmsProduct?.data?.defaultProductTemplate;
+  const showBackInStockForm = template?.showBackInStockForm;
 
   return (
     selectedVariant && (
@@ -92,24 +96,28 @@ export function AddToCartForm(props: {
                   }}
                   id="cart-line-item"
                 />
-                <Button
-                  variant={'outline'}
-                  className={cn([
-                    isOutOfStock && 'opacity-50',
-                    // Opacity does not change when is loading to prevent flickering
-                    'data-[loading="true"]:disabled:opacity-100',
-                  ])}
-                  data-loading={isLoading}
-                  data-sanity-edit-target
-                  disabled={isOutOfStock || isLoading}
-                  type="submit"
-                >
-                  {isOutOfStock ? (
-                    <CleanString value={themeContent?.product?.soldOut} />
-                  ) : (
-                    <CleanString value={themeContent?.product?.addToCart} />
-                  )}
-                </Button>
+                {isOutOfStock && showBackInStockForm ? (
+                  <SoldOutButton />
+                ) : (
+                  <Button
+                    variant={'outline'}
+                    className={cn([
+                      isOutOfStock && 'opacity-50',
+                      // Opacity does not change when is loading to prevent flickering
+                      'data-[loading="true"]:disabled:opacity-100',
+                    ])}
+                    data-loading={isLoading}
+                    data-sanity-edit-target
+                    disabled={isOutOfStock || isLoading}
+                    type="submit"
+                  >
+                    {isOutOfStock ? (
+                      <CleanString value={themeContent?.product?.soldOut} />
+                    ) : (
+                      <CleanString value={themeContent?.product?.addToCart} />
+                    )}
+                  </Button>
+                )}
                 {showShopPay && selectedVariant.id && (
                   <ShopPay
                     isLoading={isLoading}

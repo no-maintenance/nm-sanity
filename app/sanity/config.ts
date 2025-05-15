@@ -23,6 +23,7 @@ import {defaultDocumentNode, structure} from './structure';
 import {singletonActions, singletonsTypes} from './structure/singletons';
 import {assist} from '@sanity/assist';
 import { table } from '@sanity/table';
+import {muxInput} from 'sanity-plugin-mux-input';
 
 /**
  * Configuration options that will be passed in
@@ -58,6 +59,7 @@ export function defineSanityConfig(
     basePath: SANITY_STUDIO_URL,
     ...config,
     plugins: [
+      muxInput(),
       codeInput(),
       table(),
       structureTool({structure, defaultDocumentNode}),

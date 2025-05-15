@@ -29,6 +29,13 @@ export function AppLayout({ children = null }: LayoutProps) {
       storefrontToken={env.PUBLIC_STOREFRONT_API_TOKEN}
     >
       <Aside.Provider>
+        {/* Add global styles for fluid header */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          /* When fluid header is active, remove the default top padding on main */
+          body.has-fluid-header main {
+            padding-top: 0 !important;
+          }
+        `}} />
 
         <Motion>
           <ClientOnly fallback={null}>

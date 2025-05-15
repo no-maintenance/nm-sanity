@@ -74,8 +74,8 @@ export function Heading({
     display: 'font-normal text-display',
     heading: 'font-normal text-heading',
     mid: 'font-normal text-mid',
-    lead: 'font-normal text-lead',
-    copy: 'font-normal text-copy',
+    lead: 'font-normal text-lg',
+    copy: 'font-normal text-base',
     fine: 'text-fine subpixel-antialiased',
   };
 

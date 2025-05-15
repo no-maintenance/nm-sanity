@@ -82,7 +82,7 @@ function Badge(props: {cart?: CartApiQueryFragment; count: number}) {
     () => (
       <span className="relative">
         <span className="sr-only">{themeContent?.cart?.heading}</span>
-        <IconCart className="size-6" />
+        <IconCart className="md:size-6 size-5" />
         {count > 0 && (
           <div
             className={cx([

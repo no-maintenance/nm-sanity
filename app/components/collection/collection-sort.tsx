@@ -96,13 +96,12 @@ export function DesktopSort(props: {sectionSettings?: CmsSectionSettings}) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={cn(iconButtonClass, 'w-auto gap-1 px-2')}>
-        <IconSort strokeWidth={1} />
+      <DropdownMenuTrigger className={cn( 'w-auto gap-1 px-2')}>
         <span>
           <span className="px-2 font-normal">
             {themeContent?.collection?.sortBy}
           </span>
-          <span>{(activeItem || items[0]).label}</span>
+          <span className='font-medium'>{(activeItem || items[0]).label}</span>
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>

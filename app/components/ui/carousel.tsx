@@ -10,6 +10,7 @@ import {cn} from '~/lib/utils';
 
 import {IconChevron} from '../icons/icon-chevron';
 import {Button, IconButton} from './button';
+import { m } from 'motion/react';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -265,28 +266,33 @@ const CarouselPagination = React.forwardRef<
   const {api} = useCarousel();
   const {onDotButtonClick, scrollSnaps, selectedIndex} =
     useCarouselPagination(api);
+  
+  // Generate a unique ID for the layout animation
+  const layoutId = React.useMemo(() => `carousel-pagination-${crypto.randomUUID()}`, []);
 
   return (
-    <div className="mt-3 flex justify-center gap-2">
-      {scrollSnaps.map((_, index) => (
-        <Button
-          className={cn(className, 'p-1')}
-          key={crypto.randomUUID()}
-          onClick={() => onDotButtonClick(index)}
-          ref={ref}
-          size="primitive"
-          variant="primitive"
-          {...props}
-        >
-          <span
-            className={cn(
-              'aspect-square size-[10px] rounded-full border border-current opacity-85 transition-colors',
-              index === selectedIndex && 'bg-current',
-            )}
-          />
-        </Button>
-      ))}
-    </div>
+     <m.div
+     className="flex gap-2 flex-row justify-center relative">
+      {scrollSnaps.map((_, idx) => {
+       const i = idx;
+       return (
+         <m.button
+           initial={false}
+           animate={{
+             width: selectedIndex === i ? 45 : 20,
+             opacity: selectedIndex === i ? 1 : 0.5,
+           }}
+           className={`py-4 flex items-center`}
+           key={crypto.randomUUID()}
+           onClick={() => api && api.scrollTo(idx)}
+         >
+           <m.span
+             className={cn('w-full h-[1px] bg-black', selectedIndex === i ? 'bg-black' : 'bg-black/50')}
+           ></m.span>
+         </m.button>
+       );
+     })}
+   </m.div>
   );
 });
 CarouselPagination.displayName = 'CarouselDots';

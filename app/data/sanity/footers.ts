@@ -16,6 +16,7 @@ export const FOOTER_WITH_NAV_FRAGMENT = defineQuery(`{
   _type,
   "copyright": ${getIntValue('copyright')},
   "showNewsletter": showNewsletter,
+  "showCountrySelector": showCountrySelector,
   "menu": coalesce(
     menu[_key == $language][0].value[],
     menu[_key == $defaultLanguage][0].value[],

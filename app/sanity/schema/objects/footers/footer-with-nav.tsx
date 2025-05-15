@@ -21,6 +21,13 @@ export default defineField({
       initialValue: true,
     }),
     defineField({
+      name: 'showCountrySelector',
+      title: 'Show Country Selector',
+      type: 'boolean',
+      description: 'Toggle to show or hide the country selector',
+      initialValue: true,
+    }),
+    defineField({
       name: 'menu',
       title: 'Navigation Menu',
       type: 'internationalizedArrayHeaderNavigation',

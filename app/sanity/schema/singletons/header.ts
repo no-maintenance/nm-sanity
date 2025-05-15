@@ -73,6 +73,38 @@ export default defineType({
       initialValue: 'none',
     }),
     defineField({
+      name: 'enableFluidHeader',
+      title: 'Enable fluid header',
+      description: 'When enabled, the header will be transparent at the top of the page and become solid when scrolling',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'fluidHeaderOnHomePage',
+      title: 'Enable fluid header on home page',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: true,
+      hidden: ({parent}) => !parent?.enableFluidHeader,
+    }),
+    defineField({
+      name: 'fluidHeaderTextColor',
+      title: 'Fluid header text color (when transparent)',
+      description: 'Choose the text color to use when the header is transparent',
+      type: 'string',
+      group: 'settings',
+      options: {
+        list: [
+          {title: 'White', value: 'white'},
+          {title: 'Black', value: 'black'},
+          {title: 'Current foreground color', value: 'foreground'},
+        ],
+      },
+      initialValue: 'white',
+      hidden: ({parent}) => !parent?.enableFluidHeader,
+    }),
+    defineField({
       name: 'showSearchIcon',
       title: 'Show search icon',
       type: 'boolean',

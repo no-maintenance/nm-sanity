@@ -13,6 +13,20 @@ export default defineField({
       type: 'internationalizedArrayString',
     }),
     defineField({
+      name: 'displayType',
+      title: 'Display Type',
+      description: 'Choose how to display the related products',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Grid', value: 'grid'},
+          {title: 'Swimlane', value: 'swimlane'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'swimlane',
+    }),
+    defineField({
       name: 'maxProducts',
       title: 'Maximum products to show',
       type: 'rangeSlider',
@@ -31,6 +45,7 @@ export default defineField({
         max: 5,
       },
       validation: (Rule) => Rule.required().min(1).max(5),
+      hidden: ({parent}) => parent?.displayType === 'swimlane',
     }),
     defineField({
       type: 'sectionSettings',
@@ -38,16 +53,19 @@ export default defineField({
     }),
   ],
   initialValue: {
+    displayType: 'grid',
     maxProducts: 6,
     desktopColumns: 3,
   },
   preview: {
     select: {
+      displayType: 'displayType',
       settings: 'settings',
     },
-    prepare({settings}) {
+    prepare({displayType, settings}) {
       return {
         title: 'Related Products',
+        subtitle: `${displayType === 'swimlane' ? 'Swimlane View' : 'Grid View'}`,
         media: () => (settings?.hide ? <EyeOff /> : <IconCollectionTag />),
       };
     },
