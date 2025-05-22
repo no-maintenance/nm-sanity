@@ -18,7 +18,7 @@ export function ButtonBlock(props: ButtonBlockProps) {
           _key: props._key,
           _type: 'internalLink',
           anchor: props.anchor,
-          link: props.link,
+          link: props.link as any,
           name: null,
         }}
       >

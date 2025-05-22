@@ -219,7 +219,7 @@
   }
 
   h6 {
-    font-size: calc(var(--heading-base-size) * 0.375 * 1px);
+    font-size: calc(var(--heading-base-size) * 0.350 * 1px);
   }
 }
 

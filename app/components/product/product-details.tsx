@@ -1,4 +1,5 @@
 import type {PortableTextComponents} from '@portabletext/react';
+import type {PortableTextMarkComponentProps} from '@portabletext/react';
 
 import {PortableText} from '@portabletext/react';
 import {useMemo} from 'react';
@@ -8,8 +9,6 @@ import type {ShopifyAccordionBlockProps} from '../blocks/shopify-accordion-block
 import type {ShopifyDescriptionBlockProps} from '../blocks/shopify-description-block';
 import type {ShopifyTitleBlockProps} from '../blocks/shopify-title-block';
 import type {ProductModalBlockProps} from '../blocks/product-modal-block';
-import type {ExternalLinkAnnotationProps} from '../sanity/richtext/components/external-link-annotation';
-import type {InternalLinkAnnotationProps} from '../sanity/richtext/components/internal-link-annotation';
 import type {FeaturedProductSectionProps} from '../sections/featured-product-section';
 import type {ProductInformationSectionProps} from '../sections/product-information-section';
 import type {AddToCartButtonBlockProps} from './product-form';
@@ -28,23 +27,44 @@ export function ProductDetails({
 }: {
   data: FeaturedProductSectionProps | ProductInformationSectionProps;
 }) {
-  const Components = useMemo(
+  // Pre-process richtext to group adjacent productModal blocks
+  function groupModalBlocks(blocks: any[]) {
+    const result: any[] = [];
+    let i = 0;
+    while (i < blocks.length) {
+      if (blocks[i]._type === 'productModal') {
+        const modals = [];
+        let j = i;
+        while (j < blocks.length && blocks[j]._type === 'productModal') {
+          modals.push(blocks[j]);
+          j++;
+        }
+        result.push({
+          _type: 'modalGroup',
+          _key: `modalGroup-${i}`,
+          modals,
+        });
+        i = j;
+      } else {
+        result.push(blocks[i]);
+        i++;
+      }
+    }
+    return result;
+  }
+
+  // Default PortableText components (for recursion)
+  const defaultComponents: PortableTextComponents = useMemo(
     () => ({
       marks: {
-        externalLink: (props: {
-          children: React.ReactNode;
-          value: ExternalLinkAnnotationProps;
-        }) => {
+        externalLink: (props: PortableTextMarkComponentProps<any>) => {
           return (
             <ExternalLinkAnnotation {...props.value}>
               {props.children}
             </ExternalLinkAnnotation>
           );
         },
-        internalLink: (props: {
-          children: React.ReactNode;
-          value: InternalLinkAnnotationProps;
-        }) => {
+        internalLink: (props: PortableTextMarkComponentProps<any>) => {
           return (
             <InternalLinkAnnotation {...props.value}>
               {props.children}
@@ -71,17 +91,28 @@ export function ProductDetails({
         productModal: (props: {value: ProductModalBlockProps}) => (
           <ProductModalBlock value={props.value} />
         ),
+        // New modalGroup renderer
+        modalGroup: (props: {value: {modals: any[]}}) => (
+          <div className="flex w-full justify-between gap-4 mb-2">
+            {props.value.modals.map((modal, idx) => (
+              <ProductModalBlock key={modal._key || idx} value={modal} />
+            ))}
+          </div>
+        ),
       },
     }),
-    [],
+    []
   );
+
+  // Pre-process richtext before rendering
+  const processedRichtext = data.richtext ? groupModalBlocks(data.richtext) : [];
 
   return (
     <div className="container space-y-1 lg:max-w-none lg:px-0">
-      {data.richtext && (
+      {processedRichtext.length > 0 && (
         <PortableText
-          components={Components as PortableTextComponents}
-          value={data.richtext}
+          components={defaultComponents}
+          value={processedRichtext}
         />
       )}
     </div>

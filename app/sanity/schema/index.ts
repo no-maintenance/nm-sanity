@@ -67,6 +67,8 @@ import themeContent from './singletons/theme-content';
 import formBuilder from '~/sanity/plugins/form-builder/form-builder';
 import stickyTileSection from '~/sanity/schema/objects/sections/sticky-tile-section';
 import tile from '~/sanity/schema/objects/sections/tile';
+import sizeChart from '~/sanity/schema/documents/size-chart';
+import sizeChartTemplate from './documents/size-chart-template';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -80,6 +82,8 @@ const documents = [
   productVariant,
   font,
   storePolicy,
+  sizeChart,
+  sizeChartTemplate,
 ];
 const sections = [
   imageBannerSection,

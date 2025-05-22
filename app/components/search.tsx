@@ -342,7 +342,7 @@ function SearchResultsProductsGrid({
     }
   
     return (
-      <div className="predictive-search-results pb-gutter">
+      <div className="predictive-search-results pb-8 space-y-8">
         <div>
           {results.map(({type, items}) => (
             <PredictiveSearchResult
@@ -355,7 +355,7 @@ function SearchResultsProductsGrid({
           ))}
         </div>
         {searchTerm.current && (
-          <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`}>
+          <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`} >
             <Button className={'my-gutter'}>
               View all results for <q>{searchTerm.current}</q>
               &nbsp; →

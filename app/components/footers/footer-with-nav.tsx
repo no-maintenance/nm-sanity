@@ -1,10 +1,9 @@
 import type { FooterOfType, SectionDefaultProps } from 'types';
 import { Link } from '@remix-run/react';
 import { useColorsCssVars } from '~/hooks/use-colors-css-vars';
-import { CountrySelector } from '../layout/country-selector';
-import { SocialMediaButtons } from '../social-media';
-import { useState } from 'react';
+import { CountrySelector } from '~/components/layout/country-selector';
 import { NewsletterForm } from '~/components/klaviyo/newsletter';
+import { SanityInternalLink } from '~/components/sanity/link/sanity-internal-link';
 
 type FooterWithNavProps = FooterOfType<'footerWithNav'>;
 
@@ -16,26 +15,6 @@ export function FooterWithNav(
     selector: '#country-selector',
     settings: data.settings,
   });
-
-  const [email, setEmail] = useState('');
-  const [checked, setChecked] = useState(false);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(e.target.checked);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Newsletter submit logic would be implemented here
-    console.log('Newsletter submitted with email:', email, 'and privacy consent:', checked);
-    // Reset form after submission
-    setEmail('');
-    setChecked(false);
-  };
 
   return (
     <footer className="bg-white container ">
@@ -50,9 +29,11 @@ export function FooterWithNav(
                   {data.menu?.map((item: any, index: number) => (
                     <li key={index} className="text-sm">
                       {item._type === 'internalLink' && item.link?.slug?.current && (
-                        <Link to={`/${item.link.slug.current}`} className="hover:underline">
+                        <SanityInternalLink
+                          data={item}
+                        >
                           {item.name}
-                        </Link>
+                        </SanityInternalLink>
                       )}
                       {item._type === 'externalLink' && item.link && (
                         <a

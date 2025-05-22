@@ -1,13 +1,18 @@
-import {PortableText} from '@portabletext/react';
-import * as Dialog from '@radix-ui/react-dialog';
-import {useLoaderData} from '@remix-run/react';
-import React, {useState} from 'react';
+import { PortableText } from '@portabletext/react';
+import React, { useState } from 'react';
 
-import type {ProductModalBlockProps} from '~/components/blocks/product-modal-block';
-import type {loader} from '~/routes/($locale).products.$productHandle';
+import type { PortableTextBlock } from '@portabletext/types';
 
-import {cn} from '~/lib/utils';
-import TableNamespace from '~/components/ui/table';
+import { cn } from '~/lib/utils';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+} from '~/components/ui/dialog';
+import { portableTextMarks } from './portableTextMarks';
+import { useProduct } from '@shopify/hydrogen-react';
 
 // Define types for Sanity's table format
 interface TableRow {
@@ -16,117 +21,129 @@ interface TableRow {
   cells?: string[];
 }
 
-interface SanityTable {
-  _type?: string;
-  rows?: TableRow[];
-  [key: string]: any;
+interface SizeChartTableProps {
+  table: { rows?: TableRow[] };
 }
 
-export default function ProductModalBlock({value}: {value: ProductModalBlockProps}) {
-  const loaderData = useLoaderData<typeof loader>();
-  const [open, setOpen] = useState(false);
-  const {triggerLabel, modalTitle, content = []} = value;
-
-  // Extract product data from the loader context
-  const sizeChart = loaderData?.cmsProduct?.data?.product?.sizeChart;
-
-  // Process content to find any sizeChart references
-  const hasSizeChart = content.some((item) => item._type === 'reference' && item._ref && item._ref.includes('sizeChart'));
-
+function SizeChartTable({ table }: SizeChartTableProps) {
+  if (!table?.rows || table.rows.length === 0) return null;
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <button className="text-sm font-medium text-primary underline">
-          {triggerLabel}
-        </button>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] overflow-auto rounded-lg bg-white p-6 shadow-lg focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
-          <Dialog.Title className="text-xl font-bold mb-3">{modalTitle}</Dialog.Title>
-          
-          <div className="space-y-4 mb-4">
-            {content && content.length > 0 && (
-              <PortableText 
-                value={content}
-                components={{
-                  types: {
-                    reference: ({value: referenceValue}) => {
-                      // Check if this is a size chart reference
-                      if (!referenceValue?._ref?.includes('sizeChart') || !sizeChart) {
-                        return null;
-                      }
-                      
-                      // Display the size chart from the product data
-                      return <SizeChartTable sizeChart={sizeChart as SanityTable} />;
-                    },
-                  },
-                }}
-              />
-            )}
-            
-            {!hasSizeChart && sizeChart && (
-              <SizeChartTable sizeChart={sizeChart as SanityTable} />
-            )}
-          </div>
-
-          <Dialog.Close asChild>
-            <button
-              className="absolute right-4 top-4 inline-flex h-6 w-6 appearance-none items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none"
-              aria-label="Close"
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white text-base">
+        <thead>
+          <tr>
+            {table.rows[0]?.cells?.map((cell: string, i: number) => (
+              <th
+                key={i}
+                className="px-4 py-3 font-semibold text-black text-start border-b whitespace-nowrap"
               >
-                <path
-                  d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+                {cell}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.slice(1).map((row: TableRow, i: number) => (
+            <tr key={row._key || i}>
+              {row.cells?.map((cell: string, j: number) => (
+                <td
+                  key={j}
+                  className="px-4 py-3 border-bwhitespace-nowrap text-black"
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
-// Separate component for rendering the size chart table
-function SizeChartTable({sizeChart}: {sizeChart: SanityTable}) {
-  if (!sizeChart?.rows || sizeChart.rows.length === 0) {
-    return <p>Size chart not available</p>;
-  }
+function isSizeChartContent(content: unknown): content is {
+  table?: { rows?: TableRow[] };
+  description?: any;
+  image?: { asset?: { url?: string }, alt?: string };
+} {
+  return (
+    !!content &&
+    typeof content === 'object' &&
+    !Array.isArray(content) &&
+    ('table' in content || 'description' in content || 'image' in content)
+  );
+}
+
+export interface ProductModalBlockProps {
+  value: {
+    triggerLabel: string;
+    modalTitle: string;
+    content: PortableTextBlock[];
+  };
+  productSizeChart?: {
+    table?: { rows?: TableRow[] };
+    description?: any;
+    image?: { asset?: { url?: string }, alt?: string };
+  };
+}
+
+export default function ProductModalBlock(props: ProductModalBlockProps) {
+  const { value, productSizeChart } = props;
+  const [open, setOpen] = useState(false);
+  const { triggerLabel, modalTitle, content } = value;
+  const {product} = useProduct();
+  // Use the product's sizeChart if productSizeChart is not provided
+  const sizeChart = productSizeChart || (product && 'sizeChart' in product ? (product as any).sizeChart : undefined);
+
+  // Custom Portable Text component to inject the product's size chart
+  const portableTextComponents = {
+    types: {
+      sizeChart: () =>
+        sizeChart ? (
+          <>
+            {sizeChart.table && <SizeChartTable table={sizeChart.table} />}
+            {/* {sizeChart.description && (
+              <div className="mt-4 prose max-w-none">
+                <PortableText value={sizeChart.description} />
+              </div>
+            )}
+            {sizeChart.image?.asset?.url && (
+              <img
+                src={sizeChart.image.asset.url}
+                alt={sizeChart.image.alt || ''}
+                className="mt-4  max-h-64 object-contain mx-auto"
+              />
+            )} */}
+          </>
+        ) : (
+          <div className="text-sm text-gray-500">No size chart available for this product.</div>
+        ),
+    },
+    marks: {
+      ...portableTextMarks,
+    },
+  };
 
   return (
-    <div className="mt-4 overflow-x-auto">
-      <TableNamespace.Table className="min-w-full border-collapse">
-        <TableNamespace.Header>
-          <TableNamespace.Row>
-            {sizeChart.rows[0].cells?.map((cell: string, i: number) => (
-              <TableNamespace.Column key={i} className="font-bold bg-gray-100">
-                {cell}
-              </TableNamespace.Column>
-            ))}
-          </TableNamespace.Row>
-        </TableNamespace.Header>
-        <TableNamespace.Body>
-          {sizeChart.rows.slice(1).map((row: TableRow, i: number) => (
-            <TableNamespace.Row key={i || `row-${i}`} className={cn(i % 2 === 0 ? 'bg-white' : 'bg-gray-50')}>
-              {row.cells?.map((cell: string, j: number) => (
-                <TableNamespace.Cell key={j}>
-                  {cell}
-                </TableNamespace.Cell>
-              ))}
-            </TableNamespace.Row>
-          ))}
-        </TableNamespace.Body>
-      </TableNamespace.Table>
-    </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button className="text-sm font-medium text-primary underline">
+          {triggerLabel}
+        </button>
+      </DialogTrigger>
+      <DialogContent variant="wide" className="max-w-2xl w-full p-6 pt-4 ">
+        <div className="flex justify-between items-center ">
+          {modalTitle && <DialogTitle className="text-lg font-medium mb-4">{modalTitle}</DialogTitle>}
+          <DialogClose asChild>
+            <button aria-label="Close" className="text-xl" />
+          </DialogClose>
+        </div>
+        {content && (
+          <div className='prose max-w-none  [&_p]:mt-0'>
+            <PortableText value={content} components={portableTextComponents} />
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

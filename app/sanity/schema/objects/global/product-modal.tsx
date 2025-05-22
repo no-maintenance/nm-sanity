@@ -1,5 +1,6 @@
 import {FileText} from 'lucide-react';
 import {defineField, defineType} from 'sanity';
+import StaticSizeChartBlock from '~/sanity/components/static-size-chart';
 
 export default defineType({
   name: 'productModal',
@@ -18,13 +19,12 @@ export default defineType({
       name: 'modalTitle',
       title: 'Modal Title',
       description: 'Title shown at the top of the modal',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
+      type: 'string'
     }),
     defineField({
       name: 'content',
       title: 'Modal Content',
-      description: 'Content for the modal body',
+      description: 'Content for the modal body. ',
       type: 'array',
       of: [
         {
@@ -33,10 +33,32 @@ export default defineType({
         {
           name: 'sizeChart',
           title: 'Size Chart',
-          type: 'reference',
-          to: [{type: 'product'}],
-          options: {
-            filter: 'defined(sizeChart)',
+          type: 'object',
+          readOnly: true,
+          components: {
+            input: StaticSizeChartBlock
+          },
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              readOnly: true,
+              initialValue: 'Size Chart',
+              hidden: true,
+            })
+          ],
+          description: 'Displays the size chart associated with the current product',
+          preview: {
+            select: {
+              title: 'title',
+            },
+            prepare({title}) {
+              return {
+                title: title || 'Size Chart',
+                media: FileText,
+              };
+            },
           },
         },
       ],

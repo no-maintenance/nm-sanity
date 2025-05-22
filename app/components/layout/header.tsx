@@ -224,8 +224,8 @@ function HeaderWrapper(props: {
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',
     // Position: fixed when fluid header, sticky when normal header
-    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-50' : 
-      (sticky !== 'none' ? 'sticky top-0 z-50' : ''),
+    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-40' : 
+      (sticky !== 'none' ? 'sticky top-0 z-40' : ''),
     
     // Apply fluid header styles
     shouldHaveFluidHeader ? (
@@ -432,7 +432,7 @@ function PredictiveSearchItem({
       {open && (
         <div
           className={
-            'fixed w-full left-0 bg-background z-50 px-0 lg:px-gutter shadow-sm'
+            'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter shadow-sm'
           }
           style={{
             // Attach directly to the bottom of the header with no gap

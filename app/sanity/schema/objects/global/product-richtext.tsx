@@ -175,6 +175,7 @@ export default defineField({
             list: [
               { title: 'Product Description', value: 'description' },
               { title: 'Shipping Information', value: 'shipping' },
+              { title: 'Details', value: 'details' },
               { title: 'Custom Content', value: 'custom' },
             ],
             layout: 'radio',

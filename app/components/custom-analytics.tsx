@@ -1,37 +1,28 @@
-import {useAnalytics} from '@shopify/hydrogen';
-import {useEffect} from 'react';
-
+import { KlaviyoPixel } from '~/components/klaviyo/klaviyo-pixel';
+import { useGoogleAnalytics } from '~/hooks/analytics/use-google-analytics';
+import { usePinterestAnalytics } from '~/hooks/analytics/use-pinterest-analytics';
+import { useFacebookAnalytics } from '~/hooks/analytics/use-facebook-analytics';
 import {useIsDev} from '~/hooks/use-is-dev';
 
 export function CustomAnalytics() {
-  const {subscribe} = useAnalytics();
   const isDev = useIsDev();
 
-  useEffect(() => {
-    if (!isDev) return;
+  if (isDev) {
+    return null;
+  }
+  return (
+    <ProductionAnalytics />
+  );
+}
 
-    // Standard events
-    subscribe('page_viewed', (data) => {
-      // eslint-disable-next-line no-console
-      console.log('CustomAnalytics - Page viewed:', data);
-    });
-    subscribe('product_viewed', (data) => {
-      // eslint-disable-next-line no-console
-      console.log('CustomAnalytics - Product viewed:', data);
-    });
-    subscribe('collection_viewed', (data) => {
-      // eslint-disable-next-line no-console
-      console.log('CustomAnalytics - Collection viewed:', data);
-    });
-    subscribe('cart_viewed', (data) => {
-      // eslint-disable-next-line no-console
-      console.log('CustomAnalytics - Cart viewed:', data);
-    });
-    subscribe('cart_updated', (data) => {
-      // eslint-disable-next-line no-console
-      console.log('CustomAnalytics - Cart updated:', data);
-    });
-  }, [subscribe, isDev]);
+function ProductionAnalytics() {
+  useGoogleAnalytics({id: process.env.GOOGLE_ANALYTICS_ID || ''});
+  useFacebookAnalytics({id: process.env.FACEBOOK_PIXEL_ID || ''});
+  usePinterestAnalytics({id: process.env.PINTEREST_PIXEL_ID || ''});
 
-  return null;
+  return (
+    <>
+      <KlaviyoPixel id={process.env.KLAVIYO_PIXEL_ID || ''} />
+    </>
+  );
 }

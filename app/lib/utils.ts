@@ -226,3 +226,9 @@ export function generateSanityImageUrl({
 
   return imageUrl;
 }
+
+
+export const CONV_ADDED_TO_CART = 1;
+export function getAddToCartValue(v: number) {
+  return CONV_ADDED_TO_CART * v;
+}

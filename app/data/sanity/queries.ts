@@ -107,7 +107,14 @@ export const PRODUCT_QUERY = defineQuery(`{
     store {
       gid,
     },
-    sizeChart,
+    sizeChart->{
+      table,
+      description,
+      image {
+        asset->{url},
+        alt
+      }
+    },
     template -> {
       showBackInStockForm,
       sections[] {

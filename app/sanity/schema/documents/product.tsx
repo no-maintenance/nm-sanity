@@ -52,7 +52,9 @@ export default defineType({
     defineField({
       name: 'sizeChart',
       title: 'Size Chart',
-      type: 'table',
+      type: 'reference',
+      to: [{type: 'sizeChart'}],
+      group: 'editorial',
     }),
     // Title (proxy)
     defineField({

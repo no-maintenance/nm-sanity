@@ -98,6 +98,14 @@ export default defineField({
       type: 'text',
       rows: 5,
     }),
+    // Size Chart Reference
+    defineField({
+      name: 'sizeChart',
+      title: 'Size Chart',
+      type: 'reference',
+      to: [{ type: 'sizeChart' }],
+      description: 'Reference a reusable size chart document for this product.',
+    }),
     // Product Type
     defineField({
       fieldset: 'organization',

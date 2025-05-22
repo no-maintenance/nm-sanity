@@ -17,7 +17,7 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
   const {product} = useProduct();
   const variantsContextData = useProductVariants();
   const showQuantitySelector = props.quantitySelector;
-  const containerClass = 'grid gap-4 mt-2';
+  const containerClass = 'grid gap-4 mt-2 mb-4';
   if (!product) return null;
 
   if (variantsContextData?.variants) {

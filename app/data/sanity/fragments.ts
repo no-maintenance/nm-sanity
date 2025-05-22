@@ -273,6 +273,15 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
     ...,
     link -> ${LINK_REFERENCE_FRAGMENT},
   },
+  _type == 'sizeChart' => {
+    _type,
+    table,
+    description,
+    image {
+      asset->{url},
+      alt
+    }
+  },
   _type == 'block' => {
     ...,
     markDefs[] {

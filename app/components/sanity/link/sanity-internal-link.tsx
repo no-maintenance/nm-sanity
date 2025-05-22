@@ -36,6 +36,10 @@ type SanityInternalLinkDataProps = {
     | {
         documentType: 'product';
         slug: Slug;
+      }
+    | {
+        documentType: 'storePolicy';
+        slug: Slug;
       };
   name: null | string;
 };
@@ -66,9 +70,11 @@ export function SanityInternalLink(props: {
       case 'home':
         return locale.pathPrefix || '/';
       case 'page':
-        return `${locale.pathPrefix}/${slug}`;
+        return `${locale.pathPrefix}/pages/${slug}`;
       case 'product':
         return `${locale.pathPrefix}/products/${slug}`;
+      case 'storePolicy':
+        return `${locale.pathPrefix}/policies/${slug}`;
       default:
         return '';
     }
@@ -80,7 +86,7 @@ export function SanityInternalLink(props: {
   // Todo: add Navlink support
   return (
     <Link
-      className={cn([
+      className={cn([documentType,
         'focus-visible:ring-ring focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         className,
       ])}

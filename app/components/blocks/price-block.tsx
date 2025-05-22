@@ -72,7 +72,7 @@ export function ProductBadges({
   const badgesPosition = stegaClean(data?.settings?.badgesPosition);
 
   const badgeClass = cn(
-    'bg-background text-foreground hover:bg-background rounded-(--badges-corner-radius)',
+    'm-1 bg-background text-foreground hover:bg-background rounded-(--badges-corner-radius)',
   );
 
   return (

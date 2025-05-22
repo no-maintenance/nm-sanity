@@ -76,6 +76,7 @@ export default defineConfig({
        * @see https://vitejs.dev/config/dep-optimization-options
        */
       include: [
+        'react-ga4',
         'react-fast-compare',
         'react-compiler-runtime',
         '@sanity/image-url',

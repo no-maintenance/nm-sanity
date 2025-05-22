@@ -89,7 +89,10 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
     collectionListPromise,
     featuredCollectionPromise,
     featuredProductPromise,
-    product,
+    product: {
+      ...product,
+      sizeChart: cmsProduct?.data?.product?.sizeChart,
+    },
     relatedProductsPromise,
     seo,
     variants,
