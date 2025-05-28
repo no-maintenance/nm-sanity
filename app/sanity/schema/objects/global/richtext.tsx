@@ -96,8 +96,61 @@ export default defineField({
       type: 'button',
     }),
     defineArrayMember({
-      name: 'formBuilder',
-      type: 'formBuilder',
+      name: 'form',
+      title: 'Form',
+      type: 'object',
+      icon: () => (
+        <SquareMousePointer
+          aria-label="Form icon"
+          size="1em"
+          strokeWidth={1}
+        />
+      ),
+      fields: [
+        defineField({
+          name: 'formType',
+          title: 'Form Type',
+          description: 'Select which type of form to display in the content',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Newsletter', value: 'newsletter'},
+              {title: 'Contact', value: 'contact'},
+              {title: 'Appointment', value: 'appointment'},
+            ],
+            layout: 'radio',
+          },
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'title',
+          title: 'Form Title',
+          description: 'Optional title to display above the form',
+          type: 'string',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Form Description',
+          description: 'Optional description text to display below the title',
+          type: 'text',
+          rows: 2,
+        }),
+      ],
+      preview: {
+        select: {
+          formType: 'formType',
+          title: 'title',
+        },
+        prepare({formType, title}) {
+          const formTypeTitle = formType 
+            ? formType.charAt(0).toUpperCase() + formType.slice(1)
+            : 'Form';
+          return {
+            title: title || `${formTypeTitle} Form`,
+            subtitle: `Form Type: ${formTypeTitle}`,
+          };
+        },
+      },
     }),
   ],
 });

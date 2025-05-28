@@ -1,8 +1,8 @@
 import { FormInput } from 'lucide-react'
 import { defineType } from 'sanity'
 export default defineType({
-  name: 'formBuilder',
-  title: 'Form Builder',
+  name: 'form',
+  title: 'Form',
   icon: FormInput,
   type: 'object',
   fields: [
@@ -10,7 +10,7 @@ export default defineType({
       name: 'formFields',
       title: 'Form Fields',
       type: 'array',
-      of: [{type: 'formFields'}],
+      of: [{type: 'formField'}],
     },
     {
       name: 'formId',

@@ -108,6 +108,16 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     handle
     vendor
+    media(first: 2) {
+      nodes {
+        ... on MediaImage {
+          id
+          image {
+            ...ProductCardImageFragment
+          }
+        }
+      }
+    }
     variants(first: 1) {
       nodes {
         id

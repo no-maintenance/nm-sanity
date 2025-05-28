@@ -1,3 +1,4 @@
+'use client';
 import { useFormspark } from '@formspark/use-formspark';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,9 +19,9 @@ const InputField = ({ type, id, fieldName, required, placeholder, register }) =>
   </div>
 );
 
-export const FormBuilderBlock = ({ formFields, formId }) => {
+export const SanityForm = ({ formFields, uid }) => {
   const [submitted, setSubmitted] = useState(false);
-  const [submit, submitting] = useFormspark({ formId: formId });
+  const [submit, submitting] = useFormspark({ formId: 'rM5ddiWWH' });
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {

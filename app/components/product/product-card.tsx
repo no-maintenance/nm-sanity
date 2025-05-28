@@ -3,6 +3,7 @@ import type {ProductCardFragment} from 'types/shopify/storefrontapi.generated';
 import {Link} from '@remix-run/react';
 import {stegaClean} from '@sanity/client/stega';
 import {flattenConnection} from '@shopify/hydrogen';
+import {useState} from 'react';
 
 import {useLocalePath} from '~/hooks/use-locale-path';
 import {cn} from '~/lib/utils';
@@ -34,6 +35,19 @@ export function ProductCard(props: {
     ? flattenConnection(product?.variants)
     : null;
   const firstVariant = variants?.[0];
+  
+  // Extract images from media
+  const mediaImages = product?.media?.nodes
+    ?.map(node => node.image)
+    ?.filter(Boolean) || [];
+  
+  // Use media images if available, fallback to variant image
+  const primaryImage = mediaImages[0] || firstVariant?.image;
+  const secondaryImage = mediaImages[1];
+  
+  const [isHovered, setIsHovered] = useState(false);
+  const currentImage = isHovered && secondaryImage ? secondaryImage : primaryImage;
+  
   const sizes = [
     '(min-width: 1024px)',
     columns?.desktop ? `${100 / columns.desktop}vw` : '33vw',
@@ -87,12 +101,16 @@ export function ProductCard(props: {
     <>
       {!skeleton && product && firstVariant ? (
         <Link prefetch="intent" to={path}>
-          <Card className={cardClass}>
-            {firstVariant?.image && (
+          <Card 
+            className={cn(cardClass, 'group/card')}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {currentImage && (
               <CardMedia
                 aspectRatio={aspectRatio}
                 className={cn(
-                  'relative',
+                  'relative overflow-hidden',
                   style === 'standard' &&
                     'rounded-(--product-card-border-corner-radius)',
                   style === 'standard' &&
@@ -106,14 +124,30 @@ export function ProductCard(props: {
                     aspectRatio === 'square' && '1/1',
                     aspectRatio === 'video' && '16/9',
                     aspectRatio === 'auto' &&
-                      `${firstVariant.image.width}/${firstVariant.image.height}`,
+                      `${currentImage.width}/${currentImage.height}`,
                   )}
                   crop="center"
-                  data={firstVariant.image}
+                  data={currentImage}
                   showBorder={false}
                   showShadow={false}
                   sizes={sizes}
                 />
+                {secondaryImage && (
+                  <ShopifyImage
+                    aspectRatio={cn(
+                      aspectRatio === 'square' && '1/1',
+                      aspectRatio === 'video' && '16/9',
+                      aspectRatio === 'auto' &&
+                        `${secondaryImage.width}/${secondaryImage.height}`,
+                    )}
+                    crop="center"
+                    data={secondaryImage}
+                    showBorder={false}
+                    showShadow={false}
+                    sizes={sizes}
+                    className="absolute inset-0 opacity-0 group-hover/card:opacity-100"
+                  />
+                )}
                 <ProductBadges
                   layout="card"
                   variants={product?.variants.nodes}

@@ -1,7 +1,7 @@
 import { defineType } from "sanity";
 
 export default defineType({
-    name: 'formFields',
+    name: 'formField',
     title: 'Form Fields',
     type: 'object',
     fields: [

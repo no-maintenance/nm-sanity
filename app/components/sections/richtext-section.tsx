@@ -15,7 +15,7 @@ import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-lin
 import {ImageBlock} from '../sanity/richtext/components/image-block';
 import {InternalLinkAnnotation} from '../sanity/richtext/components/internal-link-annotation';
 import {RichtextLayout} from '../sanity/richtext/rich-text-layout';
-import {FormBuilderBlock} from '~/components/sanity/richtext/components/form-builder-block';
+import {FormBlock} from '~/components/sanity/richtext/components/form-block';
 import {ShopifyAccordionBlock} from '../blocks/shopify-accordion-block';
 
 type RichtextSectionProps = SectionOfType<'richtextSection'>;
@@ -57,8 +57,8 @@ export function RichtextSection(
         image: (props: {value: ImageBlockProps}) => (
           <ImageBlock containerMaxWidth={containerMaxWidth} {...props.value} />
         ),
-        formBuilder: (props: {value: any}) => (
-          <FormBuilderBlock {...props.value} />
+        form: (props: {value: {formType: 'newsletter' | 'contact' | 'appointment'; title?: string; description?: string}}) => (
+          <FormBlock {...props.value} />
         ),
         shopifyAccordion: (props: {value: ShopifyAccordionBlockProps}) => (
           <ShopifyAccordionBlock {...props.value} />

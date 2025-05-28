@@ -92,7 +92,7 @@ export function InputWrapper({
 export const INPUT_STYLE_CLASSES = 'bg-transparent w-full p-2 pl-0 appearance-none border-0 border-b leading-tight placeholder:text-foreground/50 focus:border-0 focus:border-b-0 focus:pl-2 focus:placeholder:opacity-0 focus:rounded focus:shadow-error';
 export const getInputStyleClasses = (isError?: string | null) => {
   return `${INPUT_STYLE_CLASSES} ${
-    isError ? 'border-red-500' : 'border-foreground'
+    isError ? 'border-destructive' : 'border-foreground'
   }`;
 };
 

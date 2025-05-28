@@ -1,4 +1,3 @@
-import formFields from '~/sanity/plugins/form-builder/form-fields';
 import colorPicker from '../plugins/color-picker';
 import rangeSlider from '../plugins/range-slider';
 import blogPost from './documents/blog-post';
@@ -64,11 +63,12 @@ import header from './singletons/header';
 import home from './singletons/home';
 import settings from './singletons/settings';
 import themeContent from './singletons/theme-content';
-import formBuilder from '~/sanity/plugins/form-builder/form-builder';
 import stickyTileSection from '~/sanity/schema/objects/sections/sticky-tile-section';
 import tile from '~/sanity/schema/objects/sections/tile';
 import sizeChart from '~/sanity/schema/documents/size-chart';
 import sizeChartTemplate from './documents/size-chart-template';
+import form from './documents/form';
+import formField from './singletons/form-fields';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -84,6 +84,7 @@ const documents = [
   storePolicy,
   sizeChart,
   sizeChartTemplate,
+  form,
 ];
 const sections = [
   imageBannerSection,
@@ -136,10 +137,9 @@ const objects = [
   shopifyProductVariant,
   shopifyCollection,
   shopifyCollectionRule,
-  formBuilder,
-  formFields,
   productModal,
-  tile
+  tile,
+  formField,
 ];
 
 export const schemaTypes = [

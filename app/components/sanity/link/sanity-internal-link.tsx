@@ -70,7 +70,7 @@ export function SanityInternalLink(props: {
       case 'home':
         return locale.pathPrefix || '/';
       case 'page':
-        return `${locale.pathPrefix}/pages/${slug}`;
+        return `${locale.pathPrefix}/${slug}`;
       case 'product':
         return `${locale.pathPrefix}/products/${slug}`;
       case 'storePolicy':

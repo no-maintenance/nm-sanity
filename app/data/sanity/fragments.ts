@@ -273,6 +273,12 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
     ...,
     link -> ${LINK_REFERENCE_FRAGMENT},
   },
+  _type == 'form' => {
+    _type,
+    formType,
+    title,
+    description,
+  },
   _type == 'sizeChart' => {
     _type,
     table,
@@ -289,5 +295,5 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
       _type == 'internalLink' => ${INTERNAL_LINK_FRAGMENT},
       _type == 'externalLink' => ${EXTERNAL_LINK_FRAGMENT},
     }
-  }
+  },
 }`);
