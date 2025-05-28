@@ -17,6 +17,7 @@ import footerWithNav from './objects/footers/footer-with-nav';
 import announcementBar from './objects/global/announcement-bar';
 import aspectRatios from './objects/global/aspect-ratios';
 import bannerRichtext from './objects/global/banner-richtext';
+import columnContent from './objects/global/columnContent';
 import contentAlignment from './objects/global/content-alignment';
 import contentPosition from './objects/global/content-position';
 import footersList from './objects/global/footers-list';
@@ -107,6 +108,7 @@ const objects = [
   contentPosition,
   contentAlignment,
   richtext,
+  columnContent,
   aspectRatios,
   internalLink,
   externalLink,

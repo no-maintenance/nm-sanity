@@ -96,9 +96,6 @@ export function ProductCard(props: {
         ? 'justify-end'
         : 'justify-start',
   );
-  if (firstVariant?.compareAtPrice) {
-    console.log(firstVariant);
-  }
   return (
     <>
       {!skeleton && product && firstVariant ? (

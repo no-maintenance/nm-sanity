@@ -39,7 +39,6 @@ import type {
     const [activeMediaId, setActiveMediaId] = useState<null | string>(null);
     const selectedImage =
       medias.find((media) => media?.id === activeMediaId) || medias[0];
-    console.log('simple gallery');
     if (!selectedImage) return null;
   
     return (

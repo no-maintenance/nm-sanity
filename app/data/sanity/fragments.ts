@@ -266,6 +266,29 @@ export const FONT_FRAGMENT = defineQuery(`{
   lineHeight,
 }`);
 
+export const COLUMN_RICHTEXT_FRAGMENT = defineQuery(`{
+  ...,
+  _type == 'image' => ${IMAGE_FRAGMENT},
+  _type == 'button' => {
+    ...,
+    link -> ${LINK_REFERENCE_FRAGMENT},
+  },
+  _type == 'form' => {
+    _type,
+    formType,
+    title,
+    description,
+  },
+  _type == 'block' => {
+    ...,
+    markDefs[] {
+      ...,
+      _type == 'internalLink' => ${INTERNAL_LINK_FRAGMENT},
+      _type == 'externalLink' => ${EXTERNAL_LINK_FRAGMENT},
+    }
+  },
+}`);
+
 export const RICHTEXT_FRAGMENT = defineQuery(`{
   ...,
   _type == 'image' => ${IMAGE_FRAGMENT},
@@ -278,6 +301,84 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
     formType,
     title,
     description,
+  },
+  _type == 'carousel' => {
+    _type,
+    slides[] {
+      _key,
+      image ${IMAGE_FRAGMENT},
+    },
+    slidesPerViewDesktop,
+    pagination,
+    arrows,
+  },
+  _type == 'twoColumnBlock' => {
+    _type,
+    layout,
+    verticalAlignment,
+    gap,
+    leftColumn {
+      contentType,
+      contentType == 'richtext' => {
+        richtext[] ${COLUMN_RICHTEXT_FRAGMENT}
+      },
+      contentType == 'image' => {
+        image ${IMAGE_FRAGMENT},
+      },
+      contentType == 'carousel' => {
+        carousel {
+          slides[] {
+            _key,
+            image ${IMAGE_FRAGMENT},
+          },
+          slidesPerViewDesktop,
+        }
+      },
+      contentType == 'form' => {
+        form {
+          formType,
+          title,
+          description,
+        }
+      },
+      contentType == 'buttons' => {
+        buttons[] {
+          ...,
+          link -> ${LINK_REFERENCE_FRAGMENT},
+        }
+      },
+    },
+    rightColumn {
+      contentType,
+      contentType == 'richtext' => {
+        richtext[] ${COLUMN_RICHTEXT_FRAGMENT}
+      },
+      contentType == 'image' => {
+        image ${IMAGE_FRAGMENT},
+      },
+      contentType == 'carousel' => {
+        carousel {
+          slides[] {
+            _key,
+            image ${IMAGE_FRAGMENT},
+          },
+          slidesPerViewDesktop,
+        }
+      },
+      contentType == 'form' => {
+        form {
+          formType,
+          title,
+          description,
+        }
+      },
+      contentType == 'buttons' => {
+        buttons[] {
+          ...,
+          link -> ${LINK_REFERENCE_FRAGMENT},
+        }
+      },
+    },
   },
   _type == 'sizeChart' => {
     _type,

@@ -40,6 +40,10 @@
       height: 0;
     }
   }
+
+  --typography-body: #374151;
+  --typography-headings: #111827;
+  --typography-links: #2563eb;
 }
 
 @theme inline {
@@ -258,3 +262,34 @@
 
 @custom-variant touch (@media (pointer: coarse));
 @custom-variant notouch (@media (hover: hover));
+
+@layer components {
+  .prose {
+    --tw-prose-body: var(--typography-body);
+    --tw-prose-headings: var(--typography-headings);
+    --tw-prose-links: var(--typography-links);
+  }
+  
+  .prose h1 {
+    font-size: inherit;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+  
+  .prose h2 {
+    font-size: inherit;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  
+  .prose p {
+    font-size: inherit;
+    line-height: 1.75;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+}

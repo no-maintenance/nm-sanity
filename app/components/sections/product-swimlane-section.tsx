@@ -53,7 +53,6 @@ type ProductSwimlaneSectionProps = SectionOfType<'productSwimlaneSection'> & {
 export function ProductSwimlaneSection(
   props: SectionDefaultProps & {data: ProductSwimlaneSectionProps},
 ) {
-  console.log('ProductSwimlaneSection', props);
   const {data} = props;
   const {themeContent} = useSanityThemeContent();
   
@@ -179,7 +178,6 @@ function CollectionProductSwimlane({data}: {data: ProductSwimlaneSectionProps}) 
         {(collectionData) => {
           // Find the matching collection from the resolved data
           let collection = null;
-          console.log('Resolved collection data:', collectionData);
           
           // Handle different promise structures based on which promise was used
           if (Array.isArray(collectionData)) {
