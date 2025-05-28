@@ -79,6 +79,8 @@ export function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   // State for search open
   const [searchOpen, setSearchOpen] = useState(false);
+  // State for cart drawer
+  const [cartOpen, setCartOpen] = useState(false);
   
   // Function to close mobile navigation
   const closeMobileNav = useCallback(() => {
@@ -86,6 +88,24 @@ export function Header() {
       setMobileNavOpen(false);
     }
   }, [mobileNavOpen]);
+
+  // Handle mobile navigation state changes
+  const handleMobileNavOpenChange = useCallback((open: boolean) => {
+    setMobileNavOpen(open);
+    if (open) {
+      // Close cart when mobile nav opens
+      setCartOpen(false);
+    }
+  }, []);
+
+  // Handle cart state changes
+  const handleCartOpenChange = useCallback((open: boolean) => {
+    setCartOpen(open);
+    if (open) {
+      // Close mobile nav when cart opens
+      setMobileNavOpen(false);
+    }
+  }, []);
 
   const NavigationComponent = (
     <>
@@ -105,7 +125,7 @@ export function Header() {
                 data={header?.menu} 
                 headerRef={headerRef} 
                 open={mobileNavOpen}
-                setOpen={setMobileNavOpen}
+                setOpen={handleMobileNavOpenChange}
               />
             </Suspense>
           )}
@@ -140,12 +160,15 @@ export function Header() {
         )}
       </div>
       <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
-      <CartDrawer />
+      <CartDrawer 
+        cartOpen={cartOpen}
+        onCartOpenChange={handleCartOpenChange}
+      />
     </div>
   );
 
   return (
-    <ForwardedHeaderWrapper ref={headerRef} mobileNavOpen={mobileNavOpen} searchOpen={searchOpen}>
+    <ForwardedHeaderWrapper ref={headerRef} mobileNavOpen={mobileNavOpen} searchOpen={searchOpen} cartOpen={cartOpen}>
       <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
         <div className={cn(
@@ -186,6 +209,7 @@ function HeaderWrapper(props: {
   children: React.ReactNode;
   mobileNavOpen?: boolean;
   searchOpen?: boolean;
+  cartOpen?: boolean;
 }, ref: React.Ref<HTMLElement>) {
   const { sanityRoot } = useRootLoaderData();
   const { pathname } = useLocation();
@@ -209,8 +233,8 @@ function HeaderWrapper(props: {
   // Initialize to transparent (false) for fluid headers, solid (true) for regular headers
   const [isScrolled, setIsScrolled] = useState(!shouldHaveFluidHeader);
   
-  // Mobile nav state and search state
-  const { mobileNavOpen = false, searchOpen = false } = props;
+  // Mobile nav state, search state, and cart state
+  const { mobileNavOpen = false, searchOpen = false, cartOpen = false } = props;
   
   // Generate text color class for transparent header
   const fluidTextColorClass = 
@@ -218,8 +242,8 @@ function HeaderWrapper(props: {
     fluidHeaderTextColor === 'black' ? 'text-black' :
     'text-foreground';
 
-  // Determine if header should be in solid state (scrolled, nav open, or search open)
-  const isSolidState = isScrolled || mobileNavOpen || searchOpen;
+  // Determine if header should be in solid state (scrolled, nav open, search open, or cart open)
+  const isSolidState = isScrolled || mobileNavOpen || searchOpen || cartOpen;
 
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',

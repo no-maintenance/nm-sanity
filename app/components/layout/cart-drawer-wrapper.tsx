@@ -17,7 +17,13 @@ import {iconButtonClass} from '../ui/button';
 import {CartDrawer} from './cart-drawer.client';
 import { IconCart } from '~/components/icons/icon-cart';
 
-export default function CartDrawerWrapper() {
+export default function CartDrawerWrapper({ 
+  cartOpen: externalCartOpen,
+  onCartOpenChange: externalOnCartOpenChange 
+}: {
+  cartOpen?: boolean;
+  onCartOpenChange?: (open: boolean) => void;
+} = {}) {
   const rootData = useRootLoaderData();
 
   return (
@@ -27,6 +33,8 @@ export default function CartDrawerWrapper() {
           <Badge
             cart={cart as CartApiQueryFragment}
             count={cart?.totalQuantity || 0}
+            cartOpen={externalCartOpen}
+            onCartOpenChange={externalOnCartOpenChange}
           />
         )}
       </Await>
@@ -34,11 +42,21 @@ export default function CartDrawerWrapper() {
   );
 }
 
-function Badge(props: {cart?: CartApiQueryFragment; count: number}) {
-  const {count, cart} = props;
+function Badge(props: {
+  cart?: CartApiQueryFragment; 
+  count: number;
+  cartOpen?: boolean;
+  onCartOpenChange?: (open: boolean) => void;
+}) {
+  const {count, cart, cartOpen: externalCartOpen, onCartOpenChange: externalOnCartOpenChange} = props;
   const path = useLocalePath({path: '/cart'});
   const {themeContent} = useSanityThemeContent();
-  const [cartOpen, setCartOpen] = useState(false);
+  
+  // Use external state if provided, otherwise use internal state
+  const [internalCartOpen, setInternalCartOpen] = useState(false);
+  const cartOpen = externalCartOpen !== undefined ? externalCartOpen : internalCartOpen;
+  const setCartOpen = externalOnCartOpenChange || setInternalCartOpen;
+  
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
   const device = useDevice();
   const cartIsLoading = Boolean(addToCartFetchers.length);
@@ -52,19 +70,19 @@ function Badge(props: {cart?: CartApiQueryFragment; count: number}) {
     if (!cartOpen && addToCartFetchers.length && !userClosedCart) {
       setCartOpen(true);
     }
-  }, [addToCartFetchers, cartOpen, userClosedCart]);
+  }, [addToCartFetchers, cartOpen, userClosedCart, setCartOpen]);
 
   const onOpenChange = useCallback((open: boolean) => {
     setCartOpen(open);
     if (!open) {
       setUserClosedCart(true);
     }
-  }, []);
+  }, [setCartOpen]);
 
   const handleClose = useCallback(() => {
     setCartOpen(false);
     setUserClosedCart(true);
-  }, []);
+  }, [setCartOpen]);
 
   // Reset userClosedCart when fetchers are done
   useEffect(() => {

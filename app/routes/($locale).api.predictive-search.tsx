@@ -11,6 +11,7 @@ import type {
   PredictiveProductFragment,
   PredictiveQueryFragment,
   PredictiveSearchQuery,
+  ProductCardFragment,
 } from 'types/shopify/storefrontapi.generated';
 import { PREDICTIVE_SEARCH_QUERY } from '~/data/shopify/queries';
 
@@ -138,17 +139,26 @@ export function normalizePredictiveSearchResults(
     results.push({
       type: 'products',
       items: predictiveSearch.products.map(
-        (product: PredictiveProductFragment) => {
+        (product) => {
           totalResults++;
           const trackingParams = applyTrackingParams(product);
+          
+          // Extract images from media if available, fallback to variant image
+          const productWithMedia = product as any; // Temporarily use any since types haven't been regenerated
+          const mediaImages = productWithMedia.media?.nodes
+            ?.map((node: any) => node.image)
+            ?.filter(Boolean) || [];
+          const firstVariant = product.variants?.nodes?.[0];
+          const primaryImage = mediaImages[0] || firstVariant?.image;
+          
           return {
             __typename: product.__typename,
             handle: product.handle,
             id: product.id,
-            image: product.variants?.nodes?.[0]?.image,
+            image: primaryImage,
             title: product.title,
             url: `${localePrefix}/products/${product.handle}${trackingParams}`,
-            price: product.variants.nodes[0].price,
+            price: firstVariant?.price,
           };
         },
       ),

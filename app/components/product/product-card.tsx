@@ -13,6 +13,7 @@ import { ProductBadges } from '../blocks/price-block';
 import { ShopifyImage } from '../shopify-image';
 import { ShopifyMoney } from '../shopify-money';
 import { Card, CardContent, CardMedia } from '../ui/card';
+import { urlWithTrackingParams } from '~/lib/search';
 
 export function ProductCard(props: {
   className?: string;
@@ -20,7 +21,10 @@ export function ProductCard(props: {
     desktop?: null | number;
     mobile?: null | number;
   };
-  product?: ProductCardFragment;
+  product?: ProductCardFragment & {
+    trackingParameters?: string;
+    searchTerm?: string;
+  };
   skeleton?: {
     cardsNumber?: number;
   };
@@ -68,7 +72,15 @@ export function ProductCard(props: {
   ].join(', ');
  */
 
-  const path = useLocalePath({ path: `/products/${product?.handle}` });
+  const path = useLocalePath({ 
+    path: product?.trackingParameters && product?.searchTerm 
+      ? urlWithTrackingParams({
+          baseUrl: `/products/${product.handle}`,
+          trackingParams: product.trackingParameters,
+          term: product.searchTerm,
+        })
+      : `/products/${product?.handle}` 
+  });
 
   const cardClass = cn(
     style === 'card'

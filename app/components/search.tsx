@@ -6,7 +6,7 @@ import {
     type FormProps,
   } from '@remix-run/react';
   import {Image, Money, Pagination} from '@shopify/hydrogen';
-  import React, {useRef, useEffect} from 'react';
+  import React, {useRef, useEffect, useState} from 'react';
   
   import type {
     PredictiveProductFragment,
@@ -16,7 +16,13 @@ import {
 import { Grid } from '~/components/layout/grid';
   import {Heading, Text} from '~/components/primatives/text';
   import {Button} from '~/components/ui/button';
+  import { Card, CardContent, CardMedia } from '~/components/ui/card';
+  import { ShopifyImage } from '~/components/shopify-image';
+  import { ShopifyMoney } from '~/components/shopify-money';
   import { applyTrackingParams } from '~/lib/search';
+  import { cn } from '~/lib/utils';
+  import { useRootLoaderData } from '~/root';
+  import { stegaClean } from '@sanity/client/stega';
 
   type PredicticeSearchResultItemImage =
     | PredictiveCollectionFragment['image']
@@ -436,55 +442,104 @@ function SearchResultsProductsGrid({
   };
   
   function SearchResultProduct({goToSearchResult, item}: SearchResultItemProps) {
+    const { sanityRoot } = useRootLoaderData();
+    const { data } = stegaClean(sanityRoot);
+    const style = data?.settings?.productCards?.style;
+    const textAlignment = data?.settings?.productCards?.textAlignment || 'left';
+    const aspectRatio = data?.settings?.productCards?.imageAspectRatio || 'video';
+    
+    const [isHovered, setIsHovered] = useState(false);
+
+    const cardClass = cn(
+      style === 'card'
+        ? 'overflow-hidden rounded-(--product-card-border-corner-radius)'
+        : 'rounded-t-[calc(var(--product-card-border-corner-radius)*1.2)]',
+      style === 'card'
+        ? 'border-[rgb(var(--border)_/_var(--product-card-border-opacity))] [border-width:var(--product-card-border-thickness)]'
+        : 'border-0',
+      style === 'card'
+        ? '[box-shadow:rgb(var(--shadow)_/_var(--product-card-shadow-opacity))_var(--product-card-shadow-horizontal-offset)_var(--product-card-shadow-vertical-offset)_var(--product-card-shadow-blur-radius)_0px]'
+        : 'shadow-none',
+      style === 'standard' && 'bg-transparent',
+      textAlignment === 'center'
+        ? 'text-center'
+        : textAlignment === 'right'
+          ? 'text-right'
+          : 'text-left',
+    );
+
+    const priceClass = cn(
+      'mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-3 *:overflow-hidden *:text-ellipsis *:whitespace-nowrap',
+      textAlignment === 'center'
+        ? 'justify-center'
+        : textAlignment === 'right'
+          ? 'justify-end'
+          : 'justify-start',
+    );
+
     return (
       <li
         className="predictive-search-result-item outline-offset-4"
         key={item.id}
       >
         <Link onClick={goToSearchResult} to={item.url}>
-          <div className="flex flex-col gap-2 product-card">
-            <div className={'grid gap-3'}>
-              {item.image?.url && (
-                <div className="card-image aspect-[4/5] bg-primary/5 relative group">
-                  <Image
-                    alt={item.image.altText ?? ''}
-                    src={item.image.url}
-                    aspectRatio={'4/5'}
-                    sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                    className={
-                      'object-cover w-full absolute inset-0 transition-opacity duration-200 ease-in-out'
-                    }
-                  />
-                </div>
-              )}
-  
-              <div className="grid gap-1">
-                <Text
-                  className="w-full overflow-hidden text-base whitespace-nowrap text-ellipsis uppercase"
-                  as="h3"
-                >
-                  {item.styledTitle ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: item.styledTitle,
-                      }}
-                    />
-                  ) : (
-                    <span>{item.title}</span>
+          <Card
+            className={cn(cardClass, 'group/card')}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {item.image?.url && (
+              <CardMedia
+                aspectRatio={aspectRatio}
+                className={cn(
+                  'relative overflow-hidden',
+                  style === 'standard' &&
+                  'rounded-(--product-card-border-corner-radius)',
+                  style === 'standard' &&
+                  '[border-width:var(--product-card-border-thickness)] border-[rgb(var(--border)_/_var(--product-card-border-opacity))]',
+                  style === 'standard' &&
+                  '[box-shadow:rgb(var(--shadow)_/_var(--product-card-shadow-opacity))_var(--product-card-shadow-horizontal-offset)_var(--product-card-shadow-vertical-offset)_var(--product-card-shadow-blur-radius)_0px]',
+                )}
+              >
+                <ShopifyImage
+                  aspectRatio={cn(
+                    aspectRatio === 'square' && '1/1',
+                    aspectRatio === 'video' && '16/9',
+                    aspectRatio === 'auto' && item.image?.width && item.image?.height &&
+                    `${item.image.width}/${item.image.height}`,
                   )}
-                </Text>
-                <div className={'h-[23px]'}>
-                  <div className="flex gap-4 group-hover:hidden block">
-                    <Text className="flex gap-4">
-                      {item?.price && (
-                        <Money withoutTrailingZeros data={item.price} />
-                      )}
-                    </Text>
-                  </div>
+                  crop="center"
+                  data={item.image}
+                  showBorder={false}
+                  showShadow={false}
+                  sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+                />
+              </CardMedia>
+            )}
+            <CardContent className="pl-0 pt-2 pb-0 mb-6 space-y-1">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4 uppercase">
+                {item.styledTitle ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: item.styledTitle,
+                    }}
+                  />
+                ) : (
+                  <span>{item.title}</span>
+                )}
+              </div>
+              <div className="gap-truncate-e h-10">
+                <div className={cn(priceClass, 'flex gap-4')}>
+                  {item?.price && (
+                    <ShopifyMoney
+                      className="text-sm md:text-base"
+                      data={item.price}
+                    />
+                  )}
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </Link>
       </li>
     );

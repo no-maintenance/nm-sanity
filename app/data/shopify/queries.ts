@@ -300,9 +300,6 @@ export const FEATURED_COLLECTION_QUERY = `#graphql
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
 
-
-
-
 export const PREDICTIVE_SEARCH_QUERY = `#graphql
 fragment PredictiveCollection on Collection {
     __typename
@@ -318,28 +315,6 @@ fragment PredictiveCollection on Collection {
     trackingParameters
 }
 
-fragment PredictiveProduct on Product {
-    __typename
-    id
-    title
-    handle
-    trackingParameters
-    variants(first: 1) {
-        nodes {
-            id
-            image {
-                url
-                altText
-                width
-                height
-            }
-            price {
-                amount
-                currencyCode
-            }
-        }
-    }
-}
 fragment PredictiveQuery on SearchQuerySuggestion {
     __typename
     text
@@ -364,15 +339,16 @@ query predictiveSearch(
             ...PredictiveCollection
         }
         products {
-            ...PredictiveProduct
+            ...ProductCard
+            trackingParameters
         }
         queries {
             ...PredictiveQuery
         }
     }
 }
+${PRODUCT_CARD_FRAGMENT}
 ` as const;
-
 
 export const SEARCH_QUERY = `#graphql
 query PaginatedProductsSearch(
@@ -406,7 +382,6 @@ query PaginatedProductsSearch(
 
 ${PRODUCT_CARD_FRAGMENT}
 ` as const;
-
 
 export const API_ALL_PRODUCTS_QUERY = `#graphql
 query ApiAllProducts(
