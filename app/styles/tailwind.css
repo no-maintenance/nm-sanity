@@ -154,16 +154,31 @@
   }
 }
 
-@utility space-nav {
-  height: var(--height-nav, 4rem);
-
-  @variant md {
-    height: 6rem;
+@layer utilities {
+  .space-nav {
+    height: var(--height-nav, 4rem);
+  
+    @variant md {
+      height: 6rem;
+    }
+  }
+  .space-screen {
+    height: var(--screen-height, 100vh);
   }
 }
 
-@utility space-screen {
-  height: var(--screen-height, 100vh);
+@layer components {
+  .prose {
+    --tw-prose-body: var(--typography-body);
+    --tw-prose-headings: var(--typography-headings);
+    --tw-prose-links: var(--typography-links);
+  }
+  
+  .prose p {
+    font-size: var(--body-base-size);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
 }
 
 @layer base {
@@ -262,34 +277,3 @@
 
 @custom-variant touch (@media (pointer: coarse));
 @custom-variant notouch (@media (hover: hover));
-
-@layer components {
-  .prose {
-    --tw-prose-body: var(--typography-body);
-    --tw-prose-headings: var(--typography-headings);
-    --tw-prose-links: var(--typography-links);
-  }
-  
-  .prose h1 {
-    font-size: inherit;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-top: 0;
-    margin-bottom: 0.5em;
-  }
-  
-  .prose h2 {
-    font-size: inherit;
-    font-weight: 600;
-    line-height: 1.3;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-  }
-  
-  .prose p {
-    font-size: inherit;
-    line-height: 1.75;
-    margin-top: 1em;
-    margin-bottom: 1em;
-  }
-}
