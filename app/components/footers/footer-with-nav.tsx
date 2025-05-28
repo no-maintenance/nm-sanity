@@ -18,7 +18,7 @@ export function FooterWithNav(
 
   return (
     <footer className="bg-white container ">
-      <section className="mt-16 mb-5 px-4">
+      <section className="mt-16 mb-5 sm:px-4">
         <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
         <div className="mx-auto mb-4 md:mb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -27,7 +27,7 @@ export function FooterWithNav(
               <nav>
                 <ul className="grid grid-cols-2 md:grid-cols-1 gap-4">
                   {data.menu?.map((item: any, index: number) => (
-                    <li key={index} className="text-sm">
+                    <li key={index} className="text-sm md:text-left text-center">
                       {item._type === 'internalLink' && item.link?.slug?.current && (
                         <SanityInternalLink
                           data={item}
@@ -74,7 +74,7 @@ export function FooterWithNav(
 
           
         </div>
-        <p className="mt-4 font-semibold text-xl  sm:text-3xl">{data.copyright || "© NO MAINTENANCE CORP. 2024"}</p>
+        <p className="mt-4 font-semibold text-lg text-center sm:text-3xl">{data.copyright || "© NO MAINTENANCE CORP. 2024"}</p>
 
       </section>
 

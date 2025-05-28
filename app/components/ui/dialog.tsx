@@ -6,13 +6,13 @@ import {cva, VariantProps} from 'class-variance-authority';
 import { IconClose } from '~/components/icons/icon-close';
 
 const dialogVariants = cva(
-  'fixed rounded-[var(--dropdown-popup-border-corner-radius)] left-[50%] top-[50%] z-50 grid w-full max-w-[28rem] translate-x-[-50%] translate-y-[-50%] gap-4 bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-top-[10%] data-[state=open]:slide-in-from-top-[10%] ',
+  'fixed rounded-[var(--dropdown-popup-border-corner-radius)] left-[50%] top-[50%] z-50 grid w-full max-w-[28rem] translate-x-[-50%] translate-y-[-50%] gap-4 bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-[10%] data-[state=open]:slide-in-from-top-[10%] ',
   {
     variants: {
       variant: {
         wide: 'sm:max-w-2xl',
         tall: 'sm:max-h-[650px] h-[80vh]',
-        full: 'fixed inset-0 w-screen h-screen max-w-none  p-0 m-0 border-none shadow-none bg-background flex items-center justify-center',
+        full: ' inset-0 w-screen h-screen max-w-none  p-0 m-0 border-none shadow-none bg-background flex items-center justify-center',
       },
       transition: {
         default: '',

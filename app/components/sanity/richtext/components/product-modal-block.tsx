@@ -35,7 +35,7 @@ function SizeChartTable({ table }: SizeChartTableProps) {
             {table.rows[0]?.cells?.map((cell: string, i: number) => (
               <th
                 key={i}
-                className="px-4 py-3 font-semibold text-black text-start border-b whitespace-nowrap"
+                className="md:px-4 px-2 py-3 font-semibold text-black text-start border-b whitespace-nowrap"
               >
                 {cell}
               </th>
@@ -48,7 +48,7 @@ function SizeChartTable({ table }: SizeChartTableProps) {
               {row.cells?.map((cell: string, j: number) => (
                 <td
                   key={j}
-                  className="px-4 py-3 border-bwhitespace-nowrap text-black"
+                  className="md:px-4 px-2 py-3 border-bwhitespace-nowrap text-black"
                 >
                   {cell}
                 </td>
@@ -131,7 +131,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           {triggerLabel}
         </button>
       </DialogTrigger>
-      <DialogContent variant="wide" className="max-w-2xl w-full p-6 pt-4 ">
+      <DialogContent variant="wide" className="max-w-2xl w-full md:p-6 p-4 pt-4 ">
         <div className="flex justify-between items-center ">
           {modalTitle && <DialogTitle className="text-lg font-medium mb-4">{modalTitle}</DialogTitle>}
           <DialogClose asChild>

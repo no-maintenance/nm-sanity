@@ -72,7 +72,7 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
-                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[var(--desktopHeaderHeight)]  sm:h-[calc(100vh-var(--desktopHeaderHeight))] h-[calc(100vh-var(--desktopHeaderHeight)+7px)]"
+                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[var(--desktopHeaderHeight)]  sm:h-[calc(100dvh-var(--desktopHeaderHeight))] h-[calc(100dvh-var(--desktopHeaderHeight)+7px)]"
                   >
                     <div className="flex h-full flex-col">
                       <div className="">

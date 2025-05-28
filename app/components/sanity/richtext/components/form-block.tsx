@@ -1,6 +1,3 @@
-'use client';
-
-import React from 'react';
 import { AppointmentForm, ContactForm, NewsletterForm } from '~/components/form/form-variants';
 
 interface FormBlockProps {

@@ -1,4 +1,5 @@
 import {ReactNode} from 'react';
+import type {PortableTextBlock} from '@portabletext/types';
 
 import ProductModalBlockComponent from '~/components/sanity/richtext/components/product-modal-block';
 
@@ -7,7 +8,7 @@ export interface ProductModalBlockProps {
   _type: 'productModal';
   triggerLabel: string;
   modalTitle: string;
-  content?: any[];
+  content?: PortableTextBlock[];
 }
 
 export default function ProductModalBlock({
@@ -15,5 +16,5 @@ export default function ProductModalBlock({
 }: {
   value: ProductModalBlockProps;
 }): ReactNode {
-  return <ProductModalBlockComponent value={value} />;
+  return <ProductModalBlockComponent value={{...value, content: value.content || []}} />;
 }
