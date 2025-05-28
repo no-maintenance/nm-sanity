@@ -1,18 +1,18 @@
-import type {ProductCardFragment} from 'types/shopify/storefrontapi.generated';
+import type { ProductCardFragment } from 'types/shopify/storefrontapi.generated';
 
-import {Link} from '@remix-run/react';
-import {stegaClean} from '@sanity/client/stega';
-import {flattenConnection} from '@shopify/hydrogen';
-import {useState} from 'react';
+import { Link } from '@remix-run/react';
+import { stegaClean } from '@sanity/client/stega';
+import { flattenConnection } from '@shopify/hydrogen';
+import { useState } from 'react';
 
-import {useLocalePath} from '~/hooks/use-locale-path';
-import {cn} from '~/lib/utils';
-import {useRootLoaderData} from '~/root';
+import { useLocalePath } from '~/hooks/use-locale-path';
+import { cn } from '~/lib/utils';
+import { useRootLoaderData } from '~/root';
 
-import {ProductBadges} from '../blocks/price-block';
-import {ShopifyImage} from '../shopify-image';
-import {ShopifyMoney} from '../shopify-money';
-import {Card, CardContent, CardMedia} from '../ui/card';
+import { ProductBadges } from '../blocks/price-block';
+import { ShopifyImage } from '../shopify-image';
+import { ShopifyMoney } from '../shopify-money';
+import { Card, CardContent, CardMedia } from '../ui/card';
 
 export function ProductCard(props: {
   className?: string;
@@ -25,9 +25,9 @@ export function ProductCard(props: {
     cardsNumber?: number;
   };
 }) {
-  const {columns, product, skeleton} = props;
-  const {sanityRoot} = useRootLoaderData();
-  const {data} = stegaClean(sanityRoot);
+  const { columns, product, skeleton } = props;
+  const { sanityRoot } = useRootLoaderData();
+  const { data } = stegaClean(sanityRoot);
   const style = data?.settings?.productCards?.style;
   const textAlignment = data?.settings?.productCards?.textAlignment || 'left';
   const aspectRatio = data?.settings?.productCards?.imageAspectRatio || 'video';
@@ -35,19 +35,19 @@ export function ProductCard(props: {
     ? flattenConnection(product?.variants)
     : null;
   const firstVariant = variants?.[0];
-  
+
   // Extract images from media
   const mediaImages = product?.media?.nodes
     ?.map(node => node.image)
     ?.filter(Boolean) || [];
-  
+
   // Use media images if available, fallback to variant image
   const primaryImage = mediaImages[0] || firstVariant?.image;
   const secondaryImage = mediaImages[1];
-  
+
   const [isHovered, setIsHovered] = useState(false);
   const currentImage = isHovered && secondaryImage ? secondaryImage : primaryImage;
-  
+
   const sizes = [
     '(min-width: 1024px)',
     columns?.desktop ? `${100 / columns.desktop}vw` : '33vw',
@@ -68,7 +68,7 @@ export function ProductCard(props: {
   ].join(', ');
  */
 
-  const path = useLocalePath({path: `/products/${product?.handle}`});
+  const path = useLocalePath({ path: `/products/${product?.handle}` });
 
   const cardClass = cn(
     style === 'card'
@@ -96,12 +96,14 @@ export function ProductCard(props: {
         ? 'justify-end'
         : 'justify-start',
   );
-
+  if (firstVariant?.compareAtPrice) {
+    console.log(firstVariant);
+  }
   return (
     <>
       {!skeleton && product && firstVariant ? (
         <Link prefetch="intent" to={path}>
-          <Card 
+          <Card
             className={cn(cardClass, 'group/card')}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -112,11 +114,11 @@ export function ProductCard(props: {
                 className={cn(
                   'relative overflow-hidden',
                   style === 'standard' &&
-                    'rounded-(--product-card-border-corner-radius)',
+                  'rounded-(--product-card-border-corner-radius)',
                   style === 'standard' &&
-                    '[border-width:var(--product-card-border-thickness)] border-[rgb(var(--border)_/_var(--product-card-border-opacity))]',
+                  '[border-width:var(--product-card-border-thickness)] border-[rgb(var(--border)_/_var(--product-card-border-opacity))]',
                   style === 'standard' &&
-                    '[box-shadow:rgb(var(--shadow)_/_var(--product-card-shadow-opacity))_var(--product-card-shadow-horizontal-offset)_var(--product-card-shadow-vertical-offset)_var(--product-card-shadow-blur-radius)_0px]',
+                  '[box-shadow:rgb(var(--shadow)_/_var(--product-card-shadow-opacity))_var(--product-card-shadow-horizontal-offset)_var(--product-card-shadow-vertical-offset)_var(--product-card-shadow-blur-radius)_0px]',
                 )}
               >
                 <ShopifyImage
@@ -124,7 +126,7 @@ export function ProductCard(props: {
                     aspectRatio === 'square' && '1/1',
                     aspectRatio === 'video' && '16/9',
                     aspectRatio === 'auto' &&
-                      `${currentImage.width}/${currentImage.height}`,
+                    `${currentImage.width}/${currentImage.height}`,
                   )}
                   crop="center"
                   data={currentImage}
@@ -138,7 +140,7 @@ export function ProductCard(props: {
                       aspectRatio === 'square' && '1/1',
                       aspectRatio === 'video' && '16/9',
                       aspectRatio === 'auto' &&
-                        `${secondaryImage.width}/${secondaryImage.height}`,
+                      `${secondaryImage.width}/${secondaryImage.height}`,
                     )}
                     crop="center"
                     data={secondaryImage}
@@ -154,21 +156,36 @@ export function ProductCard(props: {
                 />
               </CardMedia>
             )}
-            <CardContent className="pl-0 pt-2">
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4 group-hover/card:underline uppercase ">
+            <CardContent className="pl-0 pt-2 pb-0 mb-6 space-y-1">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4  uppercase ">
                 {product.title}
               </div>
-              <div className={priceClass}>
-                {firstVariant.compareAtPrice && (
-                  <ShopifyMoney
-                    className="text-xs line-through md:text-sm"
-                    data={firstVariant.compareAtPrice}
-                  />
-                )}
-                <ShopifyMoney
-                  className="text-sm md:text-base"
-                  data={firstVariant.price}
-                />
+              <div className="gap-truncate-e h-10">
+
+                <div className={'hidden group-hover/card:block'}>
+                  <div className={'flex gap-x-3  flex-wrap '}>
+                    <ProductCardVariants variants={variants} />
+                  </div>
+                </div>
+
+                <div className={cn(priceClass, 'group-hover/card:hidden flex gap-4')}>
+                  {firstVariant.availableForSale ? (
+                    <>
+                      <ShopifyMoney
+                        className="text-sm md:text-base"
+                        data={firstVariant.price}
+                      />
+                      {firstVariant.compareAtPrice && (
+                        <ShopifyMoney
+                          className="text-xs line-through md:text-sm opacity-50"
+                          data={firstVariant.compareAtPrice}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <span className="flex gap-4 opacity-50">SOLD OUT</span>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -197,6 +214,30 @@ export function ProductCard(props: {
           </CardContent>
         </Card>
       ) : null}
+    </>
+  );
+}
+
+function ProductCardVariants({
+  variants,
+}: {
+  variants: ProductCardFragment['variants']['nodes'];
+}) {
+  return (
+    <>
+      {variants?.map((variant, idx) => (
+        <h4 key={`variant-${idx}`} className={'inline text-base'}>
+          {variant.availableForSale ? (
+            variant.title
+          ) : (
+            <span
+              className={cn(['strike', variant.title.length < 4 && 'small'])}
+            >
+              {variant.title}
+            </span>
+          )}
+        </h4>
+      ))}
     </>
   );
 }

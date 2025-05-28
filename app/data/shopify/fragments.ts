@@ -118,7 +118,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
         }
       }
     }
-    variants(first: 1) {
+    variants(first: 10) {
       nodes {
         id
         title
