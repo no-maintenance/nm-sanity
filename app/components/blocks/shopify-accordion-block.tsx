@@ -6,59 +6,59 @@ import {
   AccordionItem, 
   AccordionTrigger 
 } from '~/components/ui/accordion';
-import { PortableText, type PortableTextBlock } from '@portabletext/react';
+import { PortableText, type PortableTextComponents } from '@portabletext/react';
+import { useMemo } from 'react';
+import { PriceBlock } from './price-block';
+import { ProductDetailsBlock } from './extra-product-information-block';
+import { ShopifyDescriptionBlock } from './shopify-description-block';
+import { ShopifyTitleBlock } from './shopify-title-block';
+import { ProductForm } from '../product/product-form';
+import { ExternalLinkAnnotation } from '../sanity/richtext/components/external-link-annotation';
+import { InternalLinkAnnotation } from '../sanity/richtext/components/internal-link-annotation';
 
 export type ShopifyAccordionBlockProps = NonNullable<
   SectionOfType<'productInformationSection'>['richtext']
 >[number] & {
   _type: 'shopifyAccordion';
   title: string;
-  contentType: 'description' | 'shipping' | 'custom';
-  customContent?: PortableTextBlock[];
+  content?: any[]; // Base richtext content without recursion
   defaultOpen?: boolean;
 };
 
 export function ShopifyAccordionBlock(props: ShopifyAccordionBlockProps) {
   const { product } = useProduct();
-  const { title, contentType, customContent, defaultOpen = false } = props;
+  const { title, content, defaultOpen = false } = props;
 
-  if (!product) return null;
+  if (!product || !content) return null;
 
   // Generate a unique ID for the accordion item
-  const itemId = `accordion-${contentType}-${String(title).toLowerCase().replace(/\s+/g, '-')}`;
-  
-  let content: React.ReactNode = null;
+  const itemId = `accordion-${String(title).toLowerCase().replace(/\s+/g, '-')}`;
 
-  switch (contentType) {
-    case 'description':
-      if (!product.descriptionHtml) return null;
-      content = (
-        <div
-          className="prose [&_a]:text-primary touch:[&_a]:active:underline notouch:[&_a]:hover:underline [&_a]:underline-offset-4"
-          dangerouslySetInnerHTML={{
-            __html: product.descriptionHtml,
-          }}
-        />
-      );
-      break;
-    case 'shipping':
-      content = (
-        <div className="prose">
-          <p>Shipping information for {product.title}</p>
-          {/* Add your shipping information here */}
-        </div>
-      );
-      break;
-    case 'custom':
-      content = customContent ? (
-        <div className="prose">
-          <PortableText value={customContent} />
-        </div>
-      ) : null;
-      break;
-    default:
-      return null;
-  }
+  // Base richtext components (no accordion or modal to avoid recursion)
+  const baseComponents: PortableTextComponents = useMemo(
+    () => ({
+      marks: {
+        externalLink: (props: any) => (
+          <ExternalLinkAnnotation {...props.value}>
+            {props.children}
+          </ExternalLinkAnnotation>
+        ),
+        internalLink: (props: any) => (
+          <InternalLinkAnnotation {...props.value}>
+            {props.children}
+          </InternalLinkAnnotation>
+        ),
+      },
+      types: {
+        addToCartButton: (props: any) => <ProductForm {...props.value} />,
+        price: (props: any) => <PriceBlock {...props.value} />,
+        shopifyDescription: (props: any) => <ShopifyDescriptionBlock {...props.value} />,
+        shopifyTitle: (props: any) => <ShopifyTitleBlock {...props.value} />,
+        productDetails: (props: any) => <ProductDetailsBlock {...props.value} />,
+      },
+    }),
+    []
+  );
 
   return (
     <Accordion
@@ -69,7 +69,11 @@ export function ShopifyAccordionBlock(props: ShopifyAccordionBlockProps) {
     >
       <AccordionItem value={itemId}>
         <AccordionTrigger className='uppercase font-normal'>{title}</AccordionTrigger>
-        <AccordionContent>{content}</AccordionContent>
+        <AccordionContent>
+          <div className="prose max-w-none [&_p]:mt-0">
+            <PortableText value={content} components={baseComponents} />
+          </div>
+        </AccordionContent>
       </AccordionItem>
     </Accordion>
   );

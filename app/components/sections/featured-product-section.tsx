@@ -168,7 +168,8 @@ function FeaturedProductSkeleton({
                 })) || [],
               title: sanityProduct?.title || '',
               variants,
-            }}
+              details: data.richtext,
+            } as any}
           >
             <ProductDetails data={data} />
           </ProductProvider>

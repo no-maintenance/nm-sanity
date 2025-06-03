@@ -5,6 +5,7 @@ import {PortableText} from '@portabletext/react';
 import {useMemo} from 'react';
 
 import type {PriceBlockProps} from '../blocks/price-block';
+import type {ProductDetailsBlockProps} from '../blocks/extra-product-information-block';
 import type {ShopifyAccordionBlockProps} from '../blocks/shopify-accordion-block';
 import type {ShopifyDescriptionBlockProps} from '../blocks/shopify-description-block';
 import type {ShopifyTitleBlockProps} from '../blocks/shopify-title-block';
@@ -14,6 +15,7 @@ import type {ProductInformationSectionProps} from '../sections/product-informati
 import type {AddToCartButtonBlockProps} from './product-form';
 
 import {PriceBlock} from '../blocks/price-block';
+import {ProductDetailsBlock} from '../blocks/extra-product-information-block';
 import ProductModalBlock from '../blocks/product-modal-block';
 import {ShopifyAccordionBlock} from '../blocks/shopify-accordion-block';
 import {ShopifyDescriptionBlock} from '../blocks/shopify-description-block';
@@ -85,7 +87,7 @@ export function ProductDetails({
         shopifyTitle: (props: {value: ShopifyTitleBlockProps}) => (
           <ShopifyTitleBlock {...props.value} />
         ),
-        shopifyAccordion: (props: {value: ShopifyAccordionBlockProps}) => (
+        shopifyAccordion: (props: any) => (
           <ShopifyAccordionBlock {...props.value} />
         ),
         productModal: (props: {value: ProductModalBlockProps}) => (
@@ -98,6 +100,9 @@ export function ProductDetails({
               <ProductModalBlock key={modal._key || idx} value={modal} />
             ))}
           </div>
+        ),
+        productDetails: (props: {value: ProductDetailsBlockProps}) => (
+          <ProductDetailsBlock {...props.value} />
         ),
       },
     }),

@@ -24,6 +24,8 @@ import footersList from './objects/global/footers-list';
 import padding from './objects/global/padding';
 import productModal from './objects/global/product-modal';
 import productRichtext from './objects/global/product-richtext';
+import productBaseRichtext from './objects/global/product-base-richtext';
+import baseRichtext from './objects/global/base-richtext';
 import richtext from './objects/global/richtext';
 import sectionSettings from './objects/global/section-settings';
 import sectionsList, {
@@ -118,6 +120,8 @@ const objects = [
   productSections,
   collectionSections,
   productRichtext,
+  productBaseRichtext,
+  baseRichtext,
   bannerRichtext,
   fontAsset,
   fontCategory,

@@ -92,6 +92,7 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
     product: {
       ...product,
       sizeChart: cmsProduct?.data?.product?.sizeChart,
+      extraProductInformation: cmsProduct?.data?.product?.extraProductInformation,
     },
     relatedProductsPromise,
     seo,

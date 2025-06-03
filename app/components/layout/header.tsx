@@ -41,19 +41,19 @@ function FluidHeaderScrollHandler({
       const scrolled = window.scrollY > 10;
       onScroll(scrolled);
     };
-    
+
     // Run once on mount
     checkScroll();
-    
+
     // Set up event listener
     window.addEventListener('scroll', checkScroll);
-    
+
     // Clean up
     return () => {
       window.removeEventListener('scroll', checkScroll);
     };
   }, [onScroll]);
-  
+
   return null;
 }
 
@@ -74,14 +74,14 @@ export function Header() {
   });
   const logoPosition = stegaClean(header?.logoPosition);
   const headerRef = useRef<HTMLElement>(null);
-  
+
   // State for mobile navigation
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   // State for search open
   const [searchOpen, setSearchOpen] = useState(false);
   // State for cart drawer
   const [cartOpen, setCartOpen] = useState(false);
-  
+
   // Function to close mobile navigation
   const closeMobileNav = useCallback(() => {
     if (mobileNavOpen) {
@@ -108,7 +108,7 @@ export function Header() {
   }, []);
 
   const NavigationComponent = (
-    <>
+    <div>
       {!showHamburgerMenuOnDesktop && (
         <div className="touch:hidden lg:block">
           <DesktopNavigation data={header?.menu} />
@@ -121,9 +121,9 @@ export function Header() {
         <ClientOnly>
           {() => (
             <Suspense>
-              <MobileNavigation 
-                data={header?.menu} 
-                headerRef={headerRef} 
+              <MobileNavigation
+                data={header?.menu}
+                headerRef={headerRef}
                 open={mobileNavOpen}
                 setOpen={handleMobileNavOpenChange}
               />
@@ -131,7 +131,15 @@ export function Header() {
           )}
         </ClientOnly>
       </div>
-    </>
+      <div className="hidden sm:hidden">
+        {showSearchIcon && (
+          <PredictiveSearchItem
+            closeMobileNav={closeMobileNav}
+            onSearchOpenChange={setSearchOpen}
+          />
+        )}
+      </div>
+    </div>
   );
 
   const LogoComponent = (
@@ -153,14 +161,14 @@ export function Header() {
       </div>
       <div className="hidden sm:block">
         {showSearchIcon && (
-          <PredictiveSearchItem 
-            closeMobileNav={closeMobileNav} 
+          <PredictiveSearchItem
+            closeMobileNav={closeMobileNav}
             onSearchOpenChange={setSearchOpen}
           />
         )}
       </div>
       <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
-      <CartDrawer 
+      <CartDrawer
         cartOpen={cartOpen}
         onCartOpenChange={handleCartOpenChange}
       />
@@ -205,7 +213,7 @@ function AccountLink({ className }: { className?: string }) {
 }
 
 
-function HeaderWrapper(props: { 
+function HeaderWrapper(props: {
   children: React.ReactNode;
   mobileNavOpen?: boolean;
   searchOpen?: boolean;
@@ -218,29 +226,29 @@ function HeaderWrapper(props: {
   const showSeparatorLine = header?.showSeparatorLine;
   const blur = header?.blur;
   const sticky = stegaClean(header?.sticky);
-  
+
   // Fluid header settings
   const enableFluidHeader = stegaClean((header as any)?.enableFluidHeader) || false;
   const fluidHeaderOnHomePage = stegaClean((header as any)?.fluidHeaderOnHomePage) || false;
   const fluidHeaderTextColor = stegaClean((header as any)?.fluidHeaderTextColor) || 'white';
-  
+
   // Check if current page should have fluid header
   const isHomePage = pathname === '/';
-  const shouldHaveFluidHeader = enableFluidHeader && 
+  const shouldHaveFluidHeader = enableFluidHeader &&
     ((isHomePage && fluidHeaderOnHomePage));
-  
+
   // State to track scroll position for fluid header
   // Initialize to transparent (false) for fluid headers, solid (true) for regular headers
   const [isScrolled, setIsScrolled] = useState(!shouldHaveFluidHeader);
-  
+
   // Mobile nav state, search state, and cart state
   const { mobileNavOpen = false, searchOpen = false, cartOpen = false } = props;
-  
+
   // Generate text color class for transparent header
-  const fluidTextColorClass = 
+  const fluidTextColorClass =
     fluidHeaderTextColor === 'white' ? 'text-white' :
-    fluidHeaderTextColor === 'black' ? 'text-black' :
-    'text-foreground';
+      fluidHeaderTextColor === 'black' ? 'text-black' :
+        'text-foreground';
 
   // Determine if header should be in solid state (scrolled, nav open, search open, or cart open)
   const isSolidState = isScrolled || mobileNavOpen || searchOpen || cartOpen;
@@ -248,20 +256,20 @@ function HeaderWrapper(props: {
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',
     // Position: fixed when fluid header, sticky when normal header
-    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-40' : 
+    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-40' :
       (sticky !== 'none' ? 'sticky top-0 z-40' : ''),
-    
+
     // Apply fluid header styles
     shouldHaveFluidHeader ? (
       isSolidState
-        ? 'bg-background text-foreground' 
+        ? 'bg-background text-foreground'
         : `bg-transparent ${fluidTextColorClass}`
     ) : 'bg-background text-foreground',
-    
+
     // Only apply blur when not in transparent state
     (blur && (!shouldHaveFluidHeader || isSolidState)) &&
-      'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
-    
+    'bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/85',
+
     // Only apply separator line when not in transparent state or when scrolled
     headerVariants({
       optional: (showSeparatorLine && (!shouldHaveFluidHeader || isSolidState)) ? 'separator-line' : null,
@@ -291,7 +299,7 @@ function HeaderWrapper(props: {
           )}
         </ClientOnly>
       )}
-      
+
       {sticky === 'onScrollUp' ? (
         <ForwardedHeaderAnimation
           className={headerClassName}
@@ -425,15 +433,15 @@ function useHeaderHeigth() {
 }
 
 
-function PredictiveSearchItem({ 
-  closeMobileNav, 
+function PredictiveSearchItem({
+  closeMobileNav,
   onSearchOpenChange
-}: { 
+}: {
   closeMobileNav: () => void;
   onSearchOpenChange?: (open: boolean) => void;
 }) {
   const predictiveSearchRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);  
+  const [open, setOpen] = useState(false);
 
   const handleToggleSearch = () => {
     const newOpenState = !open;
@@ -466,70 +474,70 @@ function PredictiveSearchItem({
           }}
         >
           <PredictiveSearchForm>
-          {({ fetchResults, inputRef }) => (
-            <>
-              <div className={'container flex w-full h-nav items-center'}>
-                <Button
-                  variant={'ghost'}
-                  className={'outline-offset-0 hover:bg-transparent'}
-                  onClick={() => {
-                    setOpen(false);
-                    if (onSearchOpenChange) {
-                      onSearchOpenChange(false);
-                    }
-                  }}
-                >
-                  <IconClose />
-                </Button>
-                &nbsp;
-                <input
-                  autoComplete="off"
-                  autoFocus
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter')
-                      window.location.href = inputRef?.current?.value
-                        ? `/search?q=${inputRef.current?.value}`
-                        : `/search`;
-                  }}
-                  name="q"
-                  onChange={fetchResults}
-                  onFocus={fetchResults}
-                  placeholder="Search"
-                  ref={inputRef}
-                  type="search"
-                  className={'flex-1 h-10 px-2 border rounded-sm'}
-                />
-                &nbsp;
-                <Button
-                  variant={'ghost'}
-                  className={'outline-offset-0'}
-                  onClick={() => {
-                    window.location.href = inputRef?.current?.value
-                      ? `/search?q=${inputRef.current.value}`
-                      : `/search`;
-                  }}
-                >
-                  Search
-                </Button>
-              </div>
-              {inputRef?.current && inputRef.current.value !== '' && (
-                <div
-                  className={
-                    'h-screen-no-nav overflow-auto hiddenScroll'
-                  }
-                >
-                  <div
-                    ref={predictiveSearchRef}
-                    className={'container'}
+            {({ fetchResults, inputRef }) => (
+              <>
+                <div className={'container flex w-full h-nav items-center'}>
+                  <Button
+                    variant={'ghost'}
+                    className={'outline-offset-0 hover:bg-transparent'}
+                    onClick={() => {
+                      setOpen(false);
+                      if (onSearchOpenChange) {
+                        onSearchOpenChange(false);
+                      }
+                    }}
                   >
-                    <PredictiveSearchResults />
-                  </div>
+                    <IconClose />
+                  </Button>
+                  &nbsp;
+                  <input
+                    autoComplete="off"
+                    autoFocus
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter')
+                        window.location.href = inputRef?.current?.value
+                          ? `/search?q=${inputRef.current?.value}`
+                          : `/search`;
+                    }}
+                    name="q"
+                    onChange={fetchResults}
+                    onFocus={fetchResults}
+                    placeholder="Search"
+                    ref={inputRef}
+                    type="search"
+                    className={'flex-1 h-10 px-2 border rounded-sm'}
+                  />
+                  &nbsp;
+                  <Button
+                    variant={'ghost'}
+                    className={'outline-offset-0'}
+                    onClick={() => {
+                      window.location.href = inputRef?.current?.value
+                        ? `/search?q=${inputRef.current.value}`
+                        : `/search`;
+                    }}
+                  >
+                    Search
+                  </Button>
                 </div>
-              )}
-            </>
-          )}
-        </PredictiveSearchForm>
-      </div>
+                {inputRef?.current && inputRef.current.value !== '' && (
+                  <div
+                    className={
+                      'h-screen-no-nav overflow-auto hiddenScroll'
+                    }
+                  >
+                    <div
+                      ref={predictiveSearchRef}
+                      className={'container'}
+                    >
+                      <PredictiveSearchResults />
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </PredictiveSearchForm>
+        </div>
       )}
     </>
   );

@@ -8,6 +8,7 @@ import {
   IMAGE_FRAGMENT,
   SETTINGS_FRAGMENT,
   THEME_CONTENT_FRAGMENT,
+  BASE_RICHTEXT_FRAGMENT,
 } from './fragments';
 import {
   COLLECTION_SECTIONS_FRAGMENT,
@@ -107,6 +108,7 @@ export const PRODUCT_QUERY = defineQuery(`{
     store {
       gid,
     },
+    extraProductInformation[] ${BASE_RICHTEXT_FRAGMENT},
     sizeChart->{
       table,
       description,

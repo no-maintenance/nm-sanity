@@ -12,6 +12,7 @@ import {
   DialogClose,
 } from '~/components/ui/dialog';
 import { portableTextMarks } from './portableTextMarks';
+import { ProductDetailsBlock, type ProductDetailsBlockProps } from '../../../blocks/extra-product-information-block';
 import { useProduct } from '@shopify/hydrogen-react';
 
 // Define types for Sanity's table format
@@ -118,6 +119,9 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
         ) : (
           <div className="text-sm text-gray-500">No size chart available for this product.</div>
         ),
+      productDetails: (props: {value: ProductDetailsBlockProps}) => (
+        <ProductDetailsBlock {...props.value} />
+      ),
     },
     marks: {
       ...portableTextMarks,

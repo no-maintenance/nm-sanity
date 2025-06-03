@@ -56,6 +56,13 @@ export default defineType({
       to: [{type: 'sizeChart'}],
       group: 'editorial',
     }),
+    defineField({
+      name: 'extraProductInformation',
+      title: 'Details',
+      description: 'Detailed product information, displayed as rich text. This can be pulled into product templates via modal or rich text components.',
+      type: 'baseRichtext',
+      group: 'editorial',
+    }),
     // Title (proxy)
     defineField({
       name: 'titleProxy',

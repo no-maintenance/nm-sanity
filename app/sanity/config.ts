@@ -89,6 +89,7 @@ export function defineSanityConfig(
           'announcementBar',
           'productRichtext',
           'richtext',
+          'baseRichtext',
           'bannerRichtext',
         ],
         buttonLocations: ['field'],
@@ -133,7 +134,7 @@ export function defineSanityConfig(
     ],
     schema: {
       types: schemaTypes,
-      // Filter out singleton types from the global “New document” menu options
+      // Filter out singleton types from the global "New document" menu options
       templates: (templates) =>
         templates.filter(({schemaType}) => !singletonsTypes.has(schemaType)),
     },

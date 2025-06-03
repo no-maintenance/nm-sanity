@@ -168,26 +168,10 @@ export default defineField({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
-          name: 'contentType',
-          title: 'Content Type',
-          type: 'string',
-          options: {
-            list: [
-              { title: 'Product Description', value: 'description' },
-              { title: 'Shipping Information', value: 'shipping' },
-              { title: 'Details', value: 'details' },
-              { title: 'Custom Content', value: 'custom' },
-            ],
-            layout: 'radio',
-          },
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: 'customContent',
-          title: 'Custom Content',
-          type: 'array',
-          of: [{ type: 'block' }],
-          hidden: ({ parent }) => parent?.contentType !== 'custom',
+          name: 'content',
+          title: 'Content',
+          type: 'productBaseRichtext',
+          description: 'The content to display inside the accordion',
         }),
         defineField({
           name: 'defaultOpen',
@@ -200,12 +184,36 @@ export default defineField({
       preview: {
         select: {
           title: 'title',
-          contentType: 'contentType',
         },
-        prepare: ({ title, contentType }) => {
+        prepare: ({ title }) => {
           return {
             title: title || 'Accordion',
-            subtitle: contentType ? `Content: ${contentType}` : '',
+            subtitle: 'Rich content accordion',
+          };
+        },
+      },
+    }),
+    defineArrayMember({
+      name: 'productDetails',
+      title: 'Product Details',
+      type: 'object',
+      readOnly: true,
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Title',
+          type: 'string',
+          readOnly: true,
+          initialValue: 'Product Details',
+          hidden: true,
+        })
+      ],
+      description: 'Displays the details rich text associated with the current product',
+      icon: () => <Text size="18px" />,
+      preview: {
+        prepare: () => {
+          return {
+            title: 'Product Details',
           };
         },
       },

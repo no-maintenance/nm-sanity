@@ -289,6 +289,35 @@ export const COLUMN_RICHTEXT_FRAGMENT = defineQuery(`{
   },
 }`);
 
+export const PRODUCT_BASE_RICHTEXT_FRAGMENT = defineQuery(`{
+  ...,
+  _type == 'image' => ${IMAGE_FRAGMENT},
+  _type == 'button' => {
+    ...,
+    link -> ${LINK_REFERENCE_FRAGMENT},
+  },
+  _type == 'block' => {
+    ...,
+    markDefs[] {
+      ...,
+      _type == 'internalLink' => ${INTERNAL_LINK_FRAGMENT},
+      _type == 'externalLink' => ${EXTERNAL_LINK_FRAGMENT},
+    }
+  },
+}`);
+
+export const BASE_RICHTEXT_FRAGMENT = defineQuery(`{
+  ...,
+  _type == 'block' => {
+    ...,
+    markDefs[] {
+      ...,
+      _type == 'internalLink' => ${INTERNAL_LINK_FRAGMENT},
+      _type == 'externalLink' => ${EXTERNAL_LINK_FRAGMENT},
+    }
+  },
+}`);
+
 export const RICHTEXT_FRAGMENT = defineQuery(`{
   ...,
   _type == 'image' => ${IMAGE_FRAGMENT},
@@ -388,6 +417,15 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
       asset->{url},
       alt
     }
+  },
+  _type == 'productDetails' => {
+    _type,
+  },
+  _type == 'shopifyAccordion' => {
+    _type,
+    title,
+    content[] ${PRODUCT_BASE_RICHTEXT_FRAGMENT},
+    defaultOpen,
   },
   _type == 'block' => {
     ...,

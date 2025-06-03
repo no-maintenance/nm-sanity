@@ -826,22 +826,6 @@ export type PredictiveCollectionFragment = {__typename: 'Collection'} & Pick<
     >;
   };
 
-export type PredictiveProductFragment = {__typename: 'Product'} & Pick<
-  StorefrontAPI.Product,
-  'id' | 'title' | 'handle' | 'trackingParameters'
-> & {
-    variants: {
-      nodes: Array<
-        Pick<StorefrontAPI.ProductVariant, 'id'> & {
-          image?: StorefrontAPI.Maybe<
-            Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
-          >;
-          price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-        }
-      >;
-    };
-  };
-
 export type PredictiveQueryFragment = {
   __typename: 'SearchQuerySuggestion';
 } & Pick<
@@ -874,24 +858,51 @@ export type PredictiveSearchQuery = {
         }
     >;
     products: Array<
-      {__typename: 'Product'} & Pick<
+      Pick<
         StorefrontAPI.Product,
-        'id' | 'title' | 'handle' | 'trackingParameters'
+        | 'trackingParameters'
+        | 'id'
+        | 'title'
+        | 'publishedAt'
+        | 'handle'
+        | 'vendor'
       > & {
-          variants: {
-            nodes: Array<
-              Pick<StorefrontAPI.ProductVariant, 'id'> & {
-                image?: StorefrontAPI.Maybe<
-                  Pick<
-                    StorefrontAPI.Image,
-                    'url' | 'altText' | 'width' | 'height'
-                  >
-                >;
-                price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-              }
-            >;
-          };
-        }
+        media: {
+          nodes: Array<
+            Pick<StorefrontAPI.MediaImage, 'id'> & {
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'id' | 'altText' | 'width' | 'height' | 'url'
+                > & {thumbnail: StorefrontAPI.Image['url']}
+              >;
+            }
+          >;
+        };
+        variants: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.ProductVariant,
+              'id' | 'title' | 'availableForSale'
+            > & {
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'id' | 'altText' | 'width' | 'height' | 'url'
+                > & {thumbnail: StorefrontAPI.Image['url']}
+              >;
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              compareAtPrice?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+              >;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+            }
+          >;
+        };
+      }
     >;
     queries: Array<
       {__typename: 'SearchQuerySuggestion'} & Pick<
@@ -1070,7 +1081,7 @@ interface GeneratedQueryTypes {
     return: FeaturedCollectionQuery;
     variables: FeaturedCollectionQueryVariables;
   };
-  '#graphql\nfragment PredictiveCollection on Collection {\n    __typename\n    id\n    title\n    handle\n    image {\n        url\n        altText\n        width\n        height\n    }\n    trackingParameters\n}\n\nfragment PredictiveProduct on Product {\n    __typename\n    id\n    title\n    handle\n    trackingParameters\n    variants(first: 1) {\n        nodes {\n            id\n            image {\n                url\n                altText\n                width\n                height\n            }\n            price {\n                amount\n                currencyCode\n            }\n        }\n    }\n}\nfragment PredictiveQuery on SearchQuerySuggestion {\n    __typename\n    text\n    styledText\n    trackingParameters\n}\nquery predictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope!\n    $searchTerm: String!\n    $types: [PredictiveSearchType!]\n) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n        limit: $limit,\n        limitScope: $limitScope,\n        query: $searchTerm,\n        types: $types,\n    ) {\n        collections {\n            ...PredictiveCollection\n        }\n        products {\n            ...PredictiveProduct\n        }\n        queries {\n            ...PredictiveQuery\n        }\n    }\n}\n': {
+  '#graphql\nfragment PredictiveCollection on Collection {\n    __typename\n    id\n    title\n    handle\n    image {\n        url\n        altText\n        width\n        height\n    }\n    trackingParameters\n}\n\nfragment PredictiveQuery on SearchQuerySuggestion {\n    __typename\n    text\n    styledText\n    trackingParameters\n}\nquery predictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope!\n    $searchTerm: String!\n    $types: [PredictiveSearchType!]\n) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n        limit: $limit,\n        limitScope: $limitScope,\n        query: $searchTerm,\n        types: $types,\n    ) {\n        collections {\n            ...PredictiveCollection\n        }\n        products {\n            ...ProductCard\n            trackingParameters\n        }\n        queries {\n            ...PredictiveQuery\n        }\n    }\n}\n#graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    media(first: 2) {\n      nodes {\n        ... on MediaImage {\n          id\n          image {\n            ...ProductCardImageFragment\n          }\n        }\n      }\n    }\n    variants(first: 10) {\n      nodes {\n        id\n        title\n        availableForSale\n        image {\n          ...ProductCardImageFragment\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCardImageFragment on Image {\n    id\n    altText\n    width\n    height\n    url\n    thumbnail: url(transform: { maxWidth: 30 })\n  }\n\n\n': {
     return: PredictiveSearchQuery;
     variables: PredictiveSearchQueryVariables;
   };
