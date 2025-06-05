@@ -33,7 +33,6 @@ export function AddToCartForm(props: {
   const { cmsProduct } = useLoaderData<any>();
   const template = cmsProduct?.data?.product?.template || cmsProduct?.data?.defaultProductTemplate;
   const showBackInStockForm = template?.showBackInStockForm;
-
   return (
     selectedVariant && (
       <>

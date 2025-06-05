@@ -40,6 +40,9 @@ export function ProductCard(props: {
     : null;
   const firstVariant = variants?.[0];
 
+  // Check if all variants are sold out
+  const allVariantsSoldOut = variants?.every(variant => !variant.availableForSale) ?? false;
+
   // Extract images from media
   const mediaImages = product?.media?.nodes
     ?.map(node => node.image)
@@ -178,7 +181,7 @@ export function ProductCard(props: {
                 </div>
 
                 <div className={cn(priceClass, 'group-hover/card:hidden flex gap-4')}>
-                  {firstVariant.availableForSale ? (
+                  {!allVariantsSoldOut ? (
                     <>
                       <ShopifyMoney
                         className="text-sm md:text-base"

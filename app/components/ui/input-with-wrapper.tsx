@@ -78,7 +78,7 @@ export function InputWrapper({
           </m.label>
         )}
         {input}
-        {errorMsg && (
+        {errorMsg && showErrorMsg && (
           <Text
             as={'span'}
             className={'absolute bottom-0 transform translate-y-4'}

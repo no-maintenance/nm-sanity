@@ -10,12 +10,18 @@ import { VariantSelector } from "~/components/product/variant-selector";
 import { useProduct } from "@shopify/hydrogen-react";
 import { useProductVariants } from "~/components/sections/product-information-section";
 import { useMediaQuery } from "~/hooks/use-media-query";
+import CleanString from "../sanity/clean-string";
+import { useSanityThemeContent } from "~/hooks/use-sanity-theme-content";
+import { KlaviyoBackInStock } from "./back-stock-form";
+import { parseNumberFromShopGid } from "~/lib/utils";
+import { useSelectedVariant } from "~/hooks/use-selected-variant";
 export function SoldOutButton() {
-    // const isDesktop = useMediaQuery('(min-width: 768px)');
-    const isDesktop = true;
+    const isDesktop = useMediaQuery('(min-width: 768px)');
     const {product} = useProduct();
     const variantsContextData = useProductVariants();
     const [open, setOpen] = useState(false);
+    const {themeContent} = useSanityThemeContent();
+    const selectedVariant = useSelectedVariant({variants: variantsContextData?.variants});
     if (!product) return null;
 
     if (isDesktop) {
@@ -26,13 +32,13 @@ export function SoldOutButton() {
             className={'text-fine font-semibold cursor-pointer w-full'}
           >
             <Button variant={'outline'}>
-              {t('product.soldOut')} — {t('product.notifyMe')}
+              <CleanString value={themeContent?.product?.soldOut} />
             </Button>
           </DialogTrigger>
           <DialogContent variant={'tall'}>
             <div className={'p-6 flex flex-col gap-6'}>
               <section>
-                <Heading as={'h2'} className={'uppercase font-medium text-lead'}>
+                <Heading as={'h2'} className={'uppercase font-medium text-lg'}>
                   NOTIFY ME WHEN BACK IN STOCK
                 </Heading>
                 <div>
@@ -42,7 +48,7 @@ export function SoldOutButton() {
                   </Text>
                 </div>
               </section>
-              <Section padding={'y'} className={'flex-1'}>
+              <Section padding={'y'} className={'flex-1 py-16'}>
                 <div className={''}>
                   <Heading as={'h4'} size={'copy'} className={'mb-2'}>
                     {product.title}
@@ -53,11 +59,11 @@ export function SoldOutButton() {
                     />
                   </div>
                 </div>
-                {/* <KlaviyoBackInStock
+                <KlaviyoBackInStock
                   source={'popup'}
-                  variantId={selectedVariant.id}
+                  variantId={parseNumberFromShopGid(selectedVariant?.id ?? '') ?? ''}
                   cb={() => setOpen(false)}
-                /> */}
+                />
               </Section>
               <section>
                 <Heading size={'copy'} className={'font-medium'}>
@@ -77,10 +83,10 @@ export function SoldOutButton() {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger
           asChild
-          className={'text-fine font-semibold cursor-pointer w-full'}
+          className={'font-semibold cursor-pointer w-full'}
         >
           <Button variant={'outline'}>
-            {t('product.soldOut')} — {t('product.notifyMe')}
+          <CleanString value={themeContent?.product?.soldOut} />
           </Button>
         </DrawerTrigger>
         <DrawerContent>

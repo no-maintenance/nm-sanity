@@ -232,3 +232,10 @@ export const CONV_ADDED_TO_CART = 1;
 export function getAddToCartValue(v: number) {
   return CONV_ADDED_TO_CART * v;
 }
+
+
+export const parseNumberFromShopGid = (gid?: string) => {
+  if (!gid) return;
+  const id = gid.split('/').pop();
+  return id ?? null;
+};
