@@ -18,7 +18,9 @@
     "sanity:generate": "sanity typegen generate",
     "create:initial": "sanity exec app/sanity/scripts/create-initial-documents.ts --with-user-token",
     "create:cors": "sanity exec app/sanity/scripts/create-cors-origin.ts --with-user-token",
-    "create:token": "sanity exec app/sanity/scripts/create-viewer-token.ts --with-user-token"
+    "create:token": "sanity exec app/sanity/scripts/create-viewer-token.ts --with-user-token",
+    "migrate:product-info": "sanity exec app/sanity/scripts/migrate-extra-product-info.ts --with-user-token",
+    "fix:product-info": "sanity exec app/sanity/scripts/fix-product-info-migration.ts --with-user-token"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

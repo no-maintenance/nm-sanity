@@ -60,7 +60,7 @@ export default defineType({
       name: 'extraProductInformation',
       title: 'Details',
       description: 'Detailed product information, displayed as rich text. This can be pulled into product templates via modal or rich text components.',
-      type: 'baseRichtext',
+      type: 'internationalizedArrayRichtext',
       group: 'editorial',
     }),
     // Title (proxy)

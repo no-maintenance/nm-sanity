@@ -13521,7 +13521,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "baseRichtext"
+          "name": "internationalizedArrayRichtext"
         },
         "optional": true
       },
