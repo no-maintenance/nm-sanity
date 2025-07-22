@@ -1,15 +1,20 @@
 import {useAnalytics, useLoadScript} from '@shopify/hydrogen';
 import ReactGA from 'react-ga4';
 import React, {useEffect, useState} from 'react';
+import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 
 const PIXEL_NAME = 'GA4';
-function log(...args: any) {
-  if (process.env.DEBUG_TRACKING) {
-    console.log(PIXEL_NAME, ...args);
-  }
-}
+
 export function useGoogleAnalytics({id}: {id: string}) {
   const {subscribe, register, cart, canTrack} = useAnalytics();
+  const { debugTracking } = useAnalyticsEnv();
+  
+  function log(...args: any) {
+    if (debugTracking) {
+      console.log(PIXEL_NAME, ...args);
+    }
+  }
+  
   // unique string identifier
   const {ready} = register(PIXEL_NAME);
   useEffect(() => {
@@ -18,7 +23,7 @@ export function useGoogleAnalytics({id}: {id: string}) {
       {
         trackingId: id,
         gaOptions: {
-          debug_mode: !!process.env.DEBUG_TRACKING,
+          debug_mode: debugTracking,
         },
       },
     ]);

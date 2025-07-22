@@ -2,15 +2,20 @@ import {useAnalytics} from '@shopify/hydrogen';
 import {useEffect} from 'react';
 import ReactPixel from '~/lib/pixels/fb';
 import {getAddToCartValue} from '~/lib/utils';
+import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 
 const PIXEL_NAME = 'Facebook';
-function log(...args: any) {
-  if (process.env.DEBUG_TRACKING) {
-    console.log(PIXEL_NAME, ...args);
-  }
-}
+
 export function useFacebookAnalytics({id}: {id: string}) {
   const {register, subscribe} = useAnalytics();
+  const { debugTracking } = useAnalyticsEnv();
+  
+  function log(...args: any) {
+    if (debugTracking) {
+      console.log(PIXEL_NAME, ...args);
+    }
+  }
+  
   const {ready} = register(PIXEL_NAME);
   useEffect(() => {
     ReactPixel.init(
@@ -18,7 +23,7 @@ export function useFacebookAnalytics({id}: {id: string}) {
       {},
       {
         autoConfig: true, // set pixel's autoConfig. More info: https://developers.facebook.com/docs/facebook-pixel/advanced/
-        debug: !!process.env.DEBUG_TRACKING, // enable logs
+        debug: debugTracking, // enable logs
       },
     );
 

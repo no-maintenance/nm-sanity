@@ -46,6 +46,11 @@ export function envVariables(contextEnv: Env) {
       env.SANITY_STUDIO_USE_PREVIEW_MODE || 'false',
     SESSION_SECRET: env.SESSION_SECRET || '',
     SHOP_ID: checkRequiredEnv(env.SHOP_ID, 'SHOP_ID'),
+    GOOGLE_ANALYTICS_ID: env.GOOGLE_ANALYTICS_ID || '',
+    FACEBOOK_PIXEL_ID: env.FACEBOOK_PIXEL_ID || '',
+    PINTEREST_PIXEL_ID: env.PINTEREST_PIXEL_ID || '',
+    KLAVIYO_PIXEL_ID: env.KLAVIYO_PIXEL_ID || '',
+    DEBUG_TRACKING: env.DEBUG_TRACKING || '',
   };
 }
 

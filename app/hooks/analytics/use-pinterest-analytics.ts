@@ -1,18 +1,23 @@
 import {useAnalytics} from '@shopify/hydrogen';
 import {useEffect} from 'react';
 import ReactPinterest from '~/lib/pixels/pinterest';
+import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
+
 const PIXEL_NAME = 'Pinterest';
 
-function log(...args: any) {
-  if (process.env.DEBUG_TRACKING) {
-    console.log(PIXEL_NAME, ...args);
-  }
-}
 export function usePinterestAnalytics({id}: {id: string}) {
   const {register, subscribe} = useAnalytics();
+  const { debugTracking } = useAnalyticsEnv();
+  
+  function log(...args: any) {
+    if (debugTracking) {
+      console.log(PIXEL_NAME, ...args);
+    }
+  }
+  
   const {ready} = register(PIXEL_NAME);
   useEffect(() => {
-    ReactPinterest.init(id, '', {debug: !!process.env.DEBUG_TRACKING});
+    ReactPinterest.init(id, '', {debug: debugTracking});
     const ts = new Date().toISOString();
 
     // Standard events

@@ -42,6 +42,11 @@ declare global {
     SANITY_STUDIO_TOKEN: string;
     SESSION_SECRET: string;
     SHOP_ID: string;
+    GOOGLE_ANALYTICS_ID?: string;
+    FACEBOOK_PIXEL_ID?: string;
+    PINTEREST_PIXEL_ID?: string;
+    KLAVIYO_PIXEL_ID?: string;
+    DEBUG_TRACKING?: string;
   }
 }
 

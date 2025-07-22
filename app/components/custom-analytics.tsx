@@ -3,6 +3,7 @@ import { useGoogleAnalytics } from '~/hooks/analytics/use-google-analytics';
 import { usePinterestAnalytics } from '~/hooks/analytics/use-pinterest-analytics';
 import { useFacebookAnalytics } from '~/hooks/analytics/use-facebook-analytics';
 import {useIsDev} from '~/hooks/use-is-dev';
+import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 
 export function CustomAnalytics() {
   const isDev = useIsDev();
@@ -16,13 +17,15 @@ export function CustomAnalytics() {
 }
 
 function ProductionAnalytics() {
-  useGoogleAnalytics({id: process.env.GOOGLE_ANALYTICS_ID || ''});
-  useFacebookAnalytics({id: process.env.FACEBOOK_PIXEL_ID || ''});
-  usePinterestAnalytics({id: process.env.PINTEREST_PIXEL_ID || ''});
+  const { googleAnalyticsId, facebookPixelId, pinterestPixelId, klaviyoPixelId } = useAnalyticsEnv();
+  
+  useGoogleAnalytics({id: googleAnalyticsId});
+  useFacebookAnalytics({id: facebookPixelId});
+  usePinterestAnalytics({id: pinterestPixelId});
 
   return (
     <>
-      <KlaviyoPixel id={process.env.KLAVIYO_PIXEL_ID || ''} />
+      <KlaviyoPixel id={klaviyoPixelId} />
     </>
   );
 }
