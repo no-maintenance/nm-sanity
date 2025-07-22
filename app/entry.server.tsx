@@ -95,6 +95,7 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       'https://*.googletagmanager.com',
       'https://*.google.com',
       'https://*.doubleclick.net',
+      'https://*.pinterest.com',
     ],
     imgSrc: [
       '*.sanity.io',
@@ -127,10 +128,12 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       'https://connect.facebook.net',
       'https://s.pinimg.com',
       'https://static.klaviyo.com',
+      'http://static.klaviyo.com',
       'https://a.klaviyo.com',
       'https://static-tracking.klaviyo.com',
       'https://*.doubleclick.net',
       'https://*.googlesyndication.com',
+      'https://*.pinterest.com',
     ],
     styleSrc: [
       "'self'",

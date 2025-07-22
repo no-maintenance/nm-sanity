@@ -20,7 +20,7 @@ import {
   useLocation,
   useRouteLoaderData,
 } from '@remix-run/react';
-import {getShopAnalytics, Analytics, useNonce} from '@shopify/hydrogen';
+import {getShopAnalytics, Analytics, useNonce, Script} from '@shopify/hydrogen';
 import {DEFAULT_LOCALE} from 'countries';
 
 import {Fonts} from './components/fonts';
@@ -38,6 +38,7 @@ import {generateFaviconUrls} from './lib/generate-favicon-urls';
 
 import tailwindCss from './styles/tailwind.css?url';
 import { Toaster } from '~/components/ui/sonner';
+import { KlaviyoPixel } from './components/klaviyo/klaviyo-pixel';
 
 export type RootLoader = typeof loader;
 
@@ -216,6 +217,8 @@ export function Layout({children}: {children: React.ReactNode}) {
           >
             <AppLayout>{children}</AppLayout>
             <CustomAnalytics />
+            <KlaviyoPixel id={data.env.KLAVIYO_PIXEL_ID} nonce={nonce} />
+
           </Analytics.Provider>
         ) : (
           <AppLayout>{children}</AppLayout>
