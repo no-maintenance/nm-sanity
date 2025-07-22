@@ -1,23 +1,34 @@
 import {useAnalytics} from '@shopify/hydrogen';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import ReactPixel from '~/lib/pixels/fb';
 import {getAddToCartValue} from '~/lib/utils';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
+import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
 
 const PIXEL_NAME = 'Facebook';
 
 export function useFacebookAnalytics({id}: {id: string}) {
   const {register, subscribe} = useAnalytics();
   const { debugTracking } = useAnalyticsEnv();
-  
-  function log(...args: any) {
-    if (debugTracking) {
-      console.log(PIXEL_NAME, ...args);
-    }
-  }
-  
+  const { debugInit, debugEvent } = useAnalyticsDebug();
+  const initialized = useRef(false);
+  const currentId = useRef<string>('');
   const {ready} = register(PIXEL_NAME);
+  
   useEffect(() => {
+    // Skip if no ID provided
+    if (!id) {
+      debugInit(PIXEL_NAME, '');
+      return;
+    }
+    
+    // Skip if already initialized with the same ID
+    if (initialized.current && currentId.current === id) {
+      return;
+    }
+    
+    debugInit(PIXEL_NAME, id);
+    
     ReactPixel.init(
       id,
       {},
@@ -26,13 +37,16 @@ export function useFacebookAnalytics({id}: {id: string}) {
         debug: debugTracking, // enable logs
       },
     );
+    
+    initialized.current = true;
+    currentId.current = id;
 
     // Standard events
     subscribe('page_viewed', (data) => {
-      log('Page viewed:', data);
+      debugEvent(PIXEL_NAME, 'page_viewed', data);
     });
     subscribe('product_viewed', (data) => {
-      log('Product viewed:', data);
+      debugEvent(PIXEL_NAME, 'product_viewed', data);
       const p = data.products[0];
       const payload = {
         content_ids: [p.id],
@@ -42,7 +56,7 @@ export function useFacebookAnalytics({id}: {id: string}) {
       ReactPixel.track('ViewContent', payload);
     });
     subscribe('collection_viewed', (data) => {
-      log('Collection viewed:', data);
+      debugEvent(PIXEL_NAME, 'collection_viewed', data);
       const payload = {
         content_ids: [data.collection.id],
         content_type: 'product_group',
@@ -52,7 +66,7 @@ export function useFacebookAnalytics({id}: {id: string}) {
       ReactPixel.track('ViewContent', payload);
     });
     subscribe('cart_viewed', (data) => {
-      log(' Cart viewed:', data);
+      debugEvent(PIXEL_NAME, 'cart_viewed', data);
       // const payload = {
       //   value: data.cart?.cost?.totalAmount?.amount,
       //   currency: data.cart?.cost?.totalAmount?.currencyCode,
@@ -68,7 +82,7 @@ export function useFacebookAnalytics({id}: {id: string}) {
       // window.fbq('trackCustom', 'ViewCart', payload);
     });
     subscribe('cart_updated', (data) => {
-      log('Cart updated:', data);
+      debugEvent(PIXEL_NAME, 'cart_updated', data);
     });
     subscribe('product_added_to_cart', (data) => {
       const m = data?.currentLine?.merchandise;

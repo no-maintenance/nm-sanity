@@ -4,11 +4,13 @@ import { usePinterestAnalytics } from '~/hooks/analytics/use-pinterest-analytics
 import { useFacebookAnalytics } from '~/hooks/analytics/use-facebook-analytics';
 import {useIsDev} from '~/hooks/use-is-dev';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
+import { useEffect } from 'react';
 
 export function CustomAnalytics() {
+  const { debugTracking } = useAnalyticsEnv();
   const isDev = useIsDev();
 
-  if (isDev) {
+  if (isDev && !debugTracking) {
     return null;
   }
   return (
@@ -22,7 +24,6 @@ function ProductionAnalytics() {
   useGoogleAnalytics({id: googleAnalyticsId});
   useFacebookAnalytics({id: facebookPixelId});
   usePinterestAnalytics({id: pinterestPixelId});
-
   return (
     <>
       <KlaviyoPixel id={klaviyoPixelId} />

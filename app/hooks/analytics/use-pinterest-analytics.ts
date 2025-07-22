@@ -1,32 +1,47 @@
 import {useAnalytics} from '@shopify/hydrogen';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import ReactPinterest from '~/lib/pixels/pinterest';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
+import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
 
 const PIXEL_NAME = 'Pinterest';
 
 export function usePinterestAnalytics({id}: {id: string}) {
   const {register, subscribe} = useAnalytics();
   const { debugTracking } = useAnalyticsEnv();
-  
-  function log(...args: any) {
-    if (debugTracking) {
-      console.log(PIXEL_NAME, ...args);
-    }
-  }
+  const { debugInit, debugEvent } = useAnalyticsDebug();
+  const initialized = useRef(false);
+  const currentId = useRef<string>('');
   
   const {ready} = register(PIXEL_NAME);
+  
   useEffect(() => {
+    // Skip if no ID provided
+    if (!id) {
+      debugInit(PIXEL_NAME, '');
+      return;
+    }
+    
+    // Skip if already initialized with the same ID
+    if (initialized.current && currentId.current === id) {
+      return;
+    }
+    
+    debugInit(PIXEL_NAME, id);
+    
     ReactPinterest.init(id, '', {debug: debugTracking});
+    
+    initialized.current = true;
+    currentId.current = id;
     const ts = new Date().toISOString();
 
     // Standard events
     subscribe('page_viewed', (data) => {
-      log('Page viewed:', data);
+      debugEvent(PIXEL_NAME, 'page_viewed', data);
       ReactPinterest.track('pagevisit', {event_id: `pageview--${ts}`});
     });
     subscribe('product_viewed', (data) => {
-      log('Product viewed:', data);
+      debugEvent(PIXEL_NAME, 'product_viewed', data);
       // const p = data.products[0];
       // ReactPinterest.track('pagevisit', {
       //   event_id: `product-viewed--${p.id}--${ts}`,
@@ -40,16 +55,16 @@ export function usePinterestAnalytics({id}: {id: string}) {
       // });
     });
     subscribe('collection_viewed', (data) => {
-      log('Collection viewed:', data);
+      debugEvent(PIXEL_NAME, 'collection_viewed', data);
     });
     subscribe('cart_viewed', (data) => {
-      log(' Cart viewed:', data);
+      debugEvent(PIXEL_NAME, 'cart_viewed', data);
     });
     subscribe('cart_updated', (data) => {
-      log('Cart updated:', data);
+      debugEvent(PIXEL_NAME, 'cart_updated', data);
     });
     subscribe('product_added_to_cart', (data) => {
-      log('Cart add to cart:', data);
+      debugEvent(PIXEL_NAME, 'product_added_to_cart', data);
       const id = data.currentLine?.merchandise?.product.id;
       const ts = new Date().toISOString();
       ReactPinterest.track('addtocart', {

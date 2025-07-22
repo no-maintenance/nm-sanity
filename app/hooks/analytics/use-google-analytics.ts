@@ -1,24 +1,34 @@
 import {useAnalytics, useLoadScript} from '@shopify/hydrogen';
 import ReactGA from 'react-ga4';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
+import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
 
 const PIXEL_NAME = 'GA4';
 
 export function useGoogleAnalytics({id}: {id: string}) {
   const {subscribe, register, cart, canTrack} = useAnalytics();
   const { debugTracking } = useAnalyticsEnv();
-  
-  function log(...args: any) {
-    if (debugTracking) {
-      console.log(PIXEL_NAME, ...args);
-    }
-  }
-  
-  // unique string identifier
+  const { debugInit, debugEvent } = useAnalyticsDebug();
+  const initialized = useRef(false);
+  const currentId = useRef<string>('');
   const {ready} = register(PIXEL_NAME);
+  
   useEffect(() => {
-    log('Google Analytics Pixel');
+    
+    // Skip if no ID provided
+    if (!id) {
+      debugInit(PIXEL_NAME, '');
+      return;
+    }
+    
+    // Skip if already initialized with the same ID
+    if (initialized.current && currentId.current === id) {
+      return;
+    }
+    
+    debugInit(PIXEL_NAME, id);
+    
     ReactGA.initialize([
       {
         trackingId: id,
@@ -27,12 +37,15 @@ export function useGoogleAnalytics({id}: {id: string}) {
         },
       },
     ]);
+    
+    initialized.current = true;
+    currentId.current = id;
     // Standard events
     subscribe('page_viewed', (data) => {
-      log('Page viewed:', data);
+      debugEvent(PIXEL_NAME, 'page_viewed', data);
     });
     subscribe('product_viewed', (data) => {
-      log('Product viewed:', data);
+      debugEvent(PIXEL_NAME, 'product_viewed', data);
       const payload = {
         items: data.products.map((product) => {
           const {
@@ -59,7 +72,7 @@ export function useGoogleAnalytics({id}: {id: string}) {
       ReactGA.event('view_item', payload);
     });
     subscribe('collection_viewed', (data) => {
-      log('Collection viewed:', data);
+      debugEvent(PIXEL_NAME, 'collection_viewed', data);
       const payload = {
         item_list_id: data.collection.id,
         item_list_name: data.collection.handle,
@@ -68,7 +81,7 @@ export function useGoogleAnalytics({id}: {id: string}) {
       ReactGA.event('view_item_list', payload);
     });
     subscribe('cart_viewed', (data) => {
-      log('Cart viewed:', data);
+      debugEvent(PIXEL_NAME, 'cart_viewed', data);
       const payload = {
         value: data.cart?.cost?.totalAmount?.amount,
         currency: data.cart?.cost?.totalAmount?.currencyCode,
@@ -84,11 +97,10 @@ export function useGoogleAnalytics({id}: {id: string}) {
       ReactGA.event('view_cart', payload);
     });
     subscribe('cart_updated', (data) => {
-      log('Cart updated:', data);
+      debugEvent(PIXEL_NAME, 'cart_updated', data);
     });
     subscribe('product_added_to_cart', (data) => {
-      log('Cart add to cart:', data);
-      log('GoogleAnalyticsPixel', 'product_added_to_cart');
+      debugEvent(PIXEL_NAME, 'product_added_to_cart', data);
       const payload = {
         value: data.currentLine?.cost?.totalAmount?.amount,
         currency: data.currentLine?.cost?.totalAmount?.currencyCode,
