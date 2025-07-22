@@ -205,6 +205,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         <Fonts />
         <Links />
         <CssVars />
+      
       </head>
       <body className="bg-background text-foreground flex min-h-screen flex-col overflow-x-hidden">
         {skipLayout ? (
@@ -217,7 +218,6 @@ export function Layout({children}: {children: React.ReactNode}) {
           >
             <AppLayout>{children}</AppLayout>
             <CustomAnalytics />
-            <KlaviyoPixel id={data.env.KLAVIYO_PIXEL_ID} nonce={nonce} />
 
           </Analytics.Provider>
         ) : (
