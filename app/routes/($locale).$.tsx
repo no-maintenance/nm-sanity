@@ -4,7 +4,6 @@ import type {PAGE_QUERYResult} from 'types/sanity/sanity.generated';
 
 import {useLoaderData} from '@remix-run/react';
 import {DEFAULT_LOCALE} from 'countries';
-
 import {CmsSection} from '~/components/cms-section';
 import {PAGE_QUERY} from '~/data/sanity/queries';
 import {mergeMeta} from '~/lib/meta';
@@ -79,6 +78,7 @@ export default function PageRoute() {
     : null;
 }
 
+
 function getPageHandle(args: {
   locale: I18nLocale;
   params: LoaderFunctionArgs['params'];
@@ -89,7 +89,7 @@ function getPageHandle(args: {
   const pathWithoutSlash = pathWithoutLocale.replace(/^\/+/g, '');
   const isTranslatedHomePage =
     params.locale && locale.pathPrefix && !params['*'];
-
+  console.log('isTranslatedHomePage', !!isTranslatedHomePage);
   // Return home as handle for a translated homepage ex: /fr/
   if (isTranslatedHomePage) return 'home';
 

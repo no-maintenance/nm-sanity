@@ -16,13 +16,10 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
   useEffect(() => {
     if (!accountId || loaded.current || typeof document === 'undefined') return;
 
-    // 1️⃣  Pre-bootstrap config – must run BEFORE the Klaviyo loader
-    //     – set our account id
-    //     – tell Klaviyo we will handle SPA page-view events manually
-    //       so it will NOT patch history.pushState / replaceState.
-    (window as any)._klOnsite = (window as any)._klOnsite || [];
+    // MUST run before the external <script src="...klaviyo.js">
+    window._klOnsite = window._klOnsite || [];
     window._klOnsite.push(['account', accountId]);
-    window._klOnsite.push(['spa', 'manual']);
+    window._klOnsite.push(['spa', 'manual']);   // disables auto-tracking & history patch
 
     // 2️⃣  Inject the recommended klaviyo-object bootstrap (docs)
     const bootstrap = document.createElement('script');
@@ -120,6 +117,14 @@ export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
 
     ready();
   }, [subscribe, ready]);
+
+  // Debug: Check if history.pushState is patched (client-side only)
+  if (typeof window !== 'undefined' && window.history) {
+    console.log(
+      'pushState patched? ',
+      window.history.pushState.toString().includes('[native code]') ? 'NO' : 'YES'
+    );
+  }
 
   return null; // no DOM output
 }

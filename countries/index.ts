@@ -1,4 +1,4 @@
-import type {I18nLocale, Localizations} from 'types';
+import type {I18nLocale, Localizations, Locale as I18nBaseLocale} from 'types';
 
 export const countries: Localizations = {
   default: {
@@ -100,22 +100,42 @@ export function getAllLanguages() {
   return uniqueLanguages;
 }
 
-export function getLocaleFromRequest(request: Request): I18nLocale {
-  const url = new URL(request.url);
-  const firstPathPart =
-    '/' + url.pathname.substring(1).split('/')[0].toLowerCase();
+type RouteParams = {locale?: string} | undefined;
 
-  return countries[firstPathPart]
-    ? {
-        ...countries[firstPathPart],
-        pathPrefix: firstPathPart,
-        default: false,
-      }
-    : {
-        ...countries['default'],
-        pathPrefix: '',
-        default: true,
-      };
+/**
+ * Detect the visitor's locale.
+ *
+ * 1. If Remix has already parsed route params, prefer `params.locale`.
+ * 2. Otherwise, read the first URL segment (stripping “.data” in data requests).
+ */
+export function getLocaleFromRequest(
+  request: Request,
+  params?: RouteParams,
+): I18nLocale {
+  /* ---------- 1. via route params ------------------------------------------------ */
+  if (params?.locale) {
+    const key = `/${params.locale.toLowerCase()}`;
+    const config = countries[key] ?? countries.default;
+    return buildLocale(config, key);
+  }
+
+  /* ---------- 2. via raw URL (e.g. during createAppLoadContext) ------------------ */
+  const url = new URL(request.url);
+  const firstSegment = url.pathname.substring(1).split('/')[0].toLowerCase();
+  const key = '/' + firstSegment.split('.')[0]; // “/ja.data” → “/ja”
+  const config = countries[key] ?? countries.default;
+
+  return buildLocale(config, key);
+}
+
+/* ------------------------------------------------------------------------------ */
+function buildLocale(config: I18nBaseLocale, key: string): I18nLocale {
+  const isDefault = config === countries.default;
+  return {
+    ...config,
+    pathPrefix: isDefault ? '' : key,
+    default: isDefault,
+  };
 }
 
 export function getAllLocales() {
