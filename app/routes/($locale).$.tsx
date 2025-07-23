@@ -89,7 +89,7 @@ function getPageHandle(args: {
   const pathWithoutSlash = pathWithoutLocale.replace(/^\/+/g, '');
   const isTranslatedHomePage =
     params.locale && locale.pathPrefix && !params['*'];
-  console.log('isTranslatedHomePage', !!isTranslatedHomePage);
+  
   // Return home as handle for a translated homepage ex: /fr/
   if (isTranslatedHomePage) return 'home';
 
