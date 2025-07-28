@@ -69,8 +69,7 @@ export function StickyTileSection(
     const isFirstSection = section?.index === 0;
     // Use header height and sticky status from header data
     const headerIsSticky = header?.sticky === 'always' || header?.sticky === 'onScrollUp';
-    const headerHeight = headerIsSticky ? (header?.desktopLogoWidth || 60) : 0; // Fallback to 60 if not set
-    const stickyVhOffset = isFirstSection ? `calc(100vh - ${headerHeight}px)` : '100vh';
+    const stickyVhOffset = isFirstSection ? 'calc(100vh - var(--desktopHeaderHeight))' : '100vh';
 
     const stickyTileIndex = 0; // The first tile in the array is always the candidate for stickiness
     const firstColumnTiles: TileProps[] = [];
@@ -84,7 +83,7 @@ export function StickyTileSection(
         <div className="">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
                 <div className='h-full'>
-                    <div className='sticky top-0'>
+                    <div className='sticky top-[var(--desktopHeaderHeight)]'>
                         <Tile tile={stickyTile} isSticky={true} stickyHeight={stickyVhOffset} />
                     </div>
                 </div>
@@ -210,7 +209,7 @@ function Tile({
             _type: 'externalLink',
             _key: tile._key || 'external-link',
             link: externalLink,
-            openInNewTab: openInNewTab,
+            openInNewTab,
         };
         return (
             <SanityExternalLink data={externalLinkData} className={tileWrapperClasses}>
