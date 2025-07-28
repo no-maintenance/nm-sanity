@@ -55,25 +55,17 @@ export function ProductCard(props: {
   const [isHovered, setIsHovered] = useState(false);
   const currentImage = isHovered && secondaryImage ? secondaryImage : primaryImage;
 
-  const sizes = [
-    '(min-width: 1024px)',
-    columns?.desktop ? `${(100 / columns.desktop) * 1.15}vw` : '38vw',
-    columns?.mobile ? `${100 * 1.15}vw` : '115vw',
-  ].join(', ');
 
-  /**
- * Optional: Extended more granular image sizes
- * 
+ 
   const sizes = [
     '(min-width: 1200px) and (max-width: 1599px)',
-    columns?.desktop ? `${100 / columns.desktop}vw` : '25vw',
+    columns?.desktop ? `${100 / columns.desktop + 10}vw` : '25vw',
     '(min-width: 1024px) and (max-width: 1199px)',
-    columns?.desktop ? `${100 / columns.desktop}vw` : '33vw',
+    columns?.desktop ? `${100 / columns.desktop + 10}vw` : '33vw',
     '(min-width: 768px) and (max-width: 1023px)',
-    columns?.mobile ? `${100 / columns.mobile}vw` : '50vw',
+    columns?.mobile ? `${100 / columns.mobile + 10}vw` : '50vw',
     '100vw'
   ].join(', ');
- */
 
   const path = useLocalePath({ 
     path: product?.trackingParameters && product?.searchTerm 
