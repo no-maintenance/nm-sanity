@@ -7,6 +7,7 @@ import { CollectionProductGridSection } from '~/components/sections/collection-p
 import { FeaturedCollectionSection } from '~/components/sections/featured-collection-section';
 import { FeaturedProductSection } from '~/components/sections/featured-product-section';
 import { ImageBannerSection } from '~/components/sections/image-banner-section';
+import { MediaGallerySection } from '~/components/sections/media-gallery-section';
 import { ProductInformationSection } from '~/components/sections/product-information-section';
 import { ProductSwimlaneSection } from '~/components/sections/product-swimlane-section';
 import { RelatedProductsSection } from '~/components/sections/related-products-section';
@@ -23,6 +24,7 @@ export const sections: {
   featuredCollectionSection: FeaturedCollectionSection,
   featuredProductSection: FeaturedProductSection,
   imageBannerSection: ImageBannerSection,
+  mediaGallerySection: MediaGallerySection,
   productInformationSection: ProductInformationSection,
   productSwimlaneSection: ProductSwimlaneSection,
   stickyTileSection: StickyTileSection,

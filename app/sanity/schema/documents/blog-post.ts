@@ -37,6 +37,24 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      type: 'slug',
+      title: 'Slug',
+      group: 'content',
+      description: 'Unique URL path for this editorial, generated from the title',
+      options: {
+        source: (doc: any) => doc.title?.[0]?.value,
+        slugify: (input: string) =>
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .slice(0, 96),
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'excerpt',
       type: 'internationalizedArrayText',
       title: 'Excerpt',
@@ -81,11 +99,6 @@ export default defineType({
       description: 'Fashion season or collection name (e.g., "AW 24", "SS 25", "Resort 2024")',
       group: 'editorial',
       icon: Calendar,
-      options: {
-        list: [], // Empty list enables free text input with auto-suggestions
-        layout: 'dropdown',
-      },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'location',
@@ -182,25 +195,7 @@ export default defineType({
       name: 'seo',
       type: 'seo',
       group: 'publishing',
-    }),
-    defineField({
-      name: 'slug',
-      type: 'slug',
-      title: 'Slug',
-      group: 'publishing',
-      description: 'Unique URL path for this editorial, generated from the title',
-      options: {
-        source: (doc: any) => doc.title?.[0]?.value,
-        slugify: (input: string) =>
-          input
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .slice(0, 96),
-      },
-      validation: (Rule) => Rule.required(),
-    }),
+    })
   ],
   orderings: [
     {

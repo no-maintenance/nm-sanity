@@ -1,10 +1,6 @@
 import {Tag} from 'lucide-react';
 import {defineField, defineType} from 'sanity';
 
-import type {SlugInt} from '../../utils/slug';
-
-import {validateIntSlug} from '../../utils/slug';
-
 export default defineType({
   name: 'blogCategory',
   title: 'Editorial Categories',
@@ -20,21 +16,28 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      type: 'slug',
+      title: 'Slug',
+      description: 'URL-friendly version of the category name',
+      options: {
+        source: (doc: any) => doc.title?.[0]?.value,
+        slugify: (input: string) =>
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .slice(0, 96),
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'description',
       type: 'internationalizedArrayText',
       title: 'Description',
       description: 'Brief description of what this category covers',
       validation: (Rule) => Rule.max(160).warning('Keep under 160 characters for SEO'),
-    }),
-    defineField({
-      name: 'slug',
-      type: 'internationalizedArraySlug',
-      title: 'Slug',
-      description: 'URL-friendly version of the category name',
-      validation: (Rule) =>
-        Rule.required().custom((slugArray: SlugInt[], context) =>
-          validateIntSlug({slugArray, context}),
-        ),
     }),
     defineField({
       name: 'color',

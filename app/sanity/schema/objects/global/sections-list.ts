@@ -7,6 +7,9 @@ const globalSections = [
     type: 'imageBannerSection',
   },
   {
+    type: 'mediaGallerySection',
+  },
+  {
     type: 'featuredCollectionSection',
   },
   {

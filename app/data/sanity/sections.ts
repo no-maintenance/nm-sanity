@@ -223,6 +223,35 @@ export const STICKY_TILE_SECTION_FRAGMENT = defineQuery(`{
   settings ${SECTION_SETTINGS_FRAGMENT}
 }`);
 
+export const MEDIA_GALLERY_SECTION_FRAGMENT = defineQuery(`{
+  _key,
+  _type,
+  items[] {
+    _key,
+    _type,
+    // Simple image type (direct image upload)
+    _type == 'simpleImage' => {
+      ...${IMAGE_FRAGMENT}
+    },
+    // Gallery item type with media options
+    _type == 'galleryItem' => {
+      mediaType,
+      mediaType == "image" => {
+        image ${IMAGE_FRAGMENT}
+      },
+      mediaType == "video" => {
+        video ${MUX_VIDEO_FRAGMENT}
+      },
+      "caption": ${getIntValue('caption')}
+    }
+  },
+  layout {
+    aspectRatio,
+    gap
+  },
+  settings ${SECTION_SETTINGS_FRAGMENT}
+}`);
+
 export const SECTIONS_FRAGMENT = () =>
   defineQuery(`
     _type == 'richtextSection' => ${RICHTEXT_SECTION_FRAGMENT},
@@ -233,6 +262,7 @@ export const SECTIONS_FRAGMENT = () =>
     _type == 'imageBannerSection' => ${IMAGE_BANNER_SECTION_FRAGMENT},
     _type == 'productSwimlaneSection' => ${PRODUCT_SWIMLANE_SECTION_FRAGMENT},
     _type == 'stickyTileSection' => ${STICKY_TILE_SECTION_FRAGMENT},
+    _type == 'mediaGallerySection' => ${MEDIA_GALLERY_SECTION_FRAGMENT},
   `);
 
 export const COLLECTION_SECTIONS_FRAGMENT = () =>

@@ -49,6 +49,7 @@ import collectionProductGrid from './objects/sections/collection-product-grid';
 import featuredCollectionSection from './objects/sections/featured-collection-section';
 import featuredProductSection from './objects/sections/featured-product-section';
 import imageBannerSection from './objects/sections/image-banner-section';
+import mediaGallerySection from './objects/sections/media-gallery-section';
 import productInformationSection from './objects/sections/product-information-section';
 import productSwimlaneSection from './objects/sections/product-swimlane-section';
 import relatedProductsSection from './objects/sections/related-products-section';
@@ -93,6 +94,7 @@ const documents = [
 ];
 const sections = [
   imageBannerSection,
+  mediaGallerySection,
   featuredCollectionSection,
   featuredProductSection,
   collectionListSection,

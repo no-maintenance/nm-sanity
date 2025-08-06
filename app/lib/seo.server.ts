@@ -497,10 +497,48 @@ function policies({
   };
 }
 
+function editorial({
+  editorial,
+  sanity,
+  url,
+}: {
+  editorial: any;
+  sanity: SanityConfig;
+  url: Request['url'];
+}): SeoConfig {
+  const seoTitle = editorial?.seo?.title || editorial?.title;
+  const seoDescription = editorial?.seo?.description || editorial?.excerpt;
+  const seoImage = editorial?.seo?.image || editorial?.featuredImage;
+  
+  const media = generateOGImageData({
+    image: seoImage,
+    sanity,
+  });
+
+  return {
+    description: truncate(seoDescription || ''),
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      alternativeHeadline: editorial.title,
+      datePublished: editorial?.publishedAt,
+      description: truncate(seoDescription || ''),
+      headline: seoTitle || '',
+      image: typeof media === 'object' && media && 'url' in media && media.url ? media.url : undefined,
+      url,
+    },
+    media,
+    title: seoTitle,
+    titleTemplate: '%s | Editorials',
+    url,
+  };
+}
+
 export const seoPayload = {
   article,
   blog,
   collection,
+  editorial,
   home,
   listCollections,
   page,
