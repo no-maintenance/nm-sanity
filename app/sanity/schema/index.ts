@@ -1,6 +1,7 @@
 import colorPicker from '../plugins/color-picker';
 import rangeSlider from '../plugins/range-slider';
 import blogPost from './documents/blog-post';
+import blogCategory from './documents/blog-category';
 import collection from './documents/collection';
 import collectionTemplate from './documents/collection-template';
 import color from './documents/color';
@@ -82,6 +83,7 @@ const documents = [
   productTemplate,
   collectionTemplate,
   blogPost,
+  blogCategory,
   productVariant,
   font,
   storePolicy,

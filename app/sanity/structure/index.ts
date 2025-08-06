@@ -3,7 +3,7 @@ import type {
   StructureResolver,
 } from 'sanity/structure';
 
-import {LayoutTemplate, PanelsTopLeft, BookCheck, FileText} from 'lucide-react';
+import {LayoutTemplate, PanelsTopLeft, BookCheck, FileText, Calendar, Tag} from 'lucide-react';
 
 import {collections} from './collection-structure';
 import {products} from './product-structure';
@@ -19,6 +19,23 @@ export const structure: StructureResolver = (S, context) => {
     .items([
       singleton(S, SINGLETONS.home),
       S.documentTypeListItem('page').icon(PanelsTopLeft),
+      S.listItem()
+        .title('Editorials')
+        .icon(Calendar)
+        .child(
+          S.list()
+            .title('Editorial Content')
+            .items([
+              S.listItem()
+                .title('All Editorials')
+                .icon(Calendar)
+                .child(S.documentTypeList('blogPost')),
+              S.listItem()
+                .title('Categories')
+                .icon(Tag)
+                .child(S.documentTypeList('blogCategory')),
+            ]),
+        ),
       products(S, context),
       collections(S, context),
       S.documentTypeListItem('storePolicy').icon(BookCheck),

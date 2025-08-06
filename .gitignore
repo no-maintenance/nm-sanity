@@ -19,3 +19,4 @@ node_modules
 
 # Sanity scripts cache
 app/sanity/**/cache.json
+*.csv

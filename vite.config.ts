@@ -85,5 +85,7 @@ export default defineConfig({
   },
   server: {
     allowedHosts: ['testing.nomaintenance.us'],
+    port: 3000,
+    strictPort: false,
   },
 });

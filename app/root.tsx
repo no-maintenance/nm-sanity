@@ -223,6 +223,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         ) : (
           <AppLayout>{children}</AppLayout>
         )}
+
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <Toaster />

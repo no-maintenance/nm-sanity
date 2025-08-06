@@ -1,6 +1,7 @@
 declare global {
   interface Window {
-    klaviyo?: Array<any>;
+    klaviyo?: any;
+    _klOnsite?: Array<any>;
   }
 }
 
@@ -8,7 +9,7 @@ import {useEffect, useRef} from 'react';
 import {useAnalytics} from '@shopify/hydrogen';
 
 // ---------------------------------------------------------------------------
-// Helper: load Klaviyo.js once and opt-out of its automatic SPA page tracking
+// Simplified Klaviyo loader without SPA manual mode
 // ---------------------------------------------------------------------------
 function useLoadKlaviyo(accountId: string, nonce?: string) {
   const loaded = useRef(false);
@@ -16,33 +17,23 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
   useEffect(() => {
     if (!accountId || loaded.current || typeof document === 'undefined') return;
 
-    // MUST run before the external <script src="...klaviyo.js">
+    // Initialize the queue
     window._klOnsite = window._klOnsite || [];
     window._klOnsite.push(['account', accountId]);
-    window._klOnsite.push(['spa', 'manual']);   // disables auto-tracking & history patch
 
-    // 2️⃣  Inject the recommended klaviyo-object bootstrap (docs)
-    const bootstrap = document.createElement('script');
-    bootstrap.innerHTML = `
-      !function(){if(!window.klaviyo){
-        window._klOnsite=window._klOnsite||[];
-        try{window.klaviyo=new Proxy({},{get:function(n,i){
-          return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}
-          :function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];
-            var t="function"==typeof o[o.length-1]?o.pop():void 0,
-            e=new Promise(function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))});
-            return e}}})}
-        catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){
-          var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();
-    `;
-    document.head.appendChild(bootstrap);
-
-    // 3️⃣  Load the actual Klaviyo.js file
-    const lib = document.createElement('script');
-    lib.async = true;
-    lib.src = `https://static.klaviyo.com/onsite/js/${accountId}/klaviyo.js`;
-    if (nonce) lib.nonce = nonce;
-    document.head.appendChild(lib);
+    // Load script directly without manual SPA mode
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://static.klaviyo.com/onsite/js/${accountId}/klaviyo.js`;
+    if (nonce) script.nonce = nonce;
+    script.onload = () => {
+      // Script loaded successfully
+      console.log('Klaviyo script loaded');
+    };
+    script.onerror = () => {
+      console.error('Failed to load Klaviyo script');
+    };
+    document.head.appendChild(script);
 
     loaded.current = true;
   }, [accountId, nonce]);
@@ -58,122 +49,11 @@ export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
   const {ready} = register('Klaviyo');
 
   useEffect(() => {
-    // make sure klaviyo object is available
-    const kl = (window as any).klaviyo;
-    if (!kl) return;
+    if (!id) return;
 
-    subscribe('product_viewed', (data) => {
-      const p = data.products[0];
-      const item = {
-        Name: p.title,
-        ProductID: p.id.substring(p.id.lastIndexOf('/') + 1),
-        ImageURL: p.image,
-        Handle: p.handle,
-        Brand: p.vendor,
-        Price: p.price,
-        Metadata: {
-          Brand: p.vendor,
-          Price: p.price,
-          CompareAtPrice: p.compareAtPrice,
-        },
-      };
-      kl.track?.('Viewed Product', item);
-      kl.trackViewedItem?.(item);
-    });
-
-    subscribe('product_added_to_cart', (data) => {
-      const curr = data.currentLine?.merchandise?.product;
-      const newline = {
-        $value: Number(data.currentLine?.cost.amountPerQuantity.amount ?? 0),
-        AddedItemProductName: curr?.title,
-        AddedItemProductID: curr?.id.substring(curr?.id.lastIndexOf('/') + 1),
-        AddedItemImageURL: data.currentLine?.merchandise?.image?.url,
-        AddedItemURL: `https://nomaintenance.us/products/${curr?.handle ?? ''}`,
-        Handle: curr?.handle,
-        Brand: curr?.vendor,
-        AddedItemQuantity: 1,
-        AddedItemPrice: Number(
-          data.currentLine?.cost.amountPerQuantity.amount ?? 0,
-        ),
-        CheckoutURL: data?.cart?.checkoutUrl,
-        ...data.customData,
-      };
-      const payload = {
-        ...newline,
-        Items: data.cart?.lines.nodes.map((i) => ({
-          ProductID: i.id,
-          ProductName: i?.merchandise?.product?.title,
-          Quantity: i.quantity,
-          ItemPrice: Number(i.cost.amountPerQuantity.amount),
-          RowTotal: Number(i.cost.totalAmount.amount),
-          ProductURL: `https://nomaintenance.us/products/${i.merchandise.product.handle}`,
-          ImageURL: i.merchandise.image?.url,
-        })),
-      };
-      kl.track?.('Added to Cart', payload);
-    });
-
-    // Other hooks (collection_viewed, cart_viewed, etc.) can be added here
-
-    ready();
-  }, [subscribe, ready]);
-
-  // Debug: Check if history.pushState is patched (client-side only)
-  if (typeof window !== 'undefined' && window.history) {
-    console.log(
-      'pushState patched? ',
-      window.history.pushState.toString().includes('[native code]') ? 'NO' : 'YES'
-    );
-  }
-
-  return null; // no DOM output
-}
-
-
-export function useKlaviyoAnalytics({id, nonce}: {id: string; nonce?: string}) {
-  const {register, subscribe} = useAnalytics();
-  const {ready} = register('Klaviyo');
-  const initialized = useRef(false);
-  const scriptLoaded = useRef(false);
-
-  useEffect(() => {
-    // Skip if no ID or already initialized
-    if (!id || initialized.current) return;
-
-    
-    const scriptUrl = `//static.klaviyo.com/onsite/js/RDT3xD/klaviyo.js`;
-    // Check if script is already loaded
-    const existingScript = document.querySelector(`script[src*="${id}/klaviyo.js"]`);
-    
-    if (existingScript || scriptLoaded.current) {
-      // Script already exists, proceed with initialization
-      // initializeKlaviyo();
-    } else {
-      // Load the script
-      const script = document.createElement('script');
-      script.src = scriptUrl;
-      script.async = true;
-      if (nonce) script.nonce = nonce;
-      
-      script.onload = () => {
-        scriptLoaded.current = true;
-        // initializeKlaviyo();
-      };
-      
-      script.onerror = () => {
-        console.error('Failed to load Klaviyo script');
-        ready(); // Still mark as ready to prevent blocking other analytics
-      };
-      
-      document.head.appendChild(script);
-    }
-
-    function initializeKlaviyo() {
-      if (initialized.current) return;
-      
-      const klaviyo = window.klaviyo || [];
-      
-      subscribe('product_viewed', (data) => {
+      const unsubscribeProductViewed = subscribe('product_viewed', (data) => {
+        if (!window._klOnsite) return;
+        
         const product = data.products[0];
         const item = {
           Name: product.title,
@@ -182,20 +62,18 @@ export function useKlaviyoAnalytics({id, nonce}: {id: string; nonce?: string}) {
           Handle: product.handle,
           Brand: product.vendor,
           Price: product.price,
-          Metadata: {
-            Brand: product.vendor,
-            Price: product.price,
-            CompareAtPrice: product.compareAtPrice,
-          },
         };
-        klaviyo.push(['track', 'Viewed Product', item]);
-        klaviyo.push(['trackViewedItem', item]);
+        
+        window._klOnsite.push(['track', 'Viewed Product', item]);
+        window._klOnsite.push(['trackViewedItem', item]);
       });
-      
-      subscribe('product_added_to_cart', (data) => {
+
+      const unsubscribeAddedToCart = subscribe('product_added_to_cart', (data) => {
+        if (!window._klOnsite) return;
+        
         const curr = data.currentLine?.merchandise?.product;
-        const newline = {
-          $value: parseInt(data.currentLine?.cost.amountPerQuantity.amount ?? ''),
+        const item = {
+          $value: Number(data.currentLine?.cost.amountPerQuantity.amount ?? 0),
           AddedItemProductName: curr?.title,
           AddedItemProductID: curr?.id.substring(curr?.id.lastIndexOf('/') + 1),
           AddedItemImageURL: data.currentLine?.merchandise?.image?.url,
@@ -203,42 +81,17 @@ export function useKlaviyoAnalytics({id, nonce}: {id: string; nonce?: string}) {
           Handle: curr?.handle,
           Brand: curr?.vendor,
           AddedItemQuantity: 1,
-          AddedItemPrice: parseInt(
-            data.currentLine?.cost.amountPerQuantity.amount ?? '0',
-          ),
+          AddedItemPrice: Number(data.currentLine?.cost.amountPerQuantity.amount ?? 0),
           CheckoutURL: data?.cart?.checkoutUrl,
-          ...data.customData,
         };
-        const payload = {
-          ...newline,
-          Items: data.cart?.lines.nodes.map((i) => ({
-            ProductID: i.id,
-            ProductName: i?.merchandise?.product?.title,
-            Quantity: i.quantity,
-            ItemPrice: parseInt(i.cost.amountPerQuantity.amount),
-            RowTotal: parseInt(i.cost.totalAmount.amount),
-            ProductURL: `https://nomaintenance.us/products/${i.merchandise.product.handle}`,
-            ImageURL: i.merchandise.image?.url,
-          })),
-        };
-        klaviyo.push(['track', 'Added to Cart', payload]);
+        
+        window._klOnsite.push(['track', 'Added to Cart', item]);
       });
-      
-      subscribe('collection_viewed', (data) => {});
-      subscribe('cart_viewed', (data) => {});
-      subscribe('custom_newsletter_signup', (data) => {});
-      
-      ready();
-      initialized.current = true;
-    }
 
-    // Cleanup function
-    return () => {
-      // Remove script if component unmounts
-      const script = document.querySelector(`script[src*="${id}/klaviyo.js"]`);
-      if (script) {
-        script.remove();
-      }
-    };
-  }, []);
+    ready();
+  }, [id, subscribe, ready]);
+
+  return null;
 }
+
+
