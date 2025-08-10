@@ -161,3 +161,148 @@ export function getAllCountries() {
     return countries[key].country;
   });
 }
+
+/**
+ * Shopify Oxygen environment helper to read buyer geo headers.
+ */
+type OxygenEnv = {
+  buyer: {
+    readonly ip: string | undefined;
+    readonly country: string | undefined;
+    readonly continent: string | undefined;
+    readonly city: string | undefined;
+    readonly isEuCountry: boolean;
+    readonly latitude: string | undefined;
+    readonly longitude: string | undefined;
+    readonly region: string | undefined;
+    readonly regionCode: string | undefined;
+    readonly timezone: string | undefined;
+  };
+  readonly shopId: string | undefined;
+  readonly storefrontId: string | undefined;
+  readonly deploymentId: string | undefined;
+};
+
+export function getOxygenEnv(request: Request): OxygenEnv {
+  return Object.freeze({
+    buyer: {
+      ip: request.headers.get('oxygen-buyer-ip') ?? undefined,
+      country: request.headers.get('oxygen-buyer-country') ?? undefined,
+      continent: request.headers.get('oxygen-buyer-continent') ?? undefined,
+      city: request.headers.get('oxygen-buyer-city') ?? undefined,
+      isEuCountry: Boolean(request.headers.get('oxygen-buyer-is-eu-country')),
+      latitude: request.headers.get('oxygen-buyer-latitude') ?? undefined,
+      longitude: request.headers.get('oxygen-buyer-longitude') ?? undefined,
+      region: request.headers.get('oxygen-buyer-region') ?? undefined,
+      regionCode: request.headers.get('oxygen-buyer-region-code') ?? undefined,
+      timezone: request.headers.get('oxygen-buyer-timezone') ?? undefined,
+    },
+    shopId: request.headers.get('oxygen-buyer-shop-id') ?? undefined,
+    storefrontId:
+      request.headers.get('oxygen-buyer-storefront-id') ?? undefined,
+    deploymentId:
+      request.headers.get('oxygen-buyer-deployment-id') ?? undefined,
+  });
+}
+
+/**
+ * Get visitor's country code from request headers.
+ * This function checks various geolocation headers provided by different platforms.
+ */
+export function getCountryFromRequest(request: Request): string | null {
+  const url = new URL(request.url);
+  const headers = request.headers;
+  
+  // 1) Prefer Shopify Oxygen buyer headers when available
+  const oxygen = getOxygenEnv(request);
+  
+  if (oxygen.buyer.country) {
+    return oxygen.buyer.country.toUpperCase();
+  }
+  
+  // For development/testing: allow overriding via query parameter
+  const testCountry = url.searchParams.get('test-country');
+  if (testCountry) {
+    return testCountry.toUpperCase();
+  }
+  
+  // 2) Other platforms: Cloudflare / Vercel / generic proxy headers
+  const cfIpCountry = headers.get('cf-ipcountry'); // Cloudflare
+  
+  // Check Vercel geolocation headers (if deployed on Vercel)
+  const vercelCountry = headers.get('x-vercel-ip-country');
+  
+  // Check other common geolocation headers
+  const countryHeader = headers.get('x-country-code') || 
+                       headers.get('x-country') || 
+                       headers.get('country-code') ||
+                       headers.get('x-forwarded-country');
+  
+  // Return the first available country code
+  return cfIpCountry || vercelCountry || countryHeader || null;
+}
+
+/**
+ * Map visitor's country to the appropriate locale path.
+ * Returns null if the country is not supported or should use default locale.
+ */
+export function getLocalePathForCountry(countryCode: string): string | null {
+  if (!countryCode) return null;
+  
+  const upperCountry = countryCode.toUpperCase();
+  
+  // Create reverse mapping from country codes to locale paths
+  for (const [path, locale] of Object.entries(countries)) {
+    if (path === 'default') continue;
+    if (locale.country === upperCountry) {
+      return path;
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * Check if a request should be redirected based on geolocation.
+ * Returns the redirect path if a redirect is needed, null otherwise.
+ */
+export function getGeoRedirectPath(request: Request): string | null {
+  const url = new URL(request.url);
+  const currentPath = url.pathname;
+  
+  // Don't redirect if already on a localized path
+  if (currentPath !== '/' && Object.keys(countries).some(path => 
+    path !== 'default' && currentPath.startsWith(path)
+  )) {
+    return null;
+  }
+  
+  // Don't redirect API routes, assets, or special paths
+  if (currentPath.startsWith('/api') || 
+      currentPath.startsWith('/_') || 
+      currentPath.startsWith('/cms') ||
+      currentPath.includes('.')) {
+    return null;
+  }
+  
+  // Check if user has a locale preference cookie (to prevent overriding user choice)
+  const cookies = request.headers.get('cookie') || '';
+  if (cookies.includes('locale-override=true')) {
+    return null;
+  }
+  
+  // Don't redirect if there's a referrer from the same domain (internal navigation)
+  const referrer = request.headers.get('referer');
+  if (referrer && referrer.includes(url.host)) {
+    return null;
+  }
+  
+  const visitorCountry = getCountryFromRequest(request);
+  if (!visitorCountry) return null;
+  
+  const localePath = getLocalePathForCountry(visitorCountry);
+  if (!localePath) return null;
+  
+  // Return the full redirect path
+  return `${localePath}${currentPath === '/' ? '' : currentPath}${url.search}`;
+}

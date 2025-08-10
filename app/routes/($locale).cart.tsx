@@ -64,6 +64,14 @@ export async function action({context, request}: ActionFunctionArgs) {
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(cartId) : new Headers();
 
+  // Set locale override cookie when buyer identity is updated (from country selector)
+  if (action === CartForm.ACTIONS.BuyerIdentityUpdate) {
+    headers.append(
+      'Set-Cookie',
+      'locale-override=true; Max-Age=2592000; Path=/', // 30 days
+    );
+  }
+
   const redirectTo = formData.get('redirectTo') ?? null;
 
   if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {

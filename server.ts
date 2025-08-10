@@ -6,6 +6,7 @@ import {createRequestHandler} from '@shopify/remix-oxygen';
 import * as remixBuild from 'virtual:remix/server-build';
 
 import {createAppLoadContext} from '~/lib/context';
+import {getGeoRedirectPath} from 'countries';
 
 /*
  * Export a fetch handler in module format.
@@ -17,6 +18,20 @@ export default {
     executionContext: ExecutionContext,
   ): Promise<Response> {
     try {
+      // Check for geolocation-based redirects before processing the request
+      const geoRedirectPath = getGeoRedirectPath(request);
+      if (geoRedirectPath) {
+        const url = new URL(request.url);
+        const redirectUrl = `${url.protocol}//${url.host}${geoRedirectPath}`;
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: redirectUrl,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+          },
+        });
+      }
+
       const appLoadContext = await createAppLoadContext(
         request,
         env,
