@@ -14,8 +14,8 @@ export function QuantitySelector(props: {
   return (
     <div
       className={cn(
-        // Full-width control matching button height
-        'w-full h-11 grid grid-cols-[2.75rem_1fr_2.75rem] overflow-hidden',
+        // Compact control matching button height
+        'h-11 grid grid-cols-[2.75rem_minmax(2.5rem,auto)_2.75rem] overflow-hidden w-auto',
         // Match button radius and shadow/border
         'rounded-(--button-border-corner-radius)',
         '[box-shadow:rgb(var(--shadow)_/_var(--button-shadow-opacity))_var(--button-shadow-horizontal-offset)_var(--button-shadow-vertical-offset)_var(--button-shadow-blur-radius)_0px]',
@@ -44,9 +44,8 @@ const QuantityButton = forwardRef<
         'group disabled:opacity-100',
         // Fill cell and let container handle radius
         'h-full w-full rounded-none',
-        // Only draw vertical separators to keep top/bottom flush
-        'border-[rgb(var(--input)_/_var(--button-border-opacity))] border-t-0 border-b-0',
-        symbol === 'decrease' ? 'border-r' : 'border-l',
+        // Remove inner borders entirely; container provides the outline
+        'border-0',
         className,
       ])}
       name={cx([

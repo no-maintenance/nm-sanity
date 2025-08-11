@@ -38,7 +38,7 @@ export function AddToCartForm(props: {
       <div className="grid gap-3">
         {showQuantitySelector ? (
           <div className="flex gap-2">
-            <QuantitySelector className="flex-1">
+            <QuantitySelector className="shrink-0">
               <QuantitySelector.Button
                 disabled={isOutOfStock || quantity === 1}
                 onClick={() => setQuantity(quantity - 1)}
@@ -96,7 +96,7 @@ export function AddToCartForm(props: {
                       <Button
                         variant={'outline'}
                         className={cn([
-                          'flex-1 w-full',
+                          'w-full',
                           isOutOfStock && 'opacity-50',
                           // Opacity does not change when is loading to prevent flickering
                           'data-[loading="true"]:disabled:opacity-100',
