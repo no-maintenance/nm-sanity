@@ -50,7 +50,7 @@ export function envVariables(contextEnv: Env) {
     FACEBOOK_PIXEL_ID: env.FACEBOOK_PIXEL_ID || '',
     PINTEREST_PIXEL_ID: env.PINTEREST_PIXEL_ID || '',
     KLAVIYO_PIXEL_ID: env.KLAVIYO_PIXEL_ID || '',
-    DEBUG_TRACKING: env.DEBUG_TRACKING || '',
+    DEBUG_TRACKING: env.DEBUG_TRACKING === 'true' ? 'true' : 'false',
   };
 }
 

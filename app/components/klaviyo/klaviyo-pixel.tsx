@@ -7,6 +7,7 @@ declare global {
 
 import {useEffect, useRef} from 'react';
 import {useAnalytics} from '@shopify/hydrogen';
+import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
 
 // ---------------------------------------------------------------------------
 // Simplified Klaviyo loader without SPA manual mode
@@ -27,8 +28,7 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
     script.src = `https://static.klaviyo.com/onsite/js/${accountId}/klaviyo.js`;
     if (nonce) script.nonce = nonce;
     script.onload = () => {
-      // Script loaded successfully
-      console.log('Klaviyo script loaded');
+      // Script loaded successfully - only log in debug mode
     };
     script.onerror = () => {
       console.error('Failed to load Klaviyo script');
@@ -44,6 +44,7 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
 // ---------------------------------------------------------------------------
 export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
   useLoadKlaviyo(id, nonce);
+  const { debugEvent } = useAnalyticsDebug();
 
   const {register, subscribe} = useAnalytics();
   const {ready} = register('Klaviyo');
@@ -64,6 +65,7 @@ export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
           Price: product.price,
         };
         
+        debugEvent('Klaviyo', 'product_viewed', item);
         window._klOnsite.push(['track', 'Viewed Product', item]);
         window._klOnsite.push(['trackViewedItem', item]);
       });
@@ -85,6 +87,7 @@ export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
           CheckoutURL: data?.cart?.checkoutUrl,
         };
         
+        debugEvent('Klaviyo', 'product_added_to_cart', item);
         window._klOnsite.push(['track', 'Added to Cart', item]);
       });
 

@@ -3,21 +3,27 @@ import ReactGA from 'react-ga4';
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
+import { useIsDev } from '~/hooks/use-is-dev';
 
 const PIXEL_NAME = 'GA4';
 
 export function useGoogleAnalytics({id}: {id: string}) {
   const {subscribe, register, cart, canTrack} = useAnalytics();
-   
-
-  // const {subscribe, register, cart, canTrack} = useAnalytics();
+  const isDev = useIsDev();
   const { debugTracking } = useAnalyticsEnv();
   const { debugInit, debugEvent } = useAnalyticsDebug();
   const initialized = useRef(false);
   const currentId = useRef<string>('');
   const {ready} = register(PIXEL_NAME);
+  
+  // Don't initialize analytics in development unless debug tracking is enabled
+  const shouldInitialize = !isDev || debugTracking;
+  
   useEffect(() => {
-    console.log('google analytics id');
+    if (!shouldInitialize || !id) {
+      ready();
+      return;
+    }
     ReactGA.initialize([
           {
             trackingId: id,
@@ -111,7 +117,7 @@ export function useGoogleAnalytics({id}: {id: string}) {
   });
 
   ready();
-  }, []);
+  }, [shouldInitialize, id]);
   // useEffect(() => {
     
   //   // Skip if no ID provided

@@ -4,21 +4,27 @@ import ReactPixel from '~/lib/pixels/fb';
 import {getAddToCartValue} from '~/lib/utils';
 import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
+import { useIsDev } from '~/hooks/use-is-dev';
 
 const PIXEL_NAME = 'Facebook';
 
 export function useFacebookAnalytics({id}: {id: string}) {
   const {register, subscribe} = useAnalytics();
+  const isDev = useIsDev();
   const { debugTracking } = useAnalyticsEnv();
   const { debugInit, debugEvent } = useAnalyticsDebug();
   const initialized = useRef(false);
   const currentId = useRef<string>('');
   const {ready} = register(PIXEL_NAME);
   
+  // Don't initialize analytics in development unless debug tracking is enabled
+  const shouldInitialize = !isDev || debugTracking;
+  
   useEffect(() => {
-    // Skip if no ID provided
-    if (!id) {
+    // Skip if shouldn't initialize or no ID provided
+    if (!shouldInitialize || !id) {
       debugInit(PIXEL_NAME, '');
+      ready();
       return;
     }
     
@@ -102,7 +108,7 @@ export function useFacebookAnalytics({id}: {id: string}) {
     });
     // Mark this analytics integration as ready as soon as it's done setting up
     ready();
-  }, []);
+  }, [shouldInitialize, id]);
 
   return null;
 }
