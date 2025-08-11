@@ -12,6 +12,7 @@ import React, {Dispatch, ReactNode, RefObject, useCallback, useEffect, useRef, u
 import type {loader} from '~/routes/($locale).products.$productHandle';
 
 import {useDevice} from '~/hooks/use-device';
+import {useEscapeKey} from '~/hooks/use-escape-key';
 import {type AspectRatioData, cn} from '~/lib/utils';
 
 import type {CarouselApi} from '../ui/carousel';
@@ -93,7 +94,7 @@ function DesktopMedia({
             <button
               onClick={() => setModalIdx(i + 1)}
               className={
-                'md:col-span-2 aspect-[4/5] snap-center card-image bg-white dark:bg-background/10 w-mobileGallery md:w-full crosshair-plus'
+                'md:col-span-2 aspect-[4/5] snap-center card-image bg-white w-mobileGallery md:w-full crosshair-plus'
               }
               key={data.id}
             >
@@ -261,23 +262,26 @@ export const ProductModal = ({
     clearAllBodyScrollLocks();
   }, [location]);
 
+  // Close modal on escape key press when modal is open
+  useEscapeKey(() => setModalIdx(0), !!modalIdx);
+
   return (
     <Dialog open={!!modalIdx} onOpenChange={(open) => !open && setModalIdx(0)}>
       <DialogPortal>
-        <DialogOverlay className="bg-white/95 dark:bg-black/95 backdrop-blur-none" />
+        <DialogOverlay className="bg-white/95 backdrop-blur-none" />
         <DialogContent
           ref={modalRef}
           variant="full"
-          className="bg-white dark:bg-black"
+          className=" overflow-y-auto"
         >
-          <button
+          {/* <button
             aria-label="Close panel"
             className="fixed right-8 top-6 cursor-pointer z-[9999]"
             onClick={() => setModalIdx(0)}
           >
             <IconClose width={25} height={24} viewBox="0 0 25 24" />
-          </button>
-          <div className="w-full h-full">{children}</div>
+          </button> */}
+          <div className="w-full min-h-full">{children}</div>
         </DialogContent>
       </DialogPortal>
     </Dialog>
@@ -301,21 +305,29 @@ const ModalImage = ({
   useEffect(() => {
     if (!imgRef.current || !modalRef.current) return;
     if (idx === modalIdx) {
-      // Use requestAnimationFrame to ensure DOM is fully updated
+      // Ensure DOM is fully updated, then center the selected image in view
       requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
-        if (modalRef.current) {
-          modalRef.current.scrollTop = 0;
-        }
+        const container = modalRef.current!;
+        const target = imgRef.current!;
+        const targetTop = target.offsetTop;
+        const targetHeight = target.clientHeight;
+        const containerHeight = container.clientHeight;
+
+        const desiredTop = Math.max(
+          targetTop - Math.max(0, (containerHeight - targetHeight) / 2),
+          0,
+        );
+
+        container.scrollTo({top: desiredTop, behavior: 'auto'});
       });
     }
-  }, [modalIdx]);
+  }, [modalIdx, idx, modalRef]);
   
   return (
     <div
       ref={imgRef}
       className={
-        'md:w-full h-screen flex items-center justify-center bg-white dark:bg-black p-4'
+        'md:w-full h-screen flex items-center justify-center bg-white p-4'
       }
     >
       <div className="max-h-full max-w-full">

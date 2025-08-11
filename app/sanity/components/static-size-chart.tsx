@@ -14,7 +14,7 @@ export default function StaticSizeChartBlock() {
     >
       <strong>Size Chart</strong>
       <div style={{ fontSize: '0.9em', marginTop: '0.5em' }}>
-        This block will display the product's assigned size chart on the website.
+        This block will display the product&apos;s assigned size chart on the website.
       </div>
     </div>
   );

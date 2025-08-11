@@ -6,13 +6,16 @@ import {cva, VariantProps} from 'class-variance-authority';
 import { IconClose } from '~/components/icons/icon-close';
 
 const dialogVariants = cva(
-  'fixed rounded-[var(--dropdown-popup-border-corner-radius)] left-[50%] top-[50%] z-50 grid w-full max-w-[28rem] translate-x-[-50%] translate-y-[-50%] gap-4 bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-[10%] data-[state=open]:slide-in-from-top-[10%] ',
+  'fixed z-50 grid w-full max-w-[28rem] gap-4 bg-background p-6 shadow-lg rounded-[var(--dropdown-popup-border-corner-radius)] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-[10%] data-[state=open]:slide-in-from-top-[10%] ',
   {
     variants: {
       variant: {
-        wide: 'sm:max-w-2xl',
-        tall: 'sm:max-h-[650px] h-[80vh]',
-        full: ' inset-0 w-screen h-screen max-w-none  p-0 m-0 border-none shadow-none bg-background flex items-center justify-center',
+        // Centered modal with constrained width
+        wide: 'sm:max-w-2xl left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]',
+        // Centered modal with constrained height
+        tall: 'sm:max-h-[650px] h-[80vh] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]',
+        // Fullscreen modal; scrolls vertically and starts content at top
+        full: 'inset-0 w-screen h-screen max-w-none p-0 m-0 border-none shadow-none bg-background rounded-none left-auto top-auto translate-x-0 translate-y-0 overflow-y-auto',
       },
       transition: {
         default: '',
@@ -60,10 +63,30 @@ const DialogContent = React.forwardRef<
       className={cn(dialogVariants({variant, transition}), className)}
       {...props}
     >
+      {variant === 'full' ? (
+        <div className="sticky top-4 z-[9999] flex justify-end px-4">
+          <DialogPrimitive.Close
+            aria-label="Close"
+            className={cn(
+              'p-1.5',
+              'transition-opacity hover:opacity-100 focus-visible:outline-none',
+            )}
+          >
+            <IconClose />
+          </DialogPrimitive.Close>
+        </div>
+      ) : (
+        <DialogPrimitive.Close
+          aria-label="Close"
+          className={cn(
+            'absolute right-4 top-4 p-1.5',
+            'transition-opacity hover:opacity-100 focus-visible:outline-none',
+          )}
+        >
+          <IconClose />
+        </DialogPrimitive.Close>
+      )}
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4  opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <IconClose />
-      </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
