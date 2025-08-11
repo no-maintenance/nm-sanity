@@ -164,6 +164,7 @@ export function AddToCartForm(props: {
                     <Button
                       variant={'outline'}
                       className={cn([
+                        'w-full',
                         isOutOfStock && 'opacity-50',
                         // Opacity does not change when is loading to prevent flickering
                         'data-[loading="true"]:disabled:opacity-100',
