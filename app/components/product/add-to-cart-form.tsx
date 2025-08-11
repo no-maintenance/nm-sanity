@@ -35,10 +35,10 @@ export function AddToCartForm(props: {
   const showBackInStockForm = template?.showBackInStockForm;
   return (
     selectedVariant && (
-      <>
-        {showQuantitySelector && (
-          <div className="flex">
-            <QuantitySelector>
+      <div className="grid gap-3">
+        {showQuantitySelector ? (
+          <div className="flex gap-2">
+            <QuantitySelector className="flex-1">
               <QuantitySelector.Button
                 disabled={isOutOfStock || quantity === 1}
                 onClick={() => setQuantity(quantity - 1)}
@@ -51,85 +51,148 @@ export function AddToCartForm(props: {
                 symbol="increase"
               />
             </QuantitySelector>
-          </div>
-        )}
-        <CartForm
-          action={CartForm.ACTIONS.LinesAdd}
-          inputs={{
-            lines: [
-              {
-                merchandiseId: selectedVariant.id as string,
-                quantity,
-              },
-            ],
-          }}
-          route={cartPath}
-        >
-          {(fetcher) => {
-            const isLoading = fetcher.state !== 'idle' || navigationIsLoading;
-
-            // Button is disabled if the variant is out of stock or if fetcher is not idle.
-            // Button is also disabled if navigation is loading (new variant is being fetched)
-            // to prevent adding the wrong variant to the cart.
-            return (
-              <div className="grid gap-3">
-                <OptimisticInput
-                  data={{
-                    action: 'add',
-                    line: {
-                      cost: {
-                        amountPerQuantity: selectedVariant.price,
-                        totalAmount: selectedVariant.price,
-                      },
-                      id: selectedVariant.id,
-                      merchandise: {
-                        image: selectedVariant.image,
-                        product: {
-                          handle: selectedVariant.product?.handle,
-                          title: selectedVariant.product?.title,
+            <CartForm
+              className="flex-1"
+              action={CartForm.ACTIONS.LinesAdd}
+              inputs={{
+                lines: [
+                  {
+                    merchandiseId: selectedVariant.id as string,
+                    quantity,
+                  },
+                ],
+              }}
+              route={cartPath}
+            >
+              {(fetcher) => {
+                const isLoading = fetcher.state !== 'idle' || navigationIsLoading;
+                return (
+                  <>
+                    <OptimisticInput
+                      data={{
+                        action: 'add',
+                        line: {
+                          cost: {
+                            amountPerQuantity: selectedVariant.price,
+                            totalAmount: selectedVariant.price,
+                          },
+                          id: selectedVariant.id,
+                          merchandise: {
+                            image: selectedVariant.image,
+                            product: {
+                              handle: selectedVariant.product?.handle,
+                              title: selectedVariant.product?.title,
+                            },
+                            selectedOptions: selectedVariant.selectedOptions,
+                          },
+                          quantity,
                         },
-                        selectedOptions: selectedVariant.selectedOptions,
-                      },
-                      quantity,
-                    },
-                  }}
-                  id="cart-line-item"
-                />
-                {isOutOfStock && showBackInStockForm ? (
-                  <SoldOutButton />
-                ) : (
-                  <Button
-                    variant={'outline'}
-                    className={cn([
-                      isOutOfStock && 'opacity-50',
-                      // Opacity does not change when is loading to prevent flickering
-                      'data-[loading="true"]:disabled:opacity-100',
-                    ])}
-                    data-loading={isLoading}
-                    data-sanity-edit-target
-                    disabled={isOutOfStock || isLoading}
-                    type="submit"
-                  >
-                    {isOutOfStock ? (
-                      <CleanString value={themeContent?.product?.soldOut} />
+                      }}
+                      id="cart-line-item"
+                    />
+                    {isOutOfStock && showBackInStockForm ? (
+                      <SoldOutButton />
                     ) : (
-                      <CleanString value={themeContent?.product?.addToCart} />
+                      <Button
+                        variant={'outline'}
+                        className={cn([
+                          'flex-1 w-full',
+                          isOutOfStock && 'opacity-50',
+                          // Opacity does not change when is loading to prevent flickering
+                          'data-[loading="true"]:disabled:opacity-100',
+                        ])}
+                        data-loading={isLoading}
+                        data-sanity-edit-target
+                        disabled={isOutOfStock || isLoading}
+                        type="submit"
+                      >
+                        {isOutOfStock ? (
+                          <CleanString value={themeContent?.product?.soldOut} />
+                        ) : (
+                          <CleanString value={themeContent?.product?.addToCart} />
+                        )}
+                      </Button>
                     )}
-                  </Button>
-                )}
-                {showShopPay && selectedVariant.id && (
-                  <ShopPay
-                    isLoading={isLoading}
-                    isOutOfStock={isOutOfStock}
-                    quantity={quantity}
-                    variantId={selectedVariant.id}
+                  </>
+                );
+              }}
+            </CartForm>
+          </div>
+        ) : (
+          <CartForm
+            action={CartForm.ACTIONS.LinesAdd}
+            inputs={{
+              lines: [
+                {
+                  merchandiseId: selectedVariant.id as string,
+                  quantity,
+                },
+              ],
+            }}
+            route={cartPath}
+          >
+            {(fetcher) => {
+              const isLoading = fetcher.state !== 'idle' || navigationIsLoading;
+              return (
+                <>
+                  <OptimisticInput
+                    data={{
+                      action: 'add',
+                      line: {
+                        cost: {
+                          amountPerQuantity: selectedVariant.price,
+                          totalAmount: selectedVariant.price,
+                        },
+                        id: selectedVariant.id,
+                        merchandise: {
+                          image: selectedVariant.image,
+                          product: {
+                            handle: selectedVariant.product?.handle,
+                            title: selectedVariant.product?.title,
+                          },
+                          selectedOptions: selectedVariant.selectedOptions,
+                        },
+                        quantity,
+                      },
+                    }}
+                    id="cart-line-item"
                   />
-                )}
-              </div>
-            );
-          }}
-        </CartForm>
-      </>
+                  {isOutOfStock && showBackInStockForm ? (
+                    <SoldOutButton />
+                  ) : (
+                    <Button
+                      variant={'outline'}
+                      className={cn([
+                        isOutOfStock && 'opacity-50',
+                        // Opacity does not change when is loading to prevent flickering
+                        'data-[loading="true"]:disabled:opacity-100',
+                      ])}
+                      data-loading={isLoading}
+                      data-sanity-edit-target
+                      disabled={isOutOfStock || isLoading}
+                      type="submit"
+                    >
+                      {isOutOfStock ? (
+                        <CleanString value={themeContent?.product?.soldOut} />
+                      ) : (
+                        <CleanString value={themeContent?.product?.addToCart} />
+                      )}
+                    </Button>
+                  )}
+                </>
+              );
+            }}
+          </CartForm>
+        )}
+        {showShopPay && selectedVariant.id && (
+          <ShopPay
+            isLoading={navigationIsLoading}
+            isOutOfStock={isOutOfStock}
+            quantity={quantity}
+            variantId={selectedVariant.id}
+          />
+        )}
+      </div>
     )
   );
 }

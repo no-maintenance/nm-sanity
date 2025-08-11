@@ -6,16 +6,24 @@ import {cn} from '~/lib/utils';
 import type {ButtonProps} from './ui/button';
 
 import {IconButton} from './ui/button';
-export function QuantitySelector(props: {children: React.ReactNode}) {
+export function QuantitySelector(props: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const {children, className} = props;
   return (
     <div
       className={cn(
-        'flex items-center',
-        'rounded-(--input-border-corner-radius)',
-        '[box-shadow:rgb(var(--shadow)_/_var(--input-shadow-opacity))_var(--input-shadow-horizontal-offset)_var(--input-shadow-vertical-offset)_var(--input-shadow-blur-radius)_0px]',
+        // Full-width control matching button height
+        'w-full h-11 grid grid-cols-[2.75rem_1fr_2.75rem] overflow-hidden',
+        // Match button radius and shadow/border
+        'rounded-(--button-border-corner-radius)',
+        '[box-shadow:rgb(var(--shadow)_/_var(--button-shadow-opacity))_var(--button-shadow-horizontal-offset)_var(--button-shadow-vertical-offset)_var(--button-shadow-blur-radius)_0px]',
+        '[border-width:var(--button-border-thickness)] border-[rgb(var(--input)_/_var(--button-border-opacity))] bg-background',
+        className,
       )}
     >
-      {props.children}
+      {children}
     </div>
   );
 }
@@ -33,12 +41,12 @@ const QuantityButton = forwardRef<
         symbol === 'increase' && 'Increase quantity',
       ])}
       className={cn([
-        'group rounded-(--input-border-corner-radius) disabled:opacity-100',
-        'border-[rgb(var(--input)_/_var(--input-border-opacity))]',
-        '[border-width:var(--input-border-thickness)]',
-        symbol === 'decrease'
-          ? 'rounded-tr-none rounded-br-none border-r-0!'
-          : 'rounded-tl-none rounded-bl-none border-l-0!',
+        'group disabled:opacity-100',
+        // Fill cell and let container handle radius
+        'h-full w-full rounded-none',
+        // Only draw vertical separators to keep top/bottom flush
+        'border-[rgb(var(--input)_/_var(--button-border-opacity))] border-t-0 border-b-0',
+        symbol === 'decrease' ? 'border-r' : 'border-l',
         className,
       ])}
       name={cx([
@@ -67,7 +75,8 @@ function Value(props: {children: React.ReactNode}) {
     <div
       className={cn(
         'flex h-full min-w-[2.5rem] items-center justify-center px-2 text-center select-none',
-        '[border-width:var(--input-border-thickness)_0] border-[rgb(var(--input)_/_var(--input-border-opacity))]',
+        // No top/bottom border so the outer container line stays flush
+        // We also avoid vertical borders here and let buttons provide separators
       )}
     >
       {props.children}

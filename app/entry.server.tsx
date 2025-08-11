@@ -96,6 +96,7 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       'https://*.google.com',
       'https://*.doubleclick.net',
       'https://*.pinterest.com',
+      'https://*.facebook.com',
     ],
     imgSrc: [
       '*.sanity.io',
