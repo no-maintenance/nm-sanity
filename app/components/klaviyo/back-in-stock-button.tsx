@@ -113,11 +113,11 @@ export function SoldOutButton() {
                   />
                 </div>
               </div>
-              {/* <KlaviyoBackInStock
-                source={'popup'}
-                variantId={selectedVariant.id}
-                cb={() => setOpen(false)}
-              /> */}
+              <KlaviyoBackInStock
+                  source={'popup'}
+                  variantId={parseNumberFromShopGid(selectedVariant?.id ?? '') ?? ''}
+                  cb={() => setOpen(false)}
+                />
               <DrawerClose asChild>
                 <Button className={'w-full mt-4'} variant={'outline'}>
                   Cancel

@@ -49,7 +49,7 @@ export function KlaviyoBackInStock({
                                 data: {
                                     type: 'profile',
                                     attributes: {
-                                        email: email,
+                                        email,
                                     }
                                 }
                             },
