@@ -422,6 +422,16 @@ export default defineType({
           type: 'internationalizedArrayString',
         }),
         defineField({
+          title: 'Sold out product badge',
+          name: 'soldOutProductBadge',
+          type: 'internationalizedArrayString',
+        }),
+        defineField({
+          title: 'Restock button',
+          name: 'restockButton',
+          type: 'internationalizedArrayString',
+        }),
+        defineField({
           title: 'Quantity Selector Label',
           name: 'quantitySelector',
           type: 'internationalizedArrayString',

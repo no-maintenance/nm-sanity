@@ -45,6 +45,10 @@ function useSortItems() {
   const items: SortItem[] = useMemo(
     () => [
       {
+        key: 'newest',
+        label: themeContent?.collection?.sortNewest || 'Newest',
+      },
+      {
         key: 'featured',
         label: themeContent?.collection?.sortFeatured || 'Featured',
       },
@@ -59,11 +63,7 @@ function useSortItems() {
       {
         key: 'best-selling',
         label: themeContent?.collection?.sortBestSelling || 'Best Selling',
-      },
-      {
-        key: 'newest',
-        label: themeContent?.collection?.sortNewest || 'Newest',
-      },
+      }
     ],
     [themeContent],
   );

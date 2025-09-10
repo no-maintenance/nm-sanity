@@ -32,7 +32,7 @@ export function SoldOutButton() {
             className={'text-fine font-semibold cursor-pointer w-full'}
           >
             <Button variant={'outline'}>
-              <CleanString value={themeContent?.product?.soldOut} />
+              <CleanString value={(themeContent as any)?.product?.restockButton || themeContent?.product?.soldOut} />
             </Button>
           </DialogTrigger>
           <DialogContent variant={'tall'}>
@@ -86,7 +86,7 @@ export function SoldOutButton() {
           className={'font-semibold cursor-pointer w-full'}
         >
           <Button variant={'outline'}>
-          <CleanString value={themeContent?.product?.soldOut} />
+            <CleanString value={(themeContent as any)?.product?.restockButton || themeContent?.product?.soldOut} />
           </Button>
         </DrawerTrigger>
         <DrawerContent>

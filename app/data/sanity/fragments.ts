@@ -159,6 +159,8 @@ export const THEME_CONTENT_FRAGMENT = defineQuery(`{
     "quantitySelector": ${getIntValue('quantitySelector')},
     "sale": ${getIntValue('sale')},
     "soldOut": ${getIntValue('soldOut')},
+    "restockButton": ${getIntValue('restockButton')},
+    "soldOutProductBadge": ${getIntValue('soldOutProductBadge')},
   },
 }`);
 

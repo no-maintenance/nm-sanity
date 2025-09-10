@@ -6,6 +6,8 @@ import { flattenConnection } from '@shopify/hydrogen';
 import { useState } from 'react';
 
 import { useLocalePath } from '~/hooks/use-locale-path';
+import { useSanityThemeContent } from '~/hooks/use-sanity-theme-content';
+import CleanString from '../sanity/clean-string';
 import { cn } from '~/lib/utils';
 import { useRootLoaderData } from '~/root';
 
@@ -31,6 +33,7 @@ export function ProductCard(props: {
 }) {
   const { columns, product, skeleton } = props;
   const { sanityRoot } = useRootLoaderData();
+  const { themeContent } = useSanityThemeContent();
   const { data } = stegaClean(sanityRoot);
   const style = data?.settings?.productCards?.style;
   const textAlignment = data?.settings?.productCards?.textAlignment || 'left';
@@ -187,7 +190,9 @@ export function ProductCard(props: {
                       )}
                     </>
                   ) : (
-                    <span className="flex gap-4 opacity-50">SOLD OUT</span>
+                    <span className="flex gap-4 opacity-50">
+                      <CleanString value={(themeContent as any)?.product?.soldOutProductBadge || themeContent?.product?.soldOut} />
+                    </span>
                   )}
                 </div>
               </div>
