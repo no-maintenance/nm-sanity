@@ -102,7 +102,7 @@ export function ProductBadges({
           data-type="sold-out-badge"
           variant="secondary"
         >
-          {themeContent?.product?.soldOut}
+          {themeContent?.product?.soldOutProductBadge || themeContent?.product?.soldOut}
         </Badge>
       )}
     </div>
