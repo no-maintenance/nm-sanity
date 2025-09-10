@@ -191,7 +191,7 @@ export function ProductCard(props: {
                     </>
                   ) : (
                     <span className="flex gap-4 opacity-50">
-                      <CleanString value={(themeContent as any)?.product?.soldOutProductBadge || themeContent?.product?.soldOut} />
+                      <CleanString value={themeContent?.product?.soldOut} />
                     </span>
                   )}
                 </div>
