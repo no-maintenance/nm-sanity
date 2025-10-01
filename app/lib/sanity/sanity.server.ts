@@ -21,7 +21,11 @@ import {
 import {getSanityClient} from './sanity-client.server';
 import {hashQuery} from './utils';
 
-const DEFAULT_CACHE_STRATEGY = CacheLong();
+// TODO: Change back to CacheLong() after development
+// Temporarily set to 1 minute for faster cache refresh during development
+const DEFAULT_CACHE_STRATEGY = {
+  mode: 'public, max-age=60, stale-while-revalidate=60',
+} as CachingStrategy;
 
 export type CreateSanityLoaderOptions = {
   /**

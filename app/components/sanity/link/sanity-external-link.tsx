@@ -10,8 +10,9 @@ export function SanityExternalLink(props: {
     name?: null | string;
     openInNewTab?: boolean | null;
   };
+  id?: string;
 }) {
-  const {children, className, data} = props;
+  const {children, className, data, id} = props;
 
   if (!data) return null;
 
@@ -24,6 +25,7 @@ export function SanityExternalLink(props: {
         className,
       ])}
       href={link}
+      id={id}
       rel="noopener noreferrer"
       target={openInNewTab ? '_blank' : '_self'}
     >

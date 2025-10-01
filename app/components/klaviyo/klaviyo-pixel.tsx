@@ -75,7 +75,7 @@ export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
         
         const curr = data.currentLine?.merchandise?.product;
         const item = {
-          $value: Number(data.currentLine?.cost.amountPerQuantity.amount ?? 0),
+          // $value: Number(data.currentLine?.cost.amountPerQuantity.amount ?? 0),
           AddedItemProductName: curr?.title,
           AddedItemProductID: curr?.id.substring(curr?.id.lastIndexOf('/') + 1),
           AddedItemImageURL: data.currentLine?.merchandise?.image?.url,

@@ -121,7 +121,9 @@ function Tile({
         settings,
     } = tile;
 
-    const colorsCssVars = useColorsCssVars({settings});
+    const tileId = tile._key || `tile-${Math.random().toString(36).substr(2, 9)}`;
+    const hasColorScheme = settings?.colorScheme != null;
+    const colorsCssVars = hasColorScheme ? useColorsCssVars({settings, selector: `#tile-${tileId}`}) : '';
     const portableTextComponents = useMemo((): PortableTextComponents => ({}), []);
 
     const hasMedia = (mediaType === 'image' && image?.asset) || (mediaType === 'video' && video?.asset);
@@ -173,7 +175,7 @@ function Tile({
                             { 'flex-grow': !hasMedia }
                         )}
                     >
-                        <div className="">
+                        <div className="flex flex-col gap-4 text-balance text-foreground">
                             <PortableText value={richtext} components={portableTextComponents} />
                         </div>
                     </BannerContent>
@@ -189,13 +191,20 @@ function Tile({
         (link?.slug?.current || externalLink) && 'group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md'
     );
 
+    const tileContent = (
+        <div id={hasColorScheme ? `tile-${tileId}` : undefined} className="h-full w-full">
+            {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
+            {tileInnerContent}
+        </div>
+    );
+
     if (link?.slug?.current) {
         const internalLinkData = {
             link: tile.link,
         };
         return (
             <SanityInternalLink data={internalLinkData as any} className={tileWrapperClasses}>
-                {tileInnerContent}
+                {tileContent}
             </SanityInternalLink>
         );
     } else if (externalLink) {
@@ -213,15 +222,14 @@ function Tile({
         };
         return (
             <SanityExternalLink data={externalLinkData} className={tileWrapperClasses}>
-                {tileInnerContent}
+                {tileContent}
             </SanityExternalLink>
         );
     }
 
     return (
         <div className={tileWrapperClasses}>
-            <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />
-            {tileInnerContent}
+            {tileContent}
         </div>
     );
 } 

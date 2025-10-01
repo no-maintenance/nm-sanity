@@ -48,10 +48,11 @@ export function SanityInternalLink(props: {
   children?: React.ReactNode;
   className?: string;
   data?: SanityInternalLinkDataProps;
+  id?: string;
   onClick?: () => void;
 }) {
   const {locale} = useRootLoaderData();
-  const {children, className, data} = props;
+  const {children, className, data, id} = props;
 
   if (!data) return null;
 
@@ -90,6 +91,7 @@ export function SanityInternalLink(props: {
         'focus-visible:ring-ring focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         className,
       ])}
+      id={id}
       onClick={props.onClick}
       prefetch="intent"
       to={url}
