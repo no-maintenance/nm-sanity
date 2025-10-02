@@ -116,6 +116,7 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       'https://*.google.com',
       'https://*.google.ca',
       'https://*.googleadservices.com',
+      'https://cdnjs.cloudflare.com',
     ],
     mediaSrc: ["'self'", '*.mux.com', 'blob:'],
     scriptSrc: [
@@ -144,6 +145,7 @@ export const createCspHeaders = ({projectId}: {projectId: string}) => {
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com',
     ],
+    workerSrc: ["'self'", 'blob:'],
   };
 
   return defaultsCSPHeaders;
