@@ -7,6 +7,10 @@
     "build": "shopify hydrogen build --codegen",
     "dev": "shopify hydrogen dev --codegen",
     "preview": "shopify hydrogen preview --build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint --no-error-on-unmatched-pattern .",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write --ignore-unknown .",
@@ -144,7 +148,9 @@
     "type-fest": "^4.40.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.2",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^2.1.8",
+    "@vitest/ui": "^2.1.8"
   },
   "engines": {
     "node": "20.x"
