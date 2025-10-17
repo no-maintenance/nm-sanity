@@ -9,9 +9,10 @@ import {
 } from '../strands-logic';
 
 describe('Game Scenarios - Complete Gameplay Flows', () => {
-  // Sample beach-themed puzzle
+  // Sample beach-themed puzzle (48 chars: 6 rows × 8 cols)
+  // Grid layout with SAND vertically in first column (positions 0, 8, 16, 24)
   const beachPuzzle = {
-    grid: 'SARWAVSHNTOCOLEDINHHRARDESTHHDDREESEENRUE',
+    grid: 'SARWAVEFANTOCOLENINGHARDDESTHHDDREESEENRUEFGHIJK',
     themeWords: [
       {word: 'SAND', isSpangram: false},
       {word: 'WAVE', isSpangram: false},
@@ -25,8 +26,8 @@ describe('Game Scenarios - Complete Gameplay Flows', () => {
 
   describe('Finding Theme Words', () => {
     it('should find SAND in the grid', () => {
-      // SAND could be at positions like [0, 8, 16, 24]
-      const path = [0, 8, 16, 24]; // S, A, N, D vertically
+      // SAND vertically in first column: positions [0, 8, 16, 24]
+      const path = [0, 8, 16, 24]; // S, A, N, D
       const word = getWordFromPath(beachPuzzle.grid, path);
 
       expect(word).toBe('SAND');
