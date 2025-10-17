@@ -71,9 +71,9 @@ npm test -- -t "Hint"
 
 ## 📊 Test Coverage
 
-### strands-logic.test.ts (200+ assertions)
+### strands-logic.test.ts (50 tests)
 
-**Position Utilities** (12 tests)
+**Position Utilities**
 - Index to position conversion
 - Position to index conversion
 - Bidirectional conversion verification
@@ -144,7 +144,7 @@ npm test -- -t "Hint"
 - Corners (3 neighbors)
 - Edges (5 neighbors)
 
-### grid-generator.test.ts (50+ scenarios)
+### grid-generator.test.ts (15 tests)
 
 **Basic Generation** (3 tests)
 - Valid 48-letter grid
@@ -184,7 +184,7 @@ npm test -- -t "Hint"
 - Beach theme (6 words)
 - Sports theme (6 words)
 
-### game-scenarios.test.ts (30+ flows)
+### game-scenarios.test.ts (24 tests)
 
 **Finding Theme Words** (3 tests)
 - Word discovery in grid
@@ -233,43 +233,26 @@ npm test -- -t "Hint"
 ### Expected Output
 
 ```text
-✓ app/lib/games/__tests__/strands-logic.test.ts (65 tests)
-  ✓ Strands Logic - Position Utilities (12)
-  ✓ Strands Logic - Adjacency (10)
-  ✓ Strands Logic - Path Validation (8)
-  ✓ Strands Logic - Word Formation (5)
-  ✓ Strands Logic - Spangram Detection (8)
-  ✓ Strands Logic - Theme Word Matching (6)
-  ✓ Strands Logic - Hint Word Validation (6)
-  ✓ Strands Logic - Scoring (4)
-  ✓ Strands Logic - Game Completion (6)
-  ✓ Strands Logic - Time Formatting (5)
-  ✓ Strands Logic - Neighbor Calculation (5)
-
-✓ app/lib/games/__tests__/grid-generator.test.ts (20 tests)
-  ✓ Grid Generator - Basic Generation (3)
-  ✓ Grid Generator - Spangram Validation (3)
-  ✓ Grid Generator - Theme Word Placement (2)
-  ✓ Grid Generator - Hint Word Generation (4)
-  ✓ Grid Generator - Grid Quality (3)
-  ✓ Grid Generator - Error Handling (3)
-  ✓ Grid Generator - Consistency (2)
-  ✓ Grid Generator - Real-World Scenarios (2)
-
-✓ app/lib/games/__tests__/game-scenarios.test.ts (18 tests)
-  ✓ Game Scenarios - Finding Theme Words (3)
-  ✓ Game Scenarios - Hint Word System (4)
-  ✓ Game Scenarios - Game Progression (4)
-  ✓ Game Scenarios - Spangram Validation (4)
-  ✓ Game Scenarios - Error Scenarios (3)
-  ✓ Game Scenarios - Perfect Game (1)
-  ✓ Game Scenarios - Game with Hints (1)
-  ✓ Game Scenarios - Time Challenge (2)
-  ✓ Game Scenarios - Multi-Player Consistency (2)
+✓ app/lib/games/__tests__/strands-logic.test.ts (50 tests) 6ms
+✓ app/lib/games/__tests__/game-scenarios.test.ts (24 tests) 4ms
+✓ app/lib/games/__tests__/grid-generator.test.ts (15 tests) 44603ms
+  ✓ Grid Generator > Basic Generation > should generate a valid 48-letter grid
+  ✓ Grid Generator > Basic Generation > should succeed with simple puzzle
+  ✓ Grid Generator > Spangram Validation > should place spangram that spans edges
+  ✓ Grid Generator > Theme Word Placement > should include all theme words in grid
+  ✓ Grid Generator > Hint Word Generation > should generate grid with hint words when requested
+  ✓ Grid Generator > Hint Word Generation > should report hint words found
+  ✓ Grid Generator > Hint Word Generation > should place hint words strategically
+  ✓ Grid Generator > Grid Quality > should generate valid uppercase letters only
+  ✓ Grid Generator > Grid Quality > should use all 48 positions
+  ✓ Grid Generator > Error Handling > should handle very long words gracefully
+  ✓ Grid Generator > Consistency > should generate different grids on multiple runs
+  ✓ Grid Generator > Real-World Scenarios > should handle beach-themed puzzle
+  ✓ Grid Generator > Real-World Scenarios > should handle sports-themed puzzle
 
 Test Files: 3 passed (3)
-Tests: 103 passed (103)
-Duration: ~2s
+Tests: 89 passed (89)
+Duration: ~45s
 ```
 
 ## 🧪 Coverage Goals
@@ -474,7 +457,7 @@ await expect(promise).resolves.toBe(value);
 
 ---
 
-**Test Suite Status**: ✅ Ready to Run
-**Total Tests**: 103
-**Est. Runtime**: ~2 seconds
-**Last Updated**: 2025-01-16
+**Test Suite Status**: ✅ All Tests Passing
+**Total Tests**: 89 (50 logic + 24 scenarios + 15 generator)
+**Est. Runtime**: ~45 seconds
+**Last Updated**: 2025-10-16
