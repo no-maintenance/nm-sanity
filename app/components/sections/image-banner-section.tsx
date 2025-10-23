@@ -69,7 +69,7 @@ export function ImageBannerSection(
             contentAlignment={contentAlignment}
             contentPosition={contentPosition}
           >
-            <BannerRichtext value={data.content} />
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
           </BannerContent>
         </div>
       );
@@ -95,7 +95,7 @@ export function ImageBannerSection(
             contentAlignment={contentAlignment}
             contentPosition={contentPosition}
           >
-            <BannerRichtext value={data.content} />
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
           </BannerContent>
         </Banner>
       );
@@ -124,7 +124,7 @@ export function ImageBannerSection(
             contentPosition={contentPosition}
             className="absolute inset-0"
           >
-            <BannerRichtext value={data.content} />
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
           </BannerContent>
         </div>
       </div>
@@ -173,25 +173,36 @@ export function ImageBannerSection(
 
 function BannerRichtext(props: {
   value?: ImageBannerSectionProps['content'] | null;
+  hasLink?: boolean;
 }) {
   const components = useMemo(
     () => ({
       types: {
-        button: (props: {value: ButtonBlockProps}) => (
-          <ButtonBlock {...props.value} />
-        ),
+        button: (buttonProps: {value: ButtonBlockProps}) => {
+          // Don't render buttons when the banner has a link
+          // This prevents nested interactive elements
+          if (props.hasLink) {
+            return null;
+          }
+          return <ButtonBlock {...buttonProps.value} />;
+        },
       },
     }),
-    [],
+    [props.hasLink],
   );
 
   if (!props.value) return null;
+
+  // Filter out button blocks when banner has a link
+  const filteredValue = props.hasLink
+    ? props.value.filter(block => block._type !== 'button')
+    : props.value;
 
   return (
     <div className="flex flex-col gap-4 text-balance [&_a]:w-fit [&_a:not(:last-child)]:mr-4">
       <PortableText
         components={components as PortableTextComponents}
-        value={props.value}
+        value={filteredValue}
       />
     </div>
   );
