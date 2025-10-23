@@ -26,7 +26,10 @@ export function ImageBannerSection(
 ) {
   const {data} = props;
   const {contentAlignment, contentPosition, overlayOpacity, mediaType, link, externalLink, openInNewTab} = data;
-  const heightMode = stegaClean(data.heightMode);
+  // Only use stegaClean if we detect stega encoding (presence of special unicode characters)
+  const heightMode = data.heightMode && data.heightMode.includes('\u200B')
+    ? stegaClean(data.heightMode)
+    : data.heightMode;
   const section = useSection();
 
   // Determine aspect ratio based on height mode and screen size
@@ -34,12 +37,14 @@ export function ImageBannerSection(
     if (heightMode === 'aspectRatio') {
       // Use custom aspect ratio if selected
       if (data.aspectRatio === 'custom' && data.customAspectRatio) {
-        return stegaClean(data.customAspectRatio).replace(':', '/');
+        // Simple string processing - no stegaClean needed for aspect ratios
+        return String(data.customAspectRatio).replace(':', '/');
       }
 
       // Use predefined aspect ratio
       if (data.aspectRatio) {
-        return stegaClean(data.aspectRatio).replace(':', '/');
+        // Simple string processing - no stegaClean needed for aspect ratios
+        return String(data.aspectRatio).replace(':', '/');
       }
     }
 
