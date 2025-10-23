@@ -163,35 +163,18 @@ export default defineField({
     }),
     defineField({
       name: 'link',
-      title: 'Internal Link',
-      type: 'reference',
-      to: [
-        {type: 'collection'},
-        {type: 'home'},
-        {type: 'page'},
-        {type: 'product'},
-      ],
-      description: 'Make the entire banner clickable with an internal link',
-      hidden: ({parent}) => !!parent?.externalLink,
+      type: 'link',
+      description: 'If set, the entire banner will be clickable.',
     }),
     defineField({
       name: 'externalLink',
-      title: 'External Link',
+      description: "Will be used if internal link isn't provided.",
       type: 'url',
-      description: 'Make the entire banner clickable with an external link',
-      hidden: ({parent}) => !!parent?.link,
-      validation: (Rule) =>
-        Rule.uri({
-          scheme: ['http', 'https', 'mailto', 'tel'],
-        }),
     }),
     defineField({
       name: 'openInNewTab',
-      title: 'Open in New Tab',
+      title: 'Open external link in new tab',
       type: 'boolean',
-      description: 'Open the link in a new tab',
-      hidden: ({parent}) => !parent?.externalLink && !parent?.link,
-      initialValue: false,
     }),
     defineField({
       type: 'sectionSettings',

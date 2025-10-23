@@ -608,67 +608,6 @@ export type Settings = {
     alt?: string;
     _type: 'image';
   };
-  siteProtection?: {
-    enabled?: boolean;
-    accessMode?: 'password' | 'countdown' | 'both' | 'either';
-    password?: string;
-    countdown?: string;
-    title?: Array<
-      {
-        _key: string;
-      } & InternationalizedArrayStringValue
-    >;
-    message?: Array<
-      {
-        _key: string;
-      } & InternationalizedArrayTextValue
-    >;
-    countdownLabel?: Array<
-      {
-        _key: string;
-      } & InternationalizedArrayStringValue
-    >;
-    passwordLabel?: Array<
-      {
-        _key: string;
-      } & InternationalizedArrayStringValue
-    >;
-    redirectPage?:
-      | {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'page';
-        }
-      | {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'home';
-        };
-    mediaType?: 'image' | 'video';
-    backgroundImage?: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: 'image';
-    };
-    backgroundVideo?: MuxVideo;
-    overlayOpacity?: number;
-    colorScheme?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'colorScheme';
-    };
-  };
   socialSharingImagePreview?: {
     asset?: {
       _ref: string;
@@ -1225,12 +1164,6 @@ export type ImageBannerSection = {
         _ref: string;
         _type: 'reference';
         _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'collection';
-      }
-    | {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
         [internalGroqTypeReferenceTo]?: 'home';
       }
     | {
@@ -1244,6 +1177,24 @@ export type ImageBannerSection = {
         _type: 'reference';
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: 'product';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'collection';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'blogPost';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'storePolicy';
       };
   externalLink?: string;
   openInNewTab?: boolean;
@@ -4215,6 +4166,13 @@ export type BLOG_POST_QUERYResult = {
         overlayOpacity: number | null;
         link:
           | {
+              documentType: 'blogPost';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
               documentType: 'collection';
               slug: {
                 _type: 'slug';
@@ -4234,6 +4192,13 @@ export type BLOG_POST_QUERYResult = {
             }
           | {
               documentType: 'product';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
+              documentType: 'storePolicy';
               slug: {
                 _type: 'slug';
                 current: string | null;
@@ -13065,6 +13030,13 @@ export type STORE_POLICY_QUERYResult = {
         overlayOpacity: number | null;
         link:
           | {
+              documentType: 'blogPost';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
               documentType: 'collection';
               slug: {
                 _type: 'slug';
@@ -13084,6 +13056,13 @@ export type STORE_POLICY_QUERYResult = {
             }
           | {
               documentType: 'product';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
+              documentType: 'storePolicy';
               slug: {
                 _type: 'slug';
                 current: string | null;
@@ -21689,6 +21668,13 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
         overlayOpacity: number | null;
         link:
           | {
+              documentType: 'blogPost';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
               documentType: 'collection';
               slug: {
                 _type: 'slug';
@@ -21708,6 +21694,13 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
             }
           | {
               documentType: 'product';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
+              documentType: 'storePolicy';
               slug: {
                 _type: 'slug';
                 current: string | null;
@@ -31001,6 +30994,13 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
         overlayOpacity: number | null;
         link:
           | {
+              documentType: 'blogPost';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
               documentType: 'collection';
               slug: {
                 _type: 'slug';
@@ -31020,6 +31020,13 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
             }
           | {
               documentType: 'product';
+              slug: {
+                _type: 'slug';
+                current: string | null;
+              } | null;
+            }
+          | {
+              documentType: 'storePolicy';
               slug: {
                 _type: 'slug';
                 current: string | null;
@@ -40197,6 +40204,13 @@ export type ROOT_QUERYResult = {
           overlayOpacity: number | null;
           link:
             | {
+                documentType: 'blogPost';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
                 documentType: 'collection';
                 slug: {
                   _type: 'slug';
@@ -40216,6 +40230,13 @@ export type ROOT_QUERYResult = {
               }
             | {
                 documentType: 'product';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
+                documentType: 'storePolicy';
                 slug: {
                   _type: 'slug';
                   current: string | null;
@@ -50117,6 +50138,13 @@ export type COLLECTION_QUERYResult = {
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -50136,6 +50164,13 @@ export type COLLECTION_QUERYResult = {
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -59032,6 +59067,13 @@ export type COLLECTION_QUERYResult = {
           overlayOpacity: number | null;
           link:
             | {
+                documentType: 'blogPost';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
                 documentType: 'collection';
                 slug: {
                   _type: 'slug';
@@ -59051,6 +59093,13 @@ export type COLLECTION_QUERYResult = {
               }
             | {
                 documentType: 'product';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
+                documentType: 'storePolicy';
                 slug: {
                   _type: 'slug';
                   current: string | null;
@@ -67710,6 +67759,13 @@ export type PAGE_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -67729,6 +67785,13 @@ export type PAGE_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -76401,6 +76464,13 @@ export type PAGE_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -76420,6 +76490,13 @@ export type PAGE_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -85116,6 +85193,13 @@ export type PRODUCT_QUERYResult = {
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -85135,6 +85219,13 @@ export type PRODUCT_QUERYResult = {
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -94277,6 +94368,13 @@ export type PRODUCT_QUERYResult = {
           overlayOpacity: number | null;
           link:
             | {
+                documentType: 'blogPost';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
                 documentType: 'collection';
                 slug: {
                   _type: 'slug';
@@ -94296,6 +94394,13 @@ export type PRODUCT_QUERYResult = {
               }
             | {
                 documentType: 'product';
+                slug: {
+                  _type: 'slug';
+                  current: string | null;
+                } | null;
+              }
+            | {
+                documentType: 'storePolicy';
                 slug: {
                   _type: 'slug';
                   current: string | null;
@@ -103681,6 +103786,13 @@ export type ALL_SECTIONS_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -103700,6 +103812,13 @@ export type ALL_SECTIONS_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -112355,6 +112474,13 @@ export type ALL_SECTIONS_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -112374,6 +112500,13 @@ export type ALL_SECTIONS_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -121513,6 +121646,13 @@ export type ALL_SECTIONS_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -121532,6 +121672,13 @@ export type ALL_SECTIONS_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
@@ -130187,6 +130334,13 @@ export type ALL_SECTIONS_QUERYResult =
             overlayOpacity: number | null;
             link:
               | {
+                  documentType: 'blogPost';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
                   documentType: 'collection';
                   slug: {
                     _type: 'slug';
@@ -130206,6 +130360,13 @@ export type ALL_SECTIONS_QUERYResult =
                 }
               | {
                   documentType: 'product';
+                  slug: {
+                    _type: 'slug';
+                    current: string | null;
+                  } | null;
+                }
+              | {
+                  documentType: 'storePolicy';
                   slug: {
                     _type: 'slug';
                     current: string | null;
