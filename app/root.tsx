@@ -27,6 +27,7 @@ import {Fonts} from './components/fonts';
 import {CssVars} from './components/css-vars';
 import {CustomAnalytics} from './components/custom-analytics';
 import {AppLayout} from './components/layout';
+import {MinimalLayout} from './components/layout/minimal-layout';
 import {Button} from './components/ui/button';
 import {ROOT_QUERY} from './data/sanity/queries';
 import {useLocalePath} from './hooks/use-locale-path';
@@ -93,6 +94,7 @@ export const meta: MetaFunction<RootLoader> = (loaderData) => {
       href: 'https://cdn.sanity.io',
       rel: 'preconnect',
       tagName: 'link',
+      key: 'sanity-preconnect',
     },
     ...faviconUrls,
     ...fontsPreloadLinks,
@@ -111,6 +113,10 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   } = context;
   const language = locale?.language.toLowerCase();
   const isLoggedInPromise = customerAccount.isLoggedIn();
+
+  // Check if this is the site-protected route
+  const url = new URL(request.url);
+  const isSiteProtectedRoute = url.pathname.includes('/site-protected');
 
   const queryParams = {
     defaultLanguage: DEFAULT_LOCALE.language.toLowerCase(),
@@ -194,6 +200,7 @@ export function Layout({children}: {children: React.ReactNode}) {
 
   const isCmsRoute = pathname.includes('/cms');
   const isProfilerRoute = pathname.includes('/subrequest-profiler');
+  const isSiteProtectedRoute = pathname.includes('/site-protected');
   const skipLayout = isCmsRoute || isProfilerRoute;
 
   return (
@@ -210,6 +217,20 @@ export function Layout({children}: {children: React.ReactNode}) {
       <body className="bg-background text-foreground flex min-h-screen flex-col overflow-x-hidden">
         {skipLayout ? (
           children
+        ) : isSiteProtectedRoute ? (
+          // Use minimal layout for site-protected page (no header/footer)
+          data ? (
+            <Analytics.Provider
+              cart={data.cart}
+              consent={data.consent}
+              shop={data.shop}
+            >
+              <MinimalLayout>{children}</MinimalLayout>
+              <CustomAnalytics />
+            </Analytics.Provider>
+          ) : (
+            <MinimalLayout>{children}</MinimalLayout>
+          )
         ) : data ? (
           <Analytics.Provider
             cart={data.cart}

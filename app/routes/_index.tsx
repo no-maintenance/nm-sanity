@@ -4,6 +4,7 @@ import type {PAGE_QUERYResult} from 'types/sanity/sanity.generated';
 import {DEFAULT_LOCALE} from 'countries';
 
 import {PAGE_QUERY} from '~/data/sanity/queries';
+import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
@@ -16,6 +17,9 @@ export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
 );
 
 export async function loader({context, request}: LoaderFunctionArgs) {
+  // Check if site is protected
+  await requireUnprotectedAccess(context, request);
+
   const {env, locale, sanity, storefront} = context;
   const language = locale?.language.toLowerCase();
   const queryParams = {

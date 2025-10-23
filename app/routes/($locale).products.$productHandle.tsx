@@ -11,6 +11,7 @@ import invariant from 'tiny-invariant';
 import {CmsSection} from '~/components/cms-section';
 import {PRODUCT_QUERY as CMS_PRODUCT_QUERY} from '~/data/sanity/queries';
 import {PRODUCT_QUERY, VARIANTS_QUERY} from '~/data/shopify/queries';
+import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
@@ -21,6 +22,9 @@ export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
 );
 
 export async function loader({context, params, request}: LoaderFunctionArgs) {
+  // Check if site is protected
+  await requireUnprotectedAccess(context, request);
+
   const {productHandle} = params;
   const {locale, sanity, storefront} = context;
   const language = locale?.language.toLowerCase();

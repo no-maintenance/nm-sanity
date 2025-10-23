@@ -6,6 +6,7 @@ import {SANITY_API_VERSION, SANITY_STUDIO_URL} from '~/sanity/constants';
 
 import {envVariables} from './env.server';
 import {AppSession} from './hydrogen.session.server';
+import {PasswordSession} from './password.session.server';
 import {createSanityContext} from './sanity/sanity.server';
 import {SanitySession} from './sanity/sanity.session.server';
 
@@ -26,10 +27,11 @@ export async function createAppLoadContext(
   /*
    * Open a cache instance in the worker and a custom session instance.
    */
-  const [cache, session, sanitySession] = await Promise.all([
+  const [cache, session, sanitySession, passwordSession] = await Promise.all([
     caches.open('hydrogen'),
     AppSession.init(request, [env.SESSION_SECRET]),
     SanitySession.init(request, [env.SESSION_SECRET]),
+    PasswordSession.init(request, [env.SESSION_SECRET]),
   ]);
   const withCache = createWithCache({cache, waitUntil, request});
   const sanityPreviewMode = await sanitySession.has('previewMode');
@@ -70,6 +72,7 @@ export async function createAppLoadContext(
     env: envVars,
     isDev,
     locale,
+    passwordSession,
     sanity,
     sanityPreviewMode,
     sanitySession,

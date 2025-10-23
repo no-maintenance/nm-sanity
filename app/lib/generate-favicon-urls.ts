@@ -18,6 +18,7 @@ export function generateFaviconUrls({
         rel: 'icon',
         tagName: 'link',
         type: 'image/x-icon',
+        key: 'favicon-default',
       },
     ];
   }
@@ -44,16 +45,19 @@ export function generateFaviconUrls({
       rel: 'icon',
       tagName: 'link',
       type: 'image/x-icon',
+      key: 'favicon',
     },
     {
       href: appleTouchIconUrl,
       rel: 'apple-touch-icon',
       tagName: 'link',
+      key: 'apple-touch-icon',
     },
     {
       href: appleTouchIconUrl,
       rel: 'apple-touch-icon-precomposed',
       tagName: 'link',
+      key: 'apple-touch-icon-precomposed',
     },
   ];
 }

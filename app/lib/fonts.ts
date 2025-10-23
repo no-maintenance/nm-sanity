@@ -11,6 +11,7 @@ type PreloadLink = {
   rel: string;
   tagName: string;
   type: string;
+  key?: string;
 };
 
 export function generateFontsPreloadLinks({
@@ -21,17 +22,28 @@ export function generateFontsPreloadLinks({
   const fonts = fontsData ? getFonts({fontsData}) : [];
   const preloadLinks: Array<PreloadLink> = [];
   const fontTypes = ['woff2', 'woff', 'ttf'] as const;
+  const seenUrls = new Set<string>();
 
   fonts.forEach((font) => {
     fontTypes.forEach((fontType) => {
       if (font[fontType]) {
+        const url = font[fontType].url as string;
+
+        // Skip if we've already added a preload for this URL
+        if (seenUrls.has(url)) {
+          return;
+        }
+
+        seenUrls.add(url);
+
         preloadLinks.push({
           as: 'font',
           crossOrigin: 'anonymous',
-          href: font[fontType].url as string,
+          href: url,
           rel: 'preload',
           tagName: 'link',
           type: `font/${fontType}`,
+          key: url, // Add unique key for React
         });
       }
     });

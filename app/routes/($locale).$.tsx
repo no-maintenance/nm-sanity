@@ -6,6 +6,7 @@ import {useLoaderData} from '@remix-run/react';
 import {DEFAULT_LOCALE} from 'countries';
 import {CmsSection} from '~/components/cms-section';
 import {PAGE_QUERY} from '~/data/sanity/queries';
+import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
@@ -16,6 +17,9 @@ export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
 );
 
 export async function loader({context, params, request}: LoaderFunctionArgs) {
+  // Check if site is protected
+  await requireUnprotectedAccess(context, request);
+
   const {env, locale, sanity, storefront} = context;
   const pathname = new URL(request.url).pathname;
   const handle = getPageHandle({locale, params, pathname});
