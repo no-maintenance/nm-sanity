@@ -74,6 +74,8 @@ import sizeChart from '~/sanity/schema/documents/size-chart';
 import sizeChartTemplate from './documents/size-chart-template';
 import form from './documents/form';
 import formField from './singletons/form-fields';
+import strandsPuzzle from './documents/strands-puzzle';
+import themeWord from './objects/games/theme-word';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -91,6 +93,7 @@ const documents = [
   sizeChart,
   sizeChartTemplate,
   form,
+  strandsPuzzle,
 ];
 const sections = [
   imageBannerSection,
@@ -150,6 +153,7 @@ const objects = [
   productModal,
   tile,
   formField,
+  themeWord,
 ];
 
 export const schemaTypes = [

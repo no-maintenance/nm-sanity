@@ -1,0 +1,76 @@
+{
+  "_type": "strandsPuzzle",
+  "title": "Strands #1 - Beach Day",
+  "slug": {
+    "current": "beach-day",
+    "_type": "slug"
+  },
+  "puzzleMode": "auto",
+  "themeWords": [
+    {
+      "_type": "themeWord",
+      "word": "SAND",
+      "isSpangram": false,
+      "difficulty": "easy",
+      "hint": "Found everywhere on the beach"
+    },
+    {
+      "_type": "themeWord",
+      "word": "WAVE",
+      "isSpangram": false,
+      "difficulty": "easy",
+      "hint": "They crash on the shore"
+    },
+    {
+      "_type": "themeWord",
+      "word": "SHELL",
+      "isSpangram": false,
+      "difficulty": "medium",
+      "hint": "Collect them by the seashore"
+    },
+    {
+      "_type": "themeWord",
+      "word": "TIDE",
+      "isSpangram": false,
+      "difficulty": "easy",
+      "hint": "It comes in and goes out"
+    },
+    {
+      "_type": "themeWord",
+      "word": "CORAL",
+      "isSpangram": false,
+      "difficulty": "medium",
+      "hint": "Reef builder"
+    },
+    {
+      "_type": "themeWord",
+      "word": "SEASHORE",
+      "isSpangram": true,
+      "difficulty": "medium",
+      "hint": "The main theme word!"
+    }
+  ],
+  "generatedGrid": "WILL_BE_AUTO_GENERATED",
+  "gridLocked": false,
+  "theme": {
+    "category": "Things you find at the beach",
+    "clue": "Where the waves meet the sand",
+    "emoji": "🏖️"
+  },
+  "difficulty": "medium",
+  "hintMode": "standard",
+  "timeLimit": 0,
+  "scoring": {
+    "pointsPerWord": 10,
+    "spangramBonus": 50
+  },
+  "reward": {
+    "enabled": true,
+    "type": "discount",
+    "discountCode": "BEACH10",
+    "discountPercent": 10,
+    "message": "Congratulations! You've earned 10% off your next beach gear order! Use code BEACH10 at checkout."
+  },
+  "status": "draft",
+  "puzzleNumber": 1
+}
