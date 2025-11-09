@@ -1,9 +1,11 @@
 import {redirect} from '@shopify/remix-oxygen';
 
 /**
- * Protection settings type from Sanity
+ * Protection configuration from Sanity
  */
-interface SiteProtection {
+interface ProtectionConfig {
+  _id?: string;
+  name?: string;
   enabled?: boolean;
   accessMode?: 'password' | 'countdown' | 'both' | 'either';
   password?: string;
@@ -12,6 +14,89 @@ interface SiteProtection {
     _ref?: string;
     _type?: string;
   };
+}
+
+/**
+ * Context for what is being protected
+ */
+interface ProtectionContext {
+  type: 'site' | 'collection' | 'product';
+  collectionHandle?: string;
+  productHandle?: string;
+}
+
+/**
+ * Session scope tracking for granular authentication
+ */
+interface AuthenticationScope {
+  global?: boolean;
+  collections?: string[];
+}
+
+/**
+ * Detect what type of content is being accessed from the URL
+ */
+function detectProtectionContext(url: URL): ProtectionContext {
+  const pathname = url.pathname;
+
+  // Check for collection routes
+  const collectionMatch = pathname.match(/^\/collections\/([^\/]+)/);
+  if (collectionMatch) {
+    return {
+      type: 'collection',
+      collectionHandle: collectionMatch[1],
+    };
+  }
+
+  // Check for product routes
+  const productMatch = pathname.match(/^\/products\/([^\/]+)/);
+  if (productMatch) {
+    return {
+      type: 'product',
+      productHandle: productMatch[1],
+    };
+  }
+
+  // Default to site-level
+  return {
+    type: 'site',
+  };
+}
+
+/**
+ * Check if user is authenticated for a specific protection config
+ */
+function checkProtectionAccess(
+  protection: ProtectionConfig,
+  hasPasswordAuth: boolean,
+  countdownExpired: boolean,
+): boolean {
+  if (!protection?.enabled) {
+    return true;
+  }
+
+  switch (protection.accessMode) {
+    case 'password':
+      return hasPasswordAuth;
+    case 'countdown':
+      return countdownExpired;
+    case 'both':
+      return hasPasswordAuth && countdownExpired;
+    case 'either':
+      return hasPasswordAuth || countdownExpired;
+    default:
+      return false;
+  }
+}
+
+/**
+ * Check if countdown has expired for a protection config
+ */
+function isCountdownExpired(countdown?: string): boolean {
+  if (!countdown) return false;
+  const countdownDate = new Date(countdown);
+  const now = new Date();
+  return now >= countdownDate;
 }
 
 /**

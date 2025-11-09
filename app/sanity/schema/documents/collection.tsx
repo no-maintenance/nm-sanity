@@ -70,6 +70,16 @@ export default defineType({
       to: [{type: 'collectionTemplate'}],
       group: 'editorial',
     }),
+    // Protection Configuration
+    defineField({
+      name: 'protectionConfig',
+      title: 'Collection Protection',
+      description:
+        'Optional protection for this collection. When set, visitors must authenticate to view this collection and its products. Overrides global site protection.',
+      type: 'reference',
+      to: [{type: 'protectionConfig'}],
+      group: 'editorial',
+    }),
     // Vector
     // defineField({
     //   name: 'vector',
@@ -122,10 +132,20 @@ export default defineType({
       isDeleted: 'store.isDeleted',
       rules: 'store.rules',
       title: 'store.title',
+      protectionConfig: 'protectionConfig',
     },
     prepare(selection) {
-      const {imageUrl, isDeleted, rules, title} = selection;
+      const {imageUrl, isDeleted, rules, title, protectionConfig} = selection;
       const ruleCount = rules?.length || 0;
+      const isProtected = !!protectionConfig;
+
+      const baseSubtitle = ruleCount > 0
+        ? `Automated (${pluralize('rule', ruleCount, true)})`
+        : 'Manual';
+
+      const subtitle = isProtected
+        ? `🔒 Protected • ${baseSubtitle}`
+        : baseSubtitle;
 
       return {
         media: (
@@ -136,10 +156,7 @@ export default defineType({
             url={imageUrl}
           />
         ),
-        subtitle:
-          ruleCount > 0
-            ? `Automated (${pluralize('rule', ruleCount, true)})`
-            : 'Manual',
+        subtitle,
         title,
       };
     },
