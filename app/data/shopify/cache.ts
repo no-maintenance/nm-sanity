@@ -14,5 +14,5 @@ export function routeHeaders({loaderHeaders}: {loaderHeaders: Headers}) {
 }
 
 export const CACHE_SHORT = generateCacheControlHeader(CacheShort());
-export const CACHE_LONG = generateCacheControlHeader(CacheLong());
+export const CACHE_LONG = generateCacheControlHeader({maxAge: 60});
 export const CACHE_NONE = generateCacheControlHeader(CacheNone());

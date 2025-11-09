@@ -44,6 +44,7 @@ interface LoaderData {
   redirectTo: string;
   serverTime: string;
   locale: string;
+  hasPasswordAuth: boolean;
 }
 
 interface TimeLeft {
@@ -70,13 +71,62 @@ export async function loader({context, request}: LoaderFunctionArgs) {
       colorScheme-> {
         _id,
         name,
-        background,
-        foreground,
-        primary,
-        primaryForeground,
-        border,
-        card,
-        cardForeground
+        background {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        foreground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        primary {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        primaryForeground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        border {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        card {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        cardForeground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        }
       }
     }
   }`;
@@ -150,6 +200,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     redirectTo,
     serverTime: new Date().toISOString(),
     locale: locale.language,
+    hasPasswordAuth,
   });
 }
 
@@ -170,13 +221,62 @@ export async function action({context, request}: ActionFunctionArgs) {
       colorScheme-> {
         _id,
         name,
-        background,
-        foreground,
-        primary,
-        primaryForeground,
-        border,
-        card,
-        cardForeground
+        background {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        foreground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        primary {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        primaryForeground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        border {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        card {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        },
+        cardForeground {
+          hex,
+          rgb {
+            r,
+            g,
+            b
+          }
+        }
       }
     }
   }`;
@@ -190,6 +290,24 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   if (password === protection?.password) {
     passwordSession.authenticate();
+
+    // Check if countdown has expired
+    const countdownExpired = protection.countdown
+      ? new Date(protection.countdown) <= new Date()
+      : false;
+
+    // If accessMode is 'both', only redirect if countdown has also expired
+    // Otherwise, return success to show waiting state
+    if (protection.accessMode === 'both' && !countdownExpired) {
+      return json(
+        {success: true, waitingForCountdown: true},
+        {
+          headers: {
+            'Set-Cookie': await passwordSession.commit(),
+          },
+        }
+      );
+    }
 
     // Get redirect page path if configured
     let targetPath = redirectTo;
@@ -274,7 +392,7 @@ function TimeUnit({value, label}: {value: number; label: string}) {
 }
 
 export default function SiteProtected() {
-  const {protection, redirectTo, serverTime, locale} = useLoaderData<typeof loader>();
+  const {protection, redirectTo, serverTime, locale, hasPasswordAuth} = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   // Start with null to avoid hydration mismatch
@@ -284,9 +402,10 @@ export default function SiteProtected() {
 
   // Generate CSS variables for color scheme
   const hasColorScheme = protection?.colorScheme != null;
-  const colorsCssVars = hasColorScheme
-    ? useColorsCssVars({settings: {colorScheme: protection.colorScheme as any}, selector: '#site-protected-page'})
-    : '';
+  const colorsCssVars = useColorsCssVars({
+    settings: hasColorScheme ? {colorScheme: protection.colorScheme as any} : undefined,
+    selector: '#site-protected-page'
+  });
 
   // Initialize and update countdown (client-side only)
   useEffect(() => {
@@ -299,14 +418,10 @@ export default function SiteProtected() {
     const initialRemaining = calculateTimeLeft(protection.countdown);
     setTimeLeft(initialRemaining);
 
-    // Auto-redirect if already expired
+    // If already expired, DON'T reload - just show the "NOW LIVE" state
+    // The loader has already checked and denied access, so reloading creates a loop
     if (initialRemaining.total <= 0) {
-      let targetPath = redirectTo;
-      if (protection.redirectPage?._ref) {
-        targetPath = redirectTo || '/';
-      }
-      window.location.href = targetPath;
-      return; // Exit early if expired
+      return;
     }
 
     // Update countdown every second
@@ -314,19 +429,15 @@ export default function SiteProtected() {
       const remaining = calculateTimeLeft(protection.countdown!);
       setTimeLeft(remaining);
 
-      // Auto-redirect when countdown reaches zero
+      // When countdown reaches zero, trigger revalidation ONCE
       if (remaining.total <= 0) {
-        let targetPath = redirectTo;
-        if (protection.redirectPage?._ref) {
-          targetPath = redirectTo || '/';
-        }
-        window.location.href = targetPath;
         clearInterval(interval);
+        window.location.reload();
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [protection?.countdown, redirectTo, protection?.redirectPage]);
+  }, [protection?.countdown, redirectTo]);
 
   if (!protection) {
     return null;
@@ -334,6 +445,16 @@ export default function SiteProtected() {
 
   const showPassword = ['password', 'both', 'either'].includes(protection.accessMode || '');
   const showCountdown = ['countdown', 'both', 'either'].includes(protection.accessMode || '');
+
+  // Check if countdown has already expired (for showing "NOW LIVE" instead of timer)
+  const countdownExpired = protection.countdown
+    ? new Date(protection.countdown) <= new Date()
+    : false;
+
+  // Check if password is authenticated but waiting for countdown (only for 'both' mode)
+  const waitingForCountdown = protection.accessMode === 'both' && 
+    (hasPasswordAuth || (actionData && 'waitingForCountdown' in actionData && actionData.waitingForCountdown)) && 
+    !countdownExpired;
 
   // Get localized content (use first value if array, or the value itself)
   // Only use defaults when field is truly empty, not when explicitly set to empty string
@@ -351,7 +472,7 @@ export default function SiteProtected() {
     : protection.passwordLabel;
 
   return (
-    <div id={hasColorScheme ? "site-protected-page" : undefined} className="relative min-h-screen w-full overflow-hidden bg-background">
+    <div id={hasColorScheme ? "site-protected-page" : undefined} className="relative min-h-screen w-full overflow-hidden bg-background text-foreground">
       {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
       {/* Background Media */}
       {(protection.backgroundImage || protection.backgroundVideo) && (
@@ -400,33 +521,45 @@ export default function SiteProtected() {
 
           {showCountdown && (
             <div className="mb-8">
-              {countdownLabel && (
-                <p className="mb-6 text-sm md:text-base uppercase tracking-wider text-muted-foreground">
-                  {countdownLabel}
-                </p>
+              {countdownExpired ? (
+                // Show "NOW LIVE" when countdown has expired
+                <div className="text-center">
+                  <p className="text-4xl md:text-6xl font-bold text-foreground">
+                    NOW LIVE
+                  </p>
+                </div>
+              ) : (
+                // Show countdown timer when not expired
+                <>
+                  {countdownLabel && (
+                    <p className="mb-6 text-sm md:text-base uppercase tracking-wider text-muted-foreground">
+                      {countdownLabel}
+                    </p>
+                  )}
+                  <div
+                    className="flex justify-center gap-2 md:gap-4 text-foreground"
+                    style={{
+                      minHeight: '80px',
+                      // Apply fade-in animation after hydration
+                      opacity: isHydrated && timeLeft ? 1 : 0.3,
+                      transition: 'opacity 0.3s ease-in-out'
+                    }}
+                  >
+                    {/* Always render the same structure to avoid hydration mismatch */}
+                    <TimeUnit value={timeLeft?.days ?? 0} label="Days" />
+                    <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+                    <TimeUnit value={timeLeft?.hours ?? 0} label="Hours" />
+                    <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+                    <TimeUnit value={timeLeft?.minutes ?? 0} label="Minutes" />
+                    <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+                    <TimeUnit value={timeLeft?.seconds ?? 0} label="Seconds" />
+                  </div>
+                </>
               )}
-              <div
-                className="flex justify-center gap-2 md:gap-4 text-foreground"
-                style={{
-                  minHeight: '80px',
-                  // Apply fade-in animation after hydration
-                  opacity: isHydrated && timeLeft ? 1 : 0.3,
-                  transition: 'opacity 0.3s ease-in-out'
-                }}
-              >
-                {/* Always render the same structure to avoid hydration mismatch */}
-                <TimeUnit value={timeLeft?.days ?? 0} label="Days" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.hours ?? 0} label="Hours" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.minutes ?? 0} label="Minutes" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.seconds ?? 0} label="Seconds" />
-              </div>
             </div>
           )}
 
-          {showCountdown && showPassword && protection.accessMode === 'either' && (
+          {showCountdown && showPassword && protection.accessMode === 'either' && !countdownExpired && (
             <div className="my-6 md:my-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -441,7 +574,19 @@ export default function SiteProtected() {
             </div>
           )}
 
-          {showPassword && (
+          {waitingForCountdown ? (
+            // Show waiting state when password is correct but countdown hasn't expired
+            <div className="space-y-4">
+              <div className="rounded-lg border border-border bg-card p-6 text-card-foreground">
+                <p className="text-lg font-semibold mb-2">
+                  Password Accepted
+                </p>
+                <p className="text-muted-foreground">
+                  Please wait for the countdown to complete to access the site.
+                </p>
+              </div>
+            </div>
+          ) : showPassword && (
             <Form method="post" className="space-y-4">
               <input type="hidden" name="redirectTo" value={redirectTo} />
               <div className="space-y-4">
@@ -452,8 +597,9 @@ export default function SiteProtected() {
                   placeholder={passwordLabel ?? "Enter password"}
                   required
                   autoComplete="off"
+                  className="bg-foreground text-background"
                 />
-                {actionData?.error && (
+                {actionData && 'error' in actionData && actionData.error && (
                   <p className="text-sm text-destructive">
                     {actionData.error}
                   </p>

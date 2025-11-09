@@ -1220,33 +1220,6 @@ export type ImageBannerSection = {
     | 'custom';
   customAspectRatio?: string;
   overlayOpacity?: number;
-  link?:
-    | {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'collection';
-      }
-    | {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'home';
-      }
-    | {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'page';
-      }
-    | {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'product';
-      };
-  externalLink?: string;
-  openInNewTab?: boolean;
   settings?: SectionSettings;
 };
 
@@ -3005,313 +2978,12 @@ export type SanityImageAsset = {
   uploadId?: string;
   path?: string;
   url?: string;
-  metadata?: SanityImageMetadata;
-  source?: SanityAssetSourceData;
-};
-
-export type SanityAssetSourceData = {
-  _type: 'sanity.assetSourceData';
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type SanityImageMetadata = {
-  _type: 'sanity.imageMetadata';
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
-export type InternationalizedArrayHeaderNavigation = Array<
-  {
-    _key: string;
-  } & InternationalizedArrayHeaderNavigationValue
->;
-
-export type InternationalizedArraySlug = Array<
-  {
-    _key: string;
-  } & InternationalizedArraySlugValue
->;
-
-export type InternationalizedArrayText = Array<
-  {
-    _key: string;
-  } & InternationalizedArrayTextValue
->;
-
-export type InternationalizedArrayString = Array<
-  {
-    _key: string;
-  } & InternationalizedArrayStringValue
->;
-
-export type MediaTag = {
-  _id: string;
-  _type: 'media.tag';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: Slug;
-};
-
-export type Slug = {
-  _type: 'slug';
-  current?: string;
-  source?: string;
-};
-
-export type Table = {
-  _type: 'table';
-  rows?: Array<
-    {
-      _key: string;
-    } & TableRow
-  >;
-};
-
-export type TableRow = {
-  _type: 'tableRow';
-  cells?: Array<string>;
-};
-
-export type Code = {
-  _type: 'code';
-  language?: string;
-  filename?: string;
-  code?: string;
-  highlightedLines?: Array<number>;
-};
-
-export type MuxVideo = {
-  _type: 'mux.video';
-  asset?: {
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: 'mux.videoAsset';
-  };
-};
-
-export type MuxVideoAsset = {
-  _id: string;
-  _type: 'mux.videoAsset';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  status?: string;
-  assetId?: string;
-  playbackId?: string;
-  filename?: string;
-  thumbTime?: number;
-  data?: MuxAssetData;
-};
-
-export type MuxAssetData = {
-  _type: 'mux.assetData';
-  resolution_tier?: string;
-  upload_id?: string;
-  created_at?: string;
-  id?: string;
-  status?: string;
-  max_stored_resolution?: string;
-  passthrough?: string;
-  encoding_tier?: string;
-  master_access?: string;
-  aspect_ratio?: string;
-  duration?: number;
-  max_stored_frame_rate?: number;
-  mp4_support?: string;
-  max_resolution_tier?: string;
-  tracks?: Array<
-    {
-      _key: string;
-    } & MuxTrack
-  >;
-  playback_ids?: Array<
-    {
-      _key: string;
-    } & MuxPlaybackId
-  >;
-  static_renditions?: MuxStaticRenditions;
-};
-
-export type MuxStaticRenditions = {
-  _type: 'mux.staticRenditions';
-  status?: string;
-  files?: Array<
-    {
-      _key: string;
-    } & MuxStaticRenditionFile
-  >;
-};
-
-export type MuxStaticRenditionFile = {
-  _type: 'mux.staticRenditionFile';
-  ext?: string;
-  name?: string;
-  width?: number;
-  bitrate?: number;
-  filesize?: number;
-  height?: number;
-};
-
-export type MuxPlaybackId = {
-  _type: 'mux.playbackId';
-  id?: string;
-  policy?: string;
-};
-
-export type MuxTrack = {
-  _type: 'mux.track';
-  id?: string;
-  type?: string;
-  max_width?: number;
-  max_frame_rate?: number;
-  duration?: number;
-  max_height?: number;
-};
-
-export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | Geopoint
-  | ThemeContent
-  | Settings
-  | Footer
-  | Header
-  | FooterWithNav
-  | SocialLinksOnly
-  | StickyTileSection
-  | CollectionBannerSection
-  | CollectionProductGridSection
-  | RichtextSection
-  | CarouselSection
-  | ProductSwimlaneSection
-  | RelatedProductsSection
-  | ProductInformationSection
-  | CollectionListSection
-  | FeaturedProductSection
-  | FeaturedCollectionSection
-  | MediaGallerySection
-  | ImageBannerSection
-  | Form
-  | SizeChartTemplate
-  | Typography
-  | ProductVariant
-  | BlogCategory
-  | FormField
-  | Tile
-  | ProductModal
-  | CollectionRule
-  | ShopifyProductVariant
-  | ProxyString
-  | PriceRange
-  | PlaceholderString
-  | Option
-  | Inventory
-  | RangeSlider
-  | AnnouncementBar
-  | InternalPolicyLink
-  | Button
-  | HeaderNavigation
-  | Anchor
-  | SectionSettings
-  | ColorScheme
-  | ColorPicker
-  | FontCategory
-  | FontAsset
-  | SanityFileAsset
-  | BannerRichtext
-  | BaseRichtext
-  | ProductBaseRichtext
-  | ProductRichtext
-  | CollectionSections
-  | ProductSections
-  | Sections
-  | Footers
-  | NestedNavigation
-  | ExternalLink
-  | InternalLink
-  | AspectRatios
-  | Richtext
-  | ContentAlignment
-  | ContentPosition
-  | Padding
-  | Link
-  | SanityAssistInstructionTask
-  | SanityAssistTaskStatus
-  | SanityAssistSchemaTypeAnnotations
-  | SanityAssistOutputType
-  | SanityAssistOutputField
-  | SanityAssistInstructionContext
-  | AssistInstructionContext
-  | SanityAssistInstructionUserInput
-  | SanityAssistInstructionPrompt
-  | SanityAssistInstructionFieldRef
-  | SanityAssistInstruction
-  | SanityAssistSchemaTypeField
-  | InternationalizedArrayBannerRichtextValue
-  | InternationalizedArrayBaseRichtextValue
-  | InternationalizedArrayRichtextValue
-  | InternationalizedArrayProductRichtextValue
-  | InternationalizedArrayAnnouncementBarValue
-  | InternationalizedArrayHeaderNavigationValue
-  | InternationalizedArraySlugValue
-  | InternationalizedArrayTextValue
-  | InternationalizedArrayStringValue
-  | InternationalizedArrayBannerRichtext
-  | InternationalizedArrayBaseRichtext
-  | InternationalizedArrayRichtext
-  | InternationalizedArrayProductRichtext
-  | InternationalizedArrayAnnouncementBar
-  | Home
-  | Page
-  | Product
-  | ShopifyProduct
-  | SizeChart
-  | ProductTemplate
-  | Collection
-  | ShopifyCollection
-  | CollectionTemplate
-  | BlogPost
-  | StorePolicy
-  | Seo
-  | ColumnContent
-  | SanityImageCrop
-  | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
-  | InternationalizedArrayHeaderNavigation
-  | InternationalizedArraySlug
-  | InternationalizedArrayText
-  | InternationalizedArrayString
-  | MediaTag
-  | Slug
-  | Table
-  | TableRow
-  | Code
-  | MuxVideo
-  | MuxVideoAsset
-  | MuxAssetData
-  | MuxStaticRenditions
-  | MuxStaticRenditionFile
-  | MuxPlaybackId
-  | MuxTrack;
-export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./app/data/sanity/blog.ts
+  metadata?: Sa// Source: ./app/data/sanity/blog.ts
 // Variable: BLOG_POST_QUERY
 // Query: *[  _type == "blogPost"   && !(_id in path("drafts.**"))  && slug.current == $handle][0] {  _id,  _type,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  "excerpt": coalesce(    excerpt[_key == $language][0].value,    excerpt[_key == $defaultLanguage][0].value,  ),  "slug": slug.current,  season,  "location": coalesce(    location[_key == $language][0].value,    location[_key == $defaultLanguage][0].value,  ),  credits[] {    _key,    role,    name  },  featuredImage {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  sections[] {    _key,    _type,        _type == 'richtextSection' => {  _key,  _type,  contentAlignment,  desktopContentPosition,  maxWidth,  "richtext": coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'carouselSection' => {  _key,  _type,  arrows,  autoplay,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  loop,  pagination,  slides[] {    _key,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  },  slidesPerViewDesktop,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'collectionListSection' => {  _key,  _type,  collections[] -> {    store {      gid    }  },  desktopColumns,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredProductSection' => {  _key,  _type,  mediaAspectRatio,  product -> {    store {      descriptionHtml,      "firstVariant": variants[0] -> {        store {          gid,          previewImageUrl,          price        }      },      gid,      options[] {        name,        values      },      previewImageUrl,      title    }  },  'richtext': coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredCollectionSection' => {  _key,  _type,  collection -> {    store {      gid,      slug,      title    }  },  desktopColumns,  displayType,  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  maxProducts,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'imageBannerSection' => {  _key,  _type,  mediaType,  backgroundImage {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  backgroundVideo {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},  heightMode,  bannerHeight,  aspectRatio,  customAspectRatio,  responsiveAspectRatio,  mobileAspectRatio,  customMobileAspectRatio,  "content": coalesce(    content[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    content[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  contentAlignment,  contentPosition,  overlayOpacity,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'stickyTileSection' => {  _key,  _type,  stickyColumn,  tiles[] {    _key,    mediaType,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},    "richtext": coalesce(      richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},      richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    )[],    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},    externalLink,    openInNewTab,    contentPosition,    contentAlignment,    settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'mediaGallerySection' => {  _key,  _type,  items[] {    _key,    _type,    // Simple image type (direct image upload)    _type == 'simpleImage' => {      ...{  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}    },    // Gallery item type with media options    _type == 'galleryItem' => {      mediaType,      mediaType == "image" => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}      },      mediaType == "video" => {        video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },}      },      "caption": coalesce(    caption[_key == $language][0].value,    caption[_key == $defaultLanguage][0].value,  )    }  },  layout {    aspectRatio,    gap  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    },  categories[]-> {    _id,    "title": coalesce(      title[_key == $language][0].value,      title[_key == $defaultLanguage][0].value,    ),    "slug": slug.current,    color  },  tags,  publishedAt,  seo {    "title": coalesce(      title[_key == $language][0].value,      title[_key == $defaultLanguage][0].value,    ),    "description": coalesce(      description[_key == $language][0].value,      description[_key == $defaultLanguage][0].value,    ),    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}  }}
 export type BLOG_POST_QUERYResult = {
   _id: string;
-  _type: 'blogPost';
+  _type: "blogPost";
   title: string | null;
   excerpt: string | null;
   slug: string | null;
@@ -3323,8572 +2995,6970 @@ export type BLOG_POST_QUERYResult = {
     name: string | null;
   }> | null;
   featuredImage: {
-    _type: 'image';
+    _type: "image";
     asset: {
       _ref: string;
-      _type: 'reference';
+      _type: "reference";
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     } | null;
     altText: string | null;
     _ref: string | null;
     hotspot: SanityImageHotspot | null;
     crop: SanityImageCrop | null;
   } | null;
-  sections: Array<
-    | {
-        _key: string;
-        _type: 'carouselSection';
-        arrows: boolean | null;
-        autoplay: boolean | null;
+  sections: Array<{
+    _key: string;
+    _type: "carouselSection";
+    arrows: boolean | null;
+    autoplay: boolean | null;
+    title: string | null;
+    loop: boolean | null;
+    pagination: boolean | null;
+    slides: Array<{
+      _key: string;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+    }> | null;
+    slidesPerViewDesktop: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "collectionListSection";
+    collections: Array<{
+      store: {
+        gid: string | null;
+      } | null;
+    }> | null;
+    desktopColumns: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "featuredCollectionSection";
+    collection: {
+      store: {
+        gid: string | null;
+        slug: Slug | null;
         title: string | null;
-        loop: boolean | null;
-        pagination: boolean | null;
-        slides: Array<{
-          _key: string;
-          image: {
-            _type: 'image';
-            asset: {
-              _ref: string;
-              _type: 'reference';
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-            } | null;
-            altText: string | null;
-            _ref: string | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
+      } | null;
+    } | null;
+    desktopColumns: number | null;
+    displayType: "grid" | "swimlane" | null;
+    heading: string | null;
+    maxProducts: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
           } | null;
-        }> | null;
-        slidesPerViewDesktop: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
           } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: 'collectionListSection';
-        collections: Array<{
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+    viewAll: boolean | null;
+  } | {
+    _key: string;
+    _type: "featuredProductSection";
+    mediaAspectRatio: "auto" | "square" | "video" | null;
+    product: {
+      store: {
+        descriptionHtml: string | null;
+        firstVariant: {
           store: {
             gid: string | null;
-          } | null;
-        }> | null;
-        desktopColumns: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
-        _key: string;
-        _type: 'featuredCollectionSection';
-        collection: {
-          store: {
-            gid: string | null;
-            slug: Slug | null;
-            title: string | null;
-          } | null;
-        } | null;
-        desktopColumns: number | null;
-        displayType: 'grid' | 'swimlane' | null;
-        heading: string | null;
-        maxProducts: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-        viewAll: boolean | null;
-      }
-    | {
-        _key: string;
-        _type: 'featuredProductSection';
-        mediaAspectRatio: 'auto' | 'square' | 'video' | null;
-        product: {
-          store: {
-            descriptionHtml: string | null;
-            firstVariant: {
-              store: {
-                gid: string | null;
-                previewImageUrl: string | null;
-                price: number | null;
-              } | null;
-            } | null;
-            gid: string | null;
-            options: Array<{
-              name: string | null;
-              values: Array<string> | null;
-            }> | null;
             previewImageUrl: string | null;
-            title: string | null;
+            price: number | null;
           } | null;
         } | null;
-        richtext: Array<
-          | {
-              quantitySelector?: boolean;
-              shopPayButton?: boolean;
-              _type: 'addToCartButton';
-              _key: string;
-            }
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?:
-                | 'blockquote'
-                | 'h1'
-                | 'h2'
-                | 'h3'
-                | 'h4'
-                | 'h5'
-                | 'h6'
-                | 'normal';
-              listItem?: 'bullet' | 'number';
-              markDefs: Array<
-                | {
-                    link: string | null;
-                    openInNewTab: boolean | null;
-                    _type: 'externalLink';
-                    _key: string;
-                    name: null;
-                  }
-                | {
-                    link:
-                      | {
-                          documentType: 'blogPost';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'collection';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'home';
-                          slug: null;
-                        }
-                      | {
-                          documentType: 'page';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'product';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'storePolicy';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | null;
-                    anchor: Anchor | null;
-                    _type: 'internalLink';
-                    _key: string;
-                    name: null;
-                  }
-              > | null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              priceProxy?: ProxyString;
-              showShopifyBrand?: boolean;
-              _type: 'price';
-              _key: string;
-            }
-          | {
-              title?: string;
-              _type: 'productDetails';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'productModal';
-              triggerLabel?: string;
-              modalTitle?: string;
-              content?: Array<
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: 'span';
-                      _key: string;
-                    }>;
-                    style?:
-                      | 'blockquote'
-                      | 'h1'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal';
-                    listItem?: 'bullet' | 'number';
-                    markDefs?: Array<{
-                      href?: string;
-                      _type: 'link';
-                      _key: string;
-                    }>;
-                    level?: number;
-                    _type: 'block';
-                    _key: string;
-                  }
-                | {
-                    title?: string;
-                    _type: 'sizeChart';
-                    _key: string;
-                  }
-              >;
-            }
-          | {
-              title: string | null;
-              content: Array<
-                | {
-                    quantitySelector?: boolean;
-                    shopPayButton?: boolean;
-                    _type: 'addToCartButton';
-                    _key: string;
-                  }
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: 'span';
-                      _key: string;
-                    }>;
-                    style?:
-                      | 'blockquote'
-                      | 'h1'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal';
-                    listItem?: 'bullet' | 'number';
-                    markDefs: Array<
-                      | {
-                          link: string | null;
-                          openInNewTab: boolean | null;
-                          _type: 'externalLink';
-                          _key: string;
-                          name: null;
-                        }
-                      | {
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor: Anchor | null;
-                          _type: 'internalLink';
-                          _key: string;
-                          name: null;
-                        }
-                    > | null;
-                    level?: number;
-                    _type: 'block';
-                    _key: string;
-                  }
-                | {
-                    priceProxy?: ProxyString;
-                    showShopifyBrand?: boolean;
-                    _type: 'price';
-                    _key: string;
-                  }
-                | {
-                    title?: string;
-                    _type: 'productDetails';
-                    _key: string;
-                  }
-                | {
-                    descriptionProxy?: ProxyString;
-                    _type: 'shopifyDescription';
-                    _key: string;
-                  }
-                | {
-                    titleProxy?: ProxyString;
-                    _type: 'shopifyTitle';
-                    _key: string;
-                  }
-              > | null;
-              defaultOpen: boolean | null;
-              _type: 'shopifyAccordion';
-              _key: string;
-            }
-          | {
-              descriptionProxy?: ProxyString;
-              _type: 'shopifyDescription';
-              _key: string;
-            }
-          | {
-              titleProxy?: ProxyString;
-              _type: 'shopifyTitle';
-              _key: string;
-            }
-        > | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
+        gid: string | null;
+        options: Array<{
+          name: string | null;
+          values: Array<string> | null;
+        }> | null;
+        previewImageUrl: string | null;
+        title: string | null;
+      } | null;
+    } | null;
+    richtext: Array<{
+      quantitySelector?: boolean;
+      shopPayButton?: boolean;
+      _type: "addToCartButton";
+      _key: string;
+    } | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
         _key: string;
-        _type: 'imageBannerSection';
-        mediaType: 'image' | 'video' | null;
-        backgroundImage: {
-          _type: 'image';
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        link: string | null;
+        openInNewTab: boolean | null;
+        _type: "externalLink";
+        _key: string;
+        name: null;
+      } | {
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor: Anchor | null;
+        _type: "internalLink";
+        _key: string;
+        name: null;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      priceProxy?: ProxyString;
+      showShopifyBrand?: boolean;
+      _type: "price";
+      _key: string;
+    } | {
+      title?: string;
+      _type: "productDetails";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "productModal";
+      triggerLabel?: string;
+      modalTitle?: string;
+      content?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        title?: string;
+        _type: "sizeChart";
+        _key: string;
+      }>;
+    } | {
+      title: string | null;
+      content: Array<{
+        quantitySelector?: boolean;
+        shopPayButton?: boolean;
+        _type: "addToCartButton";
+        _key: string;
+      } | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          link: string | null;
+          openInNewTab: boolean | null;
+          _type: "externalLink";
+          _key: string;
+          name: null;
+        } | {
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor: Anchor | null;
+          _type: "internalLink";
+          _key: string;
+          name: null;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        priceProxy?: ProxyString;
+        showShopifyBrand?: boolean;
+        _type: "price";
+        _key: string;
+      } | {
+        title?: string;
+        _type: "productDetails";
+        _key: string;
+      } | {
+        descriptionProxy?: ProxyString;
+        _type: "shopifyDescription";
+        _key: string;
+      } | {
+        titleProxy?: ProxyString;
+        _type: "shopifyTitle";
+        _key: string;
+      }> | null;
+      defaultOpen: boolean | null;
+      _type: "shopifyAccordion";
+      _key: string;
+    } | {
+      descriptionProxy?: ProxyString;
+      _type: "shopifyDescription";
+      _key: string;
+    } | {
+      titleProxy?: ProxyString;
+      _type: "shopifyTitle";
+      _key: string;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "imageBannerSection";
+    mediaType: "image" | "video" | null;
+    backgroundImage: {
+      _type: "image";
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      altText: string | null;
+      _ref: string | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+    backgroundVideo: {
+      _type: "mux.video";
+      asset: {
+        _id: string;
+        _type: "mux.videoAsset";
+        playbackId: string | null;
+        status: string | null;
+        thumbTime: number | null;
+        data: {
+          aspect_ratio: string | null;
+          duration: number | null;
+        } | null;
+      } | null;
+    } | null;
+    heightMode: "aspectRatio" | "fixed" | "fullscreen" | null;
+    bannerHeight: number | null;
+    aspectRatio: "1:1" | "1:2" | "16:9" | "2:1" | "3:2" | "4:3" | "4:6" | "9:16" | "custom" | null;
+    customAspectRatio: string | null;
+    responsiveAspectRatio: null;
+    mobileAspectRatio: null;
+    customMobileAspectRatio: null;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: never;
+      markDefs: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "button";
+      label?: string;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      anchor?: string;
+    }> | null;
+    contentAlignment: "center" | "left" | "right" | null;
+    contentPosition: "bottom_center" | "bottom_left" | "bottom_right" | "middle_center" | "middle_left" | "middle_right" | "top_center" | "top_left" | "top_right" | null;
+    overlayOpacity: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "mediaGallerySection";
+    items: Array<{
+      _key: string;
+      _type: "simpleImage";
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      altText: string | null;
+      _ref: string | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      caption: string | null;
+    }> | null;
+    layout: {
+      aspectRatio: "landscape" | "original" | "portrait" | "square" | "wide" | null;
+      gap: "large" | "medium" | "none" | "small" | null;
+    } | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "productSwimlaneSection";
+    collection: {
+      store: {
+        gid: string | null;
+        slug: {
+          current: string | null;
+        } | null;
+        title: string | null;
+      } | null;
+    } | null;
+    heading: string | null;
+    manualProducts: Array<{
+      store: {
+        gid: string | null;
+      } | null;
+    }> | null;
+    maxProducts: number | null;
+    source: "collection" | "manual" | "related" | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+    viewAll: boolean | null;
+  } | {
+    _key: string;
+    _type: "richtextSection";
+    contentAlignment: "center" | "left" | "right" | null;
+    desktopContentPosition: "center" | "left" | "right" | null;
+    maxWidth: number | null;
+    richtext: Array<{
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      media?: unknown;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+      alt?: string;
+      maxWidth?: RangeSlider;
+      alignment?: "center" | "left" | "right";
+      _type: "image";
+      _key: string;
+      altText: string | null;
+      _ref: string | null;
+    } | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        link: string | null;
+        openInNewTab: boolean | null;
+        _type: "externalLink";
+        _key: string;
+        name: null;
+      } | {
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor: Anchor | null;
+        _type: "internalLink";
+        _key: string;
+        name: null;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "button";
+      label?: string;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      anchor?: string;
+    } | {
+      slides: Array<{
+        _key: string;
+        image: {
+          _type: "image";
           asset: {
             _ref: string;
-            _type: 'reference';
+            _type: "reference";
             _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           } | null;
           altText: string | null;
           _ref: string | null;
           hotspot: SanityImageHotspot | null;
           crop: SanityImageCrop | null;
         } | null;
-        backgroundVideo: {
-          _type: 'mux.video';
-          asset: {
-            _id: string;
-            _type: 'mux.videoAsset';
-            playbackId: string | null;
-            status: string | null;
-            thumbTime: number | null;
-            data: {
-              aspect_ratio: string | null;
-              duration: number | null;
-            } | null;
-          } | null;
-        } | null;
-        heightMode: 'aspectRatio' | 'fixed' | 'fullscreen' | null;
-        bannerHeight: number | null;
-        aspectRatio:
-          | '1:1'
-          | '1:2'
-          | '16:9'
-          | '2:1'
-          | '3:2'
-          | '4:3'
-          | '4:6'
-          | '9:16'
-          | 'custom'
-          | null;
-        customAspectRatio: string | null;
-        responsiveAspectRatio: null;
-        mobileAspectRatio: null;
-        customMobileAspectRatio: null;
-        content: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-              listItem?: never;
-              markDefs: null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'button';
-              label?: string;
-              link:
-                | {
-                    documentType: 'blogPost';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'collection';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'home';
-                    slug: null;
-                  }
-                | {
-                    documentType: 'page';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'product';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'storePolicy';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | null;
-              anchor?: string;
-            }
-        > | null;
-        contentAlignment: 'center' | 'left' | 'right' | null;
-        contentPosition:
-          | 'bottom_center'
-          | 'bottom_left'
-          | 'bottom_right'
-          | 'middle_center'
-          | 'middle_left'
-          | 'middle_right'
-          | 'top_center'
-          | 'top_left'
-          | 'top_right'
-          | null;
-        overlayOpacity: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
-        _key: string;
-        _type: 'mediaGallerySection';
-        items: Array<
-          | {
-              _key: string;
-              _type: 'simpleImage';
+      }> | null;
+      slidesPerViewDesktop: RangeSlider | null;
+      pagination: boolean | null;
+      arrows: boolean | null;
+      _type: "carousel";
+      _key: string;
+    } | {
+      formType: "appointment" | "contact" | "newsletter" | null;
+      title: string | null;
+      description: string | null;
+      _type: "form";
+      _key: string;
+    } | {
+      layout: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus" | null;
+      verticalAlignment: "bottom" | "center" | "top" | null;
+      gap: "large" | "medium" | "small" | null;
+      leftColumn: {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
               asset: {
                 _ref: string;
-                _type: 'reference';
+                _type: "reference";
                 _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               } | null;
               altText: string | null;
               _ref: string | null;
               hotspot: SanityImageHotspot | null;
               crop: SanityImageCrop | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              image: {
-                _type: 'image';
-                asset: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                } | null;
-                altText: string | null;
-                _ref: string | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-              } | null;
-              video: {
-                _type: 'mux.video';
-                asset: {
-                  _id: string;
-                  _type: 'mux.videoAsset';
-                  playbackId: string | null;
-                  status: string | null;
-                  thumbTime: number | null;
-                  data: {
-                    aspect_ratio: string | null;
-                    duration: number | null;
-                  } | null;
-                } | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              image: {
-                _type: 'image';
-                asset: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                } | null;
-                altText: string | null;
-                _ref: string | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              video: {
-                _type: 'mux.video';
-                asset: {
-                  _id: string;
-                  _type: 'mux.videoAsset';
-                  playbackId: string | null;
-                  status: string | null;
-                  thumbTime: number | null;
-                  data: {
-                    aspect_ratio: string | null;
-                    duration: number | null;
-                  } | null;
-                } | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              caption: string | null;
-            }
-        > | null;
-        layout: {
-          aspectRatio:
-            | 'landscape'
-            | 'original'
-            | 'portrait'
-            | 'square'
-            | 'wide'
-            | null;
-          gap: 'large' | 'medium' | 'none' | 'small' | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
         } | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: 'productSwimlaneSection';
-        collection: {
-          store: {
-            gid: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
             slug: {
+              _type: "slug";
               current: string | null;
             } | null;
-            title: string | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
           } | null;
-        } | null;
-        heading: string | null;
-        manualProducts: Array<{
-          store: {
-            gid: string | null;
-          } | null;
+          anchor?: string;
         }> | null;
-        maxProducts: number | null;
-        source: 'collection' | 'manual' | 'related' | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
         } | null;
-        viewAll: boolean | null;
-      }
-    | {
-        _key: string;
-        _type: 'richtextSection';
-        contentAlignment: 'center' | 'left' | 'right' | null;
-        desktopContentPosition: 'center' | 'left' | 'right' | null;
-        maxWidth: number | null;
-        richtext: Array<
-          | {
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
               asset: {
                 _ref: string;
-                _type: 'reference';
+                _type: "reference";
                 _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               } | null;
-              media?: unknown;
-              hotspot: SanityImageHotspot | null;
-              crop: SanityImageCrop | null;
-              alt?: string;
-              maxWidth?: RangeSlider;
-              alignment?: 'center' | 'left' | 'right';
-              _type: 'image';
-              _key: string;
               altText: string | null;
               _ref: string | null;
-            }
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?:
-                | 'blockquote'
-                | 'h1'
-                | 'h2'
-                | 'h3'
-                | 'h4'
-                | 'h5'
-                | 'h6'
-                | 'normal';
-              listItem?: 'bullet' | 'number';
-              markDefs: Array<
-                | {
-                    link: string | null;
-                    openInNewTab: boolean | null;
-                    _type: 'externalLink';
-                    _key: string;
-                    name: null;
-                  }
-                | {
-                    link:
-                      | {
-                          documentType: 'blogPost';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'collection';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'home';
-                          slug: null;
-                        }
-                      | {
-                          documentType: 'page';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'product';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'storePolicy';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | null;
-                    anchor: Anchor | null;
-                    _type: 'internalLink';
-                    _key: string;
-                    name: null;
-                  }
-              > | null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'button';
-              label?: string;
-              link:
-                | {
-                    documentType: 'blogPost';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'collection';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'home';
-                    slug: null;
-                  }
-                | {
-                    documentType: 'page';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'product';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'storePolicy';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | null;
-              anchor?: string;
-            }
-          | {
-              slides: Array<{
-                _key: string;
-                image: {
-                  _type: 'image';
-                  asset: {
-                    _ref: string;
-                    _type: 'reference';
-                    _weak?: boolean;
-                    [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                  } | null;
-                  altText: string | null;
-                  _ref: string | null;
-                  hotspot: SanityImageHotspot | null;
-                  crop: SanityImageCrop | null;
-                } | null;
-              }> | null;
-              slidesPerViewDesktop: RangeSlider | null;
-              pagination: boolean | null;
-              arrows: boolean | null;
-              _type: 'carousel';
-              _key: string;
-            }
-          | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
-              _key: string;
-            }
-          | {
-              layout:
-                | 'content-focus'
-                | 'equal'
-                | 'heavy-content'
-                | 'heavy-media'
-                | 'media-focus'
-                | null;
-              verticalAlignment: 'bottom' | 'center' | 'top' | null;
-              gap: 'large' | 'medium' | 'small' | null;
-              leftColumn:
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                  }
-                | null;
-              rightColumn:
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-                          _ref: string | null;
-                        }
-                      | {
-                          children?: Array<{
-                            marks?: Array<string>;
-                            text?: string;
-                            _type: 'span';
-                            _key: string;
-                          }>;
-                          style?:
-                            | 'blockquote'
-                            | 'h1'
-                            | 'h2'
-                            | 'h3'
-                            | 'h4'
-                            | 'h5'
-                            | 'h6'
-                            | 'normal';
-                          listItem?: 'bullet' | 'number';
-                          markDefs: Array<
-                            | {
-                                link: string | null;
-                                openInNewTab: boolean | null;
-                                _type: 'externalLink';
-                                _key: string;
-                                name: null;
-                              }
-                            | {
-                                link:
-                                  | {
-                                      documentType: 'blogPost';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'collection';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'home';
-                                      slug: null;
-                                    }
-                                  | {
-                                      documentType: 'page';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'product';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | {
-                                      documentType: 'storePolicy';
-                                      slug: {
-                                        _type: 'slug';
-                                        current: string | null;
-                                      } | null;
-                                    }
-                                  | null;
-                                anchor: Anchor | null;
-                                _type: 'internalLink';
-                                _key: string;
-                                name: null;
-                              }
-                          > | null;
-                          level?: number;
-                          _type: 'block';
-                          _key: string;
-                        }
-                      | {
-                          _key: string;
-                          _type: 'button';
-                          label?: string;
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor?: string;
-                        }
-                      | {
-                          slides?: Array<{
-                            image?: {
-                              asset?: {
-                                _ref: string;
-                                _type: 'reference';
-                                _weak?: boolean;
-                                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                              };
-                              media?: unknown;
-                              hotspot?: SanityImageHotspot;
-                              crop?: SanityImageCrop;
-                              alt?: string;
-                              _type: 'image';
-                            };
-                            _type: 'slide';
-                            _key: string;
-                          }>;
-                          slidesPerViewDesktop?: RangeSlider;
-                          pagination?: boolean;
-                          arrows?: boolean;
-                          _type: 'carousel';
-                          _key: string;
-                        }
-                      | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
-                          _key: string;
-                        }
-                      | {
-                          layout?:
-                            | 'content-focus'
-                            | 'equal'
-                            | 'heavy-content'
-                            | 'heavy-media'
-                            | 'media-focus';
-                          verticalAlignment?: 'bottom' | 'center' | 'top';
-                          gap?: 'large' | 'medium' | 'small';
-                          leftColumn?: ColumnContent;
-                          rightColumn?: ColumnContent;
-                          _type: 'twoColumnBlock';
-                          _key: string;
-                        }
-                    > | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                  }
-                | null;
-              _type: 'twoColumnBlock';
-              _key: string;
-            }
-        > | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
             } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: 'stickyTileSection';
-        stickyColumn: 'left' | 'right' | null;
-        tiles: Array<{
+        buttons: Array<{
           _key: string;
-          mediaType: 'image' | 'video' | null;
-          image: {
-            _type: 'image';
-            asset: {
-              _ref: string;
-              _type: 'reference';
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
             } | null;
-            altText: string | null;
-            _ref: string | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-          } | null;
-          video: {
-            _type: 'mux.video';
-            asset: {
-              _id: string;
-              _type: 'mux.videoAsset';
-              playbackId: string | null;
-              status: string | null;
-              thumbTime: number | null;
-              data: {
-                aspect_ratio: string | null;
-                duration: number | null;
-              } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
             } | null;
           } | null;
-          richtext: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: 'span';
-                  _key: string;
-                }>;
-                style?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-                listItem?: never;
-                markDefs: null;
-                level?: number;
-                _type: 'block';
-                _key: string;
-              }
-            | {
-                _key: string;
-                _type: 'button';
-                label?: string;
-                link:
-                  | {
-                      documentType: 'blogPost';
-                      slug: {
-                        _type: 'slug';
-                        current: string | null;
-                      } | null;
-                    }
-                  | {
-                      documentType: 'collection';
-                      slug: {
-                        _type: 'slug';
-                        current: string | null;
-                      } | null;
-                    }
-                  | {
-                      documentType: 'home';
-                      slug: null;
-                    }
-                  | {
-                      documentType: 'page';
-                      slug: {
-                        _type: 'slug';
-                        current: string | null;
-                      } | null;
-                    }
-                  | {
-                      documentType: 'product';
-                      slug: {
-                        _type: 'slug';
-                        current: string | null;
-                      } | null;
-                    }
-                  | {
-                      documentType: 'storePolicy';
-                      slug: {
-                        _type: 'slug';
-                        current: string | null;
-                      } | null;
-                    }
-                  | null;
-                anchor?: string;
-              }
-          > | null;
-          link:
-            | {
-                documentType: 'blogPost';
-                slug: {
-                  _type: 'slug';
-                  current: string | null;
-                } | null;
-              }
-            | {
-                documentType: 'collection';
-                slug: {
-                  _type: 'slug';
-                  current: string | null;
-                } | null;
-              }
-            | {
-                documentType: 'home';
-                slug: null;
-              }
-            | {
-                documentType: 'page';
-                slug: {
-                  _type: 'slug';
-                  current: string | null;
-                } | null;
-              }
-            | {
-                documentType: 'product';
-                slug: {
-                  _type: 'slug';
-                  current: string | null;
-                } | null;
-              }
-            | {
-                documentType: 'storePolicy';
-                slug: {
-                  _type: 'slug';
-                  current: string | null;
-                } | null;
-              }
-            | null;
-          externalLink: string | null;
-          openInNewTab: boolean | null;
-          contentPosition:
-            | 'bottom_center'
-            | 'bottom_left'
-            | 'bottom_right'
-            | 'middle_center'
-            | 'middle_left'
-            | 'middle_right'
-            | 'top_center'
-            | 'top_left'
-            | 'top_right'
-            | null;
-          contentAlignment: 'center' | 'left' | 'right' | null;
-          settings: {
-            colorScheme: {
-              background: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              border: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              card: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              cardForeground: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              foreground: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              primary: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-              primaryForeground: {
-                alpha: null;
-                hex: string | null;
-                hsl: {
-                  h?: number;
-                  s?: number;
-                  l?: number;
-                } | null;
-                rgb: {
-                  r?: number;
-                  g?: number;
-                  b?: number;
-                } | null;
-              } | null;
-            } | null;
-            customCss: Code | null;
-            hide: boolean | null;
-            padding: Padding | null;
-          } | null;
+          anchor?: string;
         }> | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
               } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
               } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
               } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
               } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
               } | null;
             } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
             } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
             } | null;
           } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
         } | null;
-      }
-  > | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+      } | null;
+      rightColumn: {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+      } | null;
+      _type: "twoColumnBlock";
+      _key: string;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "stickyTileSection";
+    stickyColumn: "left" | "right" | null;
+    tiles: Array<{
+      _key: string;
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      richtext: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: never;
+        markDefs: null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        _key: string;
+        _type: "button";
+        label?: string;
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor?: string;
+      }> | null;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      externalLink: string | null;
+      openInNewTab: boolean | null;
+      contentPosition: "bottom_center" | "bottom_left" | "bottom_right" | "middle_center" | "middle_left" | "middle_right" | "top_center" | "top_left" | "top_right" | null;
+      contentAlignment: "center" | "left" | "right" | null;
+      settings: {
+        colorScheme: {
+          background: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          border: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          card: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          cardForeground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          foreground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          primary: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          primaryForeground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+        } | null;
+        customCss: Code | null;
+        hide: boolean | null;
+        padding: Padding | null;
+      } | null;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  }> | null;
   categories: Array<{
     _id: string;
     title: string | null;
@@ -11901,12 +9971,12 @@ export type BLOG_POST_QUERYResult = {
     title: string | null;
     description: string | null;
     image: {
-      _type: 'image';
+      _type: "image";
       asset: {
         _ref: string;
-        _type: 'reference';
+        _type: "reference";
         _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       } | null;
       altText: string | null;
       _ref: string | null;
@@ -11925,12 +9995,12 @@ export type BLOG_POSTS_QUERYResult = Array<{
   season: string | null;
   location: string | null;
   featuredImage: {
-    _type: 'image';
+    _type: "image";
     asset: {
       _ref: string;
-      _type: 'reference';
+      _type: "reference";
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     } | null;
     altText: string | null;
     _ref: string | null;
@@ -12146,1724 +10216,6991 @@ export type LINKS_LIST_SELECTIONResult = {};
 // Query: *[_type == "storePolicy" && slug.current == $handle][0] {  _id,  _type,  policyType,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  additionalContent,  sections[] {    _key,    _type,        _type == 'richtextSection' => {  _key,  _type,  contentAlignment,  desktopContentPosition,  maxWidth,  "richtext": coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'carouselSection' => {  _key,  _type,  arrows,  autoplay,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  loop,  pagination,  slides[] {    _key,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  },  slidesPerViewDesktop,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'collectionListSection' => {  _key,  _type,  collections[] -> {    store {      gid    }  },  desktopColumns,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredProductSection' => {  _key,  _type,  mediaAspectRatio,  product -> {    store {      descriptionHtml,      "firstVariant": variants[0] -> {        store {          gid,          previewImageUrl,          price        }      },      gid,      options[] {        name,        values      },      previewImageUrl,      title    }  },  'richtext': coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredCollectionSection' => {  _key,  _type,  collection -> {    store {      gid,      slug,      title    }  },  desktopColumns,  displayType,  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  maxProducts,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'imageBannerSection' => {  _key,  _type,  mediaType,  backgroundImage {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  backgroundVideo {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},  heightMode,  bannerHeight,  aspectRatio,  customAspectRatio,  responsiveAspectRatio,  mobileAspectRatio,  customMobileAspectRatio,  "content": coalesce(    content[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    content[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  contentAlignment,  contentPosition,  overlayOpacity,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'stickyTileSection' => {  _key,  _type,  stickyColumn,  tiles[] {    _key,    mediaType,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},    "richtext": coalesce(      richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},      richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    )[],    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},    externalLink,    openInNewTab,    contentPosition,    contentAlignment,    settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'mediaGallerySection' => {  _key,  _type,  items[] {    _key,    _type,    // Simple image type (direct image upload)    _type == 'simpleImage' => {      ...{  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}    },    // Gallery item type with media options    _type == 'galleryItem' => {      mediaType,      mediaType == "image" => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}      },      mediaType == "video" => {        video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },}      },      "caption": coalesce(    caption[_key == $language][0].value,    caption[_key == $defaultLanguage][0].value,  )    }  },  layout {    aspectRatio,    gap  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    },  seo {    "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),    "description": coalesce(    description[_key == $language][0].value,    description[_key == $defaultLanguage][0].value,  ),    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  },}
 export type STORE_POLICY_QUERYResult = {
   _id: string;
-  _type: 'storePolicy';
-  policyType:
-    | 'legalNotice'
-    | 'privacyPolicy'
-    | 'refundPolicy'
-    | 'shippingPolicy'
-    | 'termsOfService'
-    | null;
+  _type: "storePolicy";
+  policyType: "legalNotice" | "privacyPolicy" | "refundPolicy" | "shippingPolicy" | "termsOfService" | null;
   title: string | null;
   additionalContent: Richtext | null;
-  sections: Array<
-    | {
-        _key: string;
-        _type: 'carouselSection';
-        arrows: boolean | null;
-        autoplay: boolean | null;
+  sections: Array<{
+    _key: string;
+    _type: "carouselSection";
+    arrows: boolean | null;
+    autoplay: boolean | null;
+    title: string | null;
+    loop: boolean | null;
+    pagination: boolean | null;
+    slides: Array<{
+      _key: string;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+    }> | null;
+    slidesPerViewDesktop: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "collectionListSection";
+    collections: Array<{
+      store: {
+        gid: string | null;
+      } | null;
+    }> | null;
+    desktopColumns: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "featuredCollectionSection";
+    collection: {
+      store: {
+        gid: string | null;
+        slug: Slug | null;
         title: string | null;
-        loop: boolean | null;
-        pagination: boolean | null;
-        slides: Array<{
-          _key: string;
-          image: {
-            _type: 'image';
-            asset: {
-              _ref: string;
-              _type: 'reference';
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-            } | null;
-            altText: string | null;
-            _ref: string | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
+      } | null;
+    } | null;
+    desktopColumns: number | null;
+    displayType: "grid" | "swimlane" | null;
+    heading: string | null;
+    maxProducts: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
           } | null;
-        }> | null;
-        slidesPerViewDesktop: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
           } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: 'collectionListSection';
-        collections: Array<{
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+    viewAll: boolean | null;
+  } | {
+    _key: string;
+    _type: "featuredProductSection";
+    mediaAspectRatio: "auto" | "square" | "video" | null;
+    product: {
+      store: {
+        descriptionHtml: string | null;
+        firstVariant: {
           store: {
             gid: string | null;
-          } | null;
-        }> | null;
-        desktopColumns: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
-        _key: string;
-        _type: 'featuredCollectionSection';
-        collection: {
-          store: {
-            gid: string | null;
-            slug: Slug | null;
-            title: string | null;
-          } | null;
-        } | null;
-        desktopColumns: number | null;
-        displayType: 'grid' | 'swimlane' | null;
-        heading: string | null;
-        maxProducts: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-        viewAll: boolean | null;
-      }
-    | {
-        _key: string;
-        _type: 'featuredProductSection';
-        mediaAspectRatio: 'auto' | 'square' | 'video' | null;
-        product: {
-          store: {
-            descriptionHtml: string | null;
-            firstVariant: {
-              store: {
-                gid: string | null;
-                previewImageUrl: string | null;
-                price: number | null;
-              } | null;
-            } | null;
-            gid: string | null;
-            options: Array<{
-              name: string | null;
-              values: Array<string> | null;
-            }> | null;
             previewImageUrl: string | null;
-            title: string | null;
+            price: number | null;
           } | null;
         } | null;
-        richtext: Array<
-          | {
-              quantitySelector?: boolean;
-              shopPayButton?: boolean;
-              _type: 'addToCartButton';
-              _key: string;
-            }
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?:
-                | 'blockquote'
-                | 'h1'
-                | 'h2'
-                | 'h3'
-                | 'h4'
-                | 'h5'
-                | 'h6'
-                | 'normal';
-              listItem?: 'bullet' | 'number';
-              markDefs: Array<
-                | {
-                    link: string | null;
-                    openInNewTab: boolean | null;
-                    _type: 'externalLink';
-                    _key: string;
-                    name: null;
-                  }
-                | {
-                    link:
-                      | {
-                          documentType: 'blogPost';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'collection';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'home';
-                          slug: null;
-                        }
-                      | {
-                          documentType: 'page';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'product';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'storePolicy';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | null;
-                    anchor: Anchor | null;
-                    _type: 'internalLink';
-                    _key: string;
-                    name: null;
-                  }
-              > | null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              priceProxy?: ProxyString;
-              showShopifyBrand?: boolean;
-              _type: 'price';
-              _key: string;
-            }
-          | {
-              title?: string;
-              _type: 'productDetails';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'productModal';
-              triggerLabel?: string;
-              modalTitle?: string;
-              content?: Array<
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: 'span';
-                      _key: string;
-                    }>;
-                    style?:
-                      | 'blockquote'
-                      | 'h1'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal';
-                    listItem?: 'bullet' | 'number';
-                    markDefs?: Array<{
-                      href?: string;
-                      _type: 'link';
-                      _key: string;
-                    }>;
-                    level?: number;
-                    _type: 'block';
-                    _key: string;
-                  }
-                | {
-                    title?: string;
-                    _type: 'sizeChart';
-                    _key: string;
-                  }
-              >;
-            }
-          | {
-              title: string | null;
-              content: Array<
-                | {
-                    quantitySelector?: boolean;
-                    shopPayButton?: boolean;
-                    _type: 'addToCartButton';
-                    _key: string;
-                  }
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: 'span';
-                      _key: string;
-                    }>;
-                    style?:
-                      | 'blockquote'
-                      | 'h1'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal';
-                    listItem?: 'bullet' | 'number';
-                    markDefs: Array<
-                      | {
-                          link: string | null;
-                          openInNewTab: boolean | null;
-                          _type: 'externalLink';
-                          _key: string;
-                          name: null;
-                        }
-                      | {
-                          link:
-                            | {
-                                documentType: 'blogPost';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'collection';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'home';
-                                slug: null;
-                              }
-                            | {
-                                documentType: 'page';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'product';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | {
-                                documentType: 'storePolicy';
-                                slug: {
-                                  _type: 'slug';
-                                  current: string | null;
-                                } | null;
-                              }
-                            | null;
-                          anchor: Anchor | null;
-                          _type: 'internalLink';
-                          _key: string;
-                          name: null;
-                        }
-                    > | null;
-                    level?: number;
-                    _type: 'block';
-                    _key: string;
-                  }
-                | {
-                    priceProxy?: ProxyString;
-                    showShopifyBrand?: boolean;
-                    _type: 'price';
-                    _key: string;
-                  }
-                | {
-                    title?: string;
-                    _type: 'productDetails';
-                    _key: string;
-                  }
-                | {
-                    descriptionProxy?: ProxyString;
-                    _type: 'shopifyDescription';
-                    _key: string;
-                  }
-                | {
-                    titleProxy?: ProxyString;
-                    _type: 'shopifyTitle';
-                    _key: string;
-                  }
-              > | null;
-              defaultOpen: boolean | null;
-              _type: 'shopifyAccordion';
-              _key: string;
-            }
-          | {
-              descriptionProxy?: ProxyString;
-              _type: 'shopifyDescription';
-              _key: string;
-            }
-          | {
-              titleProxy?: ProxyString;
-              _type: 'shopifyTitle';
-              _key: string;
-            }
-        > | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
+        gid: string | null;
+        options: Array<{
+          name: string | null;
+          values: Array<string> | null;
+        }> | null;
+        previewImageUrl: string | null;
+        title: string | null;
+      } | null;
+    } | null;
+    richtext: Array<{
+      quantitySelector?: boolean;
+      shopPayButton?: boolean;
+      _type: "addToCartButton";
+      _key: string;
+    } | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
         _key: string;
-        _type: 'imageBannerSection';
-        mediaType: 'image' | 'video' | null;
-        backgroundImage: {
-          _type: 'image';
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        link: string | null;
+        openInNewTab: boolean | null;
+        _type: "externalLink";
+        _key: string;
+        name: null;
+      } | {
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor: Anchor | null;
+        _type: "internalLink";
+        _key: string;
+        name: null;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      priceProxy?: ProxyString;
+      showShopifyBrand?: boolean;
+      _type: "price";
+      _key: string;
+    } | {
+      title?: string;
+      _type: "productDetails";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "productModal";
+      triggerLabel?: string;
+      modalTitle?: string;
+      content?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        title?: string;
+        _type: "sizeChart";
+        _key: string;
+      }>;
+    } | {
+      title: string | null;
+      content: Array<{
+        quantitySelector?: boolean;
+        shopPayButton?: boolean;
+        _type: "addToCartButton";
+        _key: string;
+      } | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          link: string | null;
+          openInNewTab: boolean | null;
+          _type: "externalLink";
+          _key: string;
+          name: null;
+        } | {
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor: Anchor | null;
+          _type: "internalLink";
+          _key: string;
+          name: null;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        priceProxy?: ProxyString;
+        showShopifyBrand?: boolean;
+        _type: "price";
+        _key: string;
+      } | {
+        title?: string;
+        _type: "productDetails";
+        _key: string;
+      } | {
+        descriptionProxy?: ProxyString;
+        _type: "shopifyDescription";
+        _key: string;
+      } | {
+        titleProxy?: ProxyString;
+        _type: "shopifyTitle";
+        _key: string;
+      }> | null;
+      defaultOpen: boolean | null;
+      _type: "shopifyAccordion";
+      _key: string;
+    } | {
+      descriptionProxy?: ProxyString;
+      _type: "shopifyDescription";
+      _key: string;
+    } | {
+      titleProxy?: ProxyString;
+      _type: "shopifyTitle";
+      _key: string;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "imageBannerSection";
+    mediaType: "image" | "video" | null;
+    backgroundImage: {
+      _type: "image";
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      altText: string | null;
+      _ref: string | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+    backgroundVideo: {
+      _type: "mux.video";
+      asset: {
+        _id: string;
+        _type: "mux.videoAsset";
+        playbackId: string | null;
+        status: string | null;
+        thumbTime: number | null;
+        data: {
+          aspect_ratio: string | null;
+          duration: number | null;
+        } | null;
+      } | null;
+    } | null;
+    heightMode: "aspectRatio" | "fixed" | "fullscreen" | null;
+    bannerHeight: number | null;
+    aspectRatio: "1:1" | "1:2" | "16:9" | "2:1" | "3:2" | "4:3" | "4:6" | "9:16" | "custom" | null;
+    customAspectRatio: string | null;
+    responsiveAspectRatio: null;
+    mobileAspectRatio: null;
+    customMobileAspectRatio: null;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: never;
+      markDefs: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "button";
+      label?: string;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      anchor?: string;
+    }> | null;
+    contentAlignment: "center" | "left" | "right" | null;
+    contentPosition: "bottom_center" | "bottom_left" | "bottom_right" | "middle_center" | "middle_left" | "middle_right" | "top_center" | "top_left" | "top_right" | null;
+    overlayOpacity: number | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "mediaGallerySection";
+    items: Array<{
+      _key: string;
+      _type: "simpleImage";
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      altText: string | null;
+      _ref: string | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      caption: string | null;
+    } | {
+      _key: string;
+      _type: "galleryItem";
+      mediaType: "image" | "video" | null;
+      caption: string | null;
+    }> | null;
+    layout: {
+      aspectRatio: "landscape" | "original" | "portrait" | "square" | "wide" | null;
+      gap: "large" | "medium" | "none" | "small" | null;
+    } | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "productSwimlaneSection";
+    collection: {
+      store: {
+        gid: string | null;
+        slug: {
+          current: string | null;
+        } | null;
+        title: string | null;
+      } | null;
+    } | null;
+    heading: string | null;
+    manualProducts: Array<{
+      store: {
+        gid: string | null;
+      } | null;
+    }> | null;
+    maxProducts: number | null;
+    source: "collection" | "manual" | "related" | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+    viewAll: boolean | null;
+  } | {
+    _key: string;
+    _type: "richtextSection";
+    contentAlignment: "center" | "left" | "right" | null;
+    desktopContentPosition: "center" | "left" | "right" | null;
+    maxWidth: number | null;
+    richtext: Array<{
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      media?: unknown;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+      alt?: string;
+      maxWidth?: RangeSlider;
+      alignment?: "center" | "left" | "right";
+      _type: "image";
+      _key: string;
+      altText: string | null;
+      _ref: string | null;
+    } | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        link: string | null;
+        openInNewTab: boolean | null;
+        _type: "externalLink";
+        _key: string;
+        name: null;
+      } | {
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor: Anchor | null;
+        _type: "internalLink";
+        _key: string;
+        name: null;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "button";
+      label?: string;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      anchor?: string;
+    } | {
+      slides: Array<{
+        _key: string;
+        image: {
+          _type: "image";
           asset: {
             _ref: string;
-            _type: 'reference';
+            _type: "reference";
             _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           } | null;
           altText: string | null;
           _ref: string | null;
           hotspot: SanityImageHotspot | null;
           crop: SanityImageCrop | null;
         } | null;
-        backgroundVideo: {
-          _type: 'mux.video';
-          asset: {
-            _id: string;
-            _type: 'mux.videoAsset';
-            playbackId: string | null;
-            status: string | null;
-            thumbTime: number | null;
-            data: {
-              aspect_ratio: string | null;
-              duration: number | null;
-            } | null;
-          } | null;
-        } | null;
-        heightMode: 'aspectRatio' | 'fixed' | 'fullscreen' | null;
-        bannerHeight: number | null;
-        aspectRatio:
-          | '1:1'
-          | '1:2'
-          | '16:9'
-          | '2:1'
-          | '3:2'
-          | '4:3'
-          | '4:6'
-          | '9:16'
-          | 'custom'
-          | null;
-        customAspectRatio: string | null;
-        responsiveAspectRatio: null;
-        mobileAspectRatio: null;
-        customMobileAspectRatio: null;
-        content: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-              listItem?: never;
-              markDefs: null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'button';
-              label?: string;
-              link:
-                | {
-                    documentType: 'blogPost';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'collection';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'home';
-                    slug: null;
-                  }
-                | {
-                    documentType: 'page';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'product';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'storePolicy';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | null;
-              anchor?: string;
-            }
-        > | null;
-        contentAlignment: 'center' | 'left' | 'right' | null;
-        contentPosition:
-          | 'bottom_center'
-          | 'bottom_left'
-          | 'bottom_right'
-          | 'middle_center'
-          | 'middle_left'
-          | 'middle_right'
-          | 'top_center'
-          | 'top_left'
-          | 'top_right'
-          | null;
-        overlayOpacity: number | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
-        } | null;
-      }
-    | {
-        _key: string;
-        _type: 'mediaGallerySection';
-        items: Array<
-          | {
-              _key: string;
-              _type: 'simpleImage';
+      }> | null;
+      slidesPerViewDesktop: RangeSlider | null;
+      pagination: boolean | null;
+      arrows: boolean | null;
+      _type: "carousel";
+      _key: string;
+    } | {
+      formType: "appointment" | "contact" | "newsletter" | null;
+      title: string | null;
+      description: string | null;
+      _type: "form";
+      _key: string;
+    } | {
+      layout: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus" | null;
+      verticalAlignment: "bottom" | "center" | "top" | null;
+      gap: "large" | "medium" | "small" | null;
+      leftColumn: {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
               asset: {
                 _ref: string;
-                _type: 'reference';
+                _type: "reference";
                 _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               } | null;
               altText: string | null;
               _ref: string | null;
               hotspot: SanityImageHotspot | null;
               crop: SanityImageCrop | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              image: {
-                _type: 'image';
-                asset: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                } | null;
-                altText: string | null;
-                _ref: string | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-              } | null;
-              video: {
-                _type: 'mux.video';
-                asset: {
-                  _id: string;
-                  _type: 'mux.videoAsset';
-                  playbackId: string | null;
-                  status: string | null;
-                  thumbTime: number | null;
-                  data: {
-                    aspect_ratio: string | null;
-                    duration: number | null;
-                  } | null;
-                } | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              image: {
-                _type: 'image';
-                asset: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                } | null;
-                altText: string | null;
-                _ref: string | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              video: {
-                _type: 'mux.video';
-                asset: {
-                  _id: string;
-                  _type: 'mux.videoAsset';
-                  playbackId: string | null;
-                  status: string | null;
-                  thumbTime: number | null;
-                  data: {
-                    aspect_ratio: string | null;
-                    duration: number | null;
-                  } | null;
-                } | null;
-              } | null;
-              caption: string | null;
-            }
-          | {
-              _key: string;
-              _type: 'galleryItem';
-              mediaType: 'image' | 'video' | null;
-              caption: string | null;
-            }
-        > | null;
-        layout: {
-          aspectRatio:
-            | 'landscape'
-            | 'original'
-            | 'portrait'
-            | 'square'
-            | 'wide'
-            | null;
-          gap: 'large' | 'medium' | 'none' | 'small' | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
         } | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-          } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: 'productSwimlaneSection';
-        collection: {
-          store: {
-            gid: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
             slug: {
+              _type: "slug";
               current: string | null;
             } | null;
-            title: string | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
           } | null;
-        } | null;
-        heading: string | null;
-        manualProducts: Array<{
-          store: {
-            gid: string | null;
-          } | null;
+          anchor?: string;
         }> | null;
-        maxProducts: number | null;
-        source: 'collection' | 'manual' | 'related' | null;
-        settings: {
-          colorScheme: {
-            background: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            border: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            card: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            cardForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            foreground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primary: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
-            primaryForeground: {
-              alpha: null;
-              hex: string | null;
-              hsl: {
-                h?: number;
-                s?: number;
-                l?: number;
-              } | null;
-              rgb: {
-                r?: number;
-                g?: number;
-                b?: number;
-              } | null;
-            } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           } | null;
-          customCss: Code | null;
-          hide: boolean | null;
-          padding: Padding | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
         } | null;
-        viewAll: boolean | null;
-      }
-    | {
-        _key: string;
-        _type: 'richtextSection';
-        contentAlignment: 'center' | 'left' | 'right' | null;
-        desktopContentPosition: 'center' | 'left' | 'right' | null;
-        maxWidth: number | null;
-        richtext: Array<
-          | {
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
               asset: {
                 _ref: string;
-                _type: 'reference';
+                _type: "reference";
                 _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
               } | null;
-              media?: unknown;
-              hotspot: SanityImageHotspot | null;
-              crop: SanityImageCrop | null;
-              alt?: string;
-              maxWidth?: RangeSlider;
-              alignment?: 'center' | 'left' | 'right';
-              _type: 'image';
-              _key: string;
               altText: string | null;
               _ref: string | null;
-            }
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: 'span';
-                _key: string;
-              }>;
-              style?:
-                | 'blockquote'
-                | 'h1'
-                | 'h2'
-                | 'h3'
-                | 'h4'
-                | 'h5'
-                | 'h6'
-                | 'normal';
-              listItem?: 'bullet' | 'number';
-              markDefs: Array<
-                | {
-                    link: string | null;
-                    openInNewTab: boolean | null;
-                    _type: 'externalLink';
-                    _key: string;
-                    name: null;
-                  }
-                | {
-                    link:
-                      | {
-                          documentType: 'blogPost';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'collection';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'home';
-                          slug: null;
-                        }
-                      | {
-                          documentType: 'page';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'product';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | {
-                          documentType: 'storePolicy';
-                          slug: {
-                            _type: 'slug';
-                            current: string | null;
-                          } | null;
-                        }
-                      | null;
-                    anchor: Anchor | null;
-                    _type: 'internalLink';
-                    _key: string;
-                    name: null;
-                  }
-              > | null;
-              level?: number;
-              _type: 'block';
-              _key: string;
-            }
-          | {
-              _key: string;
-              _type: 'button';
-              label?: string;
-              link:
-                | {
-                    documentType: 'blogPost';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'collection';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'home';
-                    slug: null;
-                  }
-                | {
-                    documentType: 'page';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'product';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | {
-                    documentType: 'storePolicy';
-                    slug: {
-                      _type: 'slug';
-                      current: string | null;
-                    } | null;
-                  }
-                | null;
-              anchor?: string;
-            }
-          | {
-              slides: Array<{
-                _key: string;
-                image: {
-                  _type: 'image';
-                  asset: {
-                    _ref: string;
-                    _type: 'reference';
-                    _weak?: boolean;
-                    [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                  } | null;
-                  altText: string | null;
-                  _ref: string | null;
-                  hotspot: SanityImageHotspot | null;
-                  crop: SanityImageCrop | null;
-                } | null;
-              }> | null;
-              slidesPerViewDesktop: RangeSlider | null;
-              pagination: boolean | null;
-              arrows: boolean | null;
-              _type: 'carousel';
-              _key: string;
-            }
-          | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
-              _key: string;
-            }
-          | {
-              layout:
-                | 'content-focus'
-                | 'equal'
-                | 'heavy-content'
-                | 'heavy-media'
-                | 'media-focus'
-                | null;
-              verticalAlignment: 'bottom' | 'center' | 'top' | null;
-              gap: 'large' | 'medium' | 'small' | null;
-              leftColumn:
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    form: {
-                      formType: 'appointment' | 'contact' | 'newsletter' | null;
-                      title: string | null;
-                      description: string | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    image: {
-                      _type: 'image';
-                      asset: {
-                        _ref: string;
-                        _type: 'reference';
-                        _weak?: boolean;
-                        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                      } | null;
-                      altText: string | null;
-                      _ref: string | null;
-                      hotspot: SanityImageHotspot | null;
-                      crop: SanityImageCrop | null;
-                    } | null;
-                    carousel: {
-                      slides: Array<{
-                        _key: string;
-                        image: {
-                          _type: 'image';
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          altText: string | null;
-                          _ref: string | null;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                        } | null;
-                      }> | null;
-                      slidesPerViewDesktop: RangeSlider | null;
-                    } | null;
-                    buttons: Array<{
-                      _key: string;
-                      _type: 'button';
-                      label?: string;
-                      link:
-                        | {
-                            documentType: 'blogPost';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'collection';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'home';
-                            slug: null;
-                          }
-                        | {
-                            documentType: 'page';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'product';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | {
-                            documentType: 'storePolicy';
-                            slug: {
-                              _type: 'slug';
-                              current: string | null;
-                            } | null;
-                          }
-                        | null;
-                      anchor?: string;
-                    }> | null;
-                  }
-                | {
-                    contentType:
-                      | 'buttons'
-                      | 'carousel'
-                      | 'form'
-                      | 'image'
-                      | 'richtext'
-                      | null;
-                    richtext: Array<
-                      | {
-                          asset: {
-                            _ref: string;
-                            _type: 'reference';
-                            _weak?: boolean;
-                            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-                          } | null;
-                          media?: unknown;
-                          hotspot: SanityImageHotspot | null;
-                          crop: SanityImageCrop | null;
-                          alt?: string;
-                          maxWidth?: RangeSlider;
-                          alignment?: 'center' | 'left' | 'right';
-                          _type: 'image';
-                          _key: string;
-                          altText: string | null;
-    // Source: ./app/data/sanity/queries.ts
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+      } | null;
+      rightColumn: {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        carousel: {
+          slides: Array<{
+            _key: string;
+            image: {
+              _type: "image";
+              asset: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              } | null;
+              altText: string | null;
+              _ref: string | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          }> | null;
+          slidesPerViewDesktop: RangeSlider | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        form: {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        image: {
+          _type: "image";
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          altText: string | null;
+          _ref: string | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+        } | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+        richtext: Array<{
+          asset: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          } | null;
+          media?: unknown;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt?: string;
+          maxWidth?: RangeSlider;
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+          altText: string | null;
+          _ref: string | null;
+        } | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            link: string | null;
+            openInNewTab: boolean | null;
+            _type: "externalLink";
+            _key: string;
+            name: null;
+          } | {
+            link: {
+              documentType: "blogPost";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "collection";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "home";
+              slug: null;
+            } | {
+              documentType: "page";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "product";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | {
+              documentType: "storePolicy";
+              slug: {
+                _type: "slug";
+                current: string | null;
+              } | null;
+            } | null;
+            anchor: Anchor | null;
+            _type: "internalLink";
+            _key: string;
+            name: null;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          _key: string;
+          _type: "button";
+          label?: string;
+          link: {
+            documentType: "blogPost";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "collection";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "home";
+            slug: null;
+          } | {
+            documentType: "page";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "product";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | {
+            documentType: "storePolicy";
+            slug: {
+              _type: "slug";
+              current: string | null;
+            } | null;
+          } | null;
+          anchor?: string;
+        } | {
+          slides?: Array<{
+            image?: {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            };
+            _type: "slide";
+            _key: string;
+          }>;
+          slidesPerViewDesktop?: RangeSlider;
+          pagination?: boolean;
+          arrows?: boolean;
+          _type: "carousel";
+          _key: string;
+        } | {
+          formType: "appointment" | "contact" | "newsletter" | null;
+          title: string | null;
+          description: string | null;
+          _type: "form";
+          _key: string;
+        } | {
+          layout?: "content-focus" | "equal" | "heavy-content" | "heavy-media" | "media-focus";
+          verticalAlignment?: "bottom" | "center" | "top";
+          gap?: "large" | "medium" | "small";
+          leftColumn?: ColumnContent;
+          rightColumn?: ColumnContent;
+          _type: "twoColumnBlock";
+          _key: string;
+        }> | null;
+      } | {
+        contentType: "buttons" | "carousel" | "form" | "image" | "richtext" | null;
+      } | null;
+      _type: "twoColumnBlock";
+      _key: string;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "stickyTileSection";
+    stickyColumn: "left" | "right" | null;
+    tiles: Array<{
+      _key: string;
+      mediaType: "image" | "video" | null;
+      image: {
+        _type: "image";
+        asset: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        } | null;
+        altText: string | null;
+        _ref: string | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+      } | null;
+      video: {
+        _type: "mux.video";
+        asset: {
+          _id: string;
+          _type: "mux.videoAsset";
+          playbackId: string | null;
+          status: string | null;
+          thumbTime: number | null;
+          data: {
+            aspect_ratio: string | null;
+            duration: number | null;
+          } | null;
+        } | null;
+      } | null;
+      richtext: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: never;
+        markDefs: null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        _key: string;
+        _type: "button";
+        label?: string;
+        link: {
+          documentType: "blogPost";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "collection";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "home";
+          slug: null;
+        } | {
+          documentType: "page";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "product";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | {
+          documentType: "storePolicy";
+          slug: {
+            _type: "slug";
+            current: string | null;
+          } | null;
+        } | null;
+        anchor?: string;
+      }> | null;
+      link: {
+        documentType: "blogPost";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "collection";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "home";
+        slug: null;
+      } | {
+        documentType: "page";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "product";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | {
+        documentType: "storePolicy";
+        slug: {
+          _type: "slug";
+          current: string | null;
+        } | null;
+      } | null;
+      externalLink: string | null;
+      openInNewTab: boolean | null;
+      contentPosition: "bottom_center" | "bottom_left" | "bottom_right" | "middle_center" | "middle_left" | "middle_right" | "top_center" | "top_left" | "top_right" | null;
+      contentAlignment: "center" | "left" | "right" | null;
+      settings: {
+        colorScheme: {
+          background: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          border: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          card: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          cardForeground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          foreground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          primary: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+          primaryForeground: {
+            alpha: null;
+            hex: string | null;
+            hsl: {
+              h?: number;
+              s?: number;
+              l?: number;
+            } | null;
+            rgb: {
+              r?: number;
+              g?: number;
+              b?: number;
+            } | null;
+          } | null;
+        } | null;
+        customCss: Code | null;
+        hide: boolean | null;
+        padding: Padding | null;
+      } | null;
+    }> | null;
+    settings: {
+      colorScheme: {
+        background: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        border: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        card: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        cardForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        foreground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primary: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+        primaryForeground: {
+          alpha: null;
+          hex: string | null;
+          hsl: {
+            h?: number;
+            s?: number;
+            l?: number;
+          } | null;
+          rgb: {
+            r?: number;
+            g?: number;
+            b?: number;
+          } | null;
+        } | null;
+      } | null;
+      customCss: Code | null;
+      hide: boolean | null;
+      padding: Padding | null;
+    } | null;
+  }> | null;
+  seo: {
+    title: string | null;
+    description: string | null;
+    image: {
+      _type: "image";
+      asset: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      } | null;
+      altText: string | null;
+      _ref: string | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+    } | null;
+  } | null;
+} | null;
+// Variable: ALL_STORE_POLICIES_QUERY
+// Query: *[_type == "storePolicy"] {  _id,  _type,  policyType,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  "slug": slug.current,}
+export type ALL_STORE_POLICIES_QUERYResult = Array<{
+  _id: string;
+  _type: "storePolicy";
+  policyType: "legalNotice" | "privacyPolicy" | "refundPolicy" | "shippingPolicy" | "termsOfService" | null;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: ./app/data/sanity/queries.ts
 // Variable: DEFAULT_PRODUCT_TEMPLATE
 // Query: *[_type == 'productTemplate' && default == true][0] {    _type,    name,    showBackInStockForm,    sections[] {      _key,      _type,          _type == 'richtextSection' => {  _key,  _type,  contentAlignment,  desktopContentPosition,  maxWidth,  "richtext": coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'carouselSection' => {  _key,  _type,  arrows,  autoplay,  "title": coalesce(    title[_key == $language][0].value,    title[_key == $defaultLanguage][0].value,  ),  loop,  pagination,  slides[] {    _key,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  },  slidesPerViewDesktop,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'collectionListSection' => {  _key,  _type,  collections[] -> {    store {      gid    }  },  desktopColumns,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredProductSection' => {  _key,  _type,  mediaAspectRatio,  product -> {    store {      descriptionHtml,      "firstVariant": variants[0] -> {        store {          gid,          previewImageUrl,          price        }      },      gid,      options[] {        name,        values      },      previewImageUrl,      title    }  },  'richtext': coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'featuredCollectionSection' => {  _key,  _type,  collection -> {    store {      gid,      slug,      title    }  },  desktopColumns,  displayType,  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  maxProducts,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'imageBannerSection' => {  _key,  _type,  mediaType,  backgroundImage {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  backgroundVideo {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},  heightMode,  bannerHeight,  aspectRatio,  customAspectRatio,  responsiveAspectRatio,  mobileAspectRatio,  customMobileAspectRatio,  "content": coalesce(    content[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    content[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  contentAlignment,  contentPosition,  overlayOpacity,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    _type == 'stickyTileSection' => {  _key,  _type,  stickyColumn,  tiles[] {    _key,    mediaType,    image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },},    "richtext": coalesce(      richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},      richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    )[],    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},    externalLink,    openInNewTab,    contentPosition,    contentAlignment,    settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'mediaGallerySection' => {  _key,  _type,  items[] {    _key,    _type,    // Simple image type (direct image upload)    _type == 'simpleImage' => {      ...{  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}    },    // Gallery item type with media options    _type == 'galleryItem' => {      mediaType,      mediaType == "image" => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,}      },      mediaType == "video" => {        video {  _type,  asset -> {    _id,    _type,    playbackId,    status,    thumbTime,    data {      aspect_ratio,      duration,    },  },}      },      "caption": coalesce(    caption[_key == $language][0].value,    caption[_key == $defaultLanguage][0].value,  )    }  },  layout {    aspectRatio,    gap  },  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},            _type == 'productInformationSection' => {  _key,  _type,  desktopMediaPosition,  desktopMediaWidth,  galleryStyle,  stickyProductInfo,  mediaAspectRatio,  "richtext": coalesce(    richtext[_key == $language][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    richtext[_key == $defaultLanguage][0].value[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'carousel' => {    _type,    slides[] {      _key,      image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},    },    slidesPerViewDesktop,    pagination,    arrows,  },  _type == 'twoColumnBlock' => {    _type,    layout,    verticalAlignment,    gap,    leftColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },    rightColumn {      contentType,      contentType == 'richtext' => {        richtext[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'form' => {    _type,    formType,    title,    description,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },}      },      contentType == 'image' => {        image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},      },      contentType == 'carousel' => {        carousel {          slides[] {            _key,            image {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},          },          slidesPerViewDesktop,        }      },      contentType == 'form' => {        form {          formType,          title,          description,        }      },      contentType == 'buttons' => {        buttons[] {          ...,          link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},        }      },    },  },  _type == 'sizeChart' => {    _type,    table,    description,    image {      asset->{url},      alt    }  },  _type == 'productDetails' => {    _type,  },  _type == 'shopifyAccordion' => {    _type,    title,    content[] {  ...,  _type == 'image' => {  _type,  asset,  "altText": asset -> altText,  "_ref": asset._ref,  hotspot,  crop,},  _type == 'button' => {    ...,    link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},    defaultOpen,  },  _type == 'block' => {    ...,    markDefs[] {      ...,      _type == 'internalLink' => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'relatedProductsSection' => {  _key,  _type,  desktopColumns,  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  maxProducts,  displayType,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},      },  }
 export type DEFAULT_PRODUCT_TEMPLATEResult = {
@@ -109023,7 +112360,7 @@ declare module "@sanity/client" {
     "{\n  _key,\n  _type,\n  items[] {\n    _key,\n    _type,\n    // Simple image type (direct image upload)\n    _type == 'simpleImage' => {\n      ...{\n  _type,\n  asset,\n  \"altText\": asset -> altText,\n  \"_ref\": asset._ref,\n  hotspot,\n  crop,\n}\n    },\n    // Gallery item type with media options\n    _type == 'galleryItem' => {\n      mediaType,\n      mediaType == \"image\" => {\n        image {\n  _type,\n  asset,\n  \"altText\": asset -> altText,\n  \"_ref\": asset._ref,\n  hotspot,\n  crop,\n}\n      },\n      mediaType == \"video\" => {\n        video {\n  _type,\n  asset -> {\n    _id,\n    _type,\n    playbackId,\n    status,\n    thumbTime,\n    data {\n      aspect_ratio,\n      duration,\n    },\n  },\n}\n      },\n      \"caption\": coalesce(\n    caption[_key == $language][0].value,\n    caption[_key == $defaultLanguage][0].value,\n  )\n    }\n  },\n  layout {\n    aspectRatio,\n    gap\n  },\n  settings {\n  colorScheme -> {\n  background {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  border {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  card {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  cardForeground {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  foreground {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  primary {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n  primaryForeground {\n  alpha,\n  hex,\n  hsl,\n  rgb,\n},\n},\n  customCss,\n  hide,\n  padding\n}\n}": MEDIA_GALLERY_SECTION_FRAGMENTResult;
   }
 }
-e,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},      _type == 'externalLink' => {  _key,  _type,  link,  name,  openInNewTab,},    }  },},  )[],  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'relatedProductsSection' => {  _key,  _type,  desktopColumns,  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  maxProducts,  displayType,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},          _type == 'collectionBannerSection' => {  _key,  _type,  bannerHeight,  contentAlignment,  contentPosition,  overlayOpacity,  showDescription,  showImage,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'collectionProductGridSection' => {  _key,  _type,  desktopColumns,  enableFiltering,  enableSorting,  mobileColumns,  productsPerPage,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    },  footers[] {    _key,    _type,        _type == 'socialLinksOnly' => {  _key,  _type,  "copyright": coalesce(    copyright[_key == $language][0].value,    copyright[_key == $defaultLanguage][0].value,  ),  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},},    _type == 'footerWithNav' => {  _key,  _type,  "copyright": coalesce(    copyright[_key == $language][0].value,    copyright[_key == $defaultLanguage][0].value,  ),  "showNewsletter": showNewsletter,  "showCountrySelector": showCountrySelector,  "menu": coalesce(    menu[_key == $language][0].value[],    menu[_key == $defaultLanguage][0].value[],  )[] {  _type == "externalLink" => {  _key,  _type,  link,  name,  openInNewTab,},  _type == "internalLink" => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},  _type == "nestedNavigation" => {  _key,  _type,  childLinks[] {    _type == "externalLink" => {  _key,  _type,  link,  name,  openInNewTab,},    _type == "internalLink" => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},  },  link -> {    'documentType': _type,    'slug': coalesce(      slug,      store.slug    ) {      _type,      current    },  },  name,},},  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},},    },}
+b,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'collectionProductGridSection' => {  _key,  _type,  desktopColumns,  enableFiltering,  enableSorting,  mobileColumns,  productsPerPage,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding}},    _type == 'productSwimlaneSection' => {  _key,  _type,  collection -> {    store {      gid,      slug {        current      },      title    }  },  "heading": coalesce(    heading[_key == $language][0].value,    heading[_key == $defaultLanguage][0].value,  ),  manualProducts[] -> {    store {      gid    }  },  maxProducts,  source,  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},  viewAll},    },  footers[] {    _key,    _type,        _type == 'socialLinksOnly' => {  _key,  _type,  "copyright": coalesce(    copyright[_key == $language][0].value,    copyright[_key == $defaultLanguage][0].value,  ),  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},},    _type == 'footerWithNav' => {  _key,  _type,  "copyright": coalesce(    copyright[_key == $language][0].value,    copyright[_key == $defaultLanguage][0].value,  ),  "showNewsletter": showNewsletter,  "showCountrySelector": showCountrySelector,  "menu": coalesce(    menu[_key == $language][0].value[],    menu[_key == $defaultLanguage][0].value[],  )[] {  _type == "externalLink" => {  _key,  _type,  link,  name,  openInNewTab,},  _type == "internalLink" => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},  _type == "nestedNavigation" => {  _key,  _type,  childLinks[] {    _type == "externalLink" => {  _key,  _type,  link,  name,  openInNewTab,},    _type == "internalLink" => {  _key,  _type,  anchor,  link -> {  'documentType': _type,  'slug': coalesce(    slug,    store.slug  ) {    _type,    current  },},  name,},  },  link -> {    'documentType': _type,    'slug': coalesce(      slug,      store.slug    ) {      _type,      current    },  },  name,},},  settings {  colorScheme -> {  background {  alpha,  hex,  hsl,  rgb,},  border {  alpha,  hex,  hsl,  rgb,},  card {  alpha,  hex,  hsl,  rgb,},  cardForeground {  alpha,  hex,  hsl,  rgb,},  foreground {  alpha,  hex,  hsl,  rgb,},  primary {  alpha,  hex,  hsl,  rgb,},  primaryForeground {  alpha,  hex,  hsl,  rgb,},},  customCss,  hide,  padding},},    },}
 export type ALL_SECTIONS_QUERYResult =
   | {
       sections: null;
