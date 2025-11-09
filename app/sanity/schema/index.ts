@@ -73,6 +73,7 @@ import tile from '~/sanity/schema/objects/sections/tile';
 import sizeChart from '~/sanity/schema/documents/size-chart';
 import sizeChartTemplate from './documents/size-chart-template';
 import form from './documents/form';
+import protectionConfig from './documents/protection-config';
 import formField from './singletons/form-fields';
 
 const singletons = [home, header, footer, settings, themeContent];
@@ -91,6 +92,7 @@ const documents = [
   sizeChart,
   sizeChartTemplate,
   form,
+  protectionConfig,
 ];
 const sections = [
   imageBannerSection,
