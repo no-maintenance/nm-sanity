@@ -173,6 +173,9 @@ export const IMAGE_BANNER_SECTION_FRAGMENT = defineQuery(`{
   contentAlignment,
   contentPosition,
   overlayOpacity,
+  link -> ${LINK_REFERENCE_FRAGMENT},
+  externalLink,
+  openInNewTab,
   settings ${SECTION_SETTINGS_FRAGMENT}
 }`);
 

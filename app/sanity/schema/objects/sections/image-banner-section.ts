@@ -9,6 +9,23 @@ export default defineField({
     defineField({
       name: 'content',
       type: 'internationalizedArrayBannerRichtext',
+      description: 'Note: Buttons will be disabled when a banner link is set to prevent nested links.',
+      validation: (Rule) => Rule.custom((content, context) => {
+        const parent = context?.parent as any;
+        const hasLink = parent?.link || parent?.externalLink;
+
+        if (hasLink && content) {
+          // Check if content has buttons in any language
+          const hasButton = content?.some((lang: any) =>
+            lang?.value?.some((block: any) => block?._type === 'button')
+          );
+
+          if (hasButton) {
+            return 'Buttons cannot be used when the banner has a link. Please remove the button or the banner link.';
+          }
+        }
+        return true;
+      }),
     }),
     defineField({
       type: 'contentPosition',
@@ -160,6 +177,21 @@ export default defineField({
         suffix: '%',
       },
       validation: (Rule) => Rule.min(0).max(100),
+    }),
+    defineField({
+      name: 'link',
+      type: 'link',
+      description: 'If set, the entire banner will be clickable.',
+    }),
+    defineField({
+      name: 'externalLink',
+      description: "Will be used if internal link isn't provided.",
+      type: 'url',
+    }),
+    defineField({
+      name: 'openInNewTab',
+      title: 'Open external link in new tab',
+      type: 'boolean',
     }),
     defineField({
       type: 'sectionSettings',

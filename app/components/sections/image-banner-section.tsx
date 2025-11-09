@@ -16,6 +16,8 @@ import {useSection} from '../cms-section';
 import {ButtonBlock} from '../sanity/richtext/components/button-block';
 import {SanityMedia} from '../sanity/sanity-media';
 import { stegaClean } from '@sanity/client/stega';
+import {SanityInternalLink} from '~/components/sanity/link/sanity-internal-link';
+import {SanityExternalLink} from '~/components/sanity/link/sanity-external-link';
 
 type ImageBannerSectionProps = SectionOfType<'imageBannerSection'>;
 
@@ -23,8 +25,11 @@ export function ImageBannerSection(
   props: SectionDefaultProps & {data: ImageBannerSectionProps},
 ) {
   const {data} = props;
-  const {contentAlignment, contentPosition, overlayOpacity, mediaType} = data;
-  const heightMode = stegaClean(data.heightMode);
+  const {contentAlignment, contentPosition, overlayOpacity, mediaType, link, externalLink, openInNewTab} = data;
+  // Only use stegaClean if we detect stega encoding (presence of special unicode characters)
+  const heightMode = data.heightMode && data.heightMode.includes('\u200B')
+    ? stegaClean(data.heightMode)
+    : data.heightMode;
   const section = useSection();
 
   // Determine aspect ratio based on height mode and screen size
@@ -32,122 +37,177 @@ export function ImageBannerSection(
     if (heightMode === 'aspectRatio') {
       // Use custom aspect ratio if selected
       if (data.aspectRatio === 'custom' && data.customAspectRatio) {
-        return stegaClean(data.customAspectRatio).replace(':', '/');
+        // Simple string processing - no stegaClean needed for aspect ratios
+        return String(data.customAspectRatio).replace(':', '/');
       }
-      
+
       // Use predefined aspect ratio
       if (data.aspectRatio) {
-        return stegaClean(data.aspectRatio).replace(':', '/');
+        // Simple string processing - no stegaClean needed for aspect ratios
+        return String(data.aspectRatio).replace(':', '/');
       }
     }
-    
+
     // Default to 16/9
     return '16/9';
   };
 
-  // For fullscreen mode
-  if (heightMode === 'fullscreen') {
+  // Create the banner content based on height mode
+  const getBannerContent = () => {
+    // For fullscreen mode
+    if (heightMode === 'fullscreen') {
+      return (
+        <div className="relative h-screen w-full">
+          <BannerMedia>
+            <SanityMedia
+              mediaType={mediaType || 'image'}
+              image={data.backgroundImage}
+              video={data.backgroundVideo}
+              className="h-full w-full"
+              objectFit="cover"
+              priority={section?.index === 0}
+              hiddenControls={mediaType === 'video'}
+            />
+          </BannerMedia>
+          <BannerMediaOverlay opacity={overlayOpacity} />
+          <BannerContent
+            contentAlignment={contentAlignment}
+            contentPosition={contentPosition}
+          >
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
+          </BannerContent>
+        </div>
+      );
+    }
+
+    // For fixed height mode
+    if (heightMode === 'fixed') {
+      return (
+        <Banner height={data.bannerHeight}>
+          <BannerMedia>
+            <SanityMedia
+              mediaType={mediaType || 'image'}
+              image={data.backgroundImage}
+              video={data.backgroundVideo}
+              className="h-full w-full"
+              objectFit="cover"
+              priority={section?.index === 0}
+              hiddenControls={mediaType === 'video'}
+            />
+          </BannerMedia>
+          <BannerMediaOverlay opacity={overlayOpacity} />
+          <BannerContent
+            contentAlignment={contentAlignment}
+            contentPosition={contentPosition}
+          >
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
+          </BannerContent>
+        </Banner>
+      );
+    }
+
+    // For aspect ratio mode
     return (
-      <div className="relative h-screen w-full">
-        <BannerMedia>
-          <SanityMedia
-            mediaType={mediaType || 'image'}
-            image={data.backgroundImage}
-            video={data.backgroundVideo}
-            className="h-full w-full"
-            objectFit="cover"
-            priority={section?.index === 0}
-            hiddenControls={mediaType === 'video'}
-          />
-        </BannerMedia>
-        <BannerMediaOverlay opacity={overlayOpacity} />
-        <BannerContent
-          contentAlignment={contentAlignment}
-          contentPosition={contentPosition}
-        >
-          <BannerRichtext value={data.content} />
-        </BannerContent>
+      <div className="relative">
+        <div className="relative w-full" style={{
+          paddingBottom: `calc(100% / (${getAspectRatio().split('/')[0]} / ${getAspectRatio().split('/')[1]}))`
+        }}>
+          <BannerMedia className="absolute inset-0">
+            <SanityMedia
+              mediaType={mediaType || 'image'}
+              image={data.backgroundImage}
+              video={data.backgroundVideo}
+              className="h-full w-full"
+              objectFit="cover"
+              priority={section?.index === 0}
+              hiddenControls={mediaType === 'video'}
+            />
+          </BannerMedia>
+          <BannerMediaOverlay opacity={overlayOpacity} />
+          <BannerContent
+            contentAlignment={contentAlignment}
+            contentPosition={contentPosition}
+            className="absolute inset-0"
+          >
+            <BannerRichtext value={data.content} hasLink={!!(link || externalLink)} />
+          </BannerContent>
+        </div>
       </div>
+    );
+  };
+
+  const bannerContent = getBannerContent();
+  const linkClasses = "block group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-transform hover:scale-[1.01]";
+
+  // Wrap in internal link if provided
+  if (link?.slug?.current || link?.documentType) {
+    const internalLinkData = {
+      link: data.link,
+    };
+    return (
+      <SanityInternalLink data={internalLinkData as any} className={linkClasses}>
+        {bannerContent}
+      </SanityInternalLink>
     );
   }
 
-  // For fixed height mode
-  if (heightMode === 'fixed') {
+  // Wrap in external link if provided
+  if (externalLink) {
+    const externalLinkData: {
+      _type: 'externalLink';
+      _key: string;
+      link?: string | null;
+      name?: string | null;
+      openInNewTab?: boolean | null;
+    } = {
+      _type: 'externalLink',
+      _key: data._key || 'external-link',
+      link: externalLink,
+      openInNewTab,
+    };
     return (
-      <Banner height={data.bannerHeight}>
-        <BannerMedia>
-          <SanityMedia
-            mediaType={mediaType || 'image'}
-            image={data.backgroundImage}
-            video={data.backgroundVideo}
-            className="h-full w-full"
-            objectFit="cover"
-            priority={section?.index === 0}
-            hiddenControls={mediaType === 'video'}
-          />
-        </BannerMedia>
-        <BannerMediaOverlay opacity={overlayOpacity} />
-        <BannerContent
-          contentAlignment={contentAlignment}
-          contentPosition={contentPosition}
-        >
-          <BannerRichtext value={data.content} />
-        </BannerContent>
-      </Banner>
+      <SanityExternalLink data={externalLinkData} className={linkClasses}>
+        {bannerContent}
+      </SanityExternalLink>
     );
   }
 
-  // For aspect ratio mode
-  return (
-    <div className="relative">
-      <div className="relative w-full" style={{ 
-        paddingBottom: `calc(100% / (${getAspectRatio().split('/')[0]} / ${getAspectRatio().split('/')[1]}))` 
-      }}>
-        <BannerMedia className="absolute inset-0">
-          <SanityMedia
-            mediaType={mediaType || 'image'}
-            image={data.backgroundImage}
-            video={data.backgroundVideo}
-            className="h-full w-full"
-            objectFit="cover"
-            priority={section?.index === 0}
-            hiddenControls={mediaType === 'video'}
-          />
-        </BannerMedia>
-        <BannerMediaOverlay opacity={overlayOpacity} />
-        <BannerContent
-          contentAlignment={contentAlignment}
-          contentPosition={contentPosition}
-          className="absolute inset-0"
-        >
-          <BannerRichtext value={data.content} />
-        </BannerContent>
-      </div>
-    </div>
-  );
+  // Return unwrapped banner if no link
+  return bannerContent;
 }
 
 function BannerRichtext(props: {
   value?: ImageBannerSectionProps['content'] | null;
+  hasLink?: boolean;
 }) {
   const components = useMemo(
     () => ({
       types: {
-        button: (props: {value: ButtonBlockProps}) => (
-          <ButtonBlock {...props.value} />
-        ),
+        button: (buttonProps: {value: ButtonBlockProps}) => {
+          // Don't render buttons when the banner has a link
+          // This prevents nested interactive elements
+          if (props.hasLink) {
+            return null;
+          }
+          return <ButtonBlock {...buttonProps.value} />;
+        },
       },
     }),
-    [],
+    [props.hasLink],
   );
 
   if (!props.value) return null;
+
+  // Filter out button blocks when banner has a link
+  const filteredValue = props.hasLink
+    ? props.value.filter(block => block._type !== 'button')
+    : props.value;
 
   return (
     <div className="flex flex-col gap-4 text-balance [&_a]:w-fit [&_a:not(:last-child)]:mr-4">
       <PortableText
         components={components as PortableTextComponents}
-        value={props.value}
+        value={filteredValue}
       />
     </div>
   );
