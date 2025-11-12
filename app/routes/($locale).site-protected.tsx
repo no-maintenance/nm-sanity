@@ -23,9 +23,15 @@ interface LoaderData {
 }
 
 export async function loader({context, request}: LoaderFunctionArgs) {
-  const {passwordSession, sanity, locale} = context;
+  const {passwordSession, sanity, locale, env} = context;
   const url = new URL(request.url);
   const redirectTo = url.searchParams.get('redirectTo') || '/';
+
+  // Check if site protection is bypassed via environment variable
+  const bypassProtection = env?.BYPASS_SITE_PROTECTION === 'true';
+  if (bypassProtection) {
+    return redirect(redirectTo);
+  }
 
   // Parse protection context from URL parameters
   const contextParam = url.searchParams.get('context') || 'site';
@@ -181,7 +187,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
 
     default:
       query = `*[_type == "settings"][0]{
-        siteProtection->${protectionConfigExpansion}
+        "globalProtection": siteProtection->${protectionConfigExpansion}
       }`;
   }
 
@@ -200,13 +206,19 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     protectionContext.productName = data.product.title;
     protectionContext.collectionName = data.product.collection.title;
     protectionSource = 'collection';
-  } else if (data?.globalProtection || data?.siteProtection) {
-    protection = data.globalProtection || data.siteProtection;
+  } else if (data?.globalProtection) {
+    protection = data.globalProtection;
     protectionSource = 'global';
   }
 
-  // If protection is not enabled, redirect to intended page
-  if (!protection?.enabled) {
+  // If no protection config exists, redirect to intended page
+  if (!protection) {
+    return redirect(redirectTo);
+  }
+
+  // If protection is explicitly disabled, redirect to intended page
+  // Note: undefined/missing enabled field is treated as enabled (matches schema initialValue)
+  if (protection.enabled === false) {
     return redirect(redirectTo);
   }
 
@@ -331,7 +343,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 
     default:
       query = `*[_type == "settings"][0]{
-        siteProtection->${protectionConfigExpansion}
+        "globalProtection": siteProtection->${protectionConfigExpansion}
       }`;
   }
 
@@ -347,8 +359,8 @@ export async function action({context, request}: ActionFunctionArgs) {
   } else if (contextParam === 'product' && data?.product?.collection?.protectionConfig) {
     protection = data.product.collection.protectionConfig;
     protectionSource = 'collection';
-  } else if (data?.globalProtection || data?.siteProtection) {
-    protection = data.globalProtection || data.siteProtection;
+  } else if (data?.globalProtection) {
+    protection = data.globalProtection;
     protectionSource = 'global';
   }
 

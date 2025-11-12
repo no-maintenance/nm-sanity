@@ -55,32 +55,6 @@ function detectProtectionContext(url: URL): ProtectionContext {
 }
 
 /**
- * Check if user is authenticated for a specific protection config
- */
-function checkProtectionAccess(
-  protection: ProtectionConfig,
-  hasPasswordAuth: boolean,
-  countdownExpired: boolean,
-): boolean {
-  if (!protection?.enabled) {
-    return true;
-  }
-
-  switch (protection.accessMode) {
-    case 'password':
-      return hasPasswordAuth;
-    case 'countdown':
-      return countdownExpired;
-    case 'both':
-      return hasPasswordAuth && countdownExpired;
-    case 'either':
-      return hasPasswordAuth || countdownExpired;
-    default:
-      return false;
-  }
-}
-
-/**
  * Check if countdown has expired for a protection config
  */
 function isCountdownExpired(countdown?: string): boolean {
@@ -99,6 +73,12 @@ export async function requireUnprotectedAccess(
   request: Request,
 ): Promise<void> {
   const url = new URL(request.url);
+
+  // Check if site protection is bypassed via environment variable
+  const bypassProtection = context.env?.BYPASS_SITE_PROTECTION === 'true';
+  if (bypassProtection) {
+    return;
+  }
 
   // Exempt routes that should always be accessible
   const exemptPaths = [
@@ -194,7 +174,7 @@ export async function requireUnprotectedAccess(
     default:
       // Query only global protection for site-level access
       query = `*[_type == "settings"][0]{
-        siteProtection->{
+        "globalProtection": siteProtection->{
           _id,
           name,
           enabled,
@@ -218,13 +198,19 @@ export async function requireUnprotectedAccess(
   } else if (protectionContext.type === 'product' && data?.productCollectionProtection) {
     activeProtection = data.productCollectionProtection;
     protectionSource = 'collection';
-  } else if (data?.globalProtection || data?.siteProtection) {
-    activeProtection = data.globalProtection || data.siteProtection;
+  } else if (data?.globalProtection) {
+    activeProtection = data.globalProtection;
     protectionSource = 'global';
   }
 
-  // If no protection is configured or enabled, allow access
-  if (!activeProtection?.enabled) {
+  // If no protection is configured, allow access
+  if (!activeProtection) {
+    return;
+  }
+
+  // If protection is explicitly disabled, allow access
+  // Note: undefined/missing enabled field is treated as enabled (matches schema initialValue)
+  if (activeProtection.enabled === false) {
     return;
   }
 

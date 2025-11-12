@@ -329,7 +329,28 @@ if (actionType === 'puzzle-completed' && protection.puzzleGrantsAccess) {
 - URL parameter sanitization for redirect handling
 - Form data validation for password submissions
 
+### Development Bypass
+- **Environment Variable Bypass**: Set `BYPASS_SITE_PROTECTION="true"` to disable all site protection
+- Useful for development and staging environments
+- Checked at the earliest point in both the server guard and protected route
+- When enabled, all routes are accessible without authentication
+- **Security Note**: Never enable this in production environments
+
 ## Configuration Examples
+
+### Development Bypass (Environment Variable)
+```bash
+# .env file
+BYPASS_SITE_PROTECTION="true"
+```
+
+When this environment variable is set to `"true"`, all site protection is completely bypassed. This is ideal for:
+- Local development
+- Staging environments
+- Testing without authentication barriers
+- CI/CD pipelines
+
+**Important**: Set to `"false"` or remove entirely in production.
 
 ### Password-Only Protection
 ```javascript
