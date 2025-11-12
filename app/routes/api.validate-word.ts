@@ -8,6 +8,7 @@ interface DatamuseWord {
   word: string;
   score: number;
   tags?: string[];
+  defs?: string[]; // Dictionary definitions (only present for real dictionary words)
 }
 
 export async function loader({request}: LoaderFunctionArgs) {
@@ -40,12 +41,13 @@ export async function loader({request}: LoaderFunctionArgs) {
 
   try {
     // Query Datamuse API from server-side with timeout and retry
+    // Use md=d parameter to request definitions (only real dictionary words have definitions)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
     try {
       const response = await fetch(
-        `https://api.datamuse.com/words?sp=${normalizedWord}&max=1`,
+        `https://api.datamuse.com/words?md=d&sp=${normalizedWord}&max=1`,
         {
           method: 'GET',
           headers: {
@@ -75,7 +77,11 @@ export async function loader({request}: LoaderFunctionArgs) {
         (r) => r.word.toLowerCase() === normalizedWord.toLowerCase()
       );
 
-      const isValid = !!exactMatch;
+      // Check if the word has definitions (defs field with content)
+      // Words without definitions are pattern matches, not dictionary words
+      const hasDefinitions = exactMatch && exactMatch.defs && exactMatch.defs.length > 0;
+
+      const isValid = !!hasDefinitions;
 
       return json({
         isValid,

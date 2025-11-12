@@ -11,24 +11,12 @@ export default defineType({
   },
   fields: [
     {
-      name: 'generated',
-      type: 'boolean',
-      hidden: true,
-    },
-    {
-      name: 'message',
+      name: 'placeholder',
       type: 'string',
-      hidden: true,
-    },
-    {
-      name: 'grid',
-      type: 'text',
-      hidden: true,
-    },
-    {
-      name: 'hintWordCount',
-      type: 'number',
-      hidden: true,
+      title: 'Generator',
+      description: 'This field enables the grid generator',
+      readOnly: true,
+      initialValue: 'ready',
     },
   ],
 });

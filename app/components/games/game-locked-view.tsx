@@ -2,10 +2,11 @@ import {CircleHelp, Lock} from 'lucide-react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Button} from '~/components/ui/button';
 import {cn} from '~/lib/utils';
-import {validateWord, gridToString, findWordPath} from '~/lib/games/strands-logic';
+import {validateWord, findWordPath} from '~/lib/games/strands-logic';
 import {validateEnglishWord} from '~/lib/games/datamuse';
 import {HintButton} from './hint-button';
 import type {SanityStrandsPuzzle} from '~/lib/games/strands.queries';
+import {getGridString, getCanonicalPaths, getGridData} from '~/lib/games/grid-utils';
 
 interface ThemeWord {
   word: string;
@@ -67,10 +68,9 @@ export function StrandsGame({
   onJoinEarlyAccess,
   onHelpClick,
 }: StrandsGameProps) {
-  // Transform puzzle data
-  const gridLetters = puzzle.generatedGrid
-    ? gridToString(puzzle.generatedGrid).split('')
-    : Array(48).fill('M');
+  // Transform puzzle data - use canonical grid if available
+  const gridLetters = getGridString(puzzle).split('');
+  const canonicalPaths = getCanonicalPaths(puzzle);
 
   const themeWords: ThemeWord[] = puzzle.themeWords.map((tw) => ({
     word: tw.word,
@@ -237,8 +237,9 @@ export function StrandsGame({
       return; // Hint already active for this word
     }
 
-    // Find the path for this word
-    const path = findWordPath(puzzle.generatedGrid, nextThemeWord.word);
+    // Find the path for this word - use canonical path if available
+    const path = canonicalPaths?.[nextThemeWord.word.toUpperCase()] ||
+                 findWordPath(getGridData(puzzle), nextThemeWord.word);
     console.log('📍 Found path:', path);
 
     if (!path) {
@@ -264,7 +265,7 @@ export function StrandsGame({
     }));
 
     showNotification(`Revealing: ${nextThemeWord.word}`, 'info', 2000);
-  }, [hintsEarned, themeWords, foundWords, activeHints, puzzle.generatedGrid, showNotification]);
+  }, [hintsEarned, themeWords, foundWords, activeHints, puzzle.canonicalGrid, showNotification]);
 
   // Submit current word for validation (async with Datamuse)
   const submitWord = useCallback(async () => {
@@ -282,15 +283,15 @@ export function StrandsGame({
     setIsValidating(true);
 
     try {
-      // Use comprehensive validation with Datamuse
+      // Use comprehensive validation with Datamuse and canonical paths
       const validation = await validateWord(
         word,
-        currentPath, // Add path parameter
+        currentPath,
         themeWords.map(tw => ({word: tw.word, isSpangram: tw.isSpangram})),
         new Set(discoveredHintWords),
         validateEnglishWord,
-        undefined, // No canonical paths for locked view
-        undefined, // No puzzle hint words for locked view
+        canonicalPaths, // Pass canonical paths if available
+        puzzle.hintWords, // Pass puzzle hint words if available
       );
 
       // Handle theme word (spangram or regular)

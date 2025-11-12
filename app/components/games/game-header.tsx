@@ -15,7 +15,6 @@ export function GameHeader({puzzle, score, timeElapsed, progress, lastError}: Ga
       {/* Title and Theme */}
       <div className="text-center">
         <h1 className="text-3xl font-bold">
-          {puzzle.theme.emoji && <span className="mr-2">{puzzle.theme.emoji}</span>}
           {puzzle.title}
         </h1>
         <p className="mt-2 text-lg text-gray-600">{puzzle.theme.clue}</p>

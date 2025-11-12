@@ -12,6 +12,7 @@ interface TimeLeft {
 interface PasswordGrantedViewProps {
   protection: ProtectionConfig;
   protectionContext: ProtectionContext;
+  isOverlay?: boolean;
 }
 
 function calculateTimeLeft(targetDate: string): TimeLeft {
@@ -68,6 +69,7 @@ function TimeUnit({value, label}: {value: number; label: string}) {
 export function PasswordGrantedView({
   protection,
   protectionContext,
+  isOverlay = false,
 }: PasswordGrantedViewProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);

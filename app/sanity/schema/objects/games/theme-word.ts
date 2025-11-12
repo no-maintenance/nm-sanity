@@ -27,44 +27,16 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
     }),
-    defineField({
-      name: 'difficulty',
-      title: 'Word Difficulty',
-      type: 'string',
-      options: {
-        list: [
-          {title: '🟢 Easy', value: 'easy'},
-          {title: '🟡 Medium', value: 'medium'},
-          {title: '🔴 Hard', value: 'hard'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'medium',
-    }),
-    defineField({
-      name: 'hint',
-      title: 'Optional Hint',
-      description: 'A clue to help players find this specific word',
-      type: 'text',
-      rows: 2,
-    }),
   ],
   preview: {
     select: {
       word: 'word',
       isSpangram: 'isSpangram',
-      difficulty: 'difficulty',
     },
-    prepare({word, isSpangram, difficulty}) {
-      const difficultyEmoji =
-        {
-          easy: '🟢',
-          medium: '🟡',
-          hard: '🔴',
-        }[difficulty] || '';
+    prepare({word, isSpangram}) {
       return {
         title: `${isSpangram ? '⭐ ' : ''}${word || 'Untitled'}`,
-        subtitle: `${difficultyEmoji} ${difficulty || 'medium'}`,
+        subtitle: isSpangram ? 'Spangram' : 'Theme word',
       };
     },
   },

@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity';
 import {Gamepad2} from 'lucide-react';
+import {ThemeWordsWithCounter} from '~/sanity/components/theme-words-with-counter';
 
 const GROUPS = [
   {name: 'puzzle', title: 'Puzzle', default: true},
@@ -60,19 +61,40 @@ export default defineType({
       of: [{type: 'themeWord'}],
       group: 'puzzle',
       description: 'All answer words including the spangram',
+      components: {
+        input: ThemeWordsWithCounter,
+      },
       validation: (Rule) =>
         Rule.required()
           .min(2)
           .max(30)
-          .custom((words) => {
+          .custom((words: Array<{word?: string; isSpangram?: boolean}> | undefined) => {
             if (!words) return true;
-            const spangrams = words.filter((w: any) => w.isSpangram);
+
+            // Check for exactly one spangram
+            const spangrams = words.filter((w) => w.isSpangram);
             if (spangrams.length === 0) {
               return 'Please mark one word as the Spangram';
             }
             if (spangrams.length > 1) {
               return 'Only one word can be the Spangram';
             }
+
+            // Validate spangram length (>= 6)
+            const spangram = spangrams[0];
+            if (spangram?.word && spangram.word.length < 6) {
+              return `Spangram must be at least 6 characters (currently ${spangram.word.length})`;
+            }
+
+            // Validate total character count (must equal 48 for 8x6 grid)
+            const totalChars = words.reduce((sum: number, w) => {
+              return sum + (w.word?.length || 0);
+            }, 0);
+
+            if (totalChars !== 48) {
+              return `Total characters must equal 48 for grid generation (currently ${totalChars})`;
+            }
+
             return true;
           }),
     }),
@@ -87,32 +109,24 @@ export default defineType({
     }),
 
     defineField({
-      name: 'generatedGrid',
-      title: 'Generated Grid',
-      type: 'table',
+      name: 'canonicalGrid',
+      title: 'Canonical Grid',
+      type: 'canonicalGrid',
       group: 'puzzle',
-      description:
-        '8 rows × 6 columns grid. Each cell should contain a single uppercase letter.',
+      description: 'Unified grid structure with word positions (auto-generated)',
       validation: (Rule) =>
-        Rule.custom((grid: any) => {
-          if (!grid || !grid.rows) return 'Grid is required';
-          if (grid.rows.length !== 8) {
-            return `Grid must have exactly 8 rows (currently ${grid.rows.length})`;
-          }
-          for (let i = 0; i < grid.rows.length; i++) {
-            const row = grid.rows[i];
-            if (!row.cells || row.cells.length !== 6) {
-              return `Row ${i + 1} must have exactly 6 cells (currently ${row.cells?.length || 0})`;
-            }
-            for (let j = 0; j < row.cells.length; j++) {
-              const cell = row.cells[j];
-              if (!cell || !/^[A-Z]$/.test(cell)) {
-                return `Cell at row ${i + 1}, column ${j + 1} must be a single uppercase letter (currently: "${cell}")`;
-              }
-            }
+        Rule.custom((value, context) => {
+          // Only require canonicalGrid when gridLocked is true
+          const parent = context?.parent as any;
+          const isLocked = parent?.gridLocked === true;
+
+          if (isLocked && !value) {
+            return 'Grid must be generated before locking';
           }
           return true;
         }),
+      readOnly: true, // Make it read-only since it's auto-generated
+      hidden: true, // Hide from UI - data is auto-generated and shown in preview
     }),
 
     defineField({
@@ -131,7 +145,7 @@ export default defineType({
       type: 'hintWordAnalyzer',
       group: 'puzzle',
       description: 'Discover all valid English words in your grid to test quality and find hint words',
-      hidden: ({parent}) => !parent?.generatedGrid,
+      hidden: ({parent}) => !parent?.canonicalGrid,
     }),
 
     defineField({
@@ -178,7 +192,7 @@ export default defineType({
       of: [{type: 'string'}],
       group: 'puzzle',
       description: 'Valid English words in the grid that players can discover for hint progress (checked before API validation)',
-      hidden: ({parent}) => !parent?.generatedGrid,
+      hidden: ({parent}) => !parent?.canonicalGrid,
       validation: (Rule) => Rule.max(100),
     }),
 
@@ -203,13 +217,6 @@ export default defineType({
           description: 'The hint players see (can be cryptic)',
           placeholder: 'e.g., "Where the waves meet the sand"',
           validation: (Rule) => Rule.required().max(100),
-        }),
-        defineField({
-          name: 'emoji',
-          title: 'Theme Emoji',
-          type: 'string',
-          placeholder: '🏖️',
-          validation: (Rule) => Rule.max(4),
         }),
       ],
     }),

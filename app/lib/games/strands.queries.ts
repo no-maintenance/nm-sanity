@@ -1,5 +1,6 @@
 import type {SanityClient} from '@sanity/client';
 import groq from 'groq';
+import type {CanonicalGrid} from './canonical-grid.types';
 
 export interface SanityStrandsPuzzle {
   _id: string;
@@ -12,10 +13,19 @@ export interface SanityStrandsPuzzle {
   themeWords: Array<{
     word: string;
     isSpangram: boolean;
-    difficulty: 'easy' | 'medium' | 'hard';
-    hint?: string;
   }>;
-  generatedGrid: string | {rows: Array<{cells: string[]}>};
+  canonicalGrid?: {
+    cells: string[];
+    themePaths: string; // JSON string of Record<string, ThemeWordPath>
+    hintPaths?: string; // JSON string of Record<string, number[]>
+    metadata: {
+      generatedAt: string;
+      algorithm: string;
+      dimensions: { rows: number; cols: number };
+      totalHintWords: number;
+      seed?: string;
+    };
+  }; // Primary grid field with unified structure (stored with JSON strings in Sanity)
   gridLocked: boolean;
   gridMetadata?: {
     generatedAt: string;
@@ -27,7 +37,6 @@ export interface SanityStrandsPuzzle {
   theme: {
     category: string;
     clue: string;
-    emoji?: string;
   };
   difficulty: 'easy' | 'medium' | 'hard';
   hintMode: 'standard' | 'none';
@@ -57,11 +66,9 @@ const STRANDS_PUZZLE_FRAGMENT = groq`
   puzzleMode,
   themeWords[] {
     word,
-    isSpangram,
-    difficulty,
-    hint
+    isSpangram
   },
-  generatedGrid,
+  canonicalGrid,
   gridLocked,
   gridMetadata {
     generatedAt,
@@ -72,8 +79,7 @@ const STRANDS_PUZZLE_FRAGMENT = groq`
   hintWords,
   theme {
     category,
-    clue,
-    emoji
+    clue
   },
   difficulty,
   hintMode,

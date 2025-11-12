@@ -25,7 +25,7 @@ export default defineType({
 
       return (
         <GenerateHintWordsButton
-          grid={document?.generatedGrid}
+          grid={document?.canonicalGrid}
           themeWords={document?.themeWords || []}
         />
       );

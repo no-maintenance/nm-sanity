@@ -8,6 +8,7 @@ interface CountdownExpiredViewProps {
   protectionContext: ProtectionContext;
   redirectTo: string;
   actionData?: any;
+  isOverlay?: boolean;
 }
 
 /**
@@ -19,6 +20,7 @@ export function CountdownExpiredView({
   protectionContext,
   redirectTo,
   actionData,
+  isOverlay = false,
 }: CountdownExpiredViewProps) {
   // Get localized content with state-specific fallbacks
   const title = getLocalizedValue(protection.countdownExpiredTitle) || 'Now Available';

@@ -2,17 +2,16 @@
  * Game logic utilities for Strands word puzzle
  */
 
+import type {CanonicalGrid, SanityCanonicalGrid} from './canonical-grid.types';
+
 const GRID_ROWS = 8;
 const GRID_COLS = 6;
 
 export type Position = {row: number; col: number};
 export type CellIndex = number;
 
-export type GridTable = {
-  rows: Array<{cells: string[]}>;
-};
-
-export type GridData = string | GridTable;
+// GridData now only supports string (for empty fallback) or canonical formats
+export type GridData = string | CanonicalGrid | SanityCanonicalGrid;
 
 /**
  * Convert 1D grid index to 2D position
@@ -74,24 +73,16 @@ function sanitizeGridString(str: string): string {
 }
 
 /**
- * Convert table grid format to string
+ * Convert grid format to string
  */
 export function gridToString(grid: GridData): string {
   if (typeof grid === 'string') {
     return sanitizeGridString(grid);
   }
 
-  // Handle table format
-  if (grid && typeof grid === 'object' && 'rows' in grid && Array.isArray(grid.rows)) {
-    const gridString = grid.rows
-      .map((row) => {
-        if (row && typeof row === 'object' && 'cells' in row && Array.isArray(row.cells)) {
-          return row.cells.map(cell => sanitizeGridString(cell)).join('');
-        }
-        return '';
-      })
-      .join('');
-    return gridString;
+  // Handle CanonicalGrid or SanityCanonicalGrid formats
+  if (grid && typeof grid === 'object' && 'cells' in grid && Array.isArray(grid.cells)) {
+    return grid.cells.join('');
   }
 
   // Fallback for unexpected format
@@ -555,11 +546,18 @@ export function processWordSubmission(
   // Handle theme word
   if (validation.type === 'theme-word') {
     const normalizedValidationWord = normalizeWord(validation.word);
-    const themeIndex = themeWords
+
+    // Get the original index in the full theme words array (including spangram)
+    // Then calculate color index by counting only non-spangram words before it
+    const fullIndex = themeWords.findIndex(tw => normalizeWord(tw.word) === normalizedValidationWord);
+
+    // Count how many non-spangram words come before this one
+    const colorIndex = themeWords
+      .slice(0, fullIndex)
       .filter(tw => !tw.isSpangram)
-      .findIndex(tw => normalizeWord(tw.word) === normalizedValidationWord);
-    
-    const color = getThemeWordColor(themeIndex, validation.isSpangram);
+      .length;
+
+    const color = getThemeWordColor(colorIndex, validation.isSpangram);
     const cellColors = assignCellColors(path, color, existingCellColors);
 
     return {

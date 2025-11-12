@@ -4,7 +4,6 @@ import {
   validateWord,
   processWordSubmission,
   isGameComplete,
-  gridToString,
   getWordFromPath,
   type WordValidationResult,
 } from '~/lib/games/strands-logic';
@@ -14,6 +13,7 @@ import {
   loadGameState,
   type GameState as PersistedGameState,
 } from '~/lib/games/strands-persistence';
+import {getGridData, getGridString, getCanonicalPaths} from '~/lib/games/grid-utils';
 
 export interface StrandsGameState {
   // Selection
@@ -62,9 +62,9 @@ const GRID_COLS = 6;
 export function useStrandsGame(
   puzzle: SanityStrandsPuzzle,
 ): UseStrandsGameReturn {
-  // Transform puzzle data
-  const gridData = puzzle.generatedGrid || '';
-  const gridString = gridToString(gridData);
+  // Transform puzzle data using grid utilities
+  const gridData = getGridData(puzzle);
+  const gridString = getGridString(puzzle);
   const gridLetters = gridString.split('');
   
   // Theme words are already normalized on the server
@@ -247,10 +247,8 @@ export function useStrandsGame(
     try {
       // Validate word
       console.log('[Game] Starting validation for:', word);
-      // Parse canonical paths from JSON string if available
-      const canonicalPaths = puzzle.gridMetadata?.canonicalPaths
-        ? JSON.parse(puzzle.gridMetadata.canonicalPaths) as Record<string, number[]>
-        : undefined;
+      // Get canonical paths using utility function (handles both legacy and new formats)
+      const canonicalPaths = getCanonicalPaths(puzzle);
 
       const validation: WordValidationResult = await validateWord(
         word,

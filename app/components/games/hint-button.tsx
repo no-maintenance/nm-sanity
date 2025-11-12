@@ -27,7 +27,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
   return (
     <button
       ref={ref}
-      className="relative h-auto overflow-hidden rounded-md border border-black px-5 py-2 text-base font-medium"
+      className="relative h-auto overflow-hidden rounded-md border border-black px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-base md:text-lg lg:text-xl font-medium transition-transform hover:scale-105"
       disabled={disabled || hintsEarned === 0}
       onClick={onClick}
       title={

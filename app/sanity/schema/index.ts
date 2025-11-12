@@ -79,6 +79,7 @@ import strandsPuzzle from './documents/strands-puzzle';
 import themeWord from './objects/games/theme-word';
 import gridGenerator from './objects/games/grid-generator';
 import hintWordAnalyzer from './objects/games/hint-word-analyzer';
+import canonicalGrid from './objects/games/canonical-grid';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -160,6 +161,7 @@ const objects = [
   themeWord,
   gridGenerator,
   hintWordAnalyzer,
+  canonicalGrid,
 ];
 
 export const schemaTypes = [

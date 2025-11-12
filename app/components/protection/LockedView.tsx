@@ -18,6 +18,7 @@ interface LockedViewProps {
   protectionContext: ProtectionContext;
   redirectTo: string;
   actionData?: any;
+  isOverlay?: boolean;
 }
 
 function calculateTimeLeft(targetDate: string): TimeLeft {
@@ -76,6 +77,7 @@ export function LockedView({
   protectionContext,
   redirectTo,
   actionData,
+  isOverlay = false,
 }: LockedViewProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -122,8 +124,8 @@ export function LockedView({
 
   return (
     <>
-      {/* Collection/Product Context Indicator */}
-      {(protectionContext.type === 'collection' || protectionContext.type === 'product') && (
+      {/* Collection/Product Context Indicator - hide in overlay mode */}
+      {!isOverlay && (protectionContext.type === 'collection' || protectionContext.type === 'product') && (
         <div className="mb-6">
           {protectionContext.type === 'collection' && (
             <p className="text-sm md:text-base uppercase tracking-wider text-muted-foreground mb-2">
@@ -149,12 +151,12 @@ export function LockedView({
       )}
 
       {title && (
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
+        <h1 className={isOverlay ? "text-xl font-bold mb-3 text-foreground" : "text-3xl md:text-5xl font-bold mb-4 text-foreground"}>
           {title}
         </h1>
       )}
 
-      {message && (
+      {message && !isOverlay && (
         <p className="text-lg md:text-xl mb-8 text-muted-foreground">
           {message}
         </p>

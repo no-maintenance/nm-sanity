@@ -11,6 +11,7 @@ import {ProtectionLayout} from '~/components/protection/ProtectionLayout';
 import {LockedView} from '~/components/protection/LockedView';
 import {PasswordGrantedView} from '~/components/protection/PasswordGrantedView';
 import {CountdownExpiredView} from '~/components/protection/CountdownExpiredView';
+import {ProtectedPuzzleContainer} from '~/components/protection/ProtectedPuzzleContainer';
 
 interface LoaderData {
   protection?: ProtectionConfig;
@@ -91,6 +92,53 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     countdownExpiredTitle,
     countdownExpiredMessage,
     redirectPage,
+    embeddedPuzzle->{
+      _id,
+      _type,
+      title,
+      slug,
+      puzzleMode,
+      themeWords[] {
+        word,
+        isSpangram,
+        difficulty,
+        hint
+      },
+      canonicalGrid,
+      gridLocked,
+      gridMetadata {
+        generatedAt,
+        hintWordCount,
+        algorithm,
+        canonicalPaths
+      },
+      hintWords,
+      theme {
+        category,
+        clue,
+        emoji
+      },
+      difficulty,
+      hintMode,
+      timeLimit,
+      scoring {
+        pointsPerWord,
+        spangramBonus
+      },
+      reward {
+        enabled,
+        type,
+        discountCode,
+        discountPercent,
+        message
+      },
+      status,
+      publishDate,
+      expiryDate,
+      puzzleNumber
+    },
+    puzzleGrantsAccess,
+    puzzleCompletionMessage,
     mediaType,
     backgroundImage,
     backgroundVideo {
@@ -225,6 +273,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
 export async function action({context, request}: ActionFunctionArgs) {
   const {passwordSession, sanity} = context;
   const formData = await request.formData();
+  const actionType = formData.get('actionType') as string;
   const password = formData.get('password') as string;
   const redirectTo = formData.get('redirectTo') as string || '/';
   const url = new URL(request.url);
@@ -245,7 +294,12 @@ export async function action({context, request}: ActionFunctionArgs) {
     accessMode,
     password,
     countdown,
-    redirectPage
+    redirectPage,
+    embeddedPuzzle->{
+      _id
+    },
+    puzzleGrantsAccess,
+    puzzleCompletionMessage
   }`;
 
   switch (contextParam) {
@@ -296,6 +350,112 @@ export async function action({context, request}: ActionFunctionArgs) {
   } else if (data?.globalProtection || data?.siteProtection) {
     protection = data.globalProtection || data.siteProtection;
     protectionSource = 'global';
+  }
+
+  // Handle puzzle completion
+  if (actionType === 'puzzle-completed' && protection?.puzzleGrantsAccess) {
+    // Authenticate using the appropriate method
+    if (protectionSource === 'collection' && protection._id) {
+      passwordSession.authenticateFor(protection._id);
+    } else if (protectionSource === 'global') {
+      passwordSession.authenticateGlobally();
+    }
+
+    // Check if countdown has expired
+    const isCountdownExpired = protection.countdown
+      ? new Date(protection.countdown) <= new Date()
+      : false;
+
+    // Determine what state we'll be in after puzzle authentication
+    const postAuthState = determineProtectionState(
+      protection,
+      true, // Puzzle completion authenticates like password
+      isCountdownExpired
+    );
+
+    // Handle based on access mode
+    if (protection.accessMode === 'either') {
+      // For 'either' mode, puzzle completion grants full access
+      // Get redirect page path if configured
+      let targetPath = redirectTo;
+      if (protection.redirectPage?._ref) {
+        const PAGE_PATH_QUERY = `*[_id == $ref][0]{
+          _type,
+          "slug": slug.current,
+          "handle": store.slug.current
+        }`;
+
+        const {data: pageData} = await sanity.loadQuery(
+          PAGE_PATH_QUERY,
+          {ref: protection.redirectPage._ref},
+        );
+
+        if (pageData) {
+          if (pageData._type === 'home') {
+            targetPath = '/';
+          } else if (pageData._type === 'page' && pageData.slug) {
+            targetPath = `/pages/${pageData.slug}`;
+          } else if (pageData.handle) {
+            targetPath = `/${pageData.handle}`;
+          }
+        }
+      }
+
+      return redirect(targetPath, {
+        headers: {
+          'Set-Cookie': await passwordSession.commit(),
+        },
+      });
+    } else if (protection.accessMode === 'both') {
+      // For 'both' mode, check if countdown has expired
+      if (isCountdownExpired) {
+        // Full access granted
+        let targetPath = redirectTo;
+        if (protection.redirectPage?._ref) {
+          const PAGE_PATH_QUERY = `*[_id == $ref][0]{
+            _type,
+            "slug": slug.current,
+            "handle": store.slug.current
+          }`;
+
+          const {data: pageData} = await sanity.loadQuery(
+            PAGE_PATH_QUERY,
+            {ref: protection.redirectPage._ref},
+          );
+
+          if (pageData) {
+            if (pageData._type === 'home') {
+              targetPath = '/';
+            } else if (pageData._type === 'page' && pageData.slug) {
+              targetPath = `/pages/${pageData.slug}`;
+            } else if (pageData.handle) {
+              targetPath = `/${pageData.handle}`;
+            }
+          }
+        }
+
+        return redirect(targetPath, {
+          headers: {
+            'Set-Cookie': await passwordSession.commit(),
+          },
+        });
+      } else {
+        // Show success page with promo code (password-granted state)
+        return json(
+          {
+            success: true,
+            newState: 'password-granted',
+            puzzleCompleted: true,
+            promoCode: protection.puzzleCompletionMessage,
+          },
+          {
+            headers: {
+              'Set-Cookie': await passwordSession.commit(),
+            },
+          }
+        );
+      }
+    }
   }
 
   // Verify password
@@ -381,6 +541,20 @@ export default function SiteProtected() {
   let effectiveViewState = currentViewState;
   if (actionData && 'newState' in actionData && actionData.newState) {
     effectiveViewState = actionData.newState as ProtectionViewState;
+  }
+
+  // If there's an embedded puzzle, render it with protection overlay
+  if (protection.embeddedPuzzle) {
+    return (
+      <ProtectedPuzzleContainer
+        puzzle={protection.embeddedPuzzle}
+        protection={protection}
+        protectionContext={protectionContext}
+        viewState={effectiveViewState}
+        redirectTo={redirectTo}
+        actionData={actionData}
+      />
+    );
   }
 
   // Render the appropriate view component based on effective state

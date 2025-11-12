@@ -12,11 +12,12 @@ export type ProtectionViewState =
   | 'fully-unlocked';  // All conditions met (should redirect)
 
 export interface ProtectionContext {
-  type: 'site' | 'collection' | 'product';
+  type: 'site' | 'collection' | 'product' | 'game';
   collectionHandle?: string;
   collectionName?: string;
   productHandle?: string;
   productName?: string;
+  gameSlug?: string;
 }
 
 export interface ProtectionState {
@@ -44,6 +45,11 @@ export interface ProtectionConfig {
     _ref?: string;
     _type?: string;
   };
+
+  // Puzzle integration
+  embeddedPuzzle?: any; // Will be populated with full puzzle data when queried
+  puzzleGrantsAccess?: boolean;
+  puzzleCompletionMessage?: any[];
 
   // New fields for multiple view states
   passwordGrantedTitle?: any[];

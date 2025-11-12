@@ -16,7 +16,7 @@ function normalizeWord(word: string): string {
 
 export async function loader({params, context}: LoaderFunctionArgs) {
   const {slug} = params;
-
+  console.log('slug', slug);
   if (!slug) {
     throw new Response('Not found', {status: 404});
   }
@@ -25,20 +25,11 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     slug,
     sanity: context.sanity,
   });
-
+  console.log('puzzle', puzzle);
   if (!puzzle) {
     throw new Response('Puzzle not found', {status: 404});
   }
 
-  // Check if puzzle is published
-  if (puzzle.status !== 'published') {
-    throw new Response('Puzzle not available', {status: 404});
-  }
-
-  // Check expiry date
-  if (puzzle.expiryDate && new Date(puzzle.expiryDate) < new Date()) {
-    throw new Response('Puzzle expired', {status: 404});
-  }
 
   // Normalize theme words to remove invisible Unicode characters
   const normalizedPuzzle = {
