@@ -1,20 +1,11 @@
 import {redirect} from '@shopify/remix-oxygen';
+import {determineProtectionState, type ProtectionConfig as StateProtectionConfig} from '../site-protection-states';
 
 /**
  * Protection configuration from Sanity
+ * Using the extended interface from state management
  */
-interface ProtectionConfig {
-  _id?: string;
-  name?: string;
-  enabled?: boolean;
-  accessMode?: 'password' | 'countdown' | 'both' | 'either';
-  password?: string;
-  countdown?: string;
-  redirectPage?: {
-    _ref?: string;
-    _type?: string;
-  };
-}
+type ProtectionConfig = StateProtectionConfig;
 
 /**
  * Context for what is being protected
@@ -129,71 +120,156 @@ export async function requireUnprotectedAccess(
     return;
   }
 
-  // Get protection settings from Sanity
+  // Detect what type of content is being accessed
+  const protectionContext = detectProtectionContext(url);
+
+  // Get context services
   const {sanity, passwordSession} = context;
 
-  // Query for just the protection settings
-  const PROTECTION_SETTINGS_QUERY = `*[_type == "settings"][0]{
-    siteProtection
-  }`;
+  // Query for protection configurations based on context
+  let query = '';
+  let queryParams = {};
 
-  const {data} = await sanity.loadQuery(
-    PROTECTION_SETTINGS_QUERY,
-    {},
-  ) as {data: {siteProtection?: SiteProtection}};
-
-  const protection = data?.siteProtection;
-
-  // If protection is not enabled, allow access
-  if (!protection?.enabled) {
-    return;
-  }
-
-  // Check if user has password authentication
-  const hasPasswordAuth = passwordSession.isAuthenticated();
-
-  // Check if countdown has expired
-  let countdownExpired = false;
-  if (protection.countdown) {
-    const countdownDate = new Date(protection.countdown);
-    const now = new Date();
-    countdownExpired = now >= countdownDate;
-  }
-
-  // Determine access based on mode
-  let hasAccess = false;
-
-  switch (protection.accessMode) {
-    case 'password':
-      // Password only - must have password auth
-      hasAccess = hasPasswordAuth;
+  switch (protectionContext.type) {
+    case 'collection':
+      // Query collection-specific protection + global protection
+      query = `{
+        "collectionProtection": *[_type == "collection" && store.slug.current == $collectionHandle][0]{
+          protectionConfig->{
+            _id,
+            name,
+            enabled,
+            accessMode,
+            password,
+            countdown,
+            redirectPage
+          }
+        }.protectionConfig,
+        "globalProtection": *[_type == "settings"][0]{
+          siteProtection->{
+            _id,
+            name,
+            enabled,
+            accessMode,
+            password,
+            countdown,
+            redirectPage
+          }
+        }.siteProtection
+      }`;
+      queryParams = { collectionHandle: protectionContext.collectionHandle };
       break;
 
-    case 'countdown':
-      // Countdown only - countdown must be expired
-      hasAccess = countdownExpired;
-      break;
-
-    case 'both':
-      // Both required - must have both password AND countdown expired
-      hasAccess = hasPasswordAuth && countdownExpired;
-      break;
-
-    case 'either':
-      // Either one - password OR countdown expired
-      hasAccess = hasPasswordAuth || countdownExpired;
+    case 'product':
+      // Query product's collection protection + global protection
+      query = `{
+        "productCollectionProtection": *[_type == "product" && store.slug.current == $productHandle][0]{
+          "collection": store.collections[0]{
+            "protectionConfig": *[_type == "collection" && store.gid == ^.gid][0].protectionConfig->{
+              _id,
+              name,
+              enabled,
+              accessMode,
+              password,
+              countdown,
+              redirectPage
+            }
+          }
+        }.collection.protectionConfig,
+        "globalProtection": *[_type == "settings"][0]{
+          siteProtection->{
+            _id,
+            name,
+            enabled,
+            accessMode,
+            password,
+            countdown,
+            redirectPage
+          }
+        }.siteProtection
+      }`;
+      queryParams = { productHandle: protectionContext.productHandle };
       break;
 
     default:
-      // Default to no access if mode is not set
-      hasAccess = false;
+      // Query only global protection for site-level access
+      query = `*[_type == "settings"][0]{
+        siteProtection->{
+          _id,
+          name,
+          enabled,
+          accessMode,
+          password,
+          countdown,
+          redirectPage
+        }
+      }`;
   }
 
-  // If no access, redirect to protected page with return URL
-  if (!hasAccess) {
-    const redirectUrl = `/site-protected?redirectTo=${encodeURIComponent(
-      url.pathname + url.search
-    )}`;
+  const {data} = await sanity.loadQuery(query, queryParams);
+
+  // Determine which protection config to use (priority: collection → global)
+  let activeProtection: ProtectionConfig | null = null;
+  let protectionSource: 'collection' | 'global' | 'none' = 'none';
+
+  if (protectionContext.type === 'collection' && data?.collectionProtection) {
+    activeProtection = data.collectionProtection;
+    protectionSource = 'collection';
+  } else if (protectionContext.type === 'product' && data?.productCollectionProtection) {
+    activeProtection = data.productCollectionProtection;
+    protectionSource = 'collection';
+  } else if (data?.globalProtection || data?.siteProtection) {
+    activeProtection = data.globalProtection || data.siteProtection;
+    protectionSource = 'global';
+  }
+
+  // If no protection is configured or enabled, allow access
+  if (!activeProtection?.enabled) {
+    return;
+  }
+
+  // Check if user has password authentication for this specific protection
+  let hasPasswordAuth = false;
+
+  if (protectionSource === 'collection' && activeProtection?._id) {
+    // Check collection-specific authentication
+    hasPasswordAuth = passwordSession.isAuthenticatedFor(activeProtection._id);
+  } else if (protectionSource === 'global') {
+    // Check global authentication (backward compatibility)
+    hasPasswordAuth = passwordSession.isGloballyAuthenticated();
+  }
+
+  // Check if countdown has expired
+  const countdownExpired = isCountdownExpired(activeProtection.countdown);
+
+  // Determine the current protection state using the new state management system
+  const protectionState = determineProtectionState(
+    activeProtection,
+    hasPasswordAuth,
+    countdownExpired
+  );
+
+  // If not fully unlocked, redirect to protected page with context and state info
+  if (protectionState.viewState !== 'fully-unlocked') {
+    const searchParams = new URLSearchParams({
+      redirectTo: url.pathname + url.search,
+      state: protectionState.viewState,
+    });
+
+    // Add context information for the protection page
+    if (protectionSource === 'collection') {
+      searchParams.set('context', 'collection');
+      if (protectionContext.collectionHandle) {
+        searchParams.set('collection', protectionContext.collectionHandle);
+      }
+    } else if (protectionContext.type === 'product') {
+      searchParams.set('context', 'product');
+      if (protectionContext.productHandle) {
+        searchParams.set('product', protectionContext.productHandle);
+      }
+    }
+
+    const redirectUrl = `/site-protected?${searchParams.toString()}`;
 
     throw redirect(redirectUrl, {
       headers: {

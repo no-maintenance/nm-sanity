@@ -15,13 +15,15 @@ export interface SanityStrandsPuzzle {
     difficulty: 'easy' | 'medium' | 'hard';
     hint?: string;
   }>;
-  generatedGrid: string;
+  generatedGrid: string | {rows: Array<{cells: string[]}>};
   gridLocked: boolean;
   gridMetadata?: {
     generatedAt: string;
     hintWordCount: number;
     algorithm: string;
+    canonicalPaths?: string; // JSON string of Record<string, number[]>
   };
+  hintWords?: string[];
   theme: {
     category: string;
     clue: string;
@@ -64,8 +66,10 @@ const STRANDS_PUZZLE_FRAGMENT = groq`
   gridMetadata {
     generatedAt,
     hintWordCount,
-    algorithm
+    algorithm,
+    canonicalPaths
   },
+  hintWords,
   theme {
     category,
     clue,
@@ -96,7 +100,7 @@ export async function getStrandsPuzzle({
   sanity,
 }: {
   slug: string;
-  sanity: {query: SanityClient['fetch']};
+  sanity: {loadQuery: any};
 }): Promise<SanityStrandsPuzzle | null> {
   const query = groq`
     *[_type == "strandsPuzzle" && slug.current == $slug][0] {
@@ -104,18 +108,15 @@ export async function getStrandsPuzzle({
     }
   `;
 
-  const puzzle = await sanity.query<SanityStrandsPuzzle>({
-    query,
-    params: {slug},
-  });
+  const {data} = await sanity.loadQuery(query, {slug});
 
-  return puzzle;
+  return data as SanityStrandsPuzzle | null;
 }
 
 export async function getAllPublishedPuzzles({
   sanity,
 }: {
-  sanity: {query: SanityClient['fetch']};
+  sanity: {loadQuery: any};
 }): Promise<SanityStrandsPuzzle[]> {
   const query = groq`
     *[_type == "strandsPuzzle" && status == "published"] | order(puzzleNumber desc) {
@@ -123,17 +124,15 @@ export async function getAllPublishedPuzzles({
     }
   `;
 
-  const puzzles = await sanity.query<SanityStrandsPuzzle[]>({
-    query,
-  });
+  const {data} = await sanity.loadQuery(query, {});
 
-  return puzzles || [];
+  return (data as SanityStrandsPuzzle[]) || [];
 }
 
 export async function getLatestPuzzle({
   sanity,
 }: {
-  sanity: {query: SanityClient['fetch']};
+  sanity: {loadQuery: any};
 }): Promise<SanityStrandsPuzzle | null> {
   const query = groq`
     *[_type == "strandsPuzzle" && status == "published"] | order(puzzleNumber desc)[0] {
@@ -141,9 +140,7 @@ export async function getLatestPuzzle({
     }
   `;
 
-  const puzzle = await sanity.query<SanityStrandsPuzzle>({
-    query,
-  });
+  const {data} = await sanity.loadQuery(query, {});
 
-  return puzzle;
+  return data as SanityStrandsPuzzle | null;
 }

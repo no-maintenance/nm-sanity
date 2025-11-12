@@ -144,7 +144,7 @@ export default defineType({
         : 'Manual';
 
       const subtitle = isProtected
-        ? `🔒 Protected • ${baseSubtitle}`
+        ? `Protected • ${baseSubtitle}`
         : baseSubtitle;
 
       return {

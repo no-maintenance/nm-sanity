@@ -6463,23 +6463,16 @@
       "gridGenerator": {
         "type": "objectAttribute",
         "value": {
-          "type": "object",
-          "attributes": {
-            "placeholder": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "string"
-              },
-              "optional": true
-            }
-          }
+          "type": "inline",
+          "name": "gridGenerator"
         },
         "optional": true
       },
       "generatedGrid": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "table"
         },
         "optional": true
       },
@@ -6487,6 +6480,14 @@
         "type": "objectAttribute",
         "value": {
           "type": "boolean"
+        },
+        "optional": true
+      },
+      "hintWordAnalyzer": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "hintWordAnalyzer"
         },
         "optional": true
       },
@@ -6515,7 +6516,24 @@
                 "type": "string"
               },
               "optional": true
+            },
+            "canonicalPaths": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
             }
+          }
+        },
+        "optional": true
+      },
+      "hintWords": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "string"
           }
         },
         "optional": true
@@ -6673,52 +6691,6 @@
               "optional": true
             }
           }
-        },
-        "optional": true
-      },
-      "status": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "draft"
-            },
-            {
-              "type": "string",
-              "value": "ready"
-            },
-            {
-              "type": "string",
-              "value": "published"
-            },
-            {
-              "type": "string",
-              "value": "scheduled"
-            }
-          ]
-        },
-        "optional": true
-      },
-      "publishDate": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "expiryDate": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "puzzleNumber": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
         },
         "optional": true
       }
@@ -7226,6 +7198,73 @@
           "name": "seo"
         },
         "optional": true
+      }
+    }
+  },
+  {
+    "name": "hintWordAnalyzer",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "hintWordAnalyzer"
+          }
+        },
+        "placeholder": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "gridGenerator",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "gridGenerator"
+          }
+        },
+        "generated": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
+        "message": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "grid": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "hintWordCount": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
       }
     }
   },
@@ -15368,6 +15407,94 @@
             "rest": {
               "type": "inline",
               "name": "internationalizedArrayStringValue"
+            }
+          }
+        },
+        "optional": true
+      },
+      "passwordGrantedTitle": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "internationalizedArrayStringValue"
+            }
+          }
+        },
+        "optional": true
+      },
+      "passwordGrantedMessage": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "internationalizedArrayTextValue"
+            }
+          }
+        },
+        "optional": true
+      },
+      "countdownExpiredTitle": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "internationalizedArrayStringValue"
+            }
+          }
+        },
+        "optional": true
+      },
+      "countdownExpiredMessage": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "internationalizedArrayTextValue"
             }
           }
         },

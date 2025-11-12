@@ -1,7 +1,7 @@
 import {HINT_WORD_LIBRARY, HIGH_FREQ_LETTERS, COMMON_DIGRAPHS} from './word-lists';
 
-const GRID_ROWS = 6;
-const GRID_COLS = 8;
+const GRID_ROWS = 8;
+const GRID_COLS = 6;
 const GRID_SIZE = GRID_ROWS * GRID_COLS; // 48
 
 type GridCell = string;
@@ -19,6 +19,7 @@ interface GenerationResult {
   hintWordCount: number;
   placedHintWords: string[];
   foundHintWords: string[];
+  canonicalPaths?: Record<string, number[]>; // Maps theme words to their intended paths
   warning?: string;
 }
 
@@ -338,11 +339,13 @@ export async function generateStrandsGrid(options: {
   let bestGrid: string | null = null;
   let bestScore = 0;
   let bestPlacedHints: string[] = [];
+  let bestCanonicalPaths: Record<string, number[]> = {};
 
   // Try multiple times to generate a good grid
   for (let attempt = 0; attempt < 10; attempt++) {
     const grid: Grid = new Array(GRID_SIZE).fill('');
     const used = new Array(GRID_SIZE).fill(false);
+    const canonicalPaths: Record<string, number[]> = {};
 
     // Step 1: Place spangram
     const spangramResult = placeSpangram(grid, spangram.word, used);
@@ -350,16 +353,21 @@ export async function generateStrandsGrid(options: {
       continue; // Try again
     }
     placeWord(grid, spangram.word, spangramResult.path, used);
+    // Store canonical path for spangram
+    canonicalPaths[spangram.word.toUpperCase()] = spangramResult.path;
 
     // Step 2: Place other theme words
     let allThemeWordsPlaced = true;
     for (const {word} of otherWords) {
       let placed = false;
+      let wordPath: number[] = [];
       for (let i = 0; i < GRID_SIZE; i++) {
         if (!used[i]) {
           const {canPlace, path} = canPlaceWord(grid, word, i, used);
           if (canPlace) {
             placeWord(grid, word, path, used);
+            // Store canonical path for this theme word
+            canonicalPaths[word.toUpperCase()] = path;
             placed = true;
             break;
           }
@@ -420,6 +428,7 @@ export async function generateStrandsGrid(options: {
         hintWordCount: score,
         placedHintWords,
         foundHintWords: foundHints.slice(0, 20), // Sample
+        canonicalPaths, // Include canonical paths in successful result
       };
     }
 
@@ -427,6 +436,7 @@ export async function generateStrandsGrid(options: {
       bestGrid = grid.join('');
       bestScore = score;
       bestPlacedHints = placedHintWords;
+      bestCanonicalPaths = canonicalPaths; // Store best canonical paths
     }
   }
 
@@ -437,6 +447,7 @@ export async function generateStrandsGrid(options: {
     hintWordCount: bestScore,
     placedHintWords: bestPlacedHints,
     foundHintWords: [],
+    canonicalPaths: bestCanonicalPaths, // Include best canonical paths
     warning:
       bestScore < minHintWords
         ? `Only ${bestScore} hint words found (target was ${minHintWords})`

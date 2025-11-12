@@ -32,13 +32,65 @@ export class PasswordSession {
     return this.session.get('passwordAuthenticated') === true;
   }
 
+  /**
+   * Check if authenticated for a specific protection config
+   */
+  isAuthenticatedFor(protectionConfigId: string): boolean {
+    const authentications = this.session.get('protectionAuthentications') || {};
+    return authentications[protectionConfigId] === true;
+  }
+
+  /**
+   * Check if authenticated for global site protection
+   */
+  isGloballyAuthenticated(): boolean {
+    return this.isAuthenticated();
+  }
+
   authenticate(): void {
     this.session.set('passwordAuthenticated', true);
     this.session.set('authenticatedAt', new Date().toISOString());
   }
 
+  /**
+   * Authenticate for a specific protection config
+   */
+  authenticateFor(protectionConfigId: string): void {
+    const authentications = this.session.get('protectionAuthentications') || {};
+    const timestamps = this.session.get('protectionTimestamps') || {};
+
+    authentications[protectionConfigId] = true;
+    timestamps[protectionConfigId] = new Date().toISOString();
+
+    this.session.set('protectionAuthentications', authentications);
+    this.session.set('protectionTimestamps', timestamps);
+  }
+
+  /**
+   * Authenticate globally (backward compatibility)
+   */
+  authenticateGlobally(): void {
+    this.authenticate();
+  }
+
   getAuthenticatedAt(): string | null {
     return this.session.get('authenticatedAt') || null;
+  }
+
+  /**
+   * Get authentication timestamp for a specific protection config
+   */
+  getAuthenticatedAtFor(protectionConfigId: string): string | null {
+    const timestamps = this.session.get('protectionTimestamps') || {};
+    return timestamps[protectionConfigId] || null;
+  }
+
+  /**
+   * Get all authenticated protection config IDs
+   */
+  getAuthenticatedProtections(): string[] {
+    const authentications = this.session.get('protectionAuthentications') || {};
+    return Object.keys(authentications).filter(id => authentications[id] === true);
   }
 
   commit(): Promise<string> {
@@ -53,6 +105,30 @@ export class PasswordSession {
    * Clear the password authentication
    */
   clear(): void {
+    this.session.unset('passwordAuthenticated');
+    this.session.unset('authenticatedAt');
+    this.session.unset('protectionAuthentications');
+    this.session.unset('protectionTimestamps');
+  }
+
+  /**
+   * Clear authentication for a specific protection config
+   */
+  clearFor(protectionConfigId: string): void {
+    const authentications = this.session.get('protectionAuthentications') || {};
+    const timestamps = this.session.get('protectionTimestamps') || {};
+
+    delete authentications[protectionConfigId];
+    delete timestamps[protectionConfigId];
+
+    this.session.set('protectionAuthentications', authentications);
+    this.session.set('protectionTimestamps', timestamps);
+  }
+
+  /**
+   * Clear global authentication only (keep collection-specific authentications)
+   */
+  clearGlobal(): void {
     this.session.unset('passwordAuthenticated');
     this.session.unset('authenticatedAt');
   }

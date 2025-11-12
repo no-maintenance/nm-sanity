@@ -62,14 +62,14 @@ export function defineSanityConfig(
       muxInput(),
       codeInput(),
       table(),
-      structureTool({structure, defaultDocumentNode}),
-      customDocumentActions({shopifyStoreDomain: config.shopifyStoreDomain}),
       media({
         creditLine: {
           enabled: true,
         },
         // Configure media plugin to show all images
       }),
+      structureTool({structure, defaultDocumentNode}),
+      customDocumentActions({shopifyStoreDomain: config.shopifyStoreDomain}),
       presentationTool({
         previewUrl: {previewMode: {enable: SANITY_STUDIO_PREVIEW_URL}},
         resolve: {

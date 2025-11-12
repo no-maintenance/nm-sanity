@@ -1,11 +1,18 @@
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
-import {defer} from '@shopify/remix-oxygen';
-import {Await, useLoaderData} from '@remix-run/react';
-import {Suspense} from 'react';
-import {getSeoMeta} from '~/lib/seo';
+import {useLoaderData} from '@remix-run/react';
 import type {SanityStrandsPuzzle} from '~/lib/games/strands.queries';
 import {getStrandsPuzzle} from '~/lib/games/strands.queries';
-import {StrandsGame} from '~/components/games/strands-game.client';
+import {StrandsGame} from '~/components/games/strands-game';
+
+/**
+ * Normalize a word by removing invisible Unicode characters and trimming
+ */
+function normalizeWord(word: string): string {
+  return word
+    .replace(/[\u200B-\u200D\uFEFF\u00A0\u180E\u2000-\u200F\u202A-\u202E\u205F-\u206F]/g, '')
+    .trim()
+    .toUpperCase();
+}
 
 export async function loader({params, context}: LoaderFunctionArgs) {
   const {slug} = params;
@@ -33,20 +40,33 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     throw new Response('Puzzle expired', {status: 404});
   }
 
-  return defer({
-    puzzle,
-  });
+  // Normalize theme words to remove invisible Unicode characters
+  const normalizedPuzzle = {
+    ...puzzle,
+    themeWords: puzzle.themeWords.map(tw => ({
+      ...tw,
+      word: normalizeWord(tw.word),
+    })),
+  };
+
+  return {
+    puzzle: normalizedPuzzle,
+  };
 }
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   const puzzle = data?.puzzle;
-  if (!puzzle) return [{title: 'Puzzle Not Found'}];
+  if (!puzzle) {
+    return [
+      {title: 'Puzzle Not Found'},
+      {name: 'description', content: 'The requested puzzle could not be found.'},
+    ];
+  }
 
-  return getSeoMeta({
-    title: puzzle.title,
-    description: puzzle.theme?.clue || 'Play this word puzzle game',
-    url: `/games/${puzzle.slug.current}`,
-  });
+  return [
+    {title: puzzle.title || 'Word Puzzle Game'},
+    {name: 'description', content: puzzle.theme?.clue || 'Play this word puzzle game'},
+  ];
 };
 
 export default function StrandsGameRoute() {
@@ -54,19 +74,7 @@ export default function StrandsGameRoute() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <Suspense
-        fallback={
-          <div className="flex min-h-screen items-center justify-center">
-            <div className="text-center">
-              <div className="mb-4 text-2xl">Loading puzzle...</div>
-            </div>
-          </div>
-        }
-      >
-        <Await resolve={puzzle}>
-          {(resolvedPuzzle) => <StrandsGame puzzle={resolvedPuzzle} />}
-        </Await>
-      </Suspense>
+      <StrandsGame puzzle={puzzle} />
     </div>
   );
 }

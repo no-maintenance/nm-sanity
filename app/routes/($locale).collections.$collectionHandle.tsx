@@ -14,6 +14,7 @@ import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
 import {seoPayload} from '~/lib/seo.server';
+import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 
 export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
   getSeoMetaFromMatches(matches),
@@ -24,6 +25,9 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
   const language = locale?.language.toLowerCase();
 
   invariant(collectionHandle, 'Missing collectionHandle param');
+
+  // Check collection protection before proceeding
+  await requireUnprotectedAccess(context, request);
 
   const queryParams = {
     collectionHandle,

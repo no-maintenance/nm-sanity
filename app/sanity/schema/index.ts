@@ -77,6 +77,8 @@ import protectionConfig from './documents/protection-config';
 import formField from './singletons/form-fields';
 import strandsPuzzle from './documents/strands-puzzle';
 import themeWord from './objects/games/theme-word';
+import gridGenerator from './objects/games/grid-generator';
+import hintWordAnalyzer from './objects/games/hint-word-analyzer';
 
 const singletons = [home, header, footer, settings, themeContent];
 const documents = [
@@ -156,6 +158,8 @@ const objects = [
   tile,
   formField,
   themeWord,
+  gridGenerator,
+  hintWordAnalyzer,
 ];
 
 export const schemaTypes = [

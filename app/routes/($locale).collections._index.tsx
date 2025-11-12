@@ -17,7 +17,7 @@ export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
 );
 
 export const loader = async ({
-  context: {storefront},
+  context: {storefront, sanity, passwordSession},
   request,
 }: LoaderFunctionArgs) => {
   const variables = getPaginationVariables(request, {
@@ -30,6 +30,67 @@ export const loader = async ({
       language: storefront.i18n.language,
     },
   });
+
+  // Filter out protected collections that user doesn't have access to
+  if (collections?.nodes?.length) {
+    // Query all collection protection configs
+    const protectionQuery = `*[_type == "collection" && defined(protectionConfig)]{
+      "handle": store.slug.current,
+      protectionConfig->{
+        _id,
+        enabled,
+        accessMode,
+        countdown
+      }
+    }`;
+
+    const {data: protectedCollections} = await sanity.loadQuery(protectionQuery, {});
+
+    // Create a map of protected collections
+    const protectionMap = new Map();
+    protectedCollections?.forEach((collection: any) => {
+      if (collection.protectionConfig?.enabled) {
+        protectionMap.set(collection.handle, collection.protectionConfig);
+      }
+    });
+
+    // Filter collections based on protection status
+    const filteredNodes = collections.nodes.filter((collection: any) => {
+      const protectionConfig = protectionMap.get(collection.handle);
+
+      if (!protectionConfig) {
+        // No protection, allow access
+        return true;
+      }
+
+      // Check if user has access to this protected collection
+      let hasAccess = false;
+      const hasPasswordAuth = passwordSession.isAuthenticatedFor(protectionConfig._id);
+      const countdownExpired = protectionConfig.countdown
+        ? new Date(protectionConfig.countdown) <= new Date()
+        : false;
+
+      switch (protectionConfig.accessMode) {
+        case 'password':
+          hasAccess = hasPasswordAuth;
+          break;
+        case 'countdown':
+          hasAccess = countdownExpired;
+          break;
+        case 'both':
+          hasAccess = hasPasswordAuth && countdownExpired;
+          break;
+        case 'either':
+          hasAccess = hasPasswordAuth || countdownExpired;
+          break;
+      }
+
+      return hasAccess;
+    });
+
+    // Update collections with filtered nodes
+    collections.nodes = filteredNodes;
+  }
 
   const seo = seoPayload.listCollections({
     collections,

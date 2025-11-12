@@ -1,4 +1,4 @@
-# Strands Game - Setup & Usage Guide
+`# Strands Game - Setup & Usage Guide
 
 ## 🎮 Game Overview
 

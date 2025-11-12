@@ -3,7 +3,7 @@ import type {
   StructureResolver,
 } from 'sanity/structure';
 
-import {LayoutTemplate, PanelsTopLeft, BookCheck, FileText, Calendar, Tag} from 'lucide-react';
+import {LayoutTemplate, PanelsTopLeft, BookCheck, FileText, Calendar, Tag, Gamepad2} from 'lucide-react';
 
 import {collections} from './collection-structure';
 import {products} from './product-structure';
@@ -36,6 +36,7 @@ export const structure: StructureResolver = (S, context) => {
                 .child(S.documentTypeList('blogCategory')),
             ]),
         ),
+      S.documentTypeListItem('strandsPuzzle').title('Strands Puzzles').icon(Gamepad2),
       products(S, context),
       collections(S, context),
       S.documentTypeListItem('storePolicy').icon(BookCheck),

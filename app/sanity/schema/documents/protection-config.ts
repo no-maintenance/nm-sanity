@@ -4,7 +4,6 @@ export default defineType({
   name: 'protectionConfig',
   title: 'Protection Configuration',
   type: 'document',
-  icon: () => '🔒',
   fields: [
     defineField({
       name: 'name',
@@ -113,6 +112,34 @@ export default defineType({
       hidden: ({parent}) => !parent?.enabled || !['password', 'both', 'either'].includes(parent?.accessMode),
     }),
     defineField({
+      name: 'passwordGrantedTitle',
+      title: 'Password Granted - Title',
+      description: 'Title shown when password is correct but countdown is still active (for "both" and "either" modes)',
+      type: 'internationalizedArrayString',
+      hidden: ({parent}) => !parent?.enabled || !['both', 'either'].includes(parent?.accessMode),
+    }),
+    defineField({
+      name: 'passwordGrantedMessage',
+      title: 'Password Granted - Message',
+      description: 'Message shown when password is correct but countdown is still active',
+      type: 'internationalizedArrayText',
+      hidden: ({parent}) => !parent?.enabled || !['both', 'either'].includes(parent?.accessMode),
+    }),
+    defineField({
+      name: 'countdownExpiredTitle',
+      title: 'Countdown Expired - Title',
+      description: 'Title shown when countdown has ended but password is still required (for "both" and "either" modes)',
+      type: 'internationalizedArrayString',
+      hidden: ({parent}) => !parent?.enabled || !['both', 'either'].includes(parent?.accessMode),
+    }),
+    defineField({
+      name: 'countdownExpiredMessage',
+      title: 'Countdown Expired - Message',
+      description: 'Message shown when countdown has ended but password is still required',
+      type: 'internationalizedArrayText',
+      hidden: ({parent}) => !parent?.enabled || !['both', 'either'].includes(parent?.accessMode),
+    }),
+    defineField({
       name: 'redirectPage',
       title: 'Redirect After Access',
       description: 'Page to redirect to after successful access (defaults to homepage)',
@@ -201,7 +228,7 @@ export default defineType({
       return {
         title,
         subtitle,
-        media: enabled ? '🔒' : '🔓',
+        // media: enabled ? '🔒' : '🔓',
       };
     },
   },

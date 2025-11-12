@@ -1,6 +1,5 @@
 import {defineField, defineType} from 'sanity';
 import {Gamepad2} from 'lucide-react';
-import {GridGeneratorButton} from '~/sanity/components/grid-generator-button';
 
 const GROUPS = [
   {name: 'puzzle', title: 'Puzzle', default: true},
@@ -80,39 +79,37 @@ export default defineType({
 
     defineField({
       name: 'gridGenerator',
-      title: 'Grid Generator',
-      type: 'object',
+      title: '✨ Generate Your Grid',
+      type: 'gridGenerator',
       group: 'puzzle',
-      hidden: ({parent}) => parent?.puzzleMode !== 'auto',
-      components: {
-        input: GridGeneratorButton,
-      },
-      fields: [
-        {
-          name: 'placeholder',
-          type: 'string',
-          hidden: true,
-        },
-      ],
+      description: 'Click the button below to automatically generate a grid from your theme words',
+      hidden: false,  // Explicitly show this field
     }),
 
     defineField({
       name: 'generatedGrid',
-      title: 'Generated Grid (48 letters)',
-      type: 'text',
+      title: 'Generated Grid',
+      type: 'table',
       group: 'puzzle',
-      rows: 6,
       description:
-        'Auto-generated 6x8 grid. This field is locked after generation.',
-      readOnly: ({parent}) => parent?.puzzleMode === 'auto' && parent?.gridLocked,
+        '8 rows × 6 columns grid. Each cell should contain a single uppercase letter.',
       validation: (Rule) =>
-        Rule.custom((grid) => {
-          if (!grid) return true;
-          if (grid.length !== 48) {
-            return 'Grid must be exactly 48 letters (6 rows x 8 columns)';
+        Rule.custom((grid: any) => {
+          if (!grid || !grid.rows) return 'Grid is required';
+          if (grid.rows.length !== 8) {
+            return `Grid must have exactly 8 rows (currently ${grid.rows.length})`;
           }
-          if (!/^[A-Z]{48}$/.test(grid)) {
-            return 'Grid must contain only uppercase letters A-Z';
+          for (let i = 0; i < grid.rows.length; i++) {
+            const row = grid.rows[i];
+            if (!row.cells || row.cells.length !== 6) {
+              return `Row ${i + 1} must have exactly 6 cells (currently ${row.cells?.length || 0})`;
+            }
+            for (let j = 0; j < row.cells.length; j++) {
+              const cell = row.cells[j];
+              if (!cell || !/^[A-Z]$/.test(cell)) {
+                return `Cell at row ${i + 1}, column ${j + 1} must be a single uppercase letter (currently: "${cell}")`;
+              }
+            }
           }
           return true;
         }),
@@ -126,6 +123,15 @@ export default defineType({
       description: 'Lock the grid to prevent accidental regeneration',
       initialValue: false,
       readOnly: ({parent}) => parent?.gridLocked === true,
+    }),
+
+    defineField({
+      name: 'hintWordAnalyzer',
+      title: '🔍 Analyze Hint Words',
+      type: 'hintWordAnalyzer',
+      group: 'puzzle',
+      description: 'Discover all valid English words in your grid to test quality and find hint words',
+      hidden: ({parent}) => !parent?.generatedGrid,
     }),
 
     defineField({
@@ -154,7 +160,26 @@ export default defineType({
           type: 'string',
           readOnly: true,
         }),
+        defineField({
+          name: 'canonicalPaths',
+          title: 'Canonical Word Paths',
+          type: 'text',
+          description: 'JSON map of theme words to their canonical paths (cell indices)',
+          readOnly: true,
+          rows: 10,
+        }),
       ],
+    }),
+
+    defineField({
+      name: 'hintWords',
+      title: 'Hint Words',
+      type: 'array',
+      of: [{type: 'string'}],
+      group: 'puzzle',
+      description: 'Valid English words in the grid that players can discover for hint progress (checked before API validation)',
+      hidden: ({parent}) => !parent?.generatedGrid,
+      validation: (Rule) => Rule.max(100),
     }),
 
     defineField({
@@ -311,48 +336,6 @@ export default defineType({
       ],
     }),
 
-    // METADATA GROUP
-    defineField({
-      name: 'status',
-      title: 'Publish Status',
-      type: 'string',
-      group: 'metadata',
-      options: {
-        list: [
-          {title: '📝 Draft', value: 'draft'},
-          {title: '✅ Ready', value: 'ready'},
-          {title: '🚀 Published', value: 'published'},
-          {title: '📅 Scheduled', value: 'scheduled'},
-        ],
-      },
-      initialValue: 'draft',
-    }),
-
-    defineField({
-      name: 'publishDate',
-      title: 'Publish Date',
-      type: 'datetime',
-      group: 'metadata',
-      description: 'When should this puzzle go live?',
-      hidden: ({parent}) => parent?.status !== 'scheduled',
-    }),
-
-    defineField({
-      name: 'expiryDate',
-      title: 'Expiry Date (optional)',
-      type: 'datetime',
-      group: 'metadata',
-      description: 'When should this puzzle be hidden?',
-    }),
-
-    defineField({
-      name: 'puzzleNumber',
-      title: 'Puzzle Number',
-      type: 'number',
-      group: 'metadata',
-      description: 'Sequential puzzle ID for sorting',
-      validation: (Rule) => Rule.min(1),
-    }),
   ],
 
   preview: {
@@ -363,13 +346,12 @@ export default defineType({
       gridLocked: 'gridLocked',
     },
     prepare({title, themeWords, status, gridLocked}) {
-      const statusEmoji =
-        {
-          draft: '📝',
-          ready: '✅',
-          published: '🚀',
-          scheduled: '📅',
-        }[status] || '📝';
+      const statusEmojiMap: Record<string, string> = {
+        draft: '📝',
+        ready: '✅',
+        published: '🚀',
+      };
+      const statusEmoji = statusEmojiMap[status] || '📝';
 
       const spangram = themeWords?.find((w: any) => w.isSpangram);
       const wordCount = themeWords?.length || 0;
@@ -384,14 +366,14 @@ export default defineType({
 
   orderings: [
     {
-      title: 'Puzzle Number',
-      name: 'puzzleNumberAsc',
-      by: [{field: 'puzzleNumber', direction: 'asc'}],
+      title: 'Title (A-Z)',
+      name: 'titleAsc',
+      by: [{field: 'title', direction: 'asc'}],
     },
     {
-      title: 'Publish Date',
-      name: 'publishDateDesc',
-      by: [{field: 'publishDate', direction: 'desc'}],
+      title: 'Title (Z-A)',
+      name: 'titleDesc',
+      by: [{field: 'title', direction: 'desc'}],
     },
   ],
 });
