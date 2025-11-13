@@ -12,6 +12,8 @@ import {GameHelpDialog} from './game-help-dialog';
 import {HintDisabledDialog} from './hint-disabled-dialog';
 import {JoinEarlyAccessDialog} from './join-early-access-dialog';
 import {PasswordEntryDrawer} from './password-entry-drawer';
+import { Logo } from '../layout/header-logo';
+import { CountdownBanner } from './countdown-banner';
 
 const GRID_ROWS = 8;
 const GRID_COLS = 6;
@@ -25,6 +27,10 @@ interface StrandsGameProps {
   protectionCountdown?: string;
   /** Whether this puzzle is in a protected context */
   isProtected?: boolean;
+  /** Whether to hide header on mobile (for protected layout) */
+  hideHeaderOnMobile?: boolean;
+  /** Whether to hide theme display (shown in sidebar instead) */
+  hideThemeDisplay?: boolean;
 }
 
 export function StrandsGame({
@@ -32,6 +38,8 @@ export function StrandsGame({
   onPuzzleComplete,
   protectionCountdown,
   isProtected,
+  hideHeaderOnMobile = false,
+  hideThemeDisplay = false,
 }: StrandsGameProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const hintButtonRef = useRef<HTMLButtonElement>(null);
@@ -115,6 +123,19 @@ export function StrandsGame({
   const foundThemeWords = puzzle.themeWords.filter(tw =>
     state.foundWords.has(tw.word.toUpperCase())
   ).length;
+
+  const countdownLabel = 'Early access for private sale begins in...'
+
+  const alignedRowClass = 'mx-auto w-full max-w-[400px]';
+
+  const countdownUnits = [
+    {label: 'Days', value: timeLeft?.days ?? 0},
+    {label: 'Hours', value: timeLeft?.hours ?? 0},
+    {label: 'Minutes', value: timeLeft?.minutes ?? 0},
+    {label: 'Seconds', value: timeLeft?.seconds ?? 0},
+  ];
+
+  const hasLiveCountdown = Boolean(protectionCountdown && timeLeft);
 
   // Check for puzzle completion
   useEffect(() => {
@@ -226,83 +247,84 @@ export function StrandsGame({
   }, [actions]);
 
   return (
-    <div className="flex h-full w-full flex-col bg-white">
+    <div className="flex min-h-screen w-full flex-col ">
       {/* Header */}
-      <div className="border-b border-black">
-        <div className="flex items-center justify-between p-[10px] md:px-6 md:py-4">
-          {/* Left: Icon buttons */}
-          <div className="flex items-center gap-2.5 py-2.5 md:gap-4 relative">
-            <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
-              <button
-                className="flex size-6 md:size-8 items-center justify-center transition-opacity hover:opacity-70"
-                aria-label="Help"
-                type="button"
-              >
-                <CircleHelp className="size-6 md:size-8" />
-              </button>
-            </GameHelpDialog>
-
-            {isProtected && (
-              <PasswordEntryDrawer
-                open={passwordOpen}
-                onOpenChange={setPasswordOpen}
-              >
-                <Lock className="size-6 md:size-8" />
-              </PasswordEntryDrawer>
-            )}
-          </div>
-
-          {/* Right: Call to action button */}
-          <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
-            <Button className="h-auto rounded-[3px] bg-[#2c2c2c] px-3 py-3 md:px-6 md:py-4 text-base md:text-lg font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
-              JOIN FOR EARLY ACCESS
-            </Button>
-          </JoinEarlyAccessDialog>
+      <header className="">
+        <div>
+            <Logo />
         </div>
-      </div>
+        <div className="flex items-center justify-between md:px-6 py-4 md:hidden px-4 sm:px-6">
+            <div className="flex items-center gap-2.5 md:gap-4 ">
+              <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
+                <button
+                  className="flex size-6 md:size-8 items-center justify-center transition-opacity hover:opacity-70"
+                  aria-label="Help"
+                  type="button"
+                >
+                  <CircleHelp className="size-6 md:size-8" />
+                </button>
+              </GameHelpDialog>
 
-      {/* Main content area */}
-      <div className="flex flex-col items-center gap-2 md:gap-4 lg:gap-6">
-        {/* Countdown banner */}
-        <div className="w-full border-b border-black">
-          <div className="flex items-center justify-between px-3 py-2 md:px-6 md:py-3 text-sm md:text-base text-black">
-            <p className="font-normal">
-              {isProtected && protectionCountdown
-                ? 'Access expires in...'
-                : 'Early access for private sale begins in...'}
-            </p>
-            <p className="font-bold">{countdownDisplay}</p>
-          </div>
+              {isProtected && (
+                <PasswordEntryDrawer open={passwordOpen} onOpenChange={setPasswordOpen}>
+                  <Lock className="size-6 md:size-8" />
+                </PasswordEntryDrawer>
+              )}
+            </div>
+
+            {/* Right: Call to action button */}
+            <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
+              <Button className="h-auto rounded-[3px] bg-[#2c2c2c] px-3 py-3 md:px-6 md:py-4 text-base md:text-lg font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
+                JOIN FOR EARLY ACCESS
+              </Button>
+            </JoinEarlyAccessDialog>
         </div>
+        {/* Mobile countdown banner */}
+        <div className="md:hidden">
+          <CountdownBanner
+            countdown={countdownDisplay}
+            label={countdownLabel}
+          />
+        </div>
+      </header>
 
-        {/* Theme display */}
-        <div className="pt-[11px] md:pt-6">
-          <div className="h-12 md:h-16 lg:h-20 w-[282px] md:w-[400px] lg:w-[480px] rounded-md border border-black">
-            <div className="flex h-full flex-col items-center justify-center">
-              <div className="w-full border-b border-black py-0.5 md:py-1 text-center">
-                <p className="w-[92px] md:w-auto mx-auto text-[10px] md:text-xs lg:text-sm text-black">Today&apos;s Theme</p>
-              </div>
-              <div className="flex flex-1 items-center justify-center px-[39px] md:px-12 py-1.5 md:py-2">
-                <p className="text-sm md:text-lg lg:text-xl text-black">{theme}</p>
+      <div className="flex flex-1 flex-col items-center  px-4 py-6 sm:px-6">
+        {/* Today's Theme */}
+        {!hideThemeDisplay && theme && (
+          <div className={`${alignedRowClass} mb-4`}>
+            <div className="h-12 w-full rounded-md border border-black">
+              <div className="flex h-full flex-col items-center justify-center">
+                <div className="w-full border-b border-black py-0.5 text-center">
+                  <p className="text-[10px] text-black uppercase">Today&apos;s Theme</p>
+                </div>
+                <div className="flex flex-1 items-center justify-center px-4 ">
+                  <p className="text-sm text-black uppercase">
+                    {theme}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+        )}
+
+        <div className={`${alignedRowClass} px-2`}>
+          <div className="flex min-h-[32px] md:min-h-[48px] items-center justify-center">
+            {state.notificationMessage ? (
+              <p className="text-base md:text-lg lg:text-xl font-medium leading-normal text-red-600">
+                {state.notificationMessage}
+              </p>
+            ) : state.currentWord ? (
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold leading-normal tracking-[0.15em] text-black">
+                {state.currentWord}
+              </p>
+            ) : null}
+          </div>
         </div>
 
-        <div className="flex min-h-[48px] md:min-h-[64px] items-center justify-center px-4">
-          {state.notificationMessage ? (
-            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-normal text-red-600 animate-in fade-in duration-200">
-              {state.notificationMessage}
-            </p>
-          ) : state.currentWord ? (
-            <p className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal tracking-[0.2em] text-black">
-              {state.currentWord}
-            </p>
-          ) : null}
-        </div>
-
-        {/* Grid */}
-        <div ref={gridRef} className="relative mx-auto w-full max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 md:px-6">
+        <div
+          ref={gridRef}
+          className={`relative ${alignedRowClass}`}
+        >
           <StrandsBoard
             grid={gridData}
             gridLetters={gridLetters}
@@ -311,6 +333,8 @@ export function StrandsGame({
             cellColors={state.cellColors}
             wordPaths={state.wordPaths}
             invalidWordAnimationPath={state.invalidWordAnimationPath}
+            discoveredWordAnimationPath={state.discoveredWordAnimationPath}
+            activatedHintPath={state.activatedHintPath}
             onPointerDown={inputHandlers.handlePointerDown}
             onPointerEnter={inputHandlers.handlePointerEnter}
             onPointerUp={inputHandlers.handlePointerUp}
@@ -319,41 +343,41 @@ export function StrandsGame({
             onGetCellPositions={handleGetCellPositions}
           />
         </div>
-      </div>
 
-      {/* Footer */}
-      <div className="w-full mt-4 md:mt-6 lg:mt-8">
-        <div className="flex items-center justify-between px-5 md:px-8 lg:px-12 py-0">
-          <div className="flex items-center gap-4">
-            {state.hintsEarned === 0 ? (
-              <HintDisabledDialog open={hintDisabledOpen} onOpenChange={setHintDisabledOpen}>
+        <div className={`${alignedRowClass} w-full px-2`}>
+          <div className="flex gap-4 pt-4 sm:flex-row sm:items-center justify-between">
+            <div className="flex items-center gap-4">
+              {state.hintsEarned === 0 ? (
+                <HintDisabledDialog open={hintDisabledOpen} onOpenChange={setHintDisabledOpen}>
+                  <HintButton
+                    ref={hintButtonRef}
+                    hintsEarned={state.hintsEarned}
+                    hintProgress={state.hintProgress}
+                    disabled={true}
+                  />
+                </HintDisabledDialog>
+              ) : (
                 <HintButton
                   ref={hintButtonRef}
                   hintsEarned={state.hintsEarned}
                   hintProgress={state.hintProgress}
-                  disabled={true}
+                  disabled={false}
+                  onClick={actions.useHint}
                 />
-              </HintDisabledDialog>
-            ) : (
-              <HintButton
-                ref={hintButtonRef}
-                hintsEarned={state.hintsEarned}
-                hintProgress={state.hintProgress}
-                disabled={false}
-                onClick={actions.useHint}
-              />
-            )}
+              )}
+            </div>
+            <div className="flex items-center gap-2 justify-end">
+            <p className="text-sm md:text-base lg:text-lg leading-none text-black">
+              <span className="font-bold">{foundThemeWords}</span>
+              {' out '}
+              <span className="font-bold">{puzzle.themeWords.length}</span>
+              {' theme words found'}
+            </p>
+            </div>
           </div>
-          <p className="text-base md:text-lg lg:text-xl leading-none text-black">
-            <span className="font-bold">{foundThemeWords}</span>
-            {' out '}
-            <span className="font-bold">{puzzle.themeWords.length}</span>
-            {' theme words found'}
-          </p>
         </div>
       </div>
 
-      {/* Hint word animation */}
       {animationData && (
         <HintWordAnimation
           sourcePositions={animationData.sourcePositions}
@@ -364,4 +388,3 @@ export function StrandsGame({
     </div>
   );
 }
-

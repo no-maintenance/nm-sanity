@@ -4,6 +4,7 @@ import {MediaField} from '../media-field';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
+import {CountdownTimer} from './countdown-timer';
 
 interface TimeLeft {
   days: number;
@@ -19,6 +20,7 @@ interface LockedViewProps {
   redirectTo: string;
   actionData?: any;
   isOverlay?: boolean;
+  isSidebar?: boolean;
 }
 
 function calculateTimeLeft(targetDate: string): TimeLeft {
@@ -39,35 +41,6 @@ function calculateTimeLeft(targetDate: string): TimeLeft {
   };
 }
 
-function TimeUnit({value, label}: {value: number; label: string}) {
-  return (
-    <div className="flex flex-col items-center" style={{minWidth: '60px'}}>
-      <div
-        className="text-4xl md:text-5xl font-bold tabular-nums"
-        style={{
-          lineHeight: '1.2',
-          minHeight: '48px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        {value.toString().padStart(2, '0')}
-      </div>
-      <div
-        className="text-sm md:text-base uppercase mt-1"
-        style={{
-          opacity: 0.75,
-          lineHeight: '1.2',
-          minHeight: '20px'
-        }}
-      >
-        {label}
-      </div>
-    </div>
-  );
-}
-
 /**
  * Initial locked state - shows password field and/or countdown timer
  * User has not yet entered password or countdown hasn't expired
@@ -78,6 +51,7 @@ export function LockedView({
   redirectTo,
   actionData,
   isOverlay = false,
+  isSidebar = false,
 }: LockedViewProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -122,6 +96,73 @@ export function LockedView({
   const countdownLabel = getLocalizedValue(protection.countdownLabel);
   const passwordLabel = getLocalizedValue(protection.passwordLabel);
 
+  // Sidebar layout for protected puzzle
+  if (isSidebar) {
+    return (
+      <div className="flex flex-col w-full max-w-sm p-6 space-y-6">
+
+        {/* Timer Section */}
+        {showCountdown && (
+          <CountdownTimer
+            countdownExpired={countdownExpired}
+            isHydrated={isHydrated}
+            timeLeft={timeLeft}
+            label={countdownLabel}
+            isEmbeddedPuzzle={!!protection.embeddedPuzzle}
+          />
+        )}
+
+        {/* Password Section */}
+        {showPassword && (
+          <div>
+            <Form method="post" className="space-y-3">
+              <input type="hidden" name="redirectTo" value={redirectTo} />
+              <Input
+                type="password"
+                name="password"
+                placeholder={passwordLabel ?? "Enter password"}
+                required
+                autoComplete="off"
+                className="bg-foreground text-background"
+              />
+              {actionData && 'error' in actionData && actionData.error && (
+                <p className="text-sm text-destructive">
+                  {actionData.error}
+                </p>
+              )}
+              <Button type="submit" className="w-full">
+                Enter Site
+              </Button>
+            </Form>
+          </div>
+        )}
+
+        {/* Newsletter CTA - Placeholder */}
+        <div>
+          <Button className="w-full h-auto rounded-[3px] bg-[#2c2c2c] px-6 py-4 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
+            JOIN FOR EARLY ACCESS
+          </Button>
+        </div>
+
+        {/* Help Icon */}
+        <div className="flex justify-center">
+          <button
+            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+            aria-label="Help"
+            type="button"
+          >
+            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Original layout for overlay or full page
   return (
     <>
       {/* Collection/Product Context Indicator - hide in overlay mode */}
@@ -164,37 +205,13 @@ export function LockedView({
 
       {showCountdown && (
         <div className="mb-8">
-          {countdownExpired ? (
-            <div className="text-center">
-              <p className="text-4xl md:text-6xl font-bold text-foreground">
-                NOW LIVE
-              </p>
-            </div>
-          ) : (
-            <>
-              {countdownLabel && (
-                <p className="mb-6 text-sm md:text-base uppercase tracking-wider text-muted-foreground">
-                  {countdownLabel}
-                </p>
-              )}
-              <div
-                className="flex justify-center gap-2 md:gap-4 text-foreground"
-                style={{
-                  minHeight: '80px',
-                  opacity: isHydrated && timeLeft ? 1 : 0.3,
-                  transition: 'opacity 0.3s ease-in-out'
-                }}
-              >
-                <TimeUnit value={timeLeft?.days ?? 0} label="Days" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.hours ?? 0} label="Hours" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.minutes ?? 0} label="Minutes" />
-                <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
-                <TimeUnit value={timeLeft?.seconds ?? 0} label="Seconds" />
-              </div>
-            </>
-          )}
+          <CountdownTimer
+            countdownExpired={countdownExpired}
+            isHydrated={isHydrated}
+            timeLeft={timeLeft}
+            label={countdownLabel}
+            isEmbeddedPuzzle={!!protection.embeddedPuzzle}
+          />
         </div>
       )}
 

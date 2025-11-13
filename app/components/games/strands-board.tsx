@@ -48,6 +48,8 @@ interface StrandsBoardProps {
   cellColors: {[key: number]: string[]};
   wordPaths: {[word: string]: number[]};
   invalidWordAnimationPath?: number[] | null;
+  discoveredWordAnimationPath?: number[] | null;
+  activatedHintPath?: number[] | null;
   onPointerDown: (index: number) => void;
   onPointerEnter: (index: number) => void;
   onPointerUp?: () => void;
@@ -65,6 +67,8 @@ export function StrandsBoard({
   cellColors,
   wordPaths,
   invalidWordAnimationPath,
+  discoveredWordAnimationPath,
+  activatedHintPath,
   onPointerDown,
   onPointerEnter,
   onPointerUp,
@@ -179,9 +183,9 @@ export function StrandsBoard({
     
     if (path.length < 2 || cellPositions.size === 0) return paths;
     
-    // Ring: h-8 w-8 (32px diameter = 16px radius) + ring-2 (2px width) = 18px outer radius
+    // Ring: h-7 w-7 (28px diameter = 14px radius) + ring-2 (2px width) = 16px outer radius
     // Stroke width is 8px, so half-width is 4px
-    const RING_OUTER_RADIUS = 18;
+    const RING_OUTER_RADIUS = 16;
     const STROKE_HALF_WIDTH = 4;
     const DIAGONAL_EXTRA = 2;
     
@@ -280,7 +284,7 @@ export function StrandsBoard({
             const unitX = dx / distance;
             const unitY = dy / distance;
             
-            const RING_OUTER_RADIUS = 18;
+            const RING_OUTER_RADIUS = 16;
             const STROKE_HALF_WIDTH = 4;
             const absDx = Math.abs(dx);
             const absDy = Math.abs(dy);
@@ -353,6 +357,31 @@ export function StrandsBoard({
         .animate-shake {
           animation: shake 0.5s ease-in-out;
         }
+        @keyframes pulse-discovered {
+          0% {
+            transform: scale(1);
+            outline: 0px solid currentColor;
+            outline-offset: 0px;
+          }
+          30% {
+            transform: scale(1.045);
+            outline: 1.2px solid currentColor;
+            outline-offset: 1.2px;
+          }
+          70% {
+            transform: scale(1.015);
+            outline: 0.9px solid currentColor;
+            outline-offset: 1.8px;
+          }
+          100% {
+            transform: scale(1);
+            outline: 0px solid currentColor;
+            outline-offset: 2.4px;
+          }
+        }
+        .animate-pulse-discovered {
+          animation: pulse-discovered 1s ease-out;
+        }
       `}</style>
       <div
         ref={gridRef}
@@ -394,7 +423,7 @@ export function StrandsBoard({
           </svg>
         )}
         <div
-          className="grid gap-2 md:gap-4 lg:gap-5 p-2 md:p-4 lg:p-6"
+          className="grid gap-1.5 sm:gap-2 md:gap-4 lg:gap-5"
           style={{
             gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
             gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
@@ -403,20 +432,21 @@ export function StrandsBoard({
           {gridLetters.map((letter, index) => {
             const isInCurrentPath = currentPath.includes(index);
             const isInInvalidAnimation = invalidWordAnimationPath?.includes(index) || false;
+            const isInDiscoveredAnimation = discoveredWordAnimationPath?.includes(index) || false;
+            const isInActivatedHint = activatedHintPath?.includes(index) || false;
             const isSpangram = spangramCells.has(index);
             const pathIndex = currentPath.indexOf(index);
             const colors = cellColors[index] || [];
-            
+
             // Check if this cell is part of any found theme word
             const isInFoundThemeWord = Object.values(wordPaths).some(path => path.includes(index));
-            
+
             // Separate hint colors from theme colors
             const hintColors = colors.filter(color => color === HINT_COLOR);
             // Only show theme colors if the cell is part of a found theme word
-            const themeColors = isInFoundThemeWord 
+            const themeColors = isInFoundThemeWord
               ? colors.filter(color => color !== HINT_COLOR)
               : [];
-            const hasHintColor = hintColors.length > 0;
             // Prioritize spangram color if present, otherwise use first theme color
             const spangramColor = themeColors.find(color => color === SPANGRAM_COLOR);
             const baseColor = spangramColor || (themeColors.length > 0 ? themeColors[0] : '');
@@ -454,7 +484,7 @@ export function StrandsBoard({
                 tabIndex={0}
                 aria-label={ariaLabel}
                 className={cn(
-                  'relative flex aspect-square items-center justify-center text-lg md:text-xl lg:text-2xl font-bold',
+                  'relative flex aspect-square items-center justify-center text-lg  font-bold',
                   'cursor-pointer rounded-lg transition-transform hover:scale-105',
                   isInInvalidAnimation && 'animate-shake',
                 )}
@@ -464,11 +494,11 @@ export function StrandsBoard({
                 onClick={() => onCellClick(index)}
                 data-cell-index={index}
               >
-                {/* Hint word indicators (dotted blue border) */}
-                {hasHintColor && !isInCurrentPath && (
+                {/* Activated hint indicators (dotted blue border) - only show when hint is activated */}
+                {isInActivatedHint && !isInCurrentPath && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <svg
-                      className="absolute w-9 h-9 md:w-12 md:h-12 lg:w-14 lg:h-14"
+                      className="absolute w-8 h-8 sm:w-9 sm:h-9 md:w-12 md:h-12 lg:w-14 lg:h-14"
                       viewBox="0 0 36 36"
                       style={{
                         opacity: themeColors.length > 0 ? 0.5 : 1,
@@ -493,9 +523,10 @@ export function StrandsBoard({
                     {/* Base color circle (spangram or first theme color) */}
                     {baseColor && (
                       <div className={cn(
-                        'h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 aspect-square rounded-full ring-2 md:ring-[3px]',
+                        'h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9  aspect-square rounded-full ring-2 md:ring-[3px]',
                         baseColor,
-                        getRingColorClass(baseColor)
+                        getRingColorClass(baseColor),
+                        isInDiscoveredAnimation && 'animate-pulse-discovered'
                       )} />
                     )}
                     {/* Overlay colors for cells in multiple words */}
@@ -505,7 +536,7 @@ export function StrandsBoard({
                     <div
                           key={`overlay-circle-${index}-${colorHash}-${i}`}
                       className={cn(
-                            'absolute h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 aspect-square rounded-full ring-2 md:ring-[3px] pointer-events-none opacity-60',
+                            'absolute h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9 lg:h-10 lg:w-10 aspect-square rounded-full ring-2 md:ring-[3px] pointer-events-none opacity-60',
                         color,
                             getRingColorClass(color)
                       )}
@@ -523,14 +554,14 @@ export function StrandsBoard({
                 {isInCurrentPath && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className={cn(
-                      "h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 aspect-square rounded-full ring-2 md:ring-[3px]",
+                      "h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9 lg:h-10 lg:w-10 aspect-square rounded-full ring-2 md:ring-[3px]",
                       isInInvalidAnimation
                         ? "ring-red-500 bg-red-100"
                         : "ring-muted bg-muted text-muted-foreground"
                     )} />
                     {pathIndex === currentPath.length - 1 && (
                       <svg
-                        className="absolute pointer-events-none w-11 h-11 md:w-14 md:h-14 lg:w-16 lg:h-16"
+                        className="absolute pointer-events-none w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-14 lg:h-14"
                         viewBox="0 0 44 44"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -545,7 +576,10 @@ export function StrandsBoard({
                 )}
 
                 {/* Letter */}
-                <span className="relative z-20 text-center text-2xl md:text-3xl lg:text-4xl font-normal leading-normal text-muted-foreground pointer-events-none">
+                <span className={cn(
+                  "relative z-20 text-center text-lg font-normal leading-normal pointer-events-none",
+                isInCurrentPath ? "text-white" : "text-black"
+                )}>
                   {letter}
                 </span>
               </div>

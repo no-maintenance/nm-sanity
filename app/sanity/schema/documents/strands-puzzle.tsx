@@ -193,7 +193,7 @@ export default defineType({
       group: 'puzzle',
       description: 'Valid English words in the grid that players can discover for hint progress (checked before API validation)',
       hidden: ({parent}) => !parent?.canonicalGrid,
-      validation: (Rule) => Rule.max(100),
+      validation: (Rule) => Rule.max(1000),
     }),
 
     defineField({

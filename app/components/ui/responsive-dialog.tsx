@@ -123,10 +123,18 @@ export function ResponsiveDialogContent({
   const {isDesktop} = React.useContext(ResponsiveDialogContext);
 
   if (isDesktop) {
-    return <DialogContent className={className}>{children}</DialogContent>;
+    return (
+      <DialogContent className={className}>
+        <div className="max-h-[80vh] overflow-y-auto">{children}</div>
+      </DialogContent>
+    );
   }
 
-  return <DrawerContent className={className}>{children}</DrawerContent>;
+  return (
+    <DrawerContent className={className}>
+      <div className="max-h-[90vh] overflow-y-auto">{children}</div>
+    </DrawerContent>
+  );
 }
 
 export function ResponsiveDialogHeader({

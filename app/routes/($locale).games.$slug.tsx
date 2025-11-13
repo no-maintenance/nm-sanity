@@ -16,7 +16,6 @@ function normalizeWord(word: string): string {
 
 export async function loader({params, context}: LoaderFunctionArgs) {
   const {slug} = params;
-  console.log('slug', slug);
   if (!slug) {
     throw new Response('Not found', {status: 404});
   }
@@ -25,7 +24,6 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     slug,
     sanity: context.sanity,
   });
-  console.log('puzzle', puzzle);
   if (!puzzle) {
     throw new Response('Puzzle not found', {status: 404});
   }

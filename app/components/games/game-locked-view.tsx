@@ -1,5 +1,5 @@
 import {CircleHelp, Lock} from 'lucide-react';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Button} from '~/components/ui/button';
 import {cn} from '~/lib/utils';
 import {validateWord, findWordPath} from '~/lib/games/strands-logic';
@@ -7,6 +7,9 @@ import {validateEnglishWord} from '~/lib/games/datamuse';
 import {HintButton} from './hint-button';
 import type {SanityStrandsPuzzle} from '~/lib/games/strands.queries';
 import {getGridString, getCanonicalPaths, getGridData} from '~/lib/games/grid-utils';
+import type {ProtectionConfig} from '~/lib/site-protection-states';
+import {MediaField} from '~/components/media-field';
+import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 
 interface ThemeWord {
   word: string;
@@ -21,6 +24,8 @@ interface StrandsGameProps {
   onJoinEarlyAccess?: () => void;
   /** Handler for help icon click */
   onHelpClick?: () => void;
+  /** Optional protection configuration for countdown, labels, and styling */
+  protection?: ProtectionConfig;
 }
 
 interface ActiveHint {
@@ -63,10 +68,46 @@ const THEME_COLORS = [
 
 const SPANGRAM_COLOR = 'bg-amber-300';
 
-export function StrandsGame({
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  total: number;
+}
+
+function calculateTimeLeft(targetDate: string): TimeLeft {
+  const now = new Date();
+  const target = new Date(targetDate);
+  const diff = target.getTime() - now.getTime();
+
+  if (diff <= 0) {
+    return {days: 0, hours: 0, minutes: 0, seconds: 0, total: 0};
+  }
+
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / 1000 / 60) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+    total: diff,
+  };
+}
+
+function getLocalizedValue(field: any[] | string | undefined): string | undefined {
+  if (!field) return undefined;
+  if (typeof field === 'string') return field;
+  if (Array.isArray(field) && field.length > 0) {
+    return (field[0] as any)?.value;
+  }
+  return undefined;
+}
+
+export function GameLockedView({
   puzzle,
   onJoinEarlyAccess,
   onHelpClick,
+  protection,
 }: StrandsGameProps) {
   // Transform puzzle data - use canonical grid if available
   const gridLetters = getGridString(puzzle).split('');
@@ -79,7 +120,68 @@ export function StrandsGame({
   }));
 
   const theme = puzzle.theme?.clue || puzzle.title;
-  const countdown = '02:26:03'; // TODO: Implement actual countdown
+
+  // Countdown state and calculation
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Get localized content from protection config
+  const countdownLabel = protection
+    ? getLocalizedValue(protection.countdownLabel) || 'Early access for private sale begins in...'
+    : 'Early access for private sale begins in...';
+
+  // Calculate countdown display
+  const countdownDisplay = useMemo(() => {
+    if (!protection?.countdown) {
+      return '02:26:03'; // Fallback for testing without protection
+    }
+
+    if (!timeLeft) {
+      return '00:00:00';
+    }
+
+    if (timeLeft.total <= 0) {
+      return '00:00:00';
+    }
+
+    // Format as HH:MM:SS (or DD:HH:MM:SS if days > 0)
+    if (timeLeft.days > 0) {
+      return `${String(timeLeft.days).padStart(2, '0')}:${String(timeLeft.hours).padStart(2, '0')}:${String(timeLeft.minutes).padStart(2, '0')}:${String(timeLeft.seconds).padStart(2, '0')}`;
+    }
+    return `${String(timeLeft.hours).padStart(2, '0')}:${String(timeLeft.minutes).padStart(2, '0')}:${String(timeLeft.seconds).padStart(2, '0')}`;
+  }, [protection?.countdown, timeLeft]);
+
+  // Initialize and update countdown (client-side only)
+  useEffect(() => {
+    setIsHydrated(true);
+
+    if (!protection?.countdown) return;
+
+    const initialRemaining = calculateTimeLeft(protection.countdown);
+    setTimeLeft(initialRemaining);
+
+    if (initialRemaining.total <= 0) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const remaining = calculateTimeLeft(protection.countdown!);
+      setTimeLeft(remaining);
+
+      if (remaining.total <= 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [protection?.countdown]);
+
+  // Generate CSS variables for color scheme
+  const hasColorScheme = protection?.colorScheme != null;
+  const colorsCssVars = useColorsCssVars({
+    settings: hasColorScheme ? {colorScheme: protection.colorScheme as any} : undefined,
+    selector: '#game-locked-view'
+  });
 
   // Selection state
   const [currentPath, setCurrentPath] = useState<number[]>([]);
@@ -575,10 +677,44 @@ export function StrandsGame({
   ).length;
 
   return (
-    <div className="flex h-full w-full flex-col bg-white">
-      {/* Header */}
-      <div className="border-b border-black">
-        <div className="flex items-center justify-between p-[10px]">
+    <div id={hasColorScheme ? "game-locked-view" : undefined} className="relative flex h-full w-full flex-col">
+      {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
+
+      {/* Background Media */}
+      {(protection?.backgroundImage || protection?.backgroundVideo) && (
+        <div className="absolute inset-0 h-full w-full">
+          <MediaField
+            mediaType={protection.mediaType || 'image'}
+            image={protection.backgroundImage}
+            video={protection.backgroundVideo}
+            className="h-full w-full object-cover"
+            objectFit="cover"
+            priority
+            controls={false}
+            autoPlay={true}
+            loop={true}
+            muted={true}
+            playsInline={true}
+          />
+        </div>
+      )}
+
+      {/* Overlay */}
+      {protection?.overlayOpacity !== undefined && protection.overlayOpacity > 0 && (
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundColor: 'rgb(0 0 0)',
+            opacity: protection.overlayOpacity / 100
+          }}
+        />
+      )}
+
+      {/* Content */}
+      <div className="relative z-10 flex h-full w-full flex-col">
+        {/* Header */}
+        <div className="border-b border-black">
+          <div className="flex items-center justify-between p-[10px]">
           {/* Left: Icon buttons */}
           <div className="flex items-center gap-2.5 py-2.5">
             <button
@@ -605,62 +741,49 @@ export function StrandsGame({
           >
             JOIN FOR EARLY ACCESS
           </Button>
-        </div>
-      </div>
-
-      {/* Main content area */}
-      <div className="flex flex-col items-center gap-2">
-        {/* Countdown banner */}
-        <div className="w-full border-b border-black">
-          <div className="flex items-center justify-between px-3 py-2 text-sm text-black">
-            <p className="font-normal">Early access for private sale begins in...</p>
-            <p className="font-bold">{countdown}</p>
           </div>
         </div>
 
-        {/* Theme display */}
-        <div className="pt-[11px]">
-          <div className="h-12 w-[282px] rounded-md border border-black">
-            <div className="flex h-full flex-col items-center justify-center">
-              <div className="w-full border-b border-black py-0.5 text-center">
-                <p className="w-[92px] mx-auto text-[10px] text-black">Today's Theme</p>
-              </div>
-              <div className="flex flex-1 items-center justify-center px-[39px] py-1.5">
-                <p className="text-sm text-black">{theme}</p>
-              </div>
+        {/* Main content area */}
+        <div className="flex flex-col items-center gap-2">
+          {/* Countdown banner */}
+          <div className="w-full border-b border-black">
+            <div className="flex items-center justify-between px-3 py-2 text-sm text-black">
+              <p className="font-normal">{countdownLabel}</p>
+              <p className="font-bold">{countdownDisplay}</p>
             </div>
           </div>
-        </div>
 
-        {/* Spacer */}
-        <div className="h-[27px]" />
+   
 
-        {/* Current word display ABOVE grid - fixed height to prevent CLS */}
-        <div className="mb-4 flex min-h-[56px] items-center justify-center">
-          {notification.visible ? (
-            <p
-              className={cn(
-                "text-[32px] font-bold leading-normal tracking-wide animate-in fade-in duration-200",
-                notification.type === 'success' && "text-green-600",
-                notification.type === 'error' && "text-red-600",
-                notification.type === 'info' && "text-blue-600"
-              )}
-            >
-              {notification.message}
-            </p>
-          ) : currentWord ? (
-            <p className="text-[32px] font-bold leading-normal tracking-[0.2em] text-black">
-              {currentWord}
-              {isValidating && <span className="ml-2 text-base">...</span>}
-            </p>
-          ) : null}
-        </div>
+          {/* Spacer */}
+          <div className="h-[27px]" />
 
-        {/* Grid */}
-        <div className="relative mx-auto max-w-md">
-          <div
-            ref={gridRef}
-            className="relative grid gap-x-8 gap-y-6 px-8 py-4"
+          {/* Current word display ABOVE grid - fixed height to prevent CLS */}
+          <div className="mb-4 flex min-h-[56px] items-center justify-center">
+            {notification.visible ? (
+              <p
+                className={cn(
+                  "text-[32px] font-bold leading-normal tracking-wide",
+                  notification.type === 'success' && "text-green-600",
+                  notification.type === 'error' && "text-red-600",
+                  notification.type === 'info' && "text-blue-600"
+                )}
+              >
+                {notification.message}
+              </p>
+            ) : currentWord ? (
+              <p className={cn("text-[32px] font-bold leading-normal tracking-[0.2em] text-black", isValidating && "animate-pulse")}>
+                {currentWord}
+              </p>
+            ) : null}
+          </div>
+
+          {/* Grid */}
+          <div className="relative mx-auto max-w-md">
+            <div
+              ref={gridRef}
+              className="relative grid gap-x-8 gap-y-6 px-8 py-4"
             style={{
               gridTemplateColumns: `repeat(${GRID_COLS}, minmax(0, 1fr))`,
               gridTemplateRows: `repeat(${GRID_ROWS}, minmax(0, 1fr))`,
@@ -759,72 +882,73 @@ export function StrandsGame({
                 </button>
               );
             })}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <div className="mt-auto border-t border-black">
-        {/* DEBUG: Active hints display */}
-        {activeHints.length > 0 && (
-          <div className="border-b border-black bg-blue-50 px-4 py-2">
-            <p className="text-xs font-semibold text-blue-900 mb-1">DEBUG - Active Hints:</p>
-            <div className="flex flex-wrap gap-2">
-              {activeHints.map((hint, index) => (
-                <span
-                  key={index}
-                  className="rounded bg-blue-200 px-2 py-0.5 text-xs text-blue-900 font-mono"
-                >
-                  {hint.word} (path: {hint.path.join(',')})
-                </span>
-              ))}
+        {/* Footer */}
+        <div className="mt-auto border-t border-black">
+          {/* DEBUG: Active hints display */}
+          {activeHints.length > 0 && (
+            <div className="border-b border-black bg-blue-50 px-4 py-2">
+              <p className="text-xs font-semibold text-blue-900 mb-1">DEBUG - Active Hints:</p>
+              <div className="flex flex-wrap gap-2">
+                {activeHints.map((hint, index) => (
+                  <span
+                    key={index}
+                    className="rounded bg-blue-200 px-2 py-0.5 text-xs text-blue-900 font-mono"
+                  >
+                    {hint.word} (path: {hint.path.join(',')})
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Discovered hint words section */}
-        {discoveredHintWords.length > 0 && (
-          <div className="border-b border-black px-4 py-2">
-            <p className="text-xs font-semibold text-black mb-1">Discovered Words:</p>
-            <div className="flex flex-wrap gap-1">
-              {discoveredHintWords.map((word, index) => (
-                <span
-                  key={index}
-                  className="rounded bg-gray-100 px-2 py-0.5 text-xs text-black"
-                >
-                  {word}
-                </span>
-              ))}
+          {/* Discovered hint words section */}
+          {discoveredHintWords.length > 0 && (
+            <div className="border-b border-black px-4 py-2">
+              <p className="text-xs font-semibold text-black mb-1">Discovered Words:</p>
+              <div className="flex flex-wrap gap-1">
+                {discoveredHintWords.map((word, index) => (
+                  <span
+                    key={index}
+                    className="rounded bg-gray-100 px-2 py-0.5 text-xs text-black"
+                  >
+                    {word}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Main footer controls */}
-        <div className="flex h-[53px] items-center justify-between px-12 py-0">
-          <div className="flex items-center gap-4">
-            <HintButton
-              hintsEarned={hintsEarned}
-              hintProgress={hintProgress}
-              disabled={hintsEarned === 0}
-              onClick={handleUseHint}
-            />
-            {hintProgress > 0 && (
-              <span className="text-sm text-black">
-                {hintProgress}/3 toward next hint
-              </span>
-            )}
-            {hintProgress === 0 && hintsEarned === 0 && discoveredHintWords.length === 0 && (
-              <span className="text-xs text-gray-600">
-                Find valid words to earn hints
-              </span>
-            )}
-          </div>
-          <p className="text-base leading-none text-black">
-            <span className="font-bold">{foundThemeWords}</span>
+          {/* Main footer controls */}
+          <div className="flex h-[53px] items-center justify-between px-12 py-0">
+            <div className="flex items-center gap-4">
+              <HintButton
+                hintsEarned={hintsEarned}
+                hintProgress={hintProgress}
+                disabled={hintsEarned === 0}
+                onClick={handleUseHint}
+              />
+              {hintProgress > 0 && (
+                <span className="text-sm text-black">
+                  {hintProgress}/3 toward next hint
+                </span>
+              )}
+              {hintProgress === 0 && hintsEarned === 0 && discoveredHintWords.length === 0 && (
+                <span className="text-xs text-gray-600">
+                  Find valid words to earn hints
+                </span>
+              )}
+            </div>
+            <p className="text-base leading-none text-black">
+              <span className="font-bold">{foundThemeWords}</span>
             {' out '}
             <span className="font-bold">{themeWords.length}</span>
             {' theme words found'}
           </p>
+          </div>
         </div>
       </div>
     </div>
@@ -832,4 +956,3 @@ export function StrandsGame({
 }
 
 // Backward compatibility export
-export {StrandsGame as GameLockedView};

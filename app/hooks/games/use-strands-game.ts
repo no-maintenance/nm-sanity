@@ -31,9 +31,13 @@ export interface StrandsGameState {
   // Animation
   hintWordAnimationPath: number[] | null; // Path to animate when hint word is discovered
   invalidWordAnimationPath: number[] | null; // Path to animate when invalid word is submitted
+  discoveredWordAnimationPath: number[] | null; // Path to pulse animate when theme word is discovered
 
   // Notification
   notificationMessage: string | null; // Message to display in current word area
+
+  // Hint activation
+  activatedHintPath: number[] | null; // Path to show with blue dotted outline when hint is activated
 
   // Computed
   currentWord: string;
@@ -83,9 +87,13 @@ export function useStrandsGame(
   // Animation state - track path for hint word animation
   const [hintWordAnimationPath, setHintWordAnimationPath] = useState<number[] | null>(null);
   const [invalidWordAnimationPath, setInvalidWordAnimationPath] = useState<number[] | null>(null);
+  const [discoveredWordAnimationPath, setDiscoveredWordAnimationPath] = useState<number[] | null>(null);
 
   // Notification state
   const [notificationMessage, setNotificationMessage] = useState<string | null>(null);
+
+  // Hint activation state
+  const [activatedHintPath, setActivatedHintPath] = useState<number[] | null>(null);
 
   // Track if we've loaded from localStorage to prevent re-loading
   const hasLoadedRef = useRef(false);
@@ -303,13 +311,24 @@ export function useStrandsGame(
             ...gameState.wordPaths,
             [word]: pathSnapshot,
           };
+
+          // Trigger pulse animation for discovered theme word
+          setDiscoveredWordAnimationPath([...pathSnapshot]);
+
+          // Clear the animation after it completes (1 second)
+          setTimeout(() => {
+            setDiscoveredWordAnimationPath(null);
+          }, 1000);
+
+          // Clear activated hint path if this was the hinted word
+          setActivatedHintPath(null);
         }
 
         if (result.type === 'hint-word') {
           console.log('[Strands] Adding hint word to discovered list:', word);
           updates.discoveredHintWords = [...gameState.discoveredHintWords, word];
           updates.hintProgress = result.newHintProgress;
-          updates.cellColors = result.cellColors; // Update cell colors to show hint indicators
+          // Don't update cellColors for hint words - they get no visual indicator when discovered
           if (result.grantsNewHint) {
             updates.hintsEarned = gameState.hintsEarned + 1;
           }
@@ -388,13 +407,44 @@ export function useStrandsGame(
   // Use a hint
   const useHint = useCallback(() => {
     if (gameState.hintsEarned === 0) return;
-    
+
+    // Get canonical paths from puzzle
+    const canonicalPaths = getCanonicalPaths(puzzle);
+    if (!canonicalPaths) {
+      console.warn('[Hint] No canonical paths available');
+      return;
+    }
+
+    // Find all unsolved theme words
+    const unsolvedWords = themeWords.filter(
+      tw => !gameState.foundWords.has(tw.word.toUpperCase())
+    );
+
+    if (unsolvedWords.length === 0) {
+      console.warn('[Hint] No unsolved words to hint');
+      return;
+    }
+
+    // Pick a random unsolved word
+    const randomWord = unsolvedWords[Math.floor(Math.random() * unsolvedWords.length)];
+    const hintPath = canonicalPaths[randomWord.word.toUpperCase()];
+
+    if (!hintPath || hintPath.length === 0) {
+      console.warn('[Hint] No path found for word:', randomWord.word);
+      return;
+    }
+
+    // Activate the hint by setting the path to highlight
+    setActivatedHintPath([...hintPath]);
+
+    // Decrement hints earned
     setGameState(prev => ({
       ...prev,
       hintsEarned: prev.hintsEarned - 1,
     }));
-    // TODO: Implement hint reveal logic
-  }, [gameState.hintsEarned]);
+
+    console.log('[Hint] Activated hint for word:', randomWord.word, 'path:', hintPath);
+  }, [gameState.hintsEarned, gameState.foundWords, themeWords, puzzle]);
 
   // Callback to clear animation path and current path after animation completes
   const clearAnimationPath = useCallback(() => {
@@ -415,7 +465,9 @@ export function useStrandsGame(
       hintProgress: gameState.hintProgress,
       hintWordAnimationPath,
       invalidWordAnimationPath,
+      discoveredWordAnimationPath,
       notificationMessage,
+      activatedHintPath,
       currentWord,
       isComplete,
     },

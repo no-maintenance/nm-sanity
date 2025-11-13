@@ -218,11 +218,34 @@ export async function validateWord(
     // Check if we have canonical paths and if this path matches
     if (canonicalPaths) {
       const canonicalPath = canonicalPaths[upperWord];
+      console.log('[validateWord] Checking canonical path for', upperWord);
+      console.log('[validateWord] Submitted path:', path);
+      console.log('[validateWord] Canonical path:', canonicalPath);
       if (canonicalPath && canonicalPath.length > 0) {
-        // Check if the selected path matches the canonical path
-        const pathMatches =
+        // Check if the selected path matches the canonical path (forward or reversed)
+        // The grid generator randomly reverses words, so the canonical path might spell the word backwards
+        const pathMatchesForward =
           path.length === canonicalPath.length &&
           path.every((index, i) => index === canonicalPath[i]);
+
+        const pathMatchesReversed =
+          path.length === canonicalPath.length &&
+          path.every((index, i) => index === canonicalPath[canonicalPath.length - 1 - i]);
+
+        const pathMatches = pathMatchesForward || pathMatchesReversed;
+
+        console.log('[validateWord] Path matches (forward):', pathMatchesForward);
+        console.log('[validateWord] Path matches (reversed):', pathMatchesReversed);
+        console.log('[validateWord] Path matches (either):', pathMatches);
+
+        if (!pathMatches) {
+          console.log('[validateWord] Path mismatch details:');
+          path.forEach((index, i) => {
+            const canonicalForward = canonicalPath[i];
+            const canonicalReversed = canonicalPath[canonicalPath.length - 1 - i];
+            console.log(`  Position ${i}: submitted=${index}, canonical_fwd=${canonicalForward}, canonical_rev=${canonicalReversed}`);
+          });
+        }
 
         if (!pathMatches) {
           return {
@@ -573,11 +596,9 @@ export function processWordSubmission(
   }
 
   // Handle valid hint word
-  // Hint words get gray background indicators
+  // Hint words don't get visual indicators when discovered
   if (validation.type === 'valid-hint-word' && validation.grantsHintProgress) {
     const hintProgress = calculateHintProgress(currentHintProgress);
-    // Assign hint color to cells for visual indication
-    const cellColors = assignCellColors(path, HINT_COLOR, existingCellColors);
 
     return {
       success: true,
@@ -585,7 +606,7 @@ export function processWordSubmission(
       grantsHintProgress: true,
       grantsNewHint: hintProgress.grantsNewHint,
       newHintProgress: hintProgress.newProgress,
-      cellColors, // Assign gray color for hint words
+      cellColors: existingCellColors, // Don't modify cell colors for hint words
     };
   }
 

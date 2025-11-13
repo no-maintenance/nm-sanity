@@ -5,6 +5,7 @@
  */
 
 import {forwardRef} from 'react';
+import {cn} from '~/lib/utils';
 
 interface HintButtonProps {
   hintsEarned: number;
@@ -27,7 +28,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
   return (
     <button
       ref={ref}
-      className="relative h-auto overflow-hidden rounded-md border border-black px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-base md:text-lg lg:text-xl font-medium transition-transform hover:scale-105"
+      className="relative h-auto overflow-hidden rounded-md border border-black px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-base font-medium transition-transform hover:scale-105"
       disabled={disabled || hintsEarned === 0}
       onClick={onClick}
       title={
@@ -44,8 +45,11 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
       />
 
       {/* Button text */}
-      <span className="relative z-10 text-white mix-blend-difference">
-        HINT ({hintsEarned})
+      <span className={cn(
+        "relative z-10",
+        fillPercentage > 0 ? "text-white" : "text-black"
+      )}>
+        HINT
       </span>
     </button>
   );

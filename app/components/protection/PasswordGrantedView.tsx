@@ -13,6 +13,7 @@ interface PasswordGrantedViewProps {
   protection: ProtectionConfig;
   protectionContext: ProtectionContext;
   isOverlay?: boolean;
+  isSidebar?: boolean;
 }
 
 function calculateTimeLeft(targetDate: string): TimeLeft {
@@ -70,6 +71,7 @@ export function PasswordGrantedView({
   protection,
   protectionContext,
   isOverlay = false,
+  isSidebar = false,
 }: PasswordGrantedViewProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -107,6 +109,66 @@ export function PasswordGrantedView({
   const message = getLocalizedValue(protection.passwordGrantedMessage) || 'Please wait for the countdown to complete.';
   const countdownLabel = getLocalizedValue(protection.countdownLabel) || 'Time remaining';
 
+  // Sidebar layout for protected puzzle
+  if (isSidebar) {
+    return (
+      <div className="flex flex-col w-full max-w-sm p-6 space-y-6">
+        {protection.countdown && (
+          <div className="text-center">
+            <p className="text-sm font-normal mb-4">{countdownLabel}</p>
+            <div
+              className="flex justify-center gap-2 text-black text-base"
+              style={{
+                opacity: isHydrated && timeLeft ? 1 : 0.3,
+                transition: 'opacity 0.3s ease-in-out'
+              }}
+            >
+              <p className="font-bold tabular-nums">
+                {timeLeft?.days ? `${timeLeft.days}d ` : ''}
+                {String(timeLeft?.hours ?? 0).padStart(2, '0')}:
+                {String(timeLeft?.minutes ?? 0).padStart(2, '0')}:
+                {String(timeLeft?.seconds ?? 0).padStart(2, '0')}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Success indicator */}
+        <div>
+          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-center">
+            <div className="text-green-500 text-3xl mb-2">✓</div>
+            <p className="text-base font-semibold text-green-700 dark:text-green-300">
+              Password Accepted
+            </p>
+          </div>
+        </div>
+
+        {/* Newsletter CTA - Placeholder */}
+        <div>
+          <Button className="w-full h-auto rounded-[3px] bg-[#2c2c2c] px-6 py-4 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
+            JOIN FOR EARLY ACCESS
+          </Button>
+        </div>
+
+        {/* Help Icon */}
+        <div className="flex justify-center">
+          <button
+            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+            aria-label="Help"
+            type="button"
+          >
+            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Original layout for overlay or full page
   return (
     <>
       {/* Collection/Product Context Indicator */}
