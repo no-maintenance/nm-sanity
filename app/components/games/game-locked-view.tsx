@@ -10,6 +10,7 @@ import {getGridString, getCanonicalPaths, getGridData} from '~/lib/games/grid-ut
 import type {ProtectionConfig} from '~/lib/site-protection-states';
 import {MediaField} from '~/components/media-field';
 import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
+import {useCountdown} from '~/hooks/use-countdown';
 
 interface ThemeWord {
   word: string;
@@ -68,32 +69,6 @@ const THEME_COLORS = [
 
 const SPANGRAM_COLOR = 'bg-amber-300';
 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  total: number;
-}
-
-function calculateTimeLeft(targetDate: string): TimeLeft {
-  const now = new Date();
-  const target = new Date(targetDate);
-  const diff = target.getTime() - now.getTime();
-
-  if (diff <= 0) {
-    return {days: 0, hours: 0, minutes: 0, seconds: 0, total: 0};
-  }
-
-  return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / 1000 / 60) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-    total: diff,
-  };
-}
-
 function getLocalizedValue(field: any[] | string | undefined): string | undefined {
   if (!field) return undefined;
   if (typeof field === 'string') return field;
@@ -121,8 +96,11 @@ export function GameLockedView({
 
   const theme = puzzle.theme?.clue || puzzle.title;
 
-  // Countdown state and calculation
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  // Use countdown hook
+  const { formatted: countdownDisplay } = useCountdown({
+    targetDate: protection?.countdown,
+  });
+
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Get localized content from protection config
@@ -130,51 +108,10 @@ export function GameLockedView({
     ? getLocalizedValue(protection.countdownLabel) || 'Early access for private sale begins in...'
     : 'Early access for private sale begins in...';
 
-  // Calculate countdown display
-  const countdownDisplay = useMemo(() => {
-    if (!protection?.countdown) {
-      return '02:26:03'; // Fallback for testing without protection
-    }
-
-    if (!timeLeft) {
-      return '00:00:00';
-    }
-
-    if (timeLeft.total <= 0) {
-      return '00:00:00';
-    }
-
-    // Format as HH:MM:SS (or DD:HH:MM:SS if days > 0)
-    if (timeLeft.days > 0) {
-      return `${String(timeLeft.days).padStart(2, '0')}:${String(timeLeft.hours).padStart(2, '0')}:${String(timeLeft.minutes).padStart(2, '0')}:${String(timeLeft.seconds).padStart(2, '0')}`;
-    }
-    return `${String(timeLeft.hours).padStart(2, '0')}:${String(timeLeft.minutes).padStart(2, '0')}:${String(timeLeft.seconds).padStart(2, '0')}`;
-  }, [protection?.countdown, timeLeft]);
-
-  // Initialize and update countdown (client-side only)
+  // Handle hydration
   useEffect(() => {
     setIsHydrated(true);
-
-    if (!protection?.countdown) return;
-
-    const initialRemaining = calculateTimeLeft(protection.countdown);
-    setTimeLeft(initialRemaining);
-
-    if (initialRemaining.total <= 0) {
-      return;
-    }
-
-    const interval = setInterval(() => {
-      const remaining = calculateTimeLeft(protection.countdown!);
-      setTimeLeft(remaining);
-
-      if (remaining.total <= 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [protection?.countdown]);
+  }, []);
 
   // Generate CSS variables for color scheme
   const hasColorScheme = protection?.colorScheme != null;

@@ -1,37 +1,12 @@
 import {useEffect, useState} from 'react';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
-
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  total: number;
-}
+import {useCountdown} from '~/hooks/use-countdown';
 
 interface PasswordGrantedViewProps {
   protection: ProtectionConfig;
   protectionContext: ProtectionContext;
   isOverlay?: boolean;
   isSidebar?: boolean;
-}
-
-function calculateTimeLeft(targetDate: string): TimeLeft {
-  const now = new Date();
-  const target = new Date(targetDate);
-  const diff = target.getTime() - now.getTime();
-
-  if (diff <= 0) {
-    return {days: 0, hours: 0, minutes: 0, seconds: 0, total: 0};
-  }
-
-  return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / 1000 / 60) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-    total: diff,
-  };
 }
 
 function TimeUnit({value, label}: {value: number; label: string}) {
@@ -73,36 +48,24 @@ export function PasswordGrantedView({
   isOverlay = false,
   isSidebar = false,
 }: PasswordGrantedViewProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Initialize and update countdown (client-side only)
+  // Use countdown hook
+  const { time: timeLeft, isExpired } = useCountdown({
+    targetDate: protection?.countdown,
+  });
+
+  // Handle hydration
   useEffect(() => {
     setIsHydrated(true);
+  }, []);
 
-    if (!protection?.countdown) return;
-
-    const initialRemaining = calculateTimeLeft(protection.countdown);
-    setTimeLeft(initialRemaining);
-
-    if (initialRemaining.total <= 0) {
-      // Countdown has ended, reload to trigger state change
+  // Reload page when countdown expires
+  useEffect(() => {
+    if (isExpired && protection?.countdown) {
       window.location.reload();
-      return;
     }
-
-    const interval = setInterval(() => {
-      const remaining = calculateTimeLeft(protection.countdown!);
-      setTimeLeft(remaining);
-
-      if (remaining.total <= 0) {
-        clearInterval(interval);
-        window.location.reload();
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [protection?.countdown]);
+  }, [isExpired, protection?.countdown]);
 
   // Get localized content with state-specific fallbacks
   const title = getLocalizedValue(protection.passwordGrantedTitle) || 'Access Granted';

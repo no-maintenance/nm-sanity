@@ -5,14 +5,7 @@ import {Button} from '../ui/button';
 import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {CountdownTimer} from './countdown-timer';
-
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  total: number;
-}
+import {useCountdown} from '~/hooks/use-countdown';
 
 interface LockedViewProps {
   protection: ProtectionConfig;
@@ -21,24 +14,6 @@ interface LockedViewProps {
   actionData?: any;
   isOverlay?: boolean;
   isSidebar?: boolean;
-}
-
-function calculateTimeLeft(targetDate: string): TimeLeft {
-  const now = new Date();
-  const target = new Date(targetDate);
-  const diff = target.getTime() - now.getTime();
-
-  if (diff <= 0) {
-    return {days: 0, hours: 0, minutes: 0, seconds: 0, total: 0};
-  }
-
-  return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / 1000 / 60) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-    total: diff,
-  };
 }
 
 /**
@@ -53,42 +28,30 @@ export function LockedView({
   isOverlay = false,
   isSidebar = false,
 }: LockedViewProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
 
   const showPassword = ['password', 'both', 'either'].includes(protection.accessMode || '');
   const showCountdown = ['countdown', 'both', 'either'].includes(protection.accessMode || '');
 
-  // Check if countdown has already expired (for showing "NOW LIVE" instead of timer)
-  const countdownExpired = protection.countdown
-    ? new Date(protection.countdown) <= new Date()
-    : false;
+  // Use countdown hook
+  const { time: timeLeft, isExpired } = useCountdown({
+    targetDate: protection?.countdown,
+  });
 
-  // Initialize and update countdown (client-side only)
+  // Check if countdown has already expired (for showing "NOW LIVE" instead of timer)
+  const countdownExpired = isExpired;
+
+  // Handle hydration
   useEffect(() => {
     setIsHydrated(true);
+  }, []);
 
-    if (!protection?.countdown) return;
-
-    const initialRemaining = calculateTimeLeft(protection.countdown);
-    setTimeLeft(initialRemaining);
-
-    if (initialRemaining.total <= 0) {
-      return;
+  // Reload page when countdown expires
+  useEffect(() => {
+    if (isExpired && protection?.countdown) {
+      window.location.reload();
     }
-
-    const interval = setInterval(() => {
-      const remaining = calculateTimeLeft(protection.countdown!);
-      setTimeLeft(remaining);
-
-      if (remaining.total <= 0) {
-        clearInterval(interval);
-        window.location.reload();
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [protection?.countdown]);
+  }, [isExpired, protection?.countdown]);
 
   // Get localized content
   const title = getLocalizedValue(protection.title) || 'Coming Soon';
@@ -99,7 +62,7 @@ export function LockedView({
   // Sidebar layout for protected puzzle
   if (isSidebar) {
     return (
-      <div className="flex flex-col w-full max-w-sm p-6 space-y-6">
+      <div className="flex flex-col w-full max-w-[640px] mx-auto p-8 md:p-12 space-y-8 text-center">
 
         {/* Timer Section */}
         {showCountdown && (
@@ -114,8 +77,21 @@ export function LockedView({
 
         {/* Password Section */}
         {showPassword && (
-          <div>
-            <Form method="post" className="space-y-3">
+          <div className="space-y-6 w-full">
+            {/* Title */}
+            <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-wide">
+              {title}
+            </h1>
+
+            {/* Subtitle */}
+            {message && (
+              <p className="text-base md:text-lg text-muted-foreground">
+                {message}
+              </p>
+            )}
+
+            {/* Password Form */}
+            <Form method="post" className="space-y-4 mt-8">
               <input type="hidden" name="redirectTo" value={redirectTo} />
               <Input
                 type="password"
@@ -123,41 +99,22 @@ export function LockedView({
                 placeholder={passwordLabel ?? "Enter password"}
                 required
                 autoComplete="off"
-                className="bg-foreground text-background"
+                className="h-14 text-base bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
               />
               {actionData && 'error' in actionData && actionData.error && (
                 <p className="text-sm text-destructive">
                   {actionData.error}
                 </p>
               )}
-              <Button type="submit" className="w-full">
-                Enter Site
+              <Button
+                type="submit"
+                className="w-full h-14 text-base bg-black text-white hover:bg-black/90 rounded-none"
+              >
+                ENTER THE QUEUE
               </Button>
             </Form>
           </div>
         )}
-
-        {/* Newsletter CTA - Placeholder */}
-        <div>
-          <Button className="w-full h-auto rounded-[3px] bg-[#2c2c2c] px-6 py-4 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
-            JOIN FOR EARLY ACCESS
-          </Button>
-        </div>
-
-        {/* Help Icon */}
-        <div className="flex justify-center">
-          <button
-            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
-            aria-label="Help"
-            type="button"
-          >
-            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
-            </svg>
-          </button>
-        </div>
       </div>
     );
   }
@@ -240,7 +197,7 @@ export function LockedView({
               placeholder={passwordLabel ?? "Enter password"}
               required
               autoComplete="off"
-              className="bg-foreground text-background"
+              className="text-background"
             />
             {actionData && 'error' in actionData && actionData.error && (
               <p className="text-sm text-destructive">

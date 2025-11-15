@@ -12,6 +12,7 @@ import {LockedView} from '~/components/protection/LockedView';
 import {PasswordGrantedView} from '~/components/protection/PasswordGrantedView';
 import {CountdownExpiredView} from '~/components/protection/CountdownExpiredView';
 import {ProtectedPuzzleContainer} from '~/components/protection/ProtectedPuzzleContainer';
+import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 
 interface LoaderData {
   protection?: ProtectionConfig;
@@ -373,101 +374,37 @@ export async function action({context, request}: ActionFunctionArgs) {
       passwordSession.authenticateGlobally();
     }
 
-    // Check if countdown has expired
-    const isCountdownExpired = protection.countdown
-      ? new Date(protection.countdown) <= new Date()
-      : false;
+    // When puzzleGrantsAccess is true, puzzle completion bypasses ALL other protection logic
+    // and grants immediate full access regardless of accessMode or countdown status
+    let targetPath = redirectTo;
+    if (protection.redirectPage?._ref) {
+      const PAGE_PATH_QUERY = `*[_id == $ref][0]{
+        _type,
+        "slug": slug.current,
+        "handle": store.slug.current
+      }`;
 
-    // Determine what state we'll be in after puzzle authentication
-    const postAuthState = determineProtectionState(
-      protection,
-      true, // Puzzle completion authenticates like password
-      isCountdownExpired
-    );
+      const {data: pageData} = await sanity.loadQuery(
+        PAGE_PATH_QUERY,
+        {ref: protection.redirectPage._ref},
+      );
 
-    // Handle based on access mode
-    if (protection.accessMode === 'either') {
-      // For 'either' mode, puzzle completion grants full access
-      // Get redirect page path if configured
-      let targetPath = redirectTo;
-      if (protection.redirectPage?._ref) {
-        const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-          _type,
-          "slug": slug.current,
-          "handle": store.slug.current
-        }`;
-
-        const {data: pageData} = await sanity.loadQuery(
-          PAGE_PATH_QUERY,
-          {ref: protection.redirectPage._ref},
-        );
-
-        if (pageData) {
-          if (pageData._type === 'home') {
-            targetPath = '/';
-          } else if (pageData._type === 'page' && pageData.slug) {
-            targetPath = `/pages/${pageData.slug}`;
-          } else if (pageData.handle) {
-            targetPath = `/${pageData.handle}`;
-          }
+      if (pageData) {
+        if (pageData._type === 'home') {
+          targetPath = '/';
+        } else if (pageData._type === 'page' && pageData.slug) {
+          targetPath = `/pages/${pageData.slug}`;
+        } else if (pageData.handle) {
+          targetPath = `/${pageData.handle}`;
         }
-      }
-
-      return redirect(targetPath, {
-        headers: {
-          'Set-Cookie': await passwordSession.commit(),
-        },
-      });
-    } else if (protection.accessMode === 'both') {
-      // For 'both' mode, check if countdown has expired
-      if (isCountdownExpired) {
-        // Full access granted
-        let targetPath = redirectTo;
-        if (protection.redirectPage?._ref) {
-          const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-            _type,
-            "slug": slug.current,
-            "handle": store.slug.current
-          }`;
-
-          const {data: pageData} = await sanity.loadQuery(
-            PAGE_PATH_QUERY,
-            {ref: protection.redirectPage._ref},
-          );
-
-          if (pageData) {
-            if (pageData._type === 'home') {
-              targetPath = '/';
-            } else if (pageData._type === 'page' && pageData.slug) {
-              targetPath = `/pages/${pageData.slug}`;
-            } else if (pageData.handle) {
-              targetPath = `/${pageData.handle}`;
-            }
-          }
-        }
-
-        return redirect(targetPath, {
-          headers: {
-            'Set-Cookie': await passwordSession.commit(),
-          },
-        });
-      } else {
-        // Show success page with promo code (password-granted state)
-        return json(
-          {
-            success: true,
-            newState: 'password-granted',
-            puzzleCompleted: true,
-            promoCode: protection.puzzleCompletionMessage,
-          },
-          {
-            headers: {
-              'Set-Cookie': await passwordSession.commit(),
-            },
-          }
-        );
       }
     }
+
+    return redirect(targetPath, {
+      headers: {
+        'Set-Cookie': await passwordSession.commit(),
+      },
+    });
   }
 
   // Verify password
@@ -544,6 +481,13 @@ export default function SiteProtected() {
   const {protection, protectionContext, redirectTo, currentViewState} = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
+  // Generate CSS variables for color scheme (must be called before early returns)
+  const hasColorScheme = protection?.colorScheme != null;
+  const colorsCssVars = useColorsCssVars({
+    settings: hasColorScheme ? {colorScheme: protection.colorScheme as any} : undefined,
+    selector: ':root'
+  });
+
   if (!protection) {
     return null;
   }
@@ -558,14 +502,19 @@ export default function SiteProtected() {
   // If there's an embedded puzzle, render it with protection overlay
   if (protection.embeddedPuzzle) {
     return (
-      <ProtectedPuzzleContainer
-        puzzle={protection.embeddedPuzzle}
-        protection={protection}
-        protectionContext={protectionContext}
-        viewState={effectiveViewState}
-        redirectTo={redirectTo}
-        actionData={actionData}
-      />
+      <div id={hasColorScheme ? "site-protected-page" : undefined}>
+        {hasColorScheme && (
+          <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />
+        )}
+        <ProtectedPuzzleContainer
+          puzzle={protection.embeddedPuzzle}
+          protection={protection}
+          protectionContext={protectionContext}
+          viewState={effectiveViewState}
+          redirectTo={redirectTo}
+          actionData={actionData}
+        />
+      </div>
     );
   }
 
@@ -614,8 +563,13 @@ export default function SiteProtected() {
   };
 
   return (
-    <ProtectionLayout protection={protection}>
-      {renderViewComponent()}
-    </ProtectionLayout>
+    <div id={hasColorScheme ? "site-protected-page" : undefined}>
+      {hasColorScheme && (
+        <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />
+      )}
+      <ProtectionLayout protection={protection}>
+        {renderViewComponent()}
+      </ProtectionLayout>
+    </div>
   );
 }

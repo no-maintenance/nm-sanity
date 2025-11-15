@@ -1,6 +1,5 @@
 import {ReactNode} from 'react';
 import {MediaField} from '../media-field';
-import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 import type {ProtectionConfig} from '~/lib/site-protection-states';
 
 interface ProtectionLayoutProps {
@@ -16,16 +15,8 @@ export function ProtectionLayout({
   protection,
   children,
 }: ProtectionLayoutProps) {
-  // Generate CSS variables for color scheme
-  const hasColorScheme = protection?.colorScheme != null;
-  const colorsCssVars = useColorsCssVars({
-    settings: hasColorScheme ? {colorScheme: protection.colorScheme as any} : undefined,
-    selector: '#site-protected-page'
-  });
-
   return (
-    <div id={hasColorScheme ? "site-protected-page" : undefined} className="relative min-h-screen w-full overflow-hidden bg-background text-foreground">
-      {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
+    <div className="relative min-h-screen w-full overflow-hidden bg-background text-foreground">
 
       {/* Background Media */}
       {(protection.backgroundImage || protection.backgroundVideo) && (

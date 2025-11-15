@@ -1,12 +1,11 @@
 import {Form} from '@remix-run/react';
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {StrandsGame} from '~/components/games/strands-game';
 import type {ProtectionConfig, ProtectionContext, ProtectionViewState} from '~/lib/site-protection-states';
 import {LockedView} from './LockedView';
 import {PasswordGrantedView} from './PasswordGrantedView';
 import {CountdownExpiredView} from './CountdownExpiredView';
 import {MediaField} from '../media-field';
-import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 
 interface ProtectedPuzzleContainerProps {
   puzzle: any; // Will be SanityStrandsPuzzle type
@@ -28,6 +27,10 @@ export function ProtectedPuzzleContainer({
   // Track if form has already been submitted to prevent duplicate submissions
   const hasSubmittedRef = useRef(false);
 
+  // Animation state
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
+  const [fadeOutSpangram, setFadeOutSpangram] = useState(false);
+
   // Mark as submitted if actionData indicates puzzle was already completed
   // This prevents re-submission after a successful action
   useEffect(() => {
@@ -47,28 +50,48 @@ export function ProtectedPuzzleContainer({
       return;
     }
 
-    // Submit form to trigger puzzle-completed action
-    const form = document.getElementById('puzzle-complete-form') as HTMLFormElement;
-    if (form) {
-      hasSubmittedRef.current = true;
-      form.requestSubmit();
-    }
+    // Start completion animation sequence
+    setShowCompletionAnimation(true);
+    hasSubmittedRef.current = true;
+
+    // Phase 1: Fade out everything except spangram (immediate)
+    // Phase 2: After 3 seconds, fade out spangram
+    setTimeout(() => {
+      setFadeOutSpangram(true);
+    }, 3000);
+
+    // Phase 3: After spangram fades (3s + 1s fade), submit form
+    setTimeout(() => {
+      const form = document.getElementById('puzzle-complete-form') as HTMLFormElement;
+      if (form) {
+        form.requestSubmit();
+      }
+    }, 4000); // 3s wait + 1s fade
   }, [actionData]);
 
-  // Generate CSS variables for color scheme
-  const hasColorScheme = protection?.colorScheme != null;
-  const colorsCssVars = useColorsCssVars({
-    settings: hasColorScheme ? {colorScheme: protection.colorScheme as any} : undefined,
-    selector: '#protected-puzzle-page'
-  });
-  console.log(protection, protection.backgroundImage, protection.backgroundVideo);
   return (
-    <div id={hasColorScheme ? "protected-puzzle-page" : undefined} className="relative min-h-screen">
-      {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
+    <div className="relative min-h-screen">
+      {/* CSS for completion animations */}
+      <style>{`
+        @keyframes fadeOutBlur {
+          0% {
+            opacity: 1;
+            filter: blur(0px);
+          }
+          100% {
+            opacity: 0;
+            filter: blur(10px);
+          }
+        }
+
+        .animate-fade-out-blur {
+          animation: fadeOutBlur 1s ease-out forwards;
+        }
+      `}</style>
 
       {/* Background Media */}
       {(protection.backgroundImage || protection.backgroundVideo) && (
-        <div className="absolute inset-0 h-full w-full">
+        <div className={`absolute inset-0 h-full w-full ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
           <MediaField
             mediaType={protection.mediaType || 'image'}
             image={protection.backgroundImage}
@@ -94,7 +117,7 @@ export function ProtectedPuzzleContainer({
       {/* Two-column layout on desktop, single column on mobile */}
       <div className="relative z-10 flex flex-col md:flex-row h-screen">
         {/* Left column: Protection info (desktop only) */}
-        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center">
+        <div className={`hidden md:flex md:flex-1 flex-col items-center justify-center ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
           {viewState === 'locked' && (
             <LockedView
               protection={protection}
@@ -130,6 +153,8 @@ export function ProtectedPuzzleContainer({
             protectionCountdown={protection.countdown}
             isProtected={true}
             hideHeaderOnMobile={true}
+            showCompletionAnimation={showCompletionAnimation}
+            fadeOutSpangram={fadeOutSpangram}
           />
         </div>
       </div>

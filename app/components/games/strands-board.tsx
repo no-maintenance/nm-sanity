@@ -400,9 +400,9 @@ export function StrandsBoard({
           >
             {allConnectorPaths.map((path, idx) => {
               // Convert Tailwind color class to actual color
-              // For found words, use the color; for current selection, use muted
+              // For found words, use the color; for current selection, use primary
               const strokeColor = path.color === 'current' 
-                ? 'currentColor' // Will use muted color via className
+                ? 'currentColor' // Will use primary color via className
                 : getColorFromTailwindClass(path.color);
               
               return (
@@ -412,7 +412,7 @@ export function StrandsBoard({
                 y1={path.y1}
                 x2={path.x2}
                 y2={path.y2}
-                  className={path.color === 'current' ? 'stroke-muted' : ''}
+                  className={path.color === 'current' ? 'stroke-primary' : ''}
                   stroke={path.color !== 'current' ? strokeColor : undefined}
                   strokeWidth="8"
                 strokeLinecap="round"
@@ -557,7 +557,7 @@ export function StrandsBoard({
                       "h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9 lg:h-10 lg:w-10 aspect-square rounded-full ring-2 md:ring-[3px]",
                       isInInvalidAnimation
                         ? "ring-red-500 bg-red-100"
-                        : "ring-muted bg-muted text-muted-foreground"
+                        : "ring-primary bg-primary text-primary-foreground"
                     )} />
                     {pathIndex === currentPath.length - 1 && (
                       <svg
@@ -577,8 +577,10 @@ export function StrandsBoard({
 
                 {/* Letter */}
                 <span className={cn(
-                  "relative z-20 text-center text-lg font-normal leading-normal pointer-events-none",
-                isInCurrentPath ? "text-white" : "text-black"
+                  "relative z-20 text-center text-lg font-medium leading-normal pointer-events-none",
+                  "text-foreground",
+                  isInCurrentPath && "text-primary-foreground",
+                  isInFoundThemeWord && 'text-black'
                 )}>
                   {letter}
                 </span>

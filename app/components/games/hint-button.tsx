@@ -28,7 +28,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
   return (
     <button
       ref={ref}
-      className="relative h-auto overflow-hidden rounded-md border border-black px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-base font-medium transition-transform hover:scale-105"
+      className="relative h-auto overflow-hidden rounded-md border border-primary px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-base font-medium transition-transform hover:scale-105"
       disabled={disabled || hintsEarned === 0}
       onClick={onClick}
       title={
@@ -39,7 +39,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
     >
       {/* Fill background that grows from left to right */}
       <div
-        className="absolute left-0 top-0 h-full bg-black transition-all duration-300 ease-out"
+        className="absolute left-0 top-0 h-full bg-primary transition-all duration-300 ease-out"
         style={{width: `${fillPercentage}%`}}
         aria-hidden="true"
       />
@@ -47,7 +47,9 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
       {/* Button text */}
       <span className={cn(
         "relative z-10",
-        fillPercentage > 0 ? "text-white" : "text-black"
+        "text-primary",
+        hintProgress > 1 && "text-primary-foreground"
+
       )}>
         HINT
       </span>

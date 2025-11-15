@@ -189,6 +189,12 @@ export type WordValidationResult = {
 };
 
 /**
+ * Flag to enable/disable dictionary API validation
+ * When disabled, only puzzle hint words will be accepted (no Datamuse API calls)
+ */
+const ENABLE_DICTIONARY_API = false;
+
+/**
  * Comprehensive word validation for Strands game
  * Handles theme words, hint words, and English dictionary validation
  *
@@ -298,7 +304,8 @@ export async function validateWord(
   }
 
   // Step 4: Validate with Datamuse API if not found in puzzle hint words
-  if (!isValid) {
+  // Only use API if ENABLE_DICTIONARY_API is true
+  if (!isValid && ENABLE_DICTIONARY_API) {
     try {
       const validation = await validateWithDatamuse(upperWord);
 
@@ -324,6 +331,18 @@ export async function validateWord(
         isSpangram: false,
       };
     }
+  }
+
+  // If dictionary API is disabled and word not in puzzle hint words, reject it
+  if (!isValid && !ENABLE_DICTIONARY_API) {
+    return {
+      type: 'not-english',
+      word: upperWord,
+      message: 'Word Not Found',
+      grantsHintProgress: false,
+      isThemeWord: false,
+      isSpangram: false,
+    };
   }
 
   // Step 5: Check length requirement (4+ letters)

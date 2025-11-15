@@ -14,12 +14,12 @@ export function CountdownBanner({
   label = "Early access to NM's BFCM private sale in...",
 }: CountdownBannerProps) {
   return (
-    <div className="border-b border-black border-t">
-      <div className="flex items-center justify-between px-4 sm:px-6 py-2 text-sm text-black">
-        <p className="font-normal whitespace-nowrap">
+    <div className="border-b border-foreground border-t">
+      <div className="flex items-center justify-between px-2 text-sm">
+        <p className="font-bold whitespace-nowrap">
           {label}
         </p>
-        <p className="font-bold whitespace-nowrap">
+        <p className="font-bold whitespace-nowrap text-xl">
           {countdown}
         </p>
       </div>
