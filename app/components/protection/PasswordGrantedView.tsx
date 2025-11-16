@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {useCountdown} from '~/hooks/use-countdown';
+import {Button} from '~/components/ui/button';
 
 interface PasswordGrantedViewProps {
   protection: ProtectionConfig;

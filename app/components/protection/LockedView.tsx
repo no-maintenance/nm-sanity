@@ -62,7 +62,7 @@ export function LockedView({
   // Sidebar layout for protected puzzle
   if (isSidebar) {
     return (
-      <div className="flex flex-col w-full max-w-[640px] mx-auto p-8 md:p-12 space-y-8 text-center">
+      <div className="flex flex-col w-full p-6 space-y-10 text-center">
 
         {/* Timer Section */}
         {showCountdown && (
@@ -77,21 +77,8 @@ export function LockedView({
 
         {/* Password Section */}
         {showPassword && (
-          <div className="space-y-6 w-full">
-            {/* Title */}
-            <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-wide">
-              {title}
-            </h1>
-
-            {/* Subtitle */}
-            {message && (
-              <p className="text-base md:text-lg text-muted-foreground">
-                {message}
-              </p>
-            )}
-
-            {/* Password Form */}
-            <Form method="post" className="space-y-4 mt-8">
+          <div className="space-y-3  max-w-[350px] mx-auto w-full">
+            <Form method="post" className="space-y-3">
               <input type="hidden" name="redirectTo" value={redirectTo} />
               <Input
                 type="password"
@@ -99,22 +86,37 @@ export function LockedView({
                 placeholder={passwordLabel ?? "Enter password"}
                 required
                 autoComplete="off"
-                className="h-14 text-base bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+                className="bg-transparent  border-foreground"
               />
               {actionData && 'error' in actionData && actionData.error && (
                 <p className="text-sm text-destructive">
                   {actionData.error}
                 </p>
               )}
-              <Button
-                type="submit"
-                className="w-full h-14 text-base bg-black text-white hover:bg-black/90 rounded-none"
-              >
-                ENTER THE QUEUE
+              <Button type="submit" className="w-full">
+                Enter Site
               </Button>
             </Form>
+            <Button className="w-full">
+              JOIN FOR PASSWORD
+            </Button>
           </div>
         )}
+
+        {/* Help Icon */}
+        <div className="flex justify-center">
+          <button
+            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+            aria-label="Help"
+            type="button"
+          >
+            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+            </svg>
+          </button>
+        </div>
       </div>
     );
   }

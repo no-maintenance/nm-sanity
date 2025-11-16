@@ -81,6 +81,7 @@ export function StrandsBoard({
   const cleanupFunctions = useRef<Map<number, () => void>>(new Map());
   const [cellPositions, setCellPositions] = useState<Map<number, {x: number; y: number}>>(new Map());
   const [containerSize, setContainerSize] = useState<{width: number; height: number}>({width: 0, height: 0});
+  const multiTouchGestureRef = useRef(false);
 
   // Calculate cell center positions
   const calculatePositions = useCallback(() => {
@@ -136,12 +137,33 @@ export function StrandsBoard({
 
   // Helper function to attach touch listeners to a cell element
   const attachTouchListeners = useCallback((cellElement: HTMLDivElement, index: number) => {
+    const cancelForMultiTouch = () => {
+      if (!multiTouchGestureRef.current) {
+        multiTouchGestureRef.current = true;
+        onPointerUp?.();
+      }
+    };
+
     const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        cancelForMultiTouch();
+        return;
+      }
+      if (multiTouchGestureRef.current) {
+        return;
+      }
       e.preventDefault();
       onPointerDown(index);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        cancelForMultiTouch();
+        return;
+      }
+      if (multiTouchGestureRef.current) {
+        return;
+      }
       e.preventDefault();
       const touch = e.touches[0];
       const element = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -152,7 +174,18 @@ export function StrandsBoard({
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (multiTouchGestureRef.current) {
+        if (e.touches.length === 0) {
+          multiTouchGestureRef.current = false;
+        }
+        return;
+      }
       e.preventDefault();
+      onPointerUp?.();
+    };
+
+    const handleTouchCancel = () => {
+      multiTouchGestureRef.current = false;
       onPointerUp?.();
     };
 
@@ -160,12 +193,14 @@ export function StrandsBoard({
     cellElement.addEventListener('touchstart', handleTouchStart, {passive: false});
     cellElement.addEventListener('touchmove', handleTouchMove, {passive: false});
     cellElement.addEventListener('touchend', handleTouchEnd, {passive: false});
+    cellElement.addEventListener('touchcancel', handleTouchCancel, {passive: false});
 
     // Return cleanup function
     return () => {
       cellElement.removeEventListener('touchstart', handleTouchStart);
       cellElement.removeEventListener('touchmove', handleTouchMove);
       cellElement.removeEventListener('touchend', handleTouchEnd);
+      cellElement.removeEventListener('touchcancel', handleTouchCancel);
     };
   }, [onPointerDown, onPointerEnter, onPointerUp]);
 

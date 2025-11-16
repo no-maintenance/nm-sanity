@@ -5,7 +5,7 @@ import type {ProtectionConfig, ProtectionContext, ProtectionViewState} from '~/l
 import {LockedView} from './LockedView';
 import {PasswordGrantedView} from './PasswordGrantedView';
 import {CountdownExpiredView} from './CountdownExpiredView';
-import {MediaField} from '../media-field';
+import {ProtectionBackground} from './protection-background';
 
 interface ProtectedPuzzleContainerProps {
   puzzle: any; // Will be SanityStrandsPuzzle type
@@ -89,24 +89,10 @@ export function ProtectedPuzzleContainer({
         }
       `}</style>
 
-      {/* Background Media */}
-      {(protection.backgroundImage || protection.backgroundVideo) && (
-        <div className={`absolute inset-0 h-full w-full ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
-          <MediaField
-            mediaType={protection.mediaType || 'image'}
-            image={protection.backgroundImage}
-            video={protection.backgroundVideo}
-            className="h-full w-full object-cover"
-            objectFit="cover"
-            priority
-            controls={false}
-            autoPlay={true}
-            loop={true}
-            muted={true}
-            playsInline={true}
-          />
-        </div>
-      )}
+      <ProtectionBackground
+        protection={protection}
+        animationClass={showCompletionAnimation ? 'animate-fade-out-blur' : undefined}
+      />
 
       {/* Hidden form for puzzle completion */}
       <Form method="post" id="puzzle-complete-form" className="hidden">

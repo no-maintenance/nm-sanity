@@ -366,7 +366,16 @@ export async function action({context, request}: ActionFunctionArgs) {
   }
 
   // Handle puzzle completion
-  if (actionType === 'puzzle-completed' && protection?.puzzleGrantsAccess) {
+  if (actionType === 'puzzle-completed') {
+    // If puzzleGrantsAccess is not enabled, return error
+    if (!protection?.puzzleGrantsAccess) {
+      console.error('[Puzzle Completion] puzzleGrantsAccess is not enabled:', {
+        hasProtection: !!protection,
+        puzzleGrantsAccess: protection?.puzzleGrantsAccess,
+      });
+      return json({error: 'Puzzle completion does not grant access for this protection'});
+    }
+
     // Authenticate using the appropriate method
     if (protectionSource === 'collection' && protection._id) {
       passwordSession.authenticateFor(protection._id);
@@ -377,29 +386,36 @@ export async function action({context, request}: ActionFunctionArgs) {
     // When puzzleGrantsAccess is true, puzzle completion bypasses ALL other protection logic
     // and grants immediate full access regardless of accessMode or countdown status
     let targetPath = redirectTo;
-    if (protection.redirectPage?._ref) {
-      const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-        _type,
-        "slug": slug.current,
-        "handle": store.slug.current
-      }`;
 
-      const {data: pageData} = await sanity.loadQuery(
-        PAGE_PATH_QUERY,
-        {ref: protection.redirectPage._ref},
-      );
+    try {
+      if (protection.redirectPage?._ref) {
+        const PAGE_PATH_QUERY = `*[_id == $ref][0]{
+          _type,
+          "slug": slug.current,
+          "handle": store.slug.current
+        }`;
 
-      if (pageData) {
-        if (pageData._type === 'home') {
-          targetPath = '/';
-        } else if (pageData._type === 'page' && pageData.slug) {
-          targetPath = `/pages/${pageData.slug}`;
-        } else if (pageData.handle) {
-          targetPath = `/${pageData.handle}`;
+        const {data: pageData} = await sanity.loadQuery(
+          PAGE_PATH_QUERY,
+          {ref: protection.redirectPage._ref},
+        );
+
+        if (pageData) {
+          if (pageData._type === 'home') {
+            targetPath = '/';
+          } else if (pageData._type === 'page' && pageData.slug) {
+            targetPath = `/pages/${pageData.slug}`;
+          } else if (pageData.handle) {
+            targetPath = `/${pageData.handle}`;
+          }
         }
       }
+    } catch (error) {
+      console.error('[Puzzle Completion] Error fetching redirect page:', error);
+      // Continue with default redirectTo path
     }
 
+    console.log('[Puzzle Completion] Redirecting to:', targetPath);
     return redirect(targetPath, {
       headers: {
         'Set-Cookie': await passwordSession.commit(),

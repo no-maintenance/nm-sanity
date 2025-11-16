@@ -48,7 +48,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
       <span className={cn(
         "relative z-10",
         "text-primary",
-        hintProgress > 1 && "text-primary-foreground"
+        (hintProgress > 1 || hintsEarned > 0) && "text-primary-foreground"
 
       )}>
         HINT

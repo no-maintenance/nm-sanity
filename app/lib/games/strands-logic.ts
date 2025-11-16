@@ -257,7 +257,7 @@ export async function validateWord(
           return {
             type: 'wrong-path',
             word: upperWord,
-            message: `"${upperWord}" is correct, but you used the wrong path! Try a different route.`,
+            message: `SPELL IT ANOTHER WAY`,
             grantsHintProgress: false,
             isThemeWord: false,  // Don't mark as found since path is wrong
             isSpangram: false,

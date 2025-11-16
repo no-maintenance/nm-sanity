@@ -12,6 +12,7 @@ import { HintWordAnimation } from './hint-word-animation';
 import { HintDisabledDialog } from './hint-disabled-dialog';
 import { JoinEarlyAccessDialog } from './join-early-access-dialog';
 import { CountdownBanner } from './countdown-banner';
+import { GameHelpDialog } from './game-help-dialog';
 
 const GRID_ROWS = 8;
 const GRID_COLS = 6;
@@ -203,9 +204,11 @@ export function StrandsGame({
       {/* Header */}
       <header className="">
         <div className="flex items-center justify-between py-2 md:hidden px-2 sm:px-6 gap-2">
-          <Button size="sm" className="w-full">
-            Rules
-          </Button>
+          <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
+            <Button size="sm" className="w-full">
+              Rules
+            </Button>
+          </GameHelpDialog>
           <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
             <Button size="sm" className="w-full">
               Join For Password

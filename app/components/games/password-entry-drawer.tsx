@@ -85,16 +85,16 @@ export function PasswordEntryDrawer({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle className="text-xl font-bold">
-            Enter Password
+        <DrawerHeader className="text-center px-6">
+          <DrawerTitle className="text-2xl font-bold uppercase tracking-wide mb-3">
+            THE SALE IS PROTECTED
           </DrawerTitle>
-          <DrawerDescription>
-            This puzzle is protected. Enter the password to play.
+          <DrawerDescription className="text-base">
+            Enter the password from the newsletter sign up to enter the sale.
           </DrawerDescription>
         </DrawerHeader>
-        <div className="px-4 pb-4">
-          <Form method="post" className="space-y-3">
+        <div className="px-6 pb-6">
+          <Form method="post" className="space-y-4">
             <input type="hidden" name="redirectTo" value={redirectTo} />
             <Input
               type="password"
@@ -102,12 +102,13 @@ export function PasswordEntryDrawer({
               placeholder="Enter password"
               required
               autoComplete="off"
+              className="h-12 text-base"
             />
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
-            <Button type="submit" className="w-full">
-              Unlock
+            <Button type="submit" className="w-full h-12 text-sm font-bold bg-black text-white hover:bg-black/90 rounded-none uppercase">
+              ENTER THE QUEUE
             </Button>
           </Form>
         </div>
