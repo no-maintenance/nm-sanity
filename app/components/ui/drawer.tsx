@@ -68,13 +68,17 @@ const DrawerContent = forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       className={cn(
-        'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-3xl border lg:rounded-none',
+        'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[20px] border',
         className,
       )}
       ref={ref}
+      style={{
+        // Prevent Safari zoom on input focus
+        fontSize: '16px',
+      }}
       {...props}
     >
-      <div className="bg-muted mx-auto mt-4 h-2 w-[100px] rounded-full md:hidden" />
+      <div className="bg-muted mx-auto mt-3 h-1.5 w-12 rounded-full flex-shrink-0" />
       {children}
       <DrawerClose
         className={cn(
@@ -95,7 +99,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('grid gap-1.5 p-4 text-center sm:text-left', className)}
+    className={cn('grid gap-2 px-6 pt-4 pb-2 text-center', className)}
     {...props}
   />
 );
@@ -118,7 +122,7 @@ const DrawerTitle = forwardRef<
 >(({className, ...props}, ref) => (
   <DrawerPrimitive.Title
     className={cn(
-      'text-lg leading-none font-semibold tracking-tight',
+      'text-xl font-bold leading-tight',
       className,
     )}
     ref={ref}
@@ -132,7 +136,7 @@ const DrawerDescription = forwardRef<
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
 >(({className, ...props}, ref) => (
   <DrawerPrimitive.Description
-    className={cn('text-muted-foreground text-sm', className)}
+    className={cn('text-muted-foreground text-sm leading-relaxed', className)}
     ref={ref}
     {...props}
   />

@@ -295,7 +295,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   // If fully unlocked, redirect to target page
   if (protectionState.viewState === 'fully-unlocked') {
     // Get redirect page path if configured
-    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo, locale);
     passwordSession.clearPendingRedirect();
     return redirect(targetPath, {
       headers: {
@@ -425,10 +425,8 @@ export async function action({context, request}: ActionFunctionArgs) {
 
     // When puzzleGrantsAccess is true, puzzle completion bypasses ALL other protection logic
     // and grants immediate full access regardless of accessMode or countdown status
-    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo, context.locale);
     passwordSession.clearPendingRedirect();
-
-    console.log('[Puzzle Completion] Redirecting to:', targetPath);
     return redirect(targetPath, {
       headers: {
         'Set-Cookie': await passwordSession.commit(),
@@ -470,15 +468,35 @@ export async function action({context, request}: ActionFunctionArgs) {
       );
     }
 
-    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo, context.locale);
     passwordSession.clearPendingRedirect();
 
+    // If there's an embedded puzzle and playCompletionAnimation is requested,
+    // return JSON to trigger puzzle completion animation (only for actual puzzle completion)
+    // Otherwise, use page fade for password/countdown completion
     if (playCompletionAnimation && protection.embeddedPuzzle) {
       return json(
         {
           success: true,
           newState: 'fully-unlocked',
           startCompletionAnimation: true,
+          redirectUrl: targetPath,
+        },
+        {
+          headers: {
+            'Set-Cookie': await passwordSession.commit(),
+          },
+        }
+      );
+    }
+
+    // For password/countdown completion without puzzle completion, use page fade
+    if (protection.embeddedPuzzle) {
+      return json(
+        {
+          success: true,
+          newState: 'fully-unlocked',
+          startPageFade: true,
           redirectUrl: targetPath,
         },
         {
@@ -600,9 +618,11 @@ export default function SiteProtected() {
 async function resolveRedirectTarget(
   sanity: any,
   protection: ProtectionConfig,
-  fallbackPath: string
+  fallbackPath: string,
+  locale: {pathPrefix?: string}
 ): Promise<string> {
   let targetPath = fallbackPath;
+  const pathPrefix = locale.pathPrefix || '';
 
   if (protection.redirectPage?._ref) {
     try {
@@ -619,15 +639,28 @@ async function resolveRedirectTarget(
 
       if (pageData) {
         if (pageData._type === 'home') {
-          targetPath = '/';
+          targetPath = pathPrefix || '/';
         } else if (pageData._type === 'page' && pageData.slug) {
-          targetPath = `/pages/${pageData.slug}`;
+          targetPath = `${pathPrefix}/${pageData.slug}`;
+        } else if (pageData._type === 'collection' && pageData.handle) {
+          targetPath = `${pathPrefix}/collections/${pageData.handle}`;
+        } else if (pageData._type === 'product' && pageData.handle) {
+          targetPath = `${pathPrefix}/products/${pageData.handle}`;
         } else if (pageData.handle) {
-          targetPath = `/${pageData.handle}`;
+          // Fallback for other types with handle
+          targetPath = `${pathPrefix}/${pageData.handle}`;
         }
       }
     } catch (error) {
       console.error('[Site Protection] Error resolving redirect page:', error);
+    }
+  } else {
+    // If no redirectPage is set, ensure fallbackPath has locale prefix if it's a collection/product path
+    if (pathPrefix && fallbackPath && !fallbackPath.startsWith(pathPrefix)) {
+      // Check if it's a collection or product path that needs the prefix
+      if (fallbackPath.startsWith('/collections/') || fallbackPath.startsWith('/products/')) {
+        targetPath = `${pathPrefix}${fallbackPath}`;
+      }
     }
   }
 

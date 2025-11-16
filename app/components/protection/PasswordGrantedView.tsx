@@ -1,16 +1,23 @@
-import {useEffect, useState} from 'react';
+import {Form} from '@remix-run/react';
+import {useEffect, useRef, useState} from 'react';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {useCountdown} from '~/hooks/use-countdown';
 import {Button} from '~/components/ui/button';
+import {JoinEarlyAccessDialog} from '~/components/games/join-early-access-dialog';
+import {GameHelpDialog} from '~/components/games/game-help-dialog';
 
 interface PasswordGrantedViewProps {
   protection: ProtectionConfig;
   protectionContext: ProtectionContext;
+  redirectTo?: string;
   isOverlay?: boolean;
   isSidebar?: boolean;
 }
 
 function TimeUnit({value, label}: {value: number; label: string}) {
+  // Handle pluralization: remove 's' if value is 1
+  const displayLabel = value === 1 ? label.slice(0, -1) : label;
+
   return (
     <div className="flex flex-col items-center" style={{minWidth: '60px'}}>
       <div
@@ -33,7 +40,7 @@ function TimeUnit({value, label}: {value: number; label: string}) {
           minHeight: '20px'
         }}
       >
-        {label}
+        {displayLabel}
       </div>
     </div>
   );
@@ -46,10 +53,14 @@ function TimeUnit({value, label}: {value: number; label: string}) {
 export function PasswordGrantedView({
   protection,
   protectionContext,
+  redirectTo,
   isOverlay = false,
   isSidebar = false,
 }: PasswordGrantedViewProps) {
   const [isHydrated, setIsHydrated] = useState(false);
+  const [joinOpen, setJoinOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const hasSubmittedExpirationRef = useRef(false);
 
   // Use countdown hook
   const { time: timeLeft, isExpired } = useCountdown({
@@ -61,12 +72,16 @@ export function PasswordGrantedView({
     setIsHydrated(true);
   }, []);
 
-  // Reload page when countdown expires
+  // Handle countdown expiration
   useEffect(() => {
-    if (isExpired && protection?.countdown) {
-      window.location.reload();
+    if (isExpired && protection?.countdown && !hasSubmittedExpirationRef.current && protection.password) {
+      hasSubmittedExpirationRef.current = true;
+      const form = document.getElementById('countdown-expired-form') as HTMLFormElement;
+      if (form) {
+        form.requestSubmit();
+      }
     }
-  }, [isExpired, protection?.countdown]);
+  }, [isExpired, protection?.countdown, protection?.password]);
 
   // Get localized content with state-specific fallbacks
   const title = getLocalizedValue(protection.passwordGrantedTitle) || 'Access Granted';
@@ -76,59 +91,76 @@ export function PasswordGrantedView({
   // Sidebar layout for protected puzzle
   if (isSidebar) {
     return (
-      <div className="flex flex-col w-full max-w-sm p-6 space-y-6">
+      <>
+        {/* Hidden form for countdown expiration */}
+        {protection.password && (
+          <Form method="post" id="countdown-expired-form" className="hidden">
+            <input type="hidden" name="password" value={protection.password} />
+            <input type="hidden" name="redirectTo" value={redirectTo || ''} />
+          </Form>
+        )}
+        <div className="flex flex-col p-6 space-y-6 w-[350px] mx-auto">
         {protection.countdown && (
           <div className="text-center">
-            <p className="text-sm font-normal mb-4">{countdownLabel}</p>
+            <p className="text-sm font-normal mb-4 uppercase tracking-wider">{countdownLabel}</p>
             <div
-              className="flex justify-center gap-2 text-black text-base"
+              className="flex justify-center gap-2 text-foreground"
               style={{
+                minHeight: '80px',
                 opacity: isHydrated && timeLeft ? 1 : 0.3,
                 transition: 'opacity 0.3s ease-in-out'
               }}
             >
-              <p className="font-bold tabular-nums">
-                {timeLeft?.days ? `${timeLeft.days}d ` : ''}
-                {String(timeLeft?.hours ?? 0).padStart(2, '0')}:
-                {String(timeLeft?.minutes ?? 0).padStart(2, '0')}:
-                {String(timeLeft?.seconds ?? 0).padStart(2, '0')}
-              </p>
+              <TimeUnit value={timeLeft?.days ?? 0} label="Days" />
+              <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+              <TimeUnit value={timeLeft?.hours ?? 0} label="Hours" />
+              <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+              <TimeUnit value={timeLeft?.minutes ?? 0} label="Minutes" />
+              <div className="text-3xl md:text-4xl font-bold self-start mt-2" style={{opacity: 0.5}}>:</div>
+              <TimeUnit value={timeLeft?.seconds ?? 0} label="Seconds" />
             </div>
           </div>
         )}
 
         {/* Success indicator */}
         <div>
-          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-center">
-            <div className="text-green-500 text-3xl mb-2">✓</div>
-            <p className="text-base font-semibold text-green-700 dark:text-green-300">
-              Password Accepted
-            </p>
+          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-center ">
+          You have now entered the queue.
           </div>
         </div>
 
-        {/* Newsletter CTA - Placeholder */}
+        {/* Newsletter CTA */}
         <div>
-          <Button className="w-full h-auto rounded-[3px] bg-[#2c2c2c] px-6 py-4 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
-            JOIN FOR EARLY ACCESS
-          </Button>
+          <JoinEarlyAccessDialog 
+            open={joinOpen} 
+            onOpenChange={setJoinOpen}
+            password={protection.password}
+            redirectTo={redirectTo}
+          >
+            <Button className="w-full">
+              JOIN FOR EARLY ACCESS
+            </Button>
+          </JoinEarlyAccessDialog>
         </div>
 
         {/* Help Icon */}
         <div className="flex justify-center">
-          <button
-            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
-            aria-label="Help"
-            type="button"
-          >
-            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
-            </svg>
-          </button>
+          <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
+            <button
+              className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+              aria-label="Help"
+              type="button"
+            >
+              <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+              </svg>
+            </button>
+          </GameHelpDialog>
         </div>
       </div>
+      </>
     );
   }
 
@@ -171,15 +203,7 @@ export function PasswordGrantedView({
 
       {/* Success indicator */}
       <div className="mb-8">
-        <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-6 text-center">
-          <div className="text-green-500 text-4xl mb-2">✓</div>
-          <p className="text-lg font-semibold text-green-700 dark:text-green-300 mb-2">
-            Password Accepted
-          </p>
-          <p className="text-muted-foreground">
-            Your access has been verified. Please wait for the countdown to complete.
-          </p>
-        </div>
+       <p>You have now entered the queue.</p>
       </div>
 
       {/* Countdown display */}

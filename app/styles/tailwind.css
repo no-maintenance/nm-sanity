@@ -199,6 +199,13 @@
     -webkit-font-smoothing: var(--body-font-webkit-font-smoothing);
     -moz-osx-font-smoothing: var(--body-font-moz-osx-font-smoothing);
   }
+
+  /* Prevent Safari zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
   button,
   [role='button'] {
     cursor: pointer;

@@ -11,6 +11,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '~/components/ui/drawer';
+import {CountdownBanner} from './countdown-banner';
 
 interface PasswordEntryDrawerProps {
   children: React.ReactNode;
@@ -18,6 +19,8 @@ interface PasswordEntryDrawerProps {
   onOpenChange?: (open: boolean) => void;
   redirectTo?: string;
   error?: string;
+  countdown?: string;
+  countdownLabel?: string;
 }
 
 export function PasswordEntryDrawer({
@@ -26,6 +29,8 @@ export function PasswordEntryDrawer({
   onOpenChange,
   redirectTo,
   error,
+  countdown,
+  countdownLabel = 'SALE BEGINS IN',
 }: PasswordEntryDrawerProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [showPopup, setShowPopup] = useState(false);
@@ -93,6 +98,11 @@ export function PasswordEntryDrawer({
             Enter the password from the newsletter sign up to enter the sale.
           </DrawerDescription>
         </DrawerHeader>
+        {countdown && (
+          <div className="px-6 pb-4">
+            <CountdownBanner countdown={countdown} label={countdownLabel} />
+          </div>
+        )}
         <div className="px-6 pb-6">
           <Form method="post" className="space-y-4">
             <input type="hidden" name="redirectTo" value={redirectTo} />

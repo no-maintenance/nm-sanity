@@ -73,7 +73,6 @@ export default defineType({
       options: {
         dateFormat: 'YYYY-MM-DD',
         timeFormat: 'HH:mm',
-        timeStep: 15,
       },
       validation: (Rule) => Rule.custom((value, context) => {
         const parent = context?.parent as any;

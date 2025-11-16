@@ -2,10 +2,11 @@ import { CircleHelp, Lock } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '~/components/ui/button';
 import type { SanityStrandsPuzzle } from '~/lib/games/strands.queries';
-import { getGridString, getGridData } from '~/lib/games/grid-utils';
+import { getGridString, getGridData, getCanonicalPaths } from '~/lib/games/grid-utils';
 import { useStrandsGame } from '~/hooks/games/use-strands-game';
 import { useStrandsInput } from '~/hooks/games/use-strands-input';
 import { useCountdown } from '~/hooks/use-countdown';
+import { SPANGRAM_COLOR } from '~/lib/games/strands-logic';
 import { StrandsBoard } from './strands-board';
 import { HintButton } from './hint-button';
 import { HintWordAnimation } from './hint-word-animation';
@@ -13,6 +14,7 @@ import { HintDisabledDialog } from './hint-disabled-dialog';
 import { JoinEarlyAccessDialog } from './join-early-access-dialog';
 import { CountdownBanner } from './countdown-banner';
 import { GameHelpDialog } from './game-help-dialog';
+import { PasswordEntryDrawer } from './password-entry-drawer';
 
 const GRID_ROWS = 8;
 const GRID_COLS = 6;
@@ -34,6 +36,8 @@ interface StrandsGameProps {
   showCompletionAnimation?: boolean;
   /** Whether to fade out spangram (delayed) */
   fadeOutSpangram?: boolean;
+  /** Protection view state (locked, password-granted, countdown-expired) */
+  protectionViewState?: 'locked' | 'password-granted' | 'countdown-expired';
 }
 
 export function StrandsGame({
@@ -45,6 +49,7 @@ export function StrandsGame({
   hideThemeDisplay = false,
   showCompletionAnimation = false,
   fadeOutSpangram = false,
+  protectionViewState,
 }: StrandsGameProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const hintButtonRef = useRef<HTMLButtonElement>(null);
@@ -68,7 +73,7 @@ export function StrandsGame({
   const theme = puzzle.theme?.clue || puzzle.title;
 
   // Use countdown hook for protection countdown
-  const { formatted: countdownDisplay } = useCountdown({
+  const { formatted: countdownDisplay, isExpired: countdownExpired } = useCountdown({
     targetDate: protectionCountdown,
   });
 
@@ -93,7 +98,7 @@ export function StrandsGame({
     state.foundWords.has(tw.word.toUpperCase())
   ).length;
 
-  const countdownLabel = 'SALE BEGINS IN'
+  const countdownLabel = countdownExpired ? 'NOW LIVE' : 'SALE BEGINS IN'
 
   const alignedRowClass = 'mx-auto w-full max-w-[400px]';
 
@@ -202,24 +207,18 @@ export function StrandsGame({
   return (
     <div className="flex min-h-screen w-full flex-col ">
       {/* Header */}
-      <header className="">
+      <header className={showCompletionAnimation ? 'animate-fade-out-blur' : ''}>
         <div className="flex items-center justify-between py-2 md:hidden px-2 sm:px-6 gap-2">
           <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
-            <Button size="sm" className="w-full">
+            <Button size="sm" className="w-1/2">
               Rules
             </Button>
           </GameHelpDialog>
           <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
-            <Button size="sm" className="w-full">
+            <Button size="sm" className="w-1/2">
               Join For Password
             </Button>
           </JoinEarlyAccessDialog>
-          {isProtected && (
-            <Button size="sm" className="w-full">
-              Enter
-            </Button>
-          )}
-
         </div>
         {/* Mobile countdown banner */}
         <div className="md:hidden">
@@ -228,6 +227,27 @@ export function StrandsGame({
             label={countdownLabel}
           />
         </div>
+        {isProtected && (
+          <div className="py-2 md:hidden px-2 sm:px-6">
+            {protectionViewState === 'password-granted' ? (
+              <div className="w-full text-center py-2 px-4 font-bold text-sm uppercase">
+                YOU ARE NOW IN THE QUEUE
+              </div>
+            ) : (
+              <PasswordEntryDrawer
+                open={passwordOpen}
+                onOpenChange={setPasswordOpen}
+                redirectTo={typeof window !== 'undefined' ? window.location.pathname : '/'}
+                countdown={countdownDisplay}
+                countdownLabel={countdownLabel}
+              >
+                <Button size="sm" className="w-full">
+                  ENTER THE PRIVATE SALE
+                </Button>
+              </PasswordEntryDrawer>
+            )}
+          </div>
+        )}
       </header>
 
       <div className="flex flex-1 md:items-center justify-center  px-4 py-6 sm:px-6">
@@ -287,6 +307,7 @@ export function StrandsGame({
               onGetCellPositions={handleGetCellPositions}
               showCompletionAnimation={showCompletionAnimation}
               fadeOutSpangram={fadeOutSpangram}
+              puzzle={puzzle}
             />
           </div>
 

@@ -7,6 +7,7 @@ import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-st
 import {CountdownTimer} from './countdown-timer';
 import {useCountdown} from '~/hooks/use-countdown';
 import {GameHelpDialog} from '../games/game-help-dialog';
+import {JoinEarlyAccessDialog} from '../games/join-early-access-dialog';
 
 interface LockedViewProps {
   protection: ProtectionConfig;
@@ -31,6 +32,7 @@ export function LockedView({
 }: LockedViewProps) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [joinOpen, setJoinOpen] = useState(false);
 
   const showPassword = ['password', 'both', 'either'].includes(protection.accessMode || '');
   const showCountdown = ['countdown', 'both', 'either'].includes(protection.accessMode || '');
@@ -42,11 +44,6 @@ export function LockedView({
 
   // Check if countdown has already expired (for showing "NOW LIVE" instead of timer)
   const countdownExpired = isExpired;
-  const shouldPlayCompletionAnimation =
-    isSidebar &&
-    protection.accessMode === 'both' &&
-    countdownExpired &&
-    Boolean(protection.embeddedPuzzle);
 
   // Handle hydration
   useEffect(() => {
@@ -84,12 +81,9 @@ export function LockedView({
 
         {/* Password Section */}
         {showPassword && (
-          <div className="space-y-3  max-w-[350px] mx-auto w-full">
+          <div className="space-y-3  w-[350px] mx-auto">
             <Form method="post" className="space-y-3">
               <input type="hidden" name="redirectTo" value={redirectTo} />
-              {shouldPlayCompletionAnimation && (
-                <input type="hidden" name="playCompletionAnimation" value="true" />
-              )}
               <Input
                 type="password"
                 name="password"
@@ -107,9 +101,16 @@ export function LockedView({
                 Enter Site
               </Button>
             </Form>
-            <Button className="w-full">
-              JOIN FOR PASSWORD
-            </Button>
+            <JoinEarlyAccessDialog 
+              open={joinOpen} 
+              onOpenChange={setJoinOpen}
+              password={protection.password}
+              redirectTo={redirectTo}
+            >
+              <Button className="w-full">
+                JOIN FOR PASSWORD
+              </Button>
+            </JoinEarlyAccessDialog>
           </div>
         )}
 
@@ -204,9 +205,6 @@ export function LockedView({
       {showPassword && (
         <Form method="post" className="space-y-4">
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          {shouldPlayCompletionAnimation && (
-            <input type="hidden" name="playCompletionAnimation" value="true" />
-          )}
           <div className="space-y-4">
             <Input
               type="password"

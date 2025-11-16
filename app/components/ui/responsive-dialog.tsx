@@ -73,7 +73,9 @@ export function ResponsiveDialog({
   open,
   onOpenChange,
 }: ResponsiveDialogProps) {
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isDesktop = useMediaQuery('(min-width: 768px)', {
+    initializeWithValue: false,
+  });
 
   if (isDesktop) {
     return (
@@ -132,7 +134,7 @@ export function ResponsiveDialogContent({
 
   return (
     <DrawerContent className={className}>
-      <div className="max-h-[90vh] overflow-y-auto">{children}</div>
+      {children}
     </DrawerContent>
   );
 }

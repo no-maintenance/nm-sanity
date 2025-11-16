@@ -58,11 +58,13 @@ export function NewsletterForm({
     id,
     submitBtn,
     source,
+    onSuccess,
   }: {
     submitBtn: string;
     hasSubmitBtn?: boolean;
     id?: string;
     source: string;
+    onSuccess?: () => void;
   }) {
     const {publish} = useAnalytics();
   
@@ -92,9 +94,8 @@ export function NewsletterForm({
             publish('custom_newsletter_signup', {source, data});
   
             form.reset();
-            toast("You are now subscribed to our newsletter", {
-              description: "We will keep you posted on upcoming promotions and releases",
-            });
+            // Call onSuccess callback if provided
+            onSuccess?.();
           } else {
             toast("Uh oh! Something went wrong", {
               description: "There was a problem with your request. Please try again later",
@@ -132,6 +133,7 @@ export function NewsletterForm({
                         id={'email'}
                         type="email"
                         placeholder="Enter your email address"
+                        style={{ fontSize: '16px' }}
                         {...field}
                       />
                     </InputWrapper>
@@ -140,7 +142,7 @@ export function NewsletterForm({
                         type="submit"
                         disabled={isLoading}
                         className={
-                          'absolute right-0 bottom-[3px] lg:pb-[6px] transform px-2 outline-offset-0'
+                          'absolute right-0 bottom-[3px] pb-[3px] lg:pb-[6px] transform px-2 outline-offset-0'
                         }
                       >
                         {isLoading ? <p>Loading...</p> : submitBtn}

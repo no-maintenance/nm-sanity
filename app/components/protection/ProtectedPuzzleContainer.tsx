@@ -30,6 +30,7 @@ export function ProtectedPuzzleContainer({
   // Animation state
   const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
   const [fadeOutSpangram, setFadeOutSpangram] = useState(false);
+  const [showPageFade, setShowPageFade] = useState(false);
   const navigate = useNavigate();
 
   // Mark as submitted if actionData indicates puzzle was already completed
@@ -70,25 +71,24 @@ export function ProtectedPuzzleContainer({
     }, 4000); // 3s wait + 1s fade
   }, [actionData]);
 
+  // Handle page fade-out when password/countdown conditions are satisfied
   useEffect(() => {
-    if (!actionData?.startCompletionAnimation || showCompletionAnimation) {
+    if (!actionData?.startPageFade || showPageFade) {
       return;
     }
 
-    setShowCompletionAnimation(true);
-    setTimeout(() => {
-      setFadeOutSpangram(true);
-    }, 3000);
+    setShowPageFade(true);
 
     const redirectTarget = actionData.redirectUrl || redirectTo;
+    // Fade out over 1s, then redirect
     const navigateTimeout = setTimeout(() => {
       navigate(redirectTarget);
-    }, 4000);
+    }, 1000);
 
     return () => {
       clearTimeout(navigateTimeout);
     };
-  }, [actionData, navigate, redirectTo, showCompletionAnimation]);
+  }, [actionData, navigate, redirectTo, showPageFade]);
 
   return (
     <div className="relative min-h-screen">
@@ -112,7 +112,7 @@ export function ProtectedPuzzleContainer({
 
       <ProtectionBackground
         protection={protection}
-        animationClass={showCompletionAnimation ? 'animate-fade-out-blur' : undefined}
+        animationClass={(showCompletionAnimation || showPageFade) ? 'animate-fade-out-blur' : undefined}
       />
 
       {/* Hidden form for puzzle completion */}
@@ -124,36 +124,44 @@ export function ProtectedPuzzleContainer({
       {/* Two-column layout on desktop, single column on mobile */}
       <div className="relative z-10 flex flex-col md:flex-row h-screen">
         {/* Left column: Protection info (desktop only) */}
-        <div className={`hidden md:flex md:flex-1 flex-col items-center justify-center ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
+        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center">
+          {/* Locked and CountdownExpired views should fade, but PasswordGranted should remain visible */}
           {viewState === 'locked' && (
-            <LockedView
-              protection={protection}
-              protectionContext={protectionContext}
-              redirectTo={redirectTo}
-              actionData={actionData}
-              isSidebar={true}
-            />
+            <div className={(showCompletionAnimation || showPageFade) ? 'animate-fade-out-blur' : ''}>
+              <LockedView
+                protection={protection}
+                protectionContext={protectionContext}
+                redirectTo={redirectTo}
+                actionData={actionData}
+                isSidebar={true}
+              />
+            </div>
           )}
           {viewState === 'password-granted' && (
-            <PasswordGrantedView
-              protection={protection}
-              protectionContext={protectionContext}
-              isSidebar={true}
-            />
+            <div className={showPageFade ? 'animate-fade-out-blur' : ''}>
+              <PasswordGrantedView
+                protection={protection}
+                protectionContext={protectionContext}
+                redirectTo={redirectTo}
+                isSidebar={true}
+              />
+            </div>
           )}
           {viewState === 'countdown-expired' && (
-            <CountdownExpiredView
-              protection={protection}
-              protectionContext={protectionContext}
-              redirectTo={redirectTo}
-              actionData={actionData}
-              isSidebar={true}
-            />
+            <div className={(showCompletionAnimation || showPageFade) ? 'animate-fade-out-blur' : ''}>
+              <CountdownExpiredView
+                protection={protection}
+                protectionContext={protectionContext}
+                redirectTo={redirectTo}
+                actionData={actionData}
+                isSidebar={true}
+              />
+            </div>
           )}
         </div>
 
         {/* Right column: Puzzle game */}
-        <div className="flex-1 flex items-center justify-center overflow-auto">
+        <div className={`flex-1 flex items-center justify-center overflow-auto ${showPageFade ? 'animate-fade-out-blur' : ''}`}>
           <StrandsGame
             puzzle={puzzle}
             onPuzzleComplete={handlePuzzleComplete}
@@ -162,6 +170,7 @@ export function ProtectedPuzzleContainer({
             hideHeaderOnMobile={true}
             showCompletionAnimation={showCompletionAnimation}
             fadeOutSpangram={fadeOutSpangram}
+            protectionViewState={viewState === 'fully-unlocked' ? undefined : viewState}
           />
         </div>
       </div>

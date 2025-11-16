@@ -1,7 +1,10 @@
 import {Form, useActionData} from '@remix-run/react';
+import {useState} from 'react';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
+import {JoinEarlyAccessDialog} from '~/components/games/join-early-access-dialog';
+import {GameHelpDialog} from '~/components/games/game-help-dialog';
 
 interface CountdownExpiredViewProps {
   protection: ProtectionConfig;
@@ -24,6 +27,9 @@ export function CountdownExpiredView({
   isOverlay = false,
   isSidebar = false,
 }: CountdownExpiredViewProps) {
+  const [joinOpen, setJoinOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+
   // Get localized content with state-specific fallbacks
   const title = getLocalizedValue(protection.countdownExpiredTitle) || 'Now Available';
   const message = getLocalizedValue(protection.countdownExpiredMessage) || 'Enter your password to access the content.';
@@ -32,16 +38,11 @@ export function CountdownExpiredView({
   // Sidebar layout for protected puzzle
   if (isSidebar) {
     return (
-      <div className="flex flex-col w-full max-w-sm p-6 space-y-6">
+      <div className="flex flex-col w-[350px] mx-auto space-y-6">
         {/* Launch indicator */}
         
-        <div>
-          <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4 text-center">
-            <div className="text-blue-500 text-3xl mb-2">🚀</div>
-            <p className="text-base font-semibold text-blue-700 dark:text-blue-300">
-              Now Live!
-            </p>
-          </div>
+        <div className="text-center"> 
+          <p className="text-lg md:text-3xl font-bold mb-8 text-foreground">NOW LIVE</p>
         </div>
 
         {/* Password Section */}
@@ -67,26 +68,30 @@ export function CountdownExpiredView({
           </Form>
         </div>
 
-        {/* Newsletter CTA - Placeholder */}
+        {/* Newsletter CTA */}
         <div>
-          <Button className="w-full h-auto rounded-[3px] bg-[#2c2c2c] px-6 py-4 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90">
-            JOIN FOR EARLY ACCESS
-          </Button>
+          <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
+            <Button className="w-full">
+              JOIN FOR EARLY ACCESS
+            </Button>
+          </JoinEarlyAccessDialog>
         </div>
 
         {/* Help Icon */}
         <div className="flex justify-center">
-          <button
-            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
-            aria-label="Help"
-            type="button"
-          >
-            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
-            </svg>
-          </button>
+          <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
+            <button
+              className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+              aria-label="Help"
+              type="button"
+            >
+              <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+              </svg>
+            </button>
+          </GameHelpDialog>
         </div>
       </div>
     );

@@ -1,6 +1,8 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {cn} from '~/lib/utils';
 import {gridToString, HINT_COLOR, SPANGRAM_COLOR, type GridData} from '~/lib/games/strands-logic';
+import type {SanityStrandsPuzzle} from '~/lib/games/strands.queries';
+import {getCanonicalPaths} from '~/lib/games/grid-utils';
 
 // Helper function to convert Tailwind color classes to CSS colors
 function getColorFromTailwindClass(tailwindClass: string): string {
@@ -61,6 +63,8 @@ interface StrandsBoardProps {
   showCompletionAnimation?: boolean;
   /** Whether to fade out spangram (delayed) */
   fadeOutSpangram?: boolean;
+  /** Puzzle data (needed to highlight spangram on completion animation) */
+  puzzle?: SanityStrandsPuzzle;
 }
 
 export function StrandsBoard({
@@ -81,6 +85,7 @@ export function StrandsBoard({
   onGetCellPositions,
   showCompletionAnimation = false,
   fadeOutSpangram = false,
+  puzzle,
 }: StrandsBoardProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const cellRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -214,6 +219,28 @@ export function StrandsBoard({
   // Word-level locking prevents finding the same word twice
   const usedCells = new Set<number>();
   const spangramCells = new Set<number>();
+
+  // Compute spangram cells from canonical paths when showCompletionAnimation is true
+  // This ensures spangram is highlighted even if not found yet
+  const completionSpangramPath = useMemo(() => {
+    if (!showCompletionAnimation || !puzzle) return null;
+    
+    const spangramWord = puzzle.themeWords.find(tw => tw.isSpangram);
+    if (!spangramWord) return null;
+    
+    const spangramWordUpper = spangramWord.word.toUpperCase();
+    
+    // If spangram is already found, use existing path
+    if (wordPaths[spangramWordUpper]) {
+      return wordPaths[spangramWordUpper];
+    }
+    
+    // Otherwise, get from canonical paths
+    const canonicalPaths = getCanonicalPaths(puzzle);
+    if (!canonicalPaths) return null;
+    
+    return canonicalPaths[spangramWordUpper] || null;
+  }, [showCompletionAnimation, puzzle, wordPaths]);
 
   // Helper function to generate connector paths between cells
   const generateConnectorPaths = useCallback((
@@ -366,6 +393,13 @@ export function StrandsBoard({
     }
   });
 
+  // Add spangram cells from completion animation path if needed
+  if (completionSpangramPath) {
+    completionSpangramPath.forEach(index => {
+      spangramCells.add(index);
+    });
+  }
+
   // Safety check for grid
   if (!grid) {
     return (
@@ -502,12 +536,18 @@ export function StrandsBoard({
 
             // Check if this cell is part of any found theme word
             const isInFoundThemeWord = Object.values(wordPaths).some(path => path.includes(index));
+            
+            // If showCompletionAnimation is true and this is a spangram cell, ensure it's highlighted
+            const isCompletionSpangramCell = completionSpangramPath?.includes(index) || false;
+            const shouldHighlightSpangram = showCompletionAnimation && isCompletionSpangramCell && !isInFoundThemeWord;
 
             // Separate hint colors from theme colors
             const hintColors = colors.filter(color => color === HINT_COLOR);
-            // Only show theme colors if the cell is part of a found theme word
-            const themeColors = isInFoundThemeWord
-              ? colors.filter(color => color !== HINT_COLOR)
+            // Only show theme colors if the cell is part of a found theme word OR if it's a spangram cell in completion animation
+            const themeColors = (isInFoundThemeWord || shouldHighlightSpangram)
+              ? (shouldHighlightSpangram 
+                  ? [SPANGRAM_COLOR] // Force spangram color for completion animation
+                  : colors.filter(color => color !== HINT_COLOR))
               : [];
             // Prioritize spangram color if present, otherwise use first theme color
             const spangramColor = themeColors.find(color => color === SPANGRAM_COLOR);
