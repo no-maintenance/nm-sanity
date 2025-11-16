@@ -122,7 +122,8 @@ export async function requireUnprotectedAccess(
             accessMode,
             password,
             countdown,
-            redirectPage
+            redirectPage,
+            puzzleGrantsAccess
           }
         }.protectionConfig,
         "globalProtection": *[_type == "settings"][0]{
@@ -133,7 +134,8 @@ export async function requireUnprotectedAccess(
             accessMode,
             password,
             countdown,
-            redirectPage
+            redirectPage,
+            puzzleGrantsAccess
           }
         }.siteProtection
       }`;
@@ -152,7 +154,8 @@ export async function requireUnprotectedAccess(
               accessMode,
               password,
               countdown,
-              redirectPage
+              redirectPage,
+              puzzleGrantsAccess
             }
           }
         }.collection.protectionConfig,
@@ -164,7 +167,8 @@ export async function requireUnprotectedAccess(
             accessMode,
             password,
             countdown,
-            redirectPage
+            redirectPage,
+            puzzleGrantsAccess
           }
         }.siteProtection
       }`;
@@ -181,7 +185,8 @@ export async function requireUnprotectedAccess(
           accessMode,
           password,
           countdown,
-          redirectPage
+          redirectPage,
+          puzzleGrantsAccess
         }
       }`;
   }
@@ -229,18 +234,23 @@ export async function requireUnprotectedAccess(
   const countdownExpired = isCountdownExpired(activeProtection.countdown);
 
   // Determine the current protection state using the new state management system
+  const hasPuzzleAccess = activeProtection?._id
+    ? passwordSession.hasPuzzleCompletionFor(activeProtection._id)
+    : false;
+
   const protectionState = determineProtectionState(
     activeProtection,
     hasPasswordAuth,
-    countdownExpired
+    countdownExpired,
+    hasPuzzleAccess
   );
 
-  // If not fully unlocked, redirect to protected page with context and state info
+  // If not fully unlocked, redirect to protected page with context info
   if (protectionState.viewState !== 'fully-unlocked') {
-    const searchParams = new URLSearchParams({
-      redirectTo: url.pathname + url.search,
-      state: protectionState.viewState,
-    });
+    // Persist attempted path so the protection page doesn't need query params
+    passwordSession.setPendingRedirect(url.pathname + url.search);
+
+    const searchParams = new URLSearchParams();
 
     // Add context information for the protection page
     if (protectionSource === 'collection') {
@@ -255,11 +265,13 @@ export async function requireUnprotectedAccess(
       }
     }
 
-    const redirectUrl = `/site-protected?${searchParams.toString()}`;
+    const queryString = searchParams.toString();
+    const redirectUrl = queryString ? `/site-protected?${queryString}` : '/site-protected';
 
     throw redirect(redirectUrl, {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Set-Cookie': await passwordSession.commit(),
       },
     });
   }

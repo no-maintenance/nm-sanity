@@ -230,12 +230,12 @@ export function StrandsGame({
         </div>
       </header>
 
-      <div className="flex flex-1 items-center justify-center  px-4 py-6 sm:px-6">
+      <div className="flex flex-1 md:items-center justify-center  px-4 py-6 sm:px-6">
         <div>
 
           {/* Today's Theme */}
           {!hideThemeDisplay && theme && (
-            <div className={`${alignedRowClass} mb-1`}>
+            <div className={`${alignedRowClass} mb-1 ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
               <div className="h-12 w-full rounded-md border border-foreground">
                 <div className="flex h-full flex-col items-center justify-center">
                   <div className="w-full border-b border-foreground py-0.5 text-center">
@@ -251,7 +251,7 @@ export function StrandsGame({
             </div>
           )}
 
-          <div className={`${alignedRowClass} px-2 mb-2`}>
+          <div className={`${alignedRowClass} px-2 mb-2 ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
             <div className="flex min-h-[32px] md:min-h-[36px] items-center justify-center">
               {state.notificationMessage ? (
                 <p className="text-base md:text-lg lg:text-xl font-bold leading-normal text-destructive uppercase">
@@ -290,7 +290,7 @@ export function StrandsGame({
             />
           </div>
 
-          <div className={`${alignedRowClass} w-full px-2`}>
+          <div className={`${alignedRowClass} w-full px-2 ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
             <div className="flex gap-4 pt-4 sm:flex-row sm:items-center justify-between">
               <div className="flex items-center gap-4">
                 {state.hintsEarned === 0 ? (

@@ -1,4 +1,4 @@
-import {Form} from '@remix-run/react';
+import {Form, useNavigate} from '@remix-run/react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {StrandsGame} from '~/components/games/strands-game';
 import type {ProtectionConfig, ProtectionContext, ProtectionViewState} from '~/lib/site-protection-states';
@@ -30,6 +30,7 @@ export function ProtectedPuzzleContainer({
   // Animation state
   const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
   const [fadeOutSpangram, setFadeOutSpangram] = useState(false);
+  const navigate = useNavigate();
 
   // Mark as submitted if actionData indicates puzzle was already completed
   // This prevents re-submission after a successful action
@@ -68,6 +69,26 @@ export function ProtectedPuzzleContainer({
       }
     }, 4000); // 3s wait + 1s fade
   }, [actionData]);
+
+  useEffect(() => {
+    if (!actionData?.startCompletionAnimation || showCompletionAnimation) {
+      return;
+    }
+
+    setShowCompletionAnimation(true);
+    setTimeout(() => {
+      setFadeOutSpangram(true);
+    }, 3000);
+
+    const redirectTarget = actionData.redirectUrl || redirectTo;
+    const navigateTimeout = setTimeout(() => {
+      navigate(redirectTarget);
+    }, 4000);
+
+    return () => {
+      clearTimeout(navigateTimeout);
+    };
+  }, [actionData, navigate, redirectTo, showCompletionAnimation]);
 
   return (
     <div className="relative min-h-screen">

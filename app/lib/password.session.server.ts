@@ -93,6 +93,51 @@ export class PasswordSession {
     return Object.keys(authentications).filter(id => authentications[id] === true);
   }
 
+  /**
+   * Track puzzle completions that should unlock protection instantly
+   */
+  hasPuzzleCompletionFor(protectionConfigId: string): boolean {
+    const puzzleAccess = this.session.get('puzzleAccess') || {};
+    return puzzleAccess[protectionConfigId] === true;
+  }
+
+  markPuzzleCompletion(protectionConfigId: string): void {
+    const puzzleAccess = this.session.get('puzzleAccess') || {};
+    const puzzleTimestamps = this.session.get('puzzleCompletionTimestamps') || {};
+
+    puzzleAccess[protectionConfigId] = true;
+    puzzleTimestamps[protectionConfigId] = new Date().toISOString();
+
+    this.session.set('puzzleAccess', puzzleAccess);
+    this.session.set('puzzleCompletionTimestamps', puzzleTimestamps);
+  }
+
+  clearPuzzleCompletion(protectionConfigId: string): void {
+    const puzzleAccess = this.session.get('puzzleAccess') || {};
+    const puzzleTimestamps = this.session.get('puzzleCompletionTimestamps') || {};
+
+    delete puzzleAccess[protectionConfigId];
+    delete puzzleTimestamps[protectionConfigId];
+
+    this.session.set('puzzleAccess', puzzleAccess);
+    this.session.set('puzzleCompletionTimestamps', puzzleTimestamps);
+  }
+
+  /**
+   * Persist the intended redirect target between requests
+   */
+  setPendingRedirect(targetPath: string): void {
+    this.session.set('pendingRedirect', targetPath);
+  }
+
+  getPendingRedirect(): string | null {
+    return this.session.get('pendingRedirect') || null;
+  }
+
+  clearPendingRedirect(): void {
+    this.session.unset('pendingRedirect');
+  }
+
   commit(): Promise<string> {
     return this.sessionStorage.commitSession(this.session);
   }

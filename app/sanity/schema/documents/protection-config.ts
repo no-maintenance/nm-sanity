@@ -144,7 +144,7 @@ export default defineType({
       title: 'Redirect After Access',
       description: 'Page to redirect to after successful access (defaults to homepage)',
       type: 'reference',
-      to: [{type: 'page'}, {type: 'home'}],
+      to: [{type: 'page'}, {type: 'home'}, {type: 'collection'}, {type: 'product'}],
       hidden: ({parent}) => !parent?.enabled,
     }),
     defineField({

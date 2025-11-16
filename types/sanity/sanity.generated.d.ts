@@ -2804,6 +2804,18 @@ export type ProtectionConfig = {
         _type: 'reference';
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: 'home';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'collection';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'product';
       };
   embeddedPuzzle?: {
     _ref: string;

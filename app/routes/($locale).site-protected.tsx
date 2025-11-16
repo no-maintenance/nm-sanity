@@ -26,12 +26,24 @@ interface LoaderData {
 export async function loader({context, request}: LoaderFunctionArgs) {
   const {passwordSession, sanity, locale, env} = context;
   const url = new URL(request.url);
-  const redirectTo = url.searchParams.get('redirectTo') || '/';
+  const redirectParam = url.searchParams.get('redirectTo');
+  const pendingRedirect = passwordSession.getPendingRedirect();
+  let redirectTo = redirectParam || pendingRedirect || '/';
+  let sessionUpdated = false;
+
+  if (redirectParam && redirectParam !== pendingRedirect) {
+    passwordSession.setPendingRedirect(redirectParam);
+    sessionUpdated = true;
+  }
 
   // Check if site protection is bypassed via environment variable
   const bypassProtection = env?.BYPASS_SITE_PROTECTION === 'true';
   if (bypassProtection) {
-    return redirect(redirectTo);
+    const headers: HeadersInit = {};
+    if (sessionUpdated) {
+      headers['Set-Cookie'] = await passwordSession.commit();
+    }
+    return redirect(redirectTo, {headers});
   }
 
   // Parse protection context from URL parameters
@@ -212,15 +224,48 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     protectionSource = 'global';
   }
 
+  // Clean up query params we now track via session (redirectTo/state)
+  const cleanupSearchParams = new URLSearchParams(url.search);
+  let shouldCleanUrl = false;
+  if (cleanupSearchParams.has('redirectTo')) {
+    cleanupSearchParams.delete('redirectTo');
+    shouldCleanUrl = true;
+  }
+  if (cleanupSearchParams.has('state')) {
+    cleanupSearchParams.delete('state');
+    shouldCleanUrl = true;
+  }
+
+  if (shouldCleanUrl) {
+    const cleanQuery = cleanupSearchParams.toString();
+    const cleanUrl = cleanQuery ? `${url.pathname}?${cleanQuery}` : url.pathname;
+    const headers: HeadersInit = {};
+    if (sessionUpdated) {
+      headers['Set-Cookie'] = await passwordSession.commit();
+      sessionUpdated = false;
+    }
+    return redirect(cleanUrl, {headers});
+  }
+
   // If no protection config exists, redirect to intended page
   if (!protection) {
-    return redirect(redirectTo);
+    const headers: HeadersInit = {};
+    if (sessionUpdated) {
+      headers['Set-Cookie'] = await passwordSession.commit();
+      sessionUpdated = false;
+    }
+    return redirect(redirectTo, {headers});
   }
 
   // If protection is explicitly disabled, redirect to intended page
   // Note: undefined/missing enabled field is treated as enabled (matches schema initialValue)
   if (protection.enabled === false) {
-    return redirect(redirectTo);
+    const headers: HeadersInit = {};
+    if (sessionUpdated) {
+      headers['Set-Cookie'] = await passwordSession.commit();
+      sessionUpdated = false;
+    }
+    return redirect(redirectTo, {headers});
   }
 
   // Check user authentication status using granular authentication
@@ -236,42 +281,32 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     : false;
 
   // Determine the current protection state
+  const hasPuzzleAccess = protection._id
+    ? passwordSession.hasPuzzleCompletionFor(protection._id)
+    : false;
+
   const protectionState = determineProtectionState(
     protection,
     hasPasswordAuth,
-    isCountdownExpired
+    isCountdownExpired,
+    hasPuzzleAccess
   );
 
   // If fully unlocked, redirect to target page
   if (protectionState.viewState === 'fully-unlocked') {
     // Get redirect page path if configured
-    let targetPath = redirectTo;
-    if (protection.redirectPage?._ref) {
-      // Query for the page path
-      const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-        _type,
-        "slug": slug.current,
-        "handle": store.slug.current
-      }`;
-
-      const {data: pageData} = await sanity.loadQuery(
-        PAGE_PATH_QUERY,
-        {ref: protection.redirectPage._ref},
-      );
-
-      if (pageData) {
-        if (pageData._type === 'home') {
-          targetPath = '/';
-        } else if (pageData._type === 'page' && pageData.slug) {
-          targetPath = `/pages/${pageData.slug}`;
-        } else if (pageData.handle) {
-          targetPath = `/${pageData.handle}`;
-        }
-      }
-    }
-
-    return redirect(targetPath);
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    passwordSession.clearPendingRedirect();
+    return redirect(targetPath, {
+      headers: {
+        'Set-Cookie': await passwordSession.commit(),
+      },
+    });
   }
+
+  const jsonHeaders = sessionUpdated
+    ? {headers: {'Set-Cookie': await passwordSession.commit()}}
+    : undefined;
 
   return json<LoaderData>({
     protection,
@@ -280,7 +315,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     serverTime: new Date().toISOString(),
     locale: locale.language,
     currentViewState: protectionState.viewState,
-  });
+  }, jsonHeaders);
 }
 
 export async function action({context, request}: ActionFunctionArgs) {
@@ -288,7 +323,8 @@ export async function action({context, request}: ActionFunctionArgs) {
   const formData = await request.formData();
   const actionType = formData.get('actionType') as string;
   const password = formData.get('password') as string;
-  const redirectTo = formData.get('redirectTo') as string || '/';
+  const redirectTo = (formData.get('redirectTo') as string) || passwordSession.getPendingRedirect() || '/';
+  const playCompletionAnimation = formData.get('playCompletionAnimation') === 'true';
   const url = new URL(request.url);
 
   // Parse protection context from URL parameters (same as loader)
@@ -379,41 +415,18 @@ export async function action({context, request}: ActionFunctionArgs) {
     // Authenticate using the appropriate method
     if (protectionSource === 'collection' && protection._id) {
       passwordSession.authenticateFor(protection._id);
+      passwordSession.markPuzzleCompletion(protection._id);
     } else if (protectionSource === 'global') {
       passwordSession.authenticateGlobally();
+      if (protection._id) {
+        passwordSession.markPuzzleCompletion(protection._id);
+      }
     }
 
     // When puzzleGrantsAccess is true, puzzle completion bypasses ALL other protection logic
     // and grants immediate full access regardless of accessMode or countdown status
-    let targetPath = redirectTo;
-
-    try {
-      if (protection.redirectPage?._ref) {
-        const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-          _type,
-          "slug": slug.current,
-          "handle": store.slug.current
-        }`;
-
-        const {data: pageData} = await sanity.loadQuery(
-          PAGE_PATH_QUERY,
-          {ref: protection.redirectPage._ref},
-        );
-
-        if (pageData) {
-          if (pageData._type === 'home') {
-            targetPath = '/';
-          } else if (pageData._type === 'page' && pageData.slug) {
-            targetPath = `/pages/${pageData.slug}`;
-          } else if (pageData.handle) {
-            targetPath = `/${pageData.handle}`;
-          }
-        }
-      }
-    } catch (error) {
-      console.error('[Puzzle Completion] Error fetching redirect page:', error);
-      // Continue with default redirectTo path
-    }
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    passwordSession.clearPendingRedirect();
 
     console.log('[Puzzle Completion] Redirecting to:', targetPath);
     return redirect(targetPath, {
@@ -457,29 +470,23 @@ export async function action({context, request}: ActionFunctionArgs) {
       );
     }
 
-    // Get redirect page path if configured
-    let targetPath = redirectTo;
-    if (protection.redirectPage?._ref) {
-      const PAGE_PATH_QUERY = `*[_id == $ref][0]{
-        _type,
-        "slug": slug.current,
-        "handle": store.slug.current
-      }`;
+    const targetPath = await resolveRedirectTarget(sanity, protection, redirectTo);
+    passwordSession.clearPendingRedirect();
 
-      const {data: pageData} = await sanity.loadQuery(
-        PAGE_PATH_QUERY,
-        {ref: protection.redirectPage._ref},
-      );
-
-      if (pageData) {
-        if (pageData._type === 'home') {
-          targetPath = '/';
-        } else if (pageData._type === 'page' && pageData.slug) {
-          targetPath = `/pages/${pageData.slug}`;
-        } else if (pageData.handle) {
-          targetPath = `/${pageData.handle}`;
+    if (playCompletionAnimation && protection.embeddedPuzzle) {
+      return json(
+        {
+          success: true,
+          newState: 'fully-unlocked',
+          startCompletionAnimation: true,
+          redirectUrl: targetPath,
+        },
+        {
+          headers: {
+            'Set-Cookie': await passwordSession.commit(),
+          },
         }
-      }
+      );
     }
 
     return redirect(targetPath, {
@@ -588,4 +595,41 @@ export default function SiteProtected() {
       </ProtectionLayout>
     </div>
   );
+}
+
+async function resolveRedirectTarget(
+  sanity: any,
+  protection: ProtectionConfig,
+  fallbackPath: string
+): Promise<string> {
+  let targetPath = fallbackPath;
+
+  if (protection.redirectPage?._ref) {
+    try {
+      const PAGE_PATH_QUERY = `*[_id == $ref][0]{
+        _type,
+        "slug": slug.current,
+        "handle": store.slug.current
+      }`;
+
+      const {data: pageData} = await sanity.loadQuery(
+        PAGE_PATH_QUERY,
+        {ref: protection.redirectPage._ref},
+      );
+
+      if (pageData) {
+        if (pageData._type === 'home') {
+          targetPath = '/';
+        } else if (pageData._type === 'page' && pageData.slug) {
+          targetPath = `/pages/${pageData.slug}`;
+        } else if (pageData.handle) {
+          targetPath = `/${pageData.handle}`;
+        }
+      }
+    } catch (error) {
+      console.error('[Site Protection] Error resolving redirect page:', error);
+    }
+  }
+
+  return targetPath;
 }

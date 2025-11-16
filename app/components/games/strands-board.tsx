@@ -57,6 +57,10 @@ interface StrandsBoardProps {
   onKeyDown?: (e: React.KeyboardEvent, index: number) => void;
   /** Callback to get cell positions for animation */
   onGetCellPositions?: (positions: Map<number, {x: number; y: number}>) => void;
+  /** Whether to show completion animation (fade out non-spangram) */
+  showCompletionAnimation?: boolean;
+  /** Whether to fade out spangram (delayed) */
+  fadeOutSpangram?: boolean;
 }
 
 export function StrandsBoard({
@@ -75,6 +79,8 @@ export function StrandsBoard({
   onCellClick,
   onKeyDown,
   onGetCellPositions,
+  showCompletionAnimation = false,
+  fadeOutSpangram = false,
 }: StrandsBoardProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const cellRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -417,6 +423,19 @@ export function StrandsBoard({
         .animate-pulse-discovered {
           animation: pulse-discovered 1s ease-out;
         }
+        @keyframes fadeOutBlur {
+          0% {
+            opacity: 1;
+            filter: blur(0px);
+          }
+          100% {
+            opacity: 0;
+            filter: blur(10px);
+          }
+        }
+        .animate-fade-out-blur {
+          animation: fadeOutBlur 1s ease-out forwards;
+        }
       `}</style>
       <div
         ref={gridRef}
@@ -436,10 +455,18 @@ export function StrandsBoard({
             {allConnectorPaths.map((path, idx) => {
               // Convert Tailwind color class to actual color
               // For found words, use the color; for current selection, use primary
-              const strokeColor = path.color === 'current' 
+              const strokeColor = path.color === 'current'
                 ? 'currentColor' // Will use primary color via className
                 : getColorFromTailwindClass(path.color);
-              
+
+              // Check if this connector is for a spangram word (amber color)
+              const isSpangramConnector = path.color === SPANGRAM_COLOR;
+
+              // Determine if this connector should fade
+              const shouldFadeConnector = showCompletionAnimation && (
+                !isSpangramConnector || fadeOutSpangram
+              );
+
               return (
               <line
                   key={`connector-${path.fromIndex}-${path.toIndex}-${idx}`}
@@ -447,7 +474,7 @@ export function StrandsBoard({
                 y1={path.y1}
                 x2={path.x2}
                 y2={path.y2}
-                  className={path.color === 'current' ? 'stroke-primary' : ''}
+                  className={`${path.color === 'current' ? 'stroke-primary' : ''} ${shouldFadeConnector ? 'animate-fade-out-blur' : ''}`}
                   stroke={path.color !== 'current' ? strokeColor : undefined}
                   strokeWidth="8"
                 strokeLinecap="round"
@@ -491,6 +518,13 @@ export function StrandsBoard({
             // The visual indication is sufficient for users
             const ariaLabel = `Cell ${index + 1}, letter ${letter}`;
 
+            // Determine if this cell should fade out
+            // Non-spangram cells fade immediately when showCompletionAnimation is true
+            // Spangram cells only fade when fadeOutSpangram is true
+            const shouldFadeOut = showCompletionAnimation && (
+              !isSpangram || fadeOutSpangram
+            );
+
             return (
               <div
                 key={index}
@@ -522,6 +556,7 @@ export function StrandsBoard({
                   'relative flex aspect-square items-center justify-center text-lg  font-bold',
                   'cursor-pointer rounded-lg transition-transform hover:scale-105',
                   isInInvalidAnimation && 'animate-shake',
+                  shouldFadeOut && 'animate-fade-out-blur',
                 )}
                 onMouseDown={() => onPointerDown(index)}
                 onMouseEnter={() => onPointerEnter(index)}

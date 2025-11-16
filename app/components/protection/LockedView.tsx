@@ -6,6 +6,7 @@ import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {CountdownTimer} from './countdown-timer';
 import {useCountdown} from '~/hooks/use-countdown';
+import {GameHelpDialog} from '../games/game-help-dialog';
 
 interface LockedViewProps {
   protection: ProtectionConfig;
@@ -29,6 +30,7 @@ export function LockedView({
   isSidebar = false,
 }: LockedViewProps) {
   const [isHydrated, setIsHydrated] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const showPassword = ['password', 'both', 'either'].includes(protection.accessMode || '');
   const showCountdown = ['countdown', 'both', 'either'].includes(protection.accessMode || '');
@@ -40,6 +42,11 @@ export function LockedView({
 
   // Check if countdown has already expired (for showing "NOW LIVE" instead of timer)
   const countdownExpired = isExpired;
+  const shouldPlayCompletionAnimation =
+    isSidebar &&
+    protection.accessMode === 'both' &&
+    countdownExpired &&
+    Boolean(protection.embeddedPuzzle);
 
   // Handle hydration
   useEffect(() => {
@@ -80,6 +87,9 @@ export function LockedView({
           <div className="space-y-3  max-w-[350px] mx-auto w-full">
             <Form method="post" className="space-y-3">
               <input type="hidden" name="redirectTo" value={redirectTo} />
+              {shouldPlayCompletionAnimation && (
+                <input type="hidden" name="playCompletionAnimation" value="true" />
+              )}
               <Input
                 type="password"
                 name="password"
@@ -105,17 +115,19 @@ export function LockedView({
 
         {/* Help Icon */}
         <div className="flex justify-center">
-          <button
-            className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
-            aria-label="Help"
-            type="button"
-          >
-            <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
-            </svg>
-          </button>
+          <GameHelpDialog open={helpOpen} onOpenChange={setHelpOpen}>
+            <button
+              className="flex size-8 items-center justify-center transition-opacity hover:opacity-70"
+              aria-label="Help"
+              type="button"
+            >
+              <svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="17" r="0.5" fill="currentColor" strokeWidth="0"/>
+              </svg>
+            </button>
+          </GameHelpDialog>
         </div>
       </div>
     );
@@ -192,6 +204,9 @@ export function LockedView({
       {showPassword && (
         <Form method="post" className="space-y-4">
           <input type="hidden" name="redirectTo" value={redirectTo} />
+          {shouldPlayCompletionAnimation && (
+            <input type="hidden" name="playCompletionAnimation" value="true" />
+          )}
           <div className="space-y-4">
             <Input
               type="password"

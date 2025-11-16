@@ -1,7 +1,6 @@
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
-  ResponsiveDialogDescription,
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
@@ -24,7 +23,7 @@ export function GameHelpDialog({
       <ResponsiveDialogContent className="max-w-2xl">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="text-2xl font-bold">
-            How to Play Strands
+            How to Play ENEMEGRAM
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <div className="space-y-4 p-4 text-sm md:text-base">

@@ -24,6 +24,7 @@ export interface ProtectionState {
   viewState: ProtectionViewState;
   hasPasswordAuth: boolean;
   isCountdownExpired: boolean;
+  hasPuzzleAccess?: boolean;
   canEnterPassword: boolean;
   canShowCountdown: boolean;
   shouldShowWaitingMessage: boolean;
@@ -72,29 +73,35 @@ export interface ProtectionConfig {
 export function determineProtectionState(
   protection: ProtectionConfig,
   hasPasswordAuth: boolean,
-  isCountdownExpired: boolean
+  isCountdownExpired: boolean,
+  hasPuzzleAccess: boolean = false
 ): ProtectionState {
   const { accessMode } = protection;
+  const puzzleOverridesProtection = Boolean(
+    hasPuzzleAccess && protection?.puzzleGrantsAccess
+  );
 
   // Helper flags
   const passwordRequired = ['password', 'both', 'either'].includes(accessMode || '');
   const countdownRequired = ['countdown', 'both', 'either'].includes(accessMode || '');
 
   // Determine if user has full access
-  let accessGranted = false;
-  switch (accessMode) {
-    case 'password':
-      accessGranted = hasPasswordAuth;
-      break;
-    case 'countdown':
-      accessGranted = isCountdownExpired;
-      break;
-    case 'both':
-      accessGranted = hasPasswordAuth && isCountdownExpired;
-      break;
-    case 'either':
-      accessGranted = hasPasswordAuth || isCountdownExpired;
-      break;
+  let accessGranted = puzzleOverridesProtection;
+  if (!accessGranted) {
+    switch (accessMode) {
+      case 'password':
+        accessGranted = hasPasswordAuth;
+        break;
+      case 'countdown':
+        accessGranted = isCountdownExpired;
+        break;
+      case 'both':
+        accessGranted = hasPasswordAuth && isCountdownExpired;
+        break;
+      case 'either':
+        accessGranted = hasPasswordAuth || isCountdownExpired;
+        break;
+    }
   }
 
   // If fully unlocked, return that state
@@ -103,6 +110,7 @@ export function determineProtectionState(
       viewState: 'fully-unlocked',
       hasPasswordAuth,
       isCountdownExpired,
+      hasPuzzleAccess: puzzleOverridesProtection,
       canEnterPassword: false,
       canShowCountdown: false,
       shouldShowWaitingMessage: false,
