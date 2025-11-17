@@ -269,7 +269,7 @@ export function StrandsGame({
       </header>
 
       <div className="flex flex-1 md:items-center justify-center  px-4 py-6 sm:px-6">
-        <div className='w-9/12'>
+        <div className='w-10/12'>
 
           {/* Today's Theme */}
           {!hideThemeDisplay && theme && (
