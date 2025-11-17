@@ -74,7 +74,12 @@ export function CountdownExpiredView({
 
         {/* Newsletter CTA */}
         <div>
-          <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
+          <JoinEarlyAccessDialog
+            open={joinOpen}
+            onOpenChange={setJoinOpen}
+            password={protection.password}
+            redirectTo={redirectTo}
+          >
             <Button className="w-full">
               JOIN FOR PASSWORD
             </Button>

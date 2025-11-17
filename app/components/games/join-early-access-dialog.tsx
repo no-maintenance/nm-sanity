@@ -34,25 +34,56 @@ export function JoinEarlyAccessDialog({
     }
   };
 
-  const handleCopyPassword = async () => {
-    if (password) {
+  const handleCopyPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!password) return;
+
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
       try {
         await navigator.clipboard.writeText(password);
+        return;
       } catch (err) {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = password;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand('copy');
-        } catch (fallbackErr) {
-          // Silent fail - user can manually copy if needed
-        }
-        document.body.removeChild(textArea);
+        console.warn('Clipboard API failed, falling back to execCommand', err);
       }
+    }
+
+    // Fallback method that works better in drawers/modals
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = password;
+      // Position off-screen but make it focusable
+      textArea.style.position = 'fixed';
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.width = '2em';
+      textArea.style.height = '2em';
+      textArea.style.padding = '0';
+      textArea.style.border = 'none';
+      textArea.style.outline = 'none';
+      textArea.style.boxShadow = 'none';
+      textArea.style.background = 'transparent';
+      textArea.setAttribute('readonly', '');
+
+      document.body.appendChild(textArea);
+
+      // Select the text
+      textArea.focus();
+      textArea.select();
+      textArea.setSelectionRange(0, password.length);
+
+      // Copy using execCommand
+      const successful = document.execCommand('copy');
+
+      document.body.removeChild(textArea);
+
+      if (!successful) {
+        console.error('Copy command failed');
+      }
+    } catch (fallbackErr) {
+      console.error('Fallback copy failed', fallbackErr);
     }
   };
 

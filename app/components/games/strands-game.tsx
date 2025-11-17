@@ -40,6 +40,10 @@ interface StrandsGameProps {
   protectionError?: string;
   /** Unique key for protection error to retrigger animations */
   protectionErrorKey?: string | number;
+  /** Password for newsletter signup dialog */
+  protectionPassword?: string;
+  /** Redirect URL after password entry/newsletter signup */
+  redirectTo?: string;
 }
 
 export function StrandsGame({
@@ -54,6 +58,8 @@ export function StrandsGame({
   protectionViewState,
   protectionError,
   protectionErrorKey,
+  protectionPassword,
+  redirectTo,
 }: StrandsGameProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const hintButtonRef = useRef<HTMLButtonElement>(null);
@@ -230,7 +236,12 @@ export function StrandsGame({
               Rules
             </Button>
           </GameHelpDialog>
-          <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
+          <JoinEarlyAccessDialog
+            open={joinOpen}
+            onOpenChange={setJoinOpen}
+            password={protectionPassword}
+            redirectTo={redirectTo}
+          >
             <Button size="sm" className="w-1/2">
               Join For Password
             </Button>
@@ -270,7 +281,6 @@ export function StrandsGame({
 
       <div className="flex flex-1 md:items-center justify-center  px-4 py-6 sm:px-6">
         <div className='w-10/12'>
-
           {/* Today's Theme */}
           {!hideThemeDisplay && theme && (
             <div className={`${alignedRowClass} mb-1 ${showCompletionAnimation ? 'animate-fade-out-blur' : ''}`}>
