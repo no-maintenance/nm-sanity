@@ -676,7 +676,7 @@ export function GameLockedView({
             onClick={onJoinEarlyAccess}
             className="h-auto rounded-[3px] bg-[#2c2c2c] px-3 py-3 text-base font-medium text-[#f5f5f5] hover:bg-[#2c2c2c]/90"
           >
-            JOIN FOR EARLY ACCESS
+            JOIN FOR PASSWORD
           </Button>
           </div>
         </div>

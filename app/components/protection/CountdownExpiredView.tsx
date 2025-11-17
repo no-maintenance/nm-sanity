@@ -72,7 +72,7 @@ export function CountdownExpiredView({
         <div>
           <JoinEarlyAccessDialog open={joinOpen} onOpenChange={setJoinOpen}>
             <Button className="w-full">
-              JOIN FOR EARLY ACCESS
+              JOIN FOR PASSWORD
             </Button>
           </JoinEarlyAccessDialog>
         </div>

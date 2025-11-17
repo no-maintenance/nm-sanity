@@ -129,6 +129,7 @@ export function NewsletterForm({
                       label={'Newsletter'}
                     >
                       <input
+                        autoComplete="off"
                         data-1p-ignore
                         id={'email'}
                         type="email"
