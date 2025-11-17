@@ -7,6 +7,7 @@ import { useStrandsGame } from '~/hooks/games/use-strands-game';
 import { useStrandsInput } from '~/hooks/games/use-strands-input';
 import { useCountdown } from '~/hooks/use-countdown';
 import { SPANGRAM_COLOR } from '~/lib/games/strands-logic';
+import { GRID_ROWS, GRID_COLS } from '~/lib/games/strands-constants';
 import { StrandsBoard } from './strands-board';
 import { HintButton } from './hint-button';
 import { HintWordAnimation } from './hint-word-animation';
@@ -15,9 +16,6 @@ import { JoinEarlyAccessDialog } from './join-early-access-dialog';
 import { CountdownBanner } from './countdown-banner';
 import { GameHelpDialog } from './game-help-dialog';
 import { PasswordEntryDrawer } from './password-entry-drawer';
-
-const GRID_ROWS = 8;
-const GRID_COLS = 6;
 
 interface StrandsGameProps {
   /** The puzzle data from Sanity */
@@ -271,7 +269,7 @@ export function StrandsGame({
       </header>
 
       <div className="flex flex-1 md:items-center justify-center  px-4 py-6 sm:px-6">
-        <div>
+        <div className='w-9/12'>
 
           {/* Today's Theme */}
           {!hideThemeDisplay && theme && (

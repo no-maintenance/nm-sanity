@@ -3,9 +3,7 @@
  */
 
 import type {CanonicalGrid, SanityCanonicalGrid} from './canonical-grid.types';
-
-const GRID_ROWS = 8;
-const GRID_COLS = 6;
+import {WORDS_REQUIRED_FOR_HINT, GRID_ROWS, GRID_COLS} from './strands-constants';
 
 export type Position = {row: number; col: number};
 export type CellIndex = number;
@@ -553,8 +551,8 @@ export function calculateHintProgress(
   increment: number = 1,
 ): {newProgress: number; grantsNewHint: boolean} {
   const newProgress = currentProgress + increment;
-  const grantsNewHint = newProgress >= 3;
-  
+  const grantsNewHint = newProgress >= WORDS_REQUIRED_FOR_HINT;
+
   return {
     newProgress: grantsNewHint ? 0 : newProgress,
     grantsNewHint,
