@@ -19,7 +19,14 @@ export type MinimalLayoutProps = {
  * Used for special pages like site-protected that need a clean, focused interface
  */
 export function MinimalLayout({ children = null }: MinimalLayoutProps) {
-  const { env, locale, sanityPreviewMode } = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  
+  // Handle case where root loader data isn't available yet
+  if (!rootData) {
+    return <main className="min-h-screen">{children}</main>;
+  }
+
+  const { env, locale, sanityPreviewMode } = rootData;
 
   return (
     <ShopifyProvider

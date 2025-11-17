@@ -138,7 +138,7 @@ export function PasswordGrantedView({
             redirectTo={redirectTo}
           >
             <Button className="w-full">
-              JOIN FOR EARLY ACCESS
+              JOIN OUR NEWSLETTER
             </Button>
           </JoinEarlyAccessDialog>
         </div>

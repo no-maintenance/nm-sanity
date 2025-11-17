@@ -18,6 +18,10 @@ const mobileMenuLinkClass = cn(
   'animated-underline'
 );
 
+function isSaleItem(name: string | null | undefined): boolean {
+  return name?.toLowerCase().trim() === 'sale';
+}
+
 interface MobileNavigationProps {
   data?: NavigationProps;
   headerRef: RefObject<HTMLElement>;
@@ -97,14 +101,20 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
                               <li key={item._key}>
                                 {item._type === 'internalLink' && (
                                   <SanityInternalLink
-                                    className={mobileMenuLinkClass}
+                                    className={cn(
+                                      mobileMenuLinkClass,
+                                      isSaleItem(item.name) && 'text-red-500'
+                                    )}
                                     data={item}
                                     onClick={handleClose}
                                   />
                                 )}
                                 {item._type === 'externalLink' && (
                                   <SanityExternalLink 
-                                    className={mobileMenuLinkClass}
+                                    className={cn(
+                                      mobileMenuLinkClass,
+                                      isSaleItem(item.name) && 'text-red-500'
+                                    )}
                                     data={item} 
                                   />
                                 )}
@@ -145,7 +155,11 @@ function MobileNavigationNested(props: {
   return data.name && childLinks && childLinks.length > 0 ? (
     <button 
       onClick={() => setOpen(!open)}
-      className={cn(mobileMenuLinkClass, "justify-between")}
+      className={cn(
+        mobileMenuLinkClass,
+        "justify-between",
+        isSaleItem(data.name) && 'text-red-500'
+      )}
     >
       {data.name}
       <IconChevron 
@@ -158,13 +172,19 @@ function MobileNavigationNested(props: {
             <li key={child._key}>
               {child._type === 'internalLink' ? (
                 <SanityInternalLink
-                  className={mobileMenuLinkClass}
+                  className={cn(
+                    mobileMenuLinkClass,
+                    isSaleItem(child.name) && 'text-red-500'
+                  )}
                   data={child}
                   onClick={onClose}
                 />
               ) : child._type === 'externalLink' ? (
                 <SanityExternalLink
-                  className={mobileMenuLinkClass}
+                  className={cn(
+                    mobileMenuLinkClass,
+                    isSaleItem(child.name) && 'text-red-500'
+                  )}
                   data={child}
                 />
               ) : null}
@@ -175,7 +195,10 @@ function MobileNavigationNested(props: {
     </button>
   ) : data.link && data.name && (!childLinks || childLinks.length === 0) ? (
     <SanityInternalLink
-      className={mobileMenuLinkClass}
+      className={cn(
+        mobileMenuLinkClass,
+        isSaleItem(data.name) && 'text-red-500'
+      )}
       data={{
         _key: data._key,
         _type: 'internalLink',

@@ -21,6 +21,10 @@ type NestedNavigationType = NonNullable<
 
 export type SanityNestedNavigationProps = NestedNavigationType;
 
+function isSaleItem(name: string | null | undefined): boolean {
+  return name?.toLowerCase().trim() === 'sale';
+}
+
 export function NestedNavigation(props: {
   data?: SanityNestedNavigationProps;
   setActiveItem: (item: string) => void;
@@ -37,9 +41,14 @@ export function NestedNavigation(props: {
 
   return data.name && childLinks && childLinks.length > 0 ? (
     <>
-      <NavigationMenuTrigger onClick={handleOpen} onMouseEnter={handleOpen}>
+      <NavigationMenuTrigger 
+        onClick={handleOpen} 
+        onMouseEnter={handleOpen}
+        className={isSaleItem(data.name) ? 'text-red-500' : undefined}
+      >
         {data.link ? (
           <SanityInternalLink
+            className={isSaleItem(data.name) ? 'text-red-500' : undefined}
             data={{
               _key: null,
               _type: 'internalLink',
@@ -67,7 +76,10 @@ export function NestedNavigation(props: {
   ) : data.link && data.name && (!childLinks || childLinks.length === 0) ? (
     // Render internal link if no child links
     <SanityInternalLink
-      className={navigationMenuTriggerStyle()}
+      className={cn(
+        navigationMenuTriggerStyle(),
+        isSaleItem(data.name) && 'text-red-500'
+      )}
       data={{
         _key: data._key,
         _type: 'internalLink',
@@ -92,6 +104,7 @@ function ListItem(
             className={cn(
               navigationMenuTriggerStyle(),
               'hover:bg-accent w-full justify-start rounded-xs',
+              isSaleItem(props.name) && 'text-red-500'
             )}
             data={props}
           />
@@ -100,6 +113,7 @@ function ListItem(
             className={cn(
               navigationMenuTriggerStyle(),
               'hover:bg-accent w-full justify-start rounded-xs',
+              isSaleItem(props.name) && 'text-red-500'
             )}
             data={props}
           />

@@ -2,6 +2,7 @@ import type {ROOT_QUERYResult} from 'types/sanity/sanity.generated';
 
 import {useEffect, useRef, useState} from 'react';
 
+import {cn} from '~/lib/utils';
 import {SanityExternalLink} from '../sanity/link/sanity-external-link';
 import {SanityInternalLink} from '../sanity/link/sanity-internal-link';
 import {
@@ -13,6 +14,10 @@ import {
 import {NestedNavigation} from './nested-navigation';
 
 export type NavigationProps = NonNullable<ROOT_QUERYResult['header']>['menu'];
+
+function isSaleItem(name: string | null | undefined): boolean {
+  return name?.toLowerCase().trim() === 'sale';
+}
 
 export function DesktopNavigation(props: {data?: NavigationProps}) {
   const menuRef = useRef<HTMLUListElement>(null);
@@ -37,7 +42,10 @@ export function DesktopNavigation(props: {data?: NavigationProps}) {
             <NavigationMenuItem id={item._key!} key={item._key}>
               {item._type === 'internalLink' && (
                 <SanityInternalLink
-                  className={navigationMenuTriggerStyle()}
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    isSaleItem(item.name) && 'text-red-500'
+                  )}
                   data={item}
                 />
               )}
