@@ -207,10 +207,48 @@ export function GridGeneratorButton(props: GridGeneratorButtonProps) {
         }
       });
 
+      // Sanitize gridString: remove whitespace and ensure uppercase
+      const sanitizedGrid = gridString.trim().replace(/\s+/g, '').toUpperCase();
+      
+      // Validate gridString is exactly 48 characters
+      if (sanitizedGrid.length !== 48) {
+        const errorMsg = `Grid string must be exactly 48 characters (got ${sanitizedGrid.length}). Theme words total ${themeWords.reduce((sum: number, w: any) => sum + (w.word?.length || 0), 0)} characters. Original grid length: ${gridString.length}`;
+        console.error('Grid validation failed:', errorMsg);
+        setError(errorMsg);
+        setIsGenerating(false);
+        return;
+      }
+
+      // Split gridString into array of individual characters
+      // This should always produce exactly 48 items for a 48-character string
+      const cells = sanitizedGrid.split('');
+
+      // Ensure we have exactly 48 cells
+      if (cells.length !== 48) {
+        const errorMsg = `Grid cells array must have exactly 48 items (got ${cells.length}). Sanitized grid length: ${sanitizedGrid.length}`;
+        console.error('Cells array validation failed:', errorMsg);
+        setError(errorMsg);
+        setIsGenerating(false);
+        return;
+      }
+
+      // Validate each cell is a single uppercase letter
+      const invalidCells = cells
+        .map((cell, index) => ({cell, index}))
+        .filter(({cell}) => !/^[A-Z]$/.test(cell));
+      
+      if (invalidCells.length > 0) {
+        const errorMsg = `Invalid cells found: ${invalidCells.map(({cell, index}) => `index ${index}="${cell}"`).join(', ')}`;
+        console.error('Cell validation failed:', errorMsg);
+        setError(errorMsg);
+        setIsGenerating(false);
+        return;
+      }
+
       // Create the canonical grid object
       // Note: themePaths and hintPaths are stored as JSON strings in Sanity
       const canonicalGrid = {
-        cells: gridString.split(''),
+        cells,
         themePaths: JSON.stringify(themePaths, null, 2),
         hintPaths: JSON.stringify(result.hintPaths || {}, null, 2),
         metadata: {
@@ -221,7 +259,11 @@ export function GridGeneratorButton(props: GridGeneratorButtonProps) {
         },
       };
 
-      console.log('Generated canonicalGrid:', canonicalGrid);
+      console.log('Generated canonicalGrid:', {
+        ...canonicalGrid,
+        cellsLength: canonicalGrid.cells.length,
+        cellsPreview: canonicalGrid.cells.slice(0, 6).join('') + '...',
+      });
 
       // Use Sanity client to directly patch the document
       // This is the proper Sanity pattern for custom input components that generate data
@@ -231,7 +273,7 @@ export function GridGeneratorButton(props: GridGeneratorButtonProps) {
         await client
           .patch(document._id)
           .set({
-            canonicalGrid: canonicalGrid,
+            canonicalGrid,
             gridMetadata: {
               generatedAt: new Date().toISOString(),
               hintWordCount: result.hintWordCount || 0,

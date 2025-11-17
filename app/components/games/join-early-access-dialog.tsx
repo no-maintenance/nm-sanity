@@ -70,7 +70,7 @@ export function JoinEarlyAccessDialog({
       <ResponsiveDialogContent className="max-w-md">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>
-            {showPassword ? 'Your Password' : 'Join for Early Access'}
+            {showPassword ? 'Your Password' : 'Join for Password'}
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             {showPassword
@@ -78,7 +78,7 @@ export function JoinEarlyAccessDialog({
               : 'Sign up to get early access to new puzzles and exclusive content'}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
-        <div className="py-4 px-6">
+        <div className="py-4 px-6 md:px-0">
           {showPassword && password ? (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
