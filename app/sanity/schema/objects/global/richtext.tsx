@@ -96,7 +96,7 @@ export default defineField({
       type: 'button',
     }),
     defineArrayMember({
-      name: 'form',
+      name: 'formBlock',
       title: 'Form',
       type: 'object',
       icon: () => (

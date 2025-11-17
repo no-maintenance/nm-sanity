@@ -1429,7 +1429,7 @@ export type ProductModal = {
       }
     | {
         title?: string;
-        _type: 'sizeChart';
+        _type: 'sizeChartBlock';
         _key: string;
       }
   >;
@@ -2263,7 +2263,7 @@ export type Richtext = Array<
       formType?: 'newsletter' | 'contact' | 'appointment';
       title?: string;
       description?: string;
-      _type: 'form';
+      _type: 'formBlock';
       _key: string;
     }
   | {
@@ -4015,7 +4015,7 @@ export type BLOG_POST_QUERYResult = {
                   }
                 | {
                     title?: string;
-                    _type: 'sizeChart';
+                    _type: 'sizeChartBlock';
                     _key: string;
                   }
               >;
@@ -5035,10 +5035,10 @@ export type BLOG_POST_QUERYResult = {
               _key: string;
             }
           | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
+              formType?: 'appointment' | 'contact' | 'newsletter';
+              title?: string;
+              description?: string;
+              _type: 'formBlock';
               _key: string;
             }
           | {
@@ -5396,14 +5396,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -5813,14 +5809,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -6128,14 +6120,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -6459,14 +6447,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -6810,14 +6794,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -7069,14 +7049,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -7344,14 +7320,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -7593,14 +7565,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -7840,14 +7808,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -8061,14 +8025,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -8298,14 +8258,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -8679,14 +8635,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -9096,14 +9048,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -9411,14 +9359,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -9742,14 +9686,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -10093,14 +10033,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -10352,14 +10288,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -10627,14 +10559,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -10876,14 +10804,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -11123,14 +11047,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -11344,14 +11264,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -11581,14 +11497,10 @@ export type BLOG_POST_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -12879,7 +12791,7 @@ export type STORE_POLICY_QUERYResult = {
                   }
                 | {
                     title?: string;
-                    _type: 'sizeChart';
+                    _type: 'sizeChartBlock';
                     _key: string;
                   }
               >;
@@ -13899,10 +13811,10 @@ export type STORE_POLICY_QUERYResult = {
               _key: string;
             }
           | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
+              formType?: 'appointment' | 'contact' | 'newsletter';
+              title?: string;
+              description?: string;
+              _type: 'formBlock';
               _key: string;
             }
           | {
@@ -14260,14 +14172,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -14677,14 +14585,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -14992,14 +14896,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -15323,14 +15223,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -15674,14 +15570,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -15933,14 +15825,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -16208,14 +16096,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -16457,14 +16341,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -16704,14 +16584,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -16925,14 +16801,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -17162,14 +17034,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -17543,14 +17411,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -17960,14 +17824,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -18275,14 +18135,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -18606,14 +18462,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -18957,14 +18809,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -19216,14 +19064,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -19491,14 +19335,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -19740,14 +19580,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -19987,14 +19823,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -20208,14 +20040,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -20445,14 +20273,10 @@ export type STORE_POLICY_QUERYResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -21517,7 +21341,7 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                   }
                 | {
                     title?: string;
-                    _type: 'sizeChart';
+                    _type: 'sizeChartBlock';
                     _key: string;
                   }
               >;
@@ -22374,7 +22198,7 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                   }
                 | {
                     title?: string;
-                    _type: 'sizeChart';
+                    _type: 'sizeChartBlock';
                     _key: string;
                   }
               >;
@@ -23021,10 +22845,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
               _key: string;
             }
           | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
+              formType?: 'appointment' | 'contact' | 'newsletter';
+              title?: string;
+              description?: string;
+              _type: 'formBlock';
               _key: string;
             }
           | {
@@ -23382,14 +23206,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -23799,14 +23619,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -24114,14 +23930,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -24445,14 +24257,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -24796,14 +24604,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -25055,14 +24859,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -25330,14 +25130,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -25579,14 +25375,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -25826,14 +25618,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -26047,14 +25835,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -26284,14 +26068,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -26665,14 +26445,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -27082,14 +26858,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -27397,14 +27169,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -27728,14 +27496,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -28079,14 +27843,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -28338,14 +28098,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -28613,14 +28369,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -28862,14 +28614,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -29109,14 +28857,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -29330,14 +29074,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -29567,14 +29307,10 @@ export type DEFAULT_PRODUCT_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -30843,7 +30579,7 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                   }
                 | {
                     title?: string;
-                    _type: 'sizeChart';
+                    _type: 'sizeChartBlock';
                     _key: string;
                   }
               >;
@@ -31863,10 +31599,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
               _key: string;
             }
           | {
-              formType: 'appointment' | 'contact' | 'newsletter' | null;
-              title: string | null;
-              description: string | null;
-              _type: 'form';
+              formType?: 'appointment' | 'contact' | 'newsletter';
+              title?: string;
+              description?: string;
+              _type: 'formBlock';
               _key: string;
             }
           | {
@@ -32224,14 +31960,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -32641,14 +32373,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -32956,14 +32684,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -33287,14 +33011,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -33638,14 +33358,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -33897,14 +33613,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -34172,14 +33884,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -34421,14 +34129,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -34668,14 +34372,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -34889,14 +34589,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -35126,14 +34822,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -35507,14 +35199,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -35924,14 +35612,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -36239,14 +35923,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -36570,14 +36250,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -36921,14 +36597,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -37180,14 +36852,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -37455,14 +37123,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -37704,14 +37368,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -37951,14 +37611,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -38172,14 +37828,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -38409,14 +38061,10 @@ export type DEFAULT_COLLECTION_TEMPLATEResult = {
                           _key: string;
                         }
                       | {
-                          formType:
-                            | 'appointment'
-                            | 'contact'
-                            | 'newsletter'
-                            | null;
-                          title: string | null;
-                          description: string | null;
-                          _type: 'form';
+                          formType?: 'appointment' | 'contact' | 'newsletter';
+                          title?: string;
+                          description?: string;
+                          _type: 'formBlock';
                           _key: string;
                         }
                       | {
@@ -40053,7 +39701,7 @@ export type ROOT_QUERYResult = {
                     }
                   | {
                       title?: string;
-                      _type: 'sizeChart';
+                      _type: 'sizeChartBlock';
                       _key: string;
                     }
                 >;
@@ -41073,10 +40721,10 @@ export type ROOT_QUERYResult = {
                 _key: string;
               }
             | {
-                formType: 'appointment' | 'contact' | 'newsletter' | null;
-                title: string | null;
-                description: string | null;
-                _type: 'form';
+                formType?: 'appointment' | 'contact' | 'newsletter';
+                title?: string;
+                description?: string;
+                _type: 'formBlock';
                 _key: string;
               }
             | {
@@ -41438,14 +41086,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -41859,14 +41503,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -42182,14 +41822,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -42513,14 +42149,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -42868,14 +42500,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -43135,14 +42763,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -43410,14 +43034,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -43659,14 +43279,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -43914,14 +43530,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -44143,14 +43755,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -44380,14 +43988,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -44765,14 +44369,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -45186,14 +44786,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -45509,14 +45105,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -45840,14 +45432,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -46195,14 +45783,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -46462,14 +46046,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -46737,14 +46317,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -46986,14 +46562,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -47241,14 +46813,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -47470,14 +47038,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -47707,14 +47271,10 @@ export type ROOT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -49987,7 +49547,7 @@ export type COLLECTION_QUERYResult = {
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -51007,10 +50567,10 @@ export type COLLECTION_QUERYResult = {
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -51372,14 +50932,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -51793,14 +51352,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -52116,14 +51674,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -52447,14 +52004,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -52802,14 +52358,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -53069,14 +52624,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -53344,14 +52898,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -53593,14 +53146,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -53848,14 +53400,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -54077,14 +53628,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -54314,14 +53864,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -54699,14 +54248,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -55120,14 +54668,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -55443,14 +54990,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -55774,14 +55320,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -56129,14 +55674,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -56396,14 +55940,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -56671,14 +56214,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -56920,14 +56462,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -57175,14 +56716,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -57404,14 +56944,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -57641,14 +57180,13 @@ export type COLLECTION_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -58916,7 +58454,7 @@ export type COLLECTION_QUERYResult = {
                     }
                   | {
                       title?: string;
-                      _type: 'sizeChart';
+                      _type: 'sizeChartBlock';
                       _key: string;
                     }
                 >;
@@ -59936,10 +59474,10 @@ export type COLLECTION_QUERYResult = {
                 _key: string;
               }
             | {
-                formType: 'appointment' | 'contact' | 'newsletter' | null;
-                title: string | null;
-                description: string | null;
-                _type: 'form';
+                formType?: 'appointment' | 'contact' | 'newsletter';
+                title?: string;
+                description?: string;
+                _type: 'formBlock';
                 _key: string;
               }
             | {
@@ -60301,14 +59839,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -60722,14 +60256,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -61045,14 +60575,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -61376,14 +60902,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -61731,14 +61253,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -61998,14 +61516,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -62273,14 +61787,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -62522,14 +62032,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -62777,14 +62283,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -63006,14 +62508,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -63243,14 +62741,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -63628,14 +63122,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -64049,14 +63539,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -64372,14 +63858,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -64703,14 +64185,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -65058,14 +64536,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -65325,14 +64799,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -65600,14 +65070,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -65849,14 +65315,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -66104,14 +65566,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -66333,14 +65791,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -66570,14 +66024,10 @@ export type COLLECTION_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -67608,7 +67058,7 @@ export type PAGE_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -68628,10 +68078,10 @@ export type PAGE_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -68993,14 +68443,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -69414,14 +68863,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -69737,14 +69185,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -70068,14 +69515,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -70423,14 +69869,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -70690,14 +70135,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -70965,14 +70409,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -71214,14 +70657,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -71469,14 +70911,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -71698,14 +71139,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -71935,14 +71375,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -72320,14 +71759,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -72741,14 +72179,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -73064,14 +72501,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -73395,14 +72831,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -73750,14 +73185,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -74017,14 +73451,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -74292,14 +73725,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -74541,14 +73973,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -74796,14 +74227,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -75025,14 +74455,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -75262,14 +74691,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -76313,7 +75741,7 @@ export type PAGE_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -77333,10 +76761,10 @@ export type PAGE_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -77698,14 +77126,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -78119,14 +77546,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -78442,14 +77868,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -78773,14 +78198,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -79128,14 +78552,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -79395,14 +78818,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -79670,14 +79092,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -79919,14 +79340,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -80174,14 +79594,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -80403,14 +79822,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -80640,14 +80058,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -81025,14 +80442,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -81446,14 +80862,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -81769,14 +81184,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -82100,14 +81514,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -82455,14 +81868,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -82722,14 +82134,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -82997,14 +82408,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -83246,14 +82656,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -83501,14 +82910,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -83730,14 +83138,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -83967,14 +83374,13 @@ export type PAGE_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -85042,7 +84448,7 @@ export type PRODUCT_QUERYResult = {
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -85899,7 +85305,7 @@ export type PRODUCT_QUERYResult = {
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -86546,10 +85952,10 @@ export type PRODUCT_QUERYResult = {
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -86911,14 +86317,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -87332,14 +86737,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -87655,14 +87059,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -87986,14 +87389,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -88341,14 +87743,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -88608,14 +88009,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -88883,14 +88283,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -89132,14 +88531,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -89387,14 +88785,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -89616,14 +89013,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -89853,14 +89249,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -90238,14 +89633,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -90659,14 +90053,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -90982,14 +90375,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -91313,14 +90705,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -91668,14 +91059,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -91935,14 +91325,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -92210,14 +91599,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -92459,14 +91847,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -92714,14 +92101,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -92943,14 +92329,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -93180,14 +92565,13 @@ export type PRODUCT_QUERYResult = {
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -94217,7 +93601,7 @@ export type PRODUCT_QUERYResult = {
                     }
                   | {
                       title?: string;
-                      _type: 'sizeChart';
+                      _type: 'sizeChartBlock';
                       _key: string;
                     }
                 >;
@@ -95074,7 +94458,7 @@ export type PRODUCT_QUERYResult = {
                     }
                   | {
                       title?: string;
-                      _type: 'sizeChart';
+                      _type: 'sizeChartBlock';
                       _key: string;
                     }
                 >;
@@ -95721,10 +95105,10 @@ export type PRODUCT_QUERYResult = {
                 _key: string;
               }
             | {
-                formType: 'appointment' | 'contact' | 'newsletter' | null;
-                title: string | null;
-                description: string | null;
-                _type: 'form';
+                formType?: 'appointment' | 'contact' | 'newsletter';
+                title?: string;
+                description?: string;
+                _type: 'formBlock';
                 _key: string;
               }
             | {
@@ -96086,14 +95470,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -96507,14 +95887,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -96830,14 +96206,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -97161,14 +96533,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -97516,14 +96884,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -97783,14 +97147,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -98058,14 +97418,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -98307,14 +97663,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -98562,14 +97914,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -98791,14 +98139,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -99028,14 +98372,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -99413,14 +98753,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -99834,14 +99170,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -100157,14 +99489,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -100488,14 +99816,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -100843,14 +100167,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -101110,14 +100430,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -101385,14 +100701,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -101634,14 +100946,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -101889,14 +101197,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -102118,14 +101422,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -102355,14 +101655,10 @@ export type PRODUCT_QUERYResult = {
                             _key: string;
                           }
                         | {
-                            formType:
-                              | 'appointment'
-                              | 'contact'
-                              | 'newsletter'
-                              | null;
-                            title: string | null;
-                            description: string | null;
-                            _type: 'form';
+                            formType?: 'appointment' | 'contact' | 'newsletter';
+                            title?: string;
+                            description?: string;
+                            _type: 'formBlock';
                             _key: string;
                           }
                         | {
@@ -103635,7 +102931,7 @@ export type ALL_SECTIONS_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -104655,10 +103951,10 @@ export type ALL_SECTIONS_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -105020,14 +104316,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -105441,14 +104736,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -105764,14 +105058,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -106095,14 +105388,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -106450,14 +105742,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -106717,14 +106008,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -106992,14 +106282,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -107241,14 +106530,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -107496,14 +106784,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -107725,14 +107012,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -107962,14 +107248,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -108347,14 +107632,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -108768,14 +108052,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -109091,14 +108374,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -109422,14 +108704,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -109777,14 +109058,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -110044,14 +109324,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -110319,14 +109598,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -110568,14 +109846,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -110823,14 +110100,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -111052,14 +110328,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -111289,14 +110564,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -112323,7 +111597,7 @@ export type ALL_SECTIONS_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -113180,7 +112454,7 @@ export type ALL_SECTIONS_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -113827,10 +113101,10 @@ export type ALL_SECTIONS_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -114192,14 +113466,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -114613,14 +113886,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -114936,14 +114208,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -115267,14 +114538,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -115622,14 +114892,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -115889,14 +115158,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -116164,14 +115432,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -116413,14 +115680,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -116668,14 +115934,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -116897,14 +116162,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -117134,14 +116398,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -117519,14 +116782,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -117940,14 +117202,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -118263,14 +117524,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -118594,14 +117854,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -118949,14 +118208,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -119216,14 +118474,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -119491,14 +118748,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -119740,14 +118996,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -119995,14 +119250,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -120224,14 +119478,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -120461,14 +119714,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -121495,7 +120747,7 @@ export type ALL_SECTIONS_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -122515,10 +121767,10 @@ export type ALL_SECTIONS_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -122880,14 +122132,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -123301,14 +122552,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -123624,14 +122874,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -123955,14 +123204,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -124310,14 +123558,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -124577,14 +123824,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -124852,14 +124098,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -125101,14 +124346,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -125356,14 +124600,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -125585,14 +124828,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -125822,14 +125064,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -126207,14 +125448,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -126628,14 +125868,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -126951,14 +126190,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -127282,14 +126520,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -127637,14 +126874,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -127904,14 +127140,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -128179,14 +127414,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -128428,14 +127662,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -128683,14 +127916,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -128912,14 +128144,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -129149,14 +128380,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -130183,7 +129413,7 @@ export type ALL_SECTIONS_QUERYResult =
                       }
                     | {
                         title?: string;
-                        _type: 'sizeChart';
+                        _type: 'sizeChartBlock';
                         _key: string;
                       }
                   >;
@@ -131203,10 +130433,10 @@ export type ALL_SECTIONS_QUERYResult =
                   _key: string;
                 }
               | {
-                  formType: 'appointment' | 'contact' | 'newsletter' | null;
-                  title: string | null;
-                  description: string | null;
-                  _type: 'form';
+                  formType?: 'appointment' | 'contact' | 'newsletter';
+                  title?: string;
+                  description?: string;
+                  _type: 'formBlock';
                   _key: string;
                 }
               | {
@@ -131568,14 +130798,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -131989,14 +131218,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -132312,14 +131540,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -132643,14 +131870,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -132998,14 +132224,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -133265,14 +132490,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -133540,14 +132764,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -133789,14 +133012,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -134044,14 +133266,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -134273,14 +133494,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -134510,14 +133730,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -134895,14 +134114,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -135316,14 +134534,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -135639,14 +134856,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -135970,14 +135186,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -136325,14 +135540,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -136592,14 +135806,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -136867,14 +136080,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -137116,14 +136328,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -137371,14 +136582,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -137600,14 +136810,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {
@@ -137837,14 +137046,13 @@ export type ALL_SECTIONS_QUERYResult =
                               _key: string;
                             }
                           | {
-                              formType:
+                              formType?:
                                 | 'appointment'
                                 | 'contact'
-                                | 'newsletter'
-                                | null;
-                              title: string | null;
-                              description: string | null;
-                              _type: 'form';
+                                | 'newsletter';
+                              title?: string;
+                              description?: string;
+                              _type: 'formBlock';
                               _key: string;
                             }
                           | {

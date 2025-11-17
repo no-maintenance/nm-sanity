@@ -7,6 +7,8 @@
 import {forwardRef} from 'react';
 import {cn} from '~/lib/utils';
 
+const WORDS_REQUIRED_FOR_HINT = 1;
+
 interface HintButtonProps {
   hintsEarned: number;
   hintProgress: number; // 0-2 (progress toward next hint)
@@ -23,7 +25,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
   // Calculate fill percentage
   // If we have hints available, show full (100%)
   // Otherwise, show progress toward next hint (0%, 33%, 66%)
-  const fillPercentage = hintsEarned > 0 ? 100 : (hintProgress / 3) * 100;
+  const fillPercentage = hintsEarned > 0 ? 100 : (hintProgress / WORDS_REQUIRED_FOR_HINT) * 100 + 15;
 
   return (
     <button
@@ -33,7 +35,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
       onClick={onClick}
       title={
         hintsEarned === 0
-          ? 'Find 3 valid 4+ letter words to earn a hint'
+          ? `Find ${WORDS_REQUIRED_FOR_HINT} valid 4+ letter words to earn a hint`
           : `Use a hint (${hintsEarned} available)`
       }
     >
@@ -48,7 +50,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
       <span className={cn(
         "relative z-10",
         "text-primary",
-        (hintProgress > 1 || hintsEarned > 0) && "text-primary-foreground"
+        (hintProgress > 0 || hintsEarned > 0) && "text-primary-foreground"
 
       )}>
         HINT

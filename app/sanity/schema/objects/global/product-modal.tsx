@@ -31,7 +31,7 @@ export default defineType({
           type: 'block',
         },
         {
-          name: 'sizeChart',
+          name: 'sizeChartBlock',
           title: 'Size Chart',
           type: 'object',
           readOnly: true,

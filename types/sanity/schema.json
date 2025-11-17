@@ -7592,7 +7592,7 @@
                       "type": "objectAttribute",
                       "value": {
                         "type": "string",
-                        "value": "sizeChart"
+                        "value": "sizeChartBlock"
                       }
                     }
                   },
@@ -12261,7 +12261,7 @@
                 "type": "objectAttribute",
                 "value": {
                   "type": "string",
-                  "value": "form"
+                  "value": "formBlock"
                 }
               }
             },

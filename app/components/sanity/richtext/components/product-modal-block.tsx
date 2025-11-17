@@ -95,7 +95,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
   const {product} = useProduct();
   // Use the product's sizeChart if productSizeChart is not provided
   const sizeChart = productSizeChart || (product && 'sizeChart' in product ? (product as any).sizeChart : undefined);
-
+  console.log(product);
   // Custom Portable Text component to inject the product's size chart
   const portableTextComponents = {
     types: {
