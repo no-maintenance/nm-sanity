@@ -25,7 +25,7 @@ export const HintButton = forwardRef<HTMLButtonElement, HintButtonProps>(functio
   // Calculate fill percentage
   // If we have hints available, show full (100%)
   // Otherwise, show progress toward next hint (0%, 33%, 66%)
-  const fillPercentage = hintsEarned > 0 ? 100 : (hintProgress / WORDS_REQUIRED_FOR_HINT) * 100 + 15;
+  const fillPercentage = hintsEarned > 0 ? 100 : (hintProgress / WORDS_REQUIRED_FOR_HINT) * 100;
 
   return (
     <button
