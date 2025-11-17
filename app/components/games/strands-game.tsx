@@ -38,6 +38,10 @@ interface StrandsGameProps {
   fadeOutSpangram?: boolean;
   /** Protection view state (locked, password-granted, countdown-expired) */
   protectionViewState?: 'locked' | 'password-granted' | 'countdown-expired';
+  /** Error message from protection action for password entry */
+  protectionError?: string;
+  /** Unique key for protection error to retrigger animations */
+  protectionErrorKey?: string | number;
 }
 
 export function StrandsGame({
@@ -50,6 +54,8 @@ export function StrandsGame({
   showCompletionAnimation = false,
   fadeOutSpangram = false,
   protectionViewState,
+  protectionError,
+  protectionErrorKey,
 }: StrandsGameProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const hintButtonRef = useRef<HTMLButtonElement>(null);
@@ -64,6 +70,7 @@ export function StrandsGame({
   const [hintDisabledOpen, setHintDisabledOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const lastErrorKeyRef = useRef<string | number | undefined>(undefined);
 
   // Transform puzzle data - use canonical grid if available
   const gridData = getGridData(puzzle);
@@ -101,6 +108,17 @@ export function StrandsGame({
   const countdownLabel = countdownExpired ? 'NOW LIVE' : 'SALE BEGINS IN'
 
   const alignedRowClass = 'mx-auto w-full max-w-[400px]';
+
+  useEffect(() => {
+    if (!isProtected) return;
+    const currentErrorKey = protectionErrorKey ?? protectionError;
+    if (protectionError && currentErrorKey !== lastErrorKeyRef.current) {
+      setPasswordOpen(true);
+      lastErrorKeyRef.current = currentErrorKey;
+    } else if (!protectionError) {
+      lastErrorKeyRef.current = undefined;
+    }
+  }, [isProtected, protectionError, protectionErrorKey]);
 
   // Check for puzzle completion
   useEffect(() => {
@@ -240,6 +258,8 @@ export function StrandsGame({
                 redirectTo={typeof window !== 'undefined' ? window.location.pathname : '/'}
                 countdown={countdownDisplay}
                 countdownLabel={countdownLabel}
+                error={protectionError}
+                errorKey={protectionErrorKey}
               >
                 <Button size="sm" className="w-full">
                   ENTER THE PRIVATE SALE

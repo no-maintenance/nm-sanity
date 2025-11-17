@@ -67,7 +67,7 @@ export function JoinEarlyAccessDialog({
   return (
     <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
       <ResponsiveDialogTrigger asChild>{children}</ResponsiveDialogTrigger>
-      <ResponsiveDialogContent className="max-w-md">
+      <ResponsiveDialogContent className="md:max-w-md">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>
             {showPassword ? 'Your Password' : 'Join for Password'}
@@ -75,7 +75,7 @@ export function JoinEarlyAccessDialog({
           <ResponsiveDialogDescription>
             {showPassword
               ? 'Copy the password below and enter it to access the site'
-              : 'Sign up to get early access to new puzzles and exclusive content'}
+              : 'Sign up with your email to receive the password to gain access to the PRIVATE SALE. It will be sent to your email address provided.'}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <div className="py-4 px-6 md:px-0">

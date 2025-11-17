@@ -1,10 +1,10 @@
-import {Form, useActionData} from '@remix-run/react';
+import {Form} from '@remix-run/react';
 import {useState} from 'react';
 import {Button} from '../ui/button';
-import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {JoinEarlyAccessDialog} from '~/components/games/join-early-access-dialog';
 import {GameHelpDialog} from '~/components/games/game-help-dialog';
+import {PasswordInput} from './password-input';
 
 interface CountdownExpiredViewProps {
   protection: ProtectionConfig;
@@ -34,6 +34,14 @@ export function CountdownExpiredView({
   const title = getLocalizedValue(protection.countdownExpiredTitle) || 'Now Available';
   const message = getLocalizedValue(protection.countdownExpiredMessage) || 'Enter your password to access the content.';
   const passwordLabel = getLocalizedValue(protection.passwordLabel);
+  const actionError =
+    actionData && typeof actionData === 'object' && 'error' in actionData
+      ? (actionData.error as string | undefined)
+      : undefined;
+  const actionErrorKey =
+    actionData && typeof actionData === 'object' && 'errorKey' in actionData
+      ? (actionData.errorKey as string | number | undefined)
+      : undefined;
 
   // Sidebar layout for protected puzzle
   if (isSidebar) {
@@ -49,19 +57,15 @@ export function CountdownExpiredView({
         <div>
           <Form method="post" className="space-y-3">
             <input type="hidden" name="redirectTo" value={redirectTo} />
-            <Input
-              type="password"
+            <PasswordInput
               name="password"
               placeholder={passwordLabel ?? "Enter password"}
               required
               autoComplete="off"
               className="bg-foreground text-background"
+              error={actionError}
+              errorKey={actionErrorKey}
             />
-            {actionData && 'error' in actionData && actionData.error && (
-              <p className="text-sm text-destructive">
-                {actionData.error}
-              </p>
-            )}
             <Button type="submit" className="w-full">
               Enter Site
             </Button>
@@ -151,19 +155,15 @@ export function CountdownExpiredView({
       <Form method="post" className="space-y-4">
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <div className="space-y-4">
-          <Input
-            type="password"
+          <PasswordInput
             name="password"
             placeholder={passwordLabel ?? "Enter password"}
             required
             autoComplete="off"
             className="bg-foreground text-background"
+            error={actionError}
+            errorKey={actionErrorKey}
           />
-          {actionData && 'error' in actionData && actionData.error && (
-            <p className="text-sm text-destructive">
-              {actionData.error}
-            </p>
-          )}
           <Button type="submit" className="w-full">
             Enter Site
           </Button>

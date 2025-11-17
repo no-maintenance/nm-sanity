@@ -32,6 +32,14 @@ export function ProtectedPuzzleContainer({
   const [fadeOutSpangram, setFadeOutSpangram] = useState(false);
   const [showPageFade, setShowPageFade] = useState(false);
   const navigate = useNavigate();
+  const actionError =
+    actionData && typeof actionData === 'object' && 'error' in actionData
+      ? (actionData.error as string | undefined)
+      : undefined;
+  const actionErrorKey =
+    actionData && typeof actionData === 'object' && 'errorKey' in actionData
+      ? (actionData.errorKey as string | number | undefined)
+      : undefined;
 
   // Mark as submitted if actionData indicates puzzle was already completed
   // This prevents re-submission after a successful action
@@ -171,6 +179,8 @@ export function ProtectedPuzzleContainer({
             showCompletionAnimation={showCompletionAnimation}
             fadeOutSpangram={fadeOutSpangram}
             protectionViewState={viewState === 'fully-unlocked' ? undefined : viewState}
+            protectionError={actionError}
+            protectionErrorKey={actionErrorKey}
           />
         </div>
       </div>

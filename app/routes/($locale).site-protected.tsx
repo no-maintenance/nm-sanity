@@ -23,6 +23,14 @@ interface LoaderData {
   currentViewState: ProtectionViewState;
 }
 
+function generateErrorKey(): string {
+  const cryptoImpl = (globalThis as any).crypto;
+  if (cryptoImpl?.randomUUID) {
+    return cryptoImpl.randomUUID();
+  }
+  return `${Date.now()}-${Math.random()}`;
+}
+
 export async function loader({context, request}: LoaderFunctionArgs) {
   const {passwordSession, sanity, locale, env} = context;
   const url = new URL(request.url);
@@ -409,7 +417,10 @@ export async function action({context, request}: ActionFunctionArgs) {
         hasProtection: !!protection,
         puzzleGrantsAccess: protection?.puzzleGrantsAccess,
       });
-      return json({error: 'Puzzle completion does not grant access for this protection'});
+      return json({
+        error: 'Puzzle completion does not grant access for this protection',
+        errorKey: generateErrorKey(),
+      });
     }
 
     // Authenticate using the appropriate method
@@ -514,7 +525,10 @@ export async function action({context, request}: ActionFunctionArgs) {
     });
   }
 
-  return json({error: 'Incorrect password'});
+  return json({
+    error: 'Incorrect password',
+    errorKey: generateErrorKey(),
+  });
 }
 
 

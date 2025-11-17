@@ -2,12 +2,12 @@ import {Form, useActionData} from '@remix-run/react';
 import {useEffect, useState} from 'react';
 import {MediaField} from '../media-field';
 import {Button} from '../ui/button';
-import {Input} from '../ui/input';
 import type {ProtectionConfig, ProtectionContext} from '~/lib/site-protection-states';
 import {CountdownTimer} from './countdown-timer';
 import {useCountdown} from '~/hooks/use-countdown';
 import {GameHelpDialog} from '../games/game-help-dialog';
 import {JoinEarlyAccessDialog} from '../games/join-early-access-dialog';
+import {PasswordInput} from './password-input';
 
 interface LockedViewProps {
   protection: ProtectionConfig;
@@ -62,6 +62,14 @@ export function LockedView({
   const message = getLocalizedValue(protection.message);
   const countdownLabel = getLocalizedValue(protection.countdownLabel);
   const passwordLabel = getLocalizedValue(protection.passwordLabel);
+  const actionError =
+    actionData && typeof actionData === 'object' && 'error' in actionData
+      ? (actionData.error as string | undefined)
+      : undefined;
+  const actionErrorKey =
+    actionData && typeof actionData === 'object' && 'errorKey' in actionData
+      ? (actionData.errorKey as string | number | undefined)
+      : undefined;
 
   // Sidebar layout for protected puzzle
   if (isSidebar) {
@@ -84,19 +92,15 @@ export function LockedView({
           <div className="space-y-3  w-[350px] mx-auto">
             <Form method="post" className="space-y-3">
               <input type="hidden" name="redirectTo" value={redirectTo} />
-              <Input
-                type="password"
+              <PasswordInput
                 name="password"
                 placeholder={passwordLabel ?? "Enter password"}
                 required
                 autoComplete="off"
-                className="bg-transparent  border-foreground"
+                className="bg-transparent border-foreground"
+                error={actionError}
+                errorKey={actionErrorKey}
               />
-              {actionData && 'error' in actionData && actionData.error && (
-                <p className="text-sm text-destructive">
-                  {actionData.error}
-                </p>
-              )}
               <Button type="submit" className="w-full">
                 Enter Site
               </Button>
@@ -206,19 +210,15 @@ export function LockedView({
         <Form method="post" className="space-y-4">
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <div className="space-y-4">
-            <Input
-              type="password"
+            <PasswordInput
               name="password"
               placeholder={passwordLabel ?? "Enter password"}
               required
               autoComplete="off"
               className="text-background"
+              error={actionError}
+              errorKey={actionErrorKey}
             />
-            {actionData && 'error' in actionData && actionData.error && (
-              <p className="text-sm text-destructive">
-                {actionData.error}
-              </p>
-            )}
             <Button type="submit" className="w-full">
               Enter Site
             </Button>

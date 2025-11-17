@@ -41,6 +41,14 @@
     }
   }
 
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+  }
+
+  --animate-shake: shake 0.5s ease-in-out;
+
   --typography-body: #374151;
   --typography-headings: #111827;
   --typography-links: #2563eb;
@@ -113,6 +121,9 @@
 }
 
 @layer utilities {
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
 
   .hiddenScroll {
     scrollbar-width: none;
