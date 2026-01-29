@@ -1,10 +1,10 @@
 import type {ChangeEvent, CSSProperties} from 'react';
 import type {NumberInputProps} from 'sanity';
 
-import {Flex, TextInput, useTheme} from '@sanity/ui';
+import {Button, Flex, TextInput, useTheme} from '@sanity/ui';
 import _ from 'lodash';
 import React, {lazy, useCallback, useMemo, useState} from 'react';
-import {set} from 'sanity';
+import {set, unset} from 'sanity';
 
 const debounce = _.debounce;
 
@@ -33,6 +33,11 @@ export function RangeSliderInput(
   const max = options?.max;
   const step = options?.step || 1;
   const [rangeValue, setRangeValue] = useState(value || 0);
+
+  const handleClear = useCallback(() => {
+    onChange(unset());
+    setRangeValue(min || 0);
+  }, [onChange, min]);
 
   const emitSetValue = useCallback(
     (nextValue: number) => {
@@ -95,6 +100,13 @@ export function RangeSliderInput(
         step={step}
         suffix={suffix || ''}
         value={rangeValue}
+      />
+      <Button
+        fontSize={1}
+        mode="ghost"
+        onClick={handleClear}
+        padding={2}
+        text="Clear"
       />
     </Flex>
   );
