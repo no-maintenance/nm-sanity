@@ -64,6 +64,9 @@ export function Header() {
   const logoWidth = header?.desktopLogoWidth
     ? `${header?.desktopLogoWidth}px`
     : undefined;
+  const navFontSize = header?.navFontSize
+    ? `${header.navFontSize}px`
+    : undefined;
   const showCountrySelectorIcon = header?.showCountrySelectorIcon;
   const showSearchIcon = header?.showSearchIcon;
   const showHamburgerMenuOnDesktop = stegaClean(header?.showHamburgerMenuOnDesktop);
@@ -124,6 +127,7 @@ export function Header() {
               <MobileNavigation
                 data={header?.menu}
                 headerRef={headerRef}
+                navFontSize={navFontSize}
                 open={mobileNavOpen}
                 setOpen={handleMobileNavOpenChange}
               />

@@ -205,7 +205,6 @@ export default defineField({
     bannerHeight: 450,
     aspectRatio: '16:9',
     mediaType: 'image',
-    responsiveAspectRatio: false,
     settings: {
       padding: {
         top: 0,

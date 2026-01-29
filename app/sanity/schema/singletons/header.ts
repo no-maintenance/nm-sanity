@@ -165,6 +165,20 @@ export default defineType({
       initialValue: 100,
       validation: (Rule) => Rule.min(0).max(400),
     }),
+    defineField({
+      name: 'navFontSize',
+      title: 'Navigation menu font size',
+      description: 'Font size for the hamburger menu navigation items',
+      type: 'rangeSlider',
+      group: 'settings',
+      options: {
+        min: 16,
+        max: 56,
+        suffix: 'px',
+      },
+      initialValue: 36,
+      validation: (Rule) => Rule.min(16).max(56),
+    }),
   ],
   preview: {
     prepare: () => ({title: 'Header'}),

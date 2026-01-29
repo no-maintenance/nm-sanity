@@ -228,6 +228,7 @@ export const HEADER_FRAGMENT = defineQuery(`{
   showSearchIcon,
   colorScheme -> ${COLOR_SCHEME_FRAGMENT},
   desktopLogoWidth,
+  navFontSize,
   "menu": coalesce(
     menu[_key == $language][0].value[],
     menu[_key == $defaultLanguage][0].value[],

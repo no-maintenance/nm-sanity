@@ -1,3 +1,4 @@
+import type {CSSProperties} from 'react';
 import {useCallback, useState} from 'react';
 import {cn} from '~/lib/utils';
 import {SanityExternalLink} from '../sanity/link/sanity-external-link';
@@ -13,7 +14,7 @@ import type {NavigationProps} from './desktop-navigation';
 import type {SanityNestedNavigationProps} from './nested-navigation';
 
 const mobileMenuLinkClass = cn(
-  'inline-flex items-center md:text-5xl text-4xl font-medium transition-colors uppercase',
+  'inline-flex items-center text-[length:var(--nav-font-size,2.25rem)] md:text-[length:var(--nav-font-size,3rem)] font-medium transition-colors uppercase',
   'focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0',
   'animated-underline'
 );
@@ -25,11 +26,12 @@ function isSaleItem(name: string | null | undefined): boolean {
 interface MobileNavigationProps {
   data?: NavigationProps;
   headerRef: RefObject<HTMLElement>;
+  navFontSize?: string;
   open?: boolean;
   setOpen?: (open: boolean) => void;
 }
 
-export function MobileNavigation({data, headerRef, open = false, setOpen}: MobileNavigationProps) {
+export function MobileNavigation({data, headerRef, navFontSize, open = false, setOpen}: MobileNavigationProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   
   // Use either the props or internal state
@@ -95,7 +97,10 @@ export function MobileNavigation({data, headerRef, open = false, setOpen}: Mobil
                        onPointerDownOutside={avoidDefaultDomBehavior}
                        onInteractOutside={avoidDefaultDomBehavior}
                       className="flex-1 overflow-y-auto px-6">
-                        <nav className=" mx-8 md:mx-24 sm:mx-16 mt-16 xl:mt-24 ">
+                        <nav
+                          className=" mx-8 md:mx-24 sm:mx-16 mt-16"
+                          style={navFontSize ? {'--nav-font-size': navFontSize} as CSSProperties : undefined}
+                        >
                           <ul className="flex flex-col space-y-4 xl:space-y-6">
                             {data?.map((item) => (
                               <li key={item._key}>

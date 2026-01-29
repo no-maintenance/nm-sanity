@@ -4,7 +4,7 @@ import {
   useNavigate,
   useSearchParams,
 } from '@remix-run/react';
-import {VisualEditing as SanityVisualEditing} from '@sanity/visual-editing/remix';
+import {VisualEditing as SanityVisualEditing} from '@sanity/visual-editing/react-router';
 import {cx} from 'class-variance-authority';
 import {useCallback, useEffect} from 'react';
 
