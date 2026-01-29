@@ -1,4 +1,3 @@
-import type {CSSProperties} from 'react';
 import {useCallback, useState} from 'react';
 import {cn} from '~/lib/utils';
 import {SanityExternalLink} from '../sanity/link/sanity-external-link';
@@ -9,7 +8,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import {m, AnimatePresence} from 'motion/react';
 import {useRootLoaderData} from '~/root';
 import {stegaClean} from '@sanity/client/stega';
-import type {RefObject} from 'react';
+import type {RefObject, CSSProperties} from 'react';
 import type {NavigationProps} from './desktop-navigation';
 import type {SanityNestedNavigationProps} from './nested-navigation';
 
