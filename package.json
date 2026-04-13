@@ -154,11 +154,6 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.1.8"
   },
-  "pnpm": {
-    "overrides": {
-      "rollup": "4.40.0"
-    }
-  },
   "engines": {
     "node": "20.x"
   },
