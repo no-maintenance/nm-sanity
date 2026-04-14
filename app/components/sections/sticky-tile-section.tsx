@@ -142,7 +142,7 @@ function Tile({
                 'w-full',
                 'flex flex-col',
                 'relative',
-                isSticky ? 'h-full' : 'min-h-[200px]',
+                isSticky ? 'h-full' : hasMedia ? 'min-h-[200px]' : '',
             )}
             style={isSticky ? { height: stickyHeight } : {}}
         >
@@ -165,21 +165,25 @@ function Tile({
                 </div>
             )}
 
-            {richtext && (
-                <div className={hasMedia ? 'absolute inset-0' : 'relative w-full'}>
+            {richtext && hasMedia && (
+                <div className='absolute inset-0'>
                     <BannerContent
                         contentPosition={contentPosition as ContentPosition | null}
                         contentAlignment={contentAlignment as ContentAlignment | null}
-                        className={cn(
-                            'py-4',
-                            { 'flex-grow': !hasMedia },
-                            !hasMedia && 'h-auto',
-                        )}
+                        className="py-4"
                     >
                         <div className="flex flex-col gap-4 text-balance text-foreground">
                             <PortableText value={richtext} components={portableTextComponents} />
                         </div>
                     </BannerContent>
+                </div>
+            )}
+
+            {richtext && !hasMedia && (
+                <div className="flex-grow flex flex-col items-center justify-center py-8 px-4 text-foreground">
+                    <div className="max-w-[40rem] flex flex-col gap-4 text-balance">
+                        <PortableText value={richtext} components={portableTextComponents} />
+                    </div>
                 </div>
             )}
         </div>
