@@ -166,13 +166,14 @@ function Tile({
             )}
 
             {richtext && (
-                <div className='absolute inset-0'>
+                <div className={hasMedia ? 'absolute inset-0' : 'relative w-full'}>
                     <BannerContent
                         contentPosition={contentPosition as ContentPosition | null}
                         contentAlignment={contentAlignment as ContentAlignment | null}
                         className={cn(
                             'py-4',
-                            { 'flex-grow': !hasMedia }
+                            { 'flex-grow': !hasMedia },
+                            !hasMedia && 'h-auto',
                         )}
                     >
                         <div className="flex flex-col gap-4 text-balance text-foreground">
