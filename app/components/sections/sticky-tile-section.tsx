@@ -4,8 +4,13 @@ import type { SectionDefaultProps, SectionOfType } from 'types';
 import { PortableText } from '@portabletext/react';
 import { useMemo } from 'react';
 
-// import type {ButtonBlockProps} from '../sanity/richtext/components/button-block'; // If you use button blocks
+import type {ButtonBlockProps} from '../sanity/richtext/components/button-block';
+import type {ExternalLinkAnnotationProps} from '../sanity/richtext/components/external-link-annotation';
+import type {InternalLinkAnnotationProps} from '../sanity/richtext/components/internal-link-annotation';
 
+import {ButtonBlock} from '../sanity/richtext/components/button-block';
+import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-link-annotation';
+import {InternalLinkAnnotation} from '../sanity/richtext/components/internal-link-annotation';
 import { SanityMedia } from '../sanity/sanity-media';
 import { cn } from '../../lib/utils';
 import { useSection } from '../cms-section'; // For determining if it's the first section
@@ -124,7 +129,34 @@ function Tile({
     const tileId = tile._key || `tile-${Math.random().toString(36).substr(2, 9)}`;
     const hasColorScheme = settings?.colorScheme != null;
     const colorsCssVars = hasColorScheme ? useColorsCssVars({settings, selector: `#tile-${tileId}`}) : '';
-    const portableTextComponents = useMemo((): PortableTextComponents => ({}), []);
+    const portableTextComponents = useMemo(
+        (): PortableTextComponents => ({
+            marks: {
+                externalLink: (props: {
+                    children: React.ReactNode;
+                    value: ExternalLinkAnnotationProps;
+                }) => (
+                    <ExternalLinkAnnotation {...props.value}>
+                        {props.children}
+                    </ExternalLinkAnnotation>
+                ),
+                internalLink: (props: {
+                    children: React.ReactNode;
+                    value: InternalLinkAnnotationProps;
+                }) => (
+                    <InternalLinkAnnotation {...props.value}>
+                        {props.children}
+                    </InternalLinkAnnotation>
+                ),
+            },
+            types: {
+                button: (props: {value: ButtonBlockProps}) => (
+                    <ButtonBlock {...props.value} />
+                ),
+            },
+        }),
+        [],
+    );
 
     const hasMedia = (mediaType === 'image' && image?.asset) || (mediaType === 'video' && video?.asset);
 
@@ -135,6 +167,8 @@ function Tile({
         else if (aspectRatioStr === '9:16') mediaContainerClassName = 'aspect-[9/16]';
         // ... other mappings ...
     }
+
+    const isTextOnly = !hasMedia && richtext;
 
     const tileInnerContent = (
         <div
@@ -166,14 +200,14 @@ function Tile({
             )}
 
             {richtext && (
-                <div className='absolute inset-0'>
+                <div className={hasMedia ? 'absolute inset-0' : cn(
+                    'w-full',
+                    !isSticky && 'sticky top-[var(--desktopHeaderHeight)] h-[calc(100vh-var(--desktopHeaderHeight))] flex items-center justify-center',
+                )}>
                     <BannerContent
                         contentPosition={contentPosition as ContentPosition | null}
                         contentAlignment={contentAlignment as ContentAlignment | null}
-                        className={cn(
-                            'py-4',
-                            { 'flex-grow': !hasMedia }
-                        )}
+                        className="py-4"
                     >
                         <div className="flex flex-col gap-4 text-balance text-foreground">
                             <PortableText value={richtext} components={portableTextComponents} />
@@ -185,8 +219,7 @@ function Tile({
     );
 
     const tileWrapperClasses = cn(
-        'block w-full',
-        isSticky ? 'h-full' : '',
+        'block w-full h-full',
         className,
         (link?.slug?.current || externalLink) && 'group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md'
     );
