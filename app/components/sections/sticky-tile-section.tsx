@@ -136,36 +136,25 @@ function Tile({
         // ... other mappings ...
     }
 
-    const tileInnerContent = (
+    const tileInnerContent = isSticky ? (
         <div
-            className={cn(
-                'w-full',
-                'flex flex-col',
-                'relative',
-                isSticky ? 'h-full' : hasMedia ? 'min-h-[200px]' : '',
-            )}
-            style={isSticky ? { height: stickyHeight } : {}}
+            className="w-full flex flex-col relative h-full"
+            style={{ height: stickyHeight }}
         >
             {hasMedia && (
-                <div className={cn(
-                    'relative w-full overflow-hidden',
-                    isSticky ? 'h-full' : mediaContainerClassName
-                )}
-                >
-
-                        <SanityMedia
-                            image={image}
-                            video={video}
-                            mediaType={mediaType}
-                            className={cn('w-full object-cover', isSticky ? 'h-full' : '')}
-                            objectFit="cover"
-                            priority={isSticky}
-                            hiddenControls={mediaType === 'video'}
-                        />
+                <div className="relative w-full overflow-hidden h-full">
+                    <SanityMedia
+                        image={image}
+                        video={video}
+                        mediaType={mediaType}
+                        className="w-full object-cover h-full"
+                        objectFit="cover"
+                        priority
+                        hiddenControls={mediaType === 'video'}
+                    />
                 </div>
             )}
-
-            {richtext && hasMedia && (
+            {richtext && (
                 <div className='absolute inset-0'>
                     <BannerContent
                         contentPosition={contentPosition as ContentPosition | null}
@@ -178,14 +167,39 @@ function Tile({
                     </BannerContent>
                 </div>
             )}
-
-            {richtext && !hasMedia && (
-                <div className="flex-grow flex flex-col items-center justify-center py-8 px-4 text-foreground">
-                    <div className="max-w-[40rem] flex flex-col gap-4 text-balance">
-                        <PortableText value={richtext} components={portableTextComponents} />
-                    </div>
+        </div>
+    ) : (
+        <div className="w-full flex flex-col">
+            {hasMedia && (
+                <div className={cn(
+                    'relative w-full overflow-hidden',
+                    mediaContainerClassName,
+                    'md:absolute md:inset-0',
+                )}>
+                    <SanityMedia
+                        image={image}
+                        video={video}
+                        mediaType={mediaType}
+                        className="w-full object-cover"
+                        objectFit="cover"
+                        hiddenControls={mediaType === 'video'}
+                    />
                 </div>
             )}
+            <div className={cn(
+                'relative w-full py-8 px-4',
+                hasMedia && 'md:absolute md:inset-0 md:py-0 md:px-0',
+            )}>
+                <BannerContent
+                    contentPosition={contentPosition as ContentPosition | null}
+                    contentAlignment={contentAlignment as ContentAlignment | null}
+                    className={cn('py-4', !hasMedia && '!h-auto')}
+                >
+                    <div className="flex flex-col gap-4 text-balance text-foreground">
+                        <PortableText value={richtext} components={portableTextComponents} />
+                    </div>
+                </BannerContent>
+            </div>
         </div>
     );
 
