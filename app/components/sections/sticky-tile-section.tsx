@@ -87,7 +87,7 @@ export function StickyTileSection(
                         <Tile tile={stickyTile} isSticky={true} stickyHeight={stickyVhOffset} />
                     </div>
                 </div>
-                <div className='grid grid-cols-1 order-1 h-full'>
+                <div className='grid grid-cols-1 order-1 md:h-full'>
                     {tiles.slice(1).map((tile, index) => (
                         <Tile key={tile._key || `tile-col1-${index}`} tile={tile} isSticky={false} stickyHeight={undefined} />
                     ))}
@@ -193,7 +193,7 @@ function Tile({
                 <BannerContent
                     contentPosition={contentPosition as ContentPosition | null}
                     contentAlignment={contentAlignment as ContentAlignment | null}
-                    className={cn('py-4', !hasMedia && '!h-auto')}
+                    className="py-4 !h-auto md:!h-full"
                 >
                     <div className="flex flex-col gap-4 text-balance text-foreground">
                         <PortableText value={richtext} components={portableTextComponents} />
@@ -211,7 +211,7 @@ function Tile({
     );
 
     const tileContent = (
-        <div id={hasColorScheme ? `tile-${tileId}` : undefined} className="h-full w-full">
+        <div id={hasColorScheme ? `tile-${tileId}` : undefined} className={cn(isSticky ? 'h-full' : 'md:h-full', 'w-full')}>
             {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
             {tileInnerContent}
         </div>
