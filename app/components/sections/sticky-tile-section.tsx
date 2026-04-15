@@ -169,12 +169,11 @@ function Tile({
             )}
         </div>
     ) : (
-        <div className="w-full flex flex-col">
+        <div className="w-full">
             {hasMedia && (
                 <div className={cn(
                     'relative w-full overflow-hidden',
                     mediaContainerClassName,
-                    'md:absolute md:inset-0',
                 )}>
                     <SanityMedia
                         image={image}
@@ -187,18 +186,16 @@ function Tile({
                 </div>
             )}
             <div className={cn(
-                'relative w-full py-8 px-4',
-                hasMedia && 'md:absolute md:inset-0 md:py-0 md:px-0',
+                'w-full py-8 px-4',
+                contentAlignment === 'center' && 'text-center',
+                contentAlignment === 'left' && 'text-left',
+                contentAlignment === 'right' && 'text-right',
             )}>
-                <BannerContent
-                    contentPosition={contentPosition as ContentPosition | null}
-                    contentAlignment={contentAlignment as ContentAlignment | null}
-                    className="py-4 !h-auto md:!h-full"
-                >
+                <div className="max-w-[40rem] mx-auto">
                     <div className="flex flex-col gap-4 text-balance text-foreground">
                         <PortableText value={richtext} components={portableTextComponents} />
                     </div>
-                </BannerContent>
+                </div>
             </div>
         </div>
     );
