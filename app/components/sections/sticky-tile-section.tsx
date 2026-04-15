@@ -82,8 +82,8 @@ export function StickyTileSection(
     return (
         <div className="">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
-                <div className='h-full'>
-                    <div className='sticky top-[var(--desktopHeaderHeight)]'>
+                <div>
+                    <div className='md:sticky md:top-[var(--desktopHeaderHeight)]'>
                         <Tile tile={stickyTile} isSticky={true} stickyHeight={stickyVhOffset} />
                     </div>
                 </div>
