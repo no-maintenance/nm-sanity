@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SanityImage } from './sanity-image';
 import MuxPlayer from '@mux/mux-player-react';
 import ClientOnly from './client-only';
@@ -34,18 +34,35 @@ function VideoMedia({
   
   const thumbTime = video.asset?.thumbTime || 0;
   const posterUrl = `https://image.mux.com/${video.asset.playbackId}/thumbnail.webp?time=${thumbTime}&width=1920`;
+  const mp4Url = `https://stream.mux.com/${video.asset.playbackId}/high.mp4`;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    // Mobile browsers require play() after user interaction or in response to load
+    const tryPlay = () => {
+      el.play().catch(() => {
+        // Silently fail — poster will show instead
+      });
+    };
+    if (el.readyState >= 2) {
+      tryPlay();
+    } else {
+      el.addEventListener('loadeddata', tryPlay, { once: true });
+    }
+  }, []);
 
   return (
-    <MuxPlayer
-      streamType="on-demand"
-      playbackId={video.asset.playbackId}
-      autoPlay="muted"
+    <video
+      ref={videoRef}
+      src={mp4Url}
+      poster={posterUrl}
+      autoPlay
       loop={loop}
       muted={muted}
-      thumbnailTime={thumbTime}
-      poster={posterUrl}
+      playsInline
       preload="auto"
-      minResolution="1080p"
       style={{
         height: '100%',
         width: '100%',
@@ -54,12 +71,8 @@ function VideoMedia({
         left: 0,
         right: 0,
         bottom: 0,
-        ['--media-object-fit' as string]: objectFit,
-        ['--media-object-position' as string]: 'center',
-        ...(hiddenControls ? {
-          ['--controls' as string]: 'none',
-          ['--loading-indicator' as string]: 'none',
-        } : {})
+        objectFit: objectFit,
+        objectPosition: 'center',
       }}
       className={`${className} w-full h-full`}
     />
