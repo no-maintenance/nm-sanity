@@ -32,15 +32,20 @@ function VideoMedia({
 }: Pick<SanityMediaProps, 'video' | 'className' | 'objectFit' | 'autoPlay' | 'loop' | 'muted' | 'hiddenControls'>) {
   if (!video?.asset?.playbackId) return null;
   
+  const thumbTime = video.asset?.thumbTime || 0;
+  const posterUrl = `https://image.mux.com/${video.asset.playbackId}/thumbnail.webp?time=${thumbTime}&width=1920`;
+
   return (
     <MuxPlayer
       streamType="on-demand"
       playbackId={video.asset.playbackId}
-      autoPlay="any" // Enhanced autoplay: first try unmuted, then try muted
+      autoPlay="muted"
       loop={loop}
       muted={muted}
-      thumbnailTime={video.asset?.thumbTime || 0}
+      thumbnailTime={thumbTime}
+      poster={posterUrl}
       preload="auto"
+      minResolution="1080p"
       style={{
         height: '100%',
         width: '100%',
@@ -49,10 +54,8 @@ function VideoMedia({
         left: 0,
         right: 0,
         bottom: 0,
-        // Use Mux Player's CSS variables for object-fit behavior
         ['--media-object-fit' as string]: objectFit,
         ['--media-object-position' as string]: 'center',
-        // Hide controls if hiddenControls is true
         ...(hiddenControls ? {
           ['--controls' as string]: 'none',
           ['--loading-indicator' as string]: 'none',
