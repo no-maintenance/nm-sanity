@@ -176,7 +176,7 @@ function Tile({
                 'w-full',
                 'flex flex-col',
                 'relative',
-                isSticky ? 'h-full' : 'min-h-[200px]',
+                isSticky ? 'h-full' : 'h-full',
             )}
             style={isSticky ? { height: stickyHeight } : {}}
         >
@@ -201,18 +201,27 @@ function Tile({
 
             {richtext && (
                 <div className={hasMedia ? 'absolute inset-0' : cn(
-                    'w-full',
-                    !isSticky && 'sticky top-[var(--desktopHeaderHeight)] h-[calc(100vh-var(--desktopHeaderHeight))] flex items-center justify-center',
+                    'w-full h-full flex items-center justify-center',
                 )}>
-                    <BannerContent
-                        contentPosition={contentPosition as ContentPosition | null}
-                        contentAlignment={contentAlignment as ContentAlignment | null}
-                        className="py-4"
-                    >
-                        <div className="flex flex-col gap-4 text-balance text-foreground">
-                            <PortableText value={richtext} components={portableTextComponents} />
+                    {hasMedia ? (
+                        <BannerContent
+                            contentPosition={contentPosition as ContentPosition | null}
+                            contentAlignment={contentAlignment as ContentAlignment | null}
+                            className="py-4"
+                        >
+                            <div className="flex flex-col gap-4 text-balance text-foreground">
+                                <PortableText value={richtext} components={portableTextComponents} />
+                            </div>
+                        </BannerContent>
+                    ) : (
+                        <div className="relative z-3 flex h-full w-full items-center justify-center py-4 text-center xl:py-8">
+                            <div className="w-full max-w-[40rem] px-4 [&_p]:overflow-hidden [&_a]:overflow-hidden">
+                                <div className="flex flex-col items-center gap-4 text-balance text-foreground">
+                                    <PortableText value={richtext} components={portableTextComponents} />
+                                </div>
+                            </div>
                         </div>
-                    </BannerContent>
+                    )}
                 </div>
             )}
         </div>
