@@ -82,12 +82,12 @@ export function StickyTileSection(
     return (
         <div className="">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
-                <div className='h-full'>
-                    <div className='sticky top-[var(--desktopHeaderHeight)]'>
+                <div>
+                    <div className='md:sticky md:top-[var(--desktopHeaderHeight)]'>
                         <Tile tile={stickyTile} isSticky={true} stickyHeight={stickyVhOffset} />
                     </div>
                 </div>
-                <div className='grid grid-cols-1 order-1 h-full'>
+                <div className='grid grid-cols-1 order-1 md:h-full'>
                     {tiles.slice(1).map((tile, index) => (
                         <Tile key={tile._key || `tile-col1-${index}`} tile={tile} isSticky={false} stickyHeight={undefined} />
                     ))}
@@ -136,44 +136,30 @@ function Tile({
         // ... other mappings ...
     }
 
-    const tileInnerContent = (
+    const tileInnerContent = isSticky ? (
         <div
-            className={cn(
-                'w-full',
-                'flex flex-col',
-                'relative',
-                isSticky ? 'h-full' : 'min-h-[200px]',
-            )}
-            style={isSticky ? { height: stickyHeight } : {}}
+            className="w-full flex flex-col relative h-full"
+            style={{ height: stickyHeight }}
         >
             {hasMedia && (
-                <div className={cn(
-                    'relative w-full overflow-hidden',
-                    isSticky ? 'h-full' : mediaContainerClassName
-                )}
-                >
-
-                        <SanityMedia
-                            image={image}
-                            video={video}
-                            mediaType={mediaType}
-                            className={cn('w-full object-cover', isSticky ? 'h-full' : '')}
-                            objectFit="cover"
-                            priority={isSticky}
-                            hiddenControls={mediaType === 'video'}
-                        />
+                <div className="relative w-full overflow-hidden h-full">
+                    <SanityMedia
+                        image={image}
+                        video={video}
+                        mediaType={mediaType}
+                        className="w-full object-cover h-full"
+                        objectFit="cover"
+                        priority
+                        hiddenControls={mediaType === 'video'}
+                    />
                 </div>
             )}
-
             {richtext && (
                 <div className='absolute inset-0'>
                     <BannerContent
                         contentPosition={contentPosition as ContentPosition | null}
                         contentAlignment={contentAlignment as ContentAlignment | null}
-                        className={cn(
-                            'py-4',
-                            { 'flex-grow': !hasMedia }
-                        )}
+                        className="py-4"
                     >
                         <div className="flex flex-col gap-4 text-balance text-foreground">
                             <PortableText value={richtext} components={portableTextComponents} />
@@ -181,6 +167,36 @@ function Tile({
                     </BannerContent>
                 </div>
             )}
+        </div>
+    ) : (
+        <div className="w-full">
+            {hasMedia && (
+                <div className={cn(
+                    'relative w-full overflow-hidden',
+                    mediaContainerClassName,
+                )}>
+                    <SanityMedia
+                        image={image}
+                        video={video}
+                        mediaType={mediaType}
+                        className="w-full object-cover"
+                        objectFit="cover"
+                        hiddenControls={mediaType === 'video'}
+                    />
+                </div>
+            )}
+            <div className={cn(
+                'w-full py-8 px-4',
+                contentAlignment === 'center' && 'text-center',
+                contentAlignment === 'left' && 'text-left',
+                contentAlignment === 'right' && 'text-right',
+            )}>
+                <div className="max-w-[40rem] mx-auto">
+                    <div className="flex flex-col gap-4 text-balance text-foreground">
+                        <PortableText value={richtext} components={portableTextComponents} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 
@@ -192,7 +208,7 @@ function Tile({
     );
 
     const tileContent = (
-        <div id={hasColorScheme ? `tile-${tileId}` : undefined} className="h-full w-full">
+        <div id={hasColorScheme ? `tile-${tileId}` : undefined} className={cn(isSticky ? 'h-full' : 'md:h-full', 'w-full')}>
             {hasColorScheme && <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />}
             {tileInnerContent}
         </div>
