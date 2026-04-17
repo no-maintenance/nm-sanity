@@ -56,15 +56,15 @@ export function TwoColumnBlock(props: TwoColumnBlockProps) {
     }
   };
 
-  // Vertical alignment classes
+  // Vertical alignment classes (applied to the grid container)
   const getAlignmentClasses = () => {
     switch (verticalAlignment) {
       case 'top':
-        return 'justify-start';
+        return 'items-start';
       case 'bottom':
-        return 'justify-end';
+        return 'items-end';
       default:
-        return 'justify-center';
+        return 'items-center';
     }
   };
 
@@ -156,22 +156,17 @@ export function TwoColumnBlock(props: TwoColumnBlockProps) {
   return (
     <div
       className={cn([
-        'grid grid-cols-1 items-stretch',
+        'grid grid-cols-1',
+        getAlignmentClasses(),
         getLayoutClasses(),
         getGapClasses(),
         'w-full',
       ])}
     >
-      <div className={cn([
-        'w-full flex flex-col h-full',
-        getAlignmentClasses(),
-      ])}>
+      <div className="w-full">
         {renderColumnContent(leftColumn)}
       </div>
-      <div className={cn([
-        'w-full flex flex-col h-full',
-        getAlignmentClasses(),
-      ])}>
+      <div className="w-full">
         {renderColumnContent(rightColumn)}
       </div>
     </div>
