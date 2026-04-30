@@ -150,7 +150,7 @@ export function DesktopFiltersDrawer({
         'border border-[rgb(var(--border))]',
       )}
     >
-      <nav>
+      <nav className="uppercase">
         <Accordion
           // Open filters by default
           defaultValue={filters.map((filter) => filter.id)}

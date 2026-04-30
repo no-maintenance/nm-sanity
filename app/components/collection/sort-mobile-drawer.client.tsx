@@ -35,7 +35,7 @@ export function MobileDrawer({
 }) {
   const [open, setOpen] = useState(false);
   const {themeContent} = useSanityThemeContent();
-  const heading = themeContent?.collection?.filterAndSort;
+  const heading = 'FILTER';
   const {pending} = useOptimisticNavigationData<boolean>('clear-all-filters');
 
   return (
@@ -59,7 +59,7 @@ export function MobileDrawer({
               <div className="pt-6">
                 <MobileSort />
               </div>
-              <div className="pr-1">
+              <div className="pr-1 uppercase">
                 {filters.map((filter: Filter) => (
                   <div className="my-8 border-t pt-8" key={filter.id}>
                     <div className="text-xl font-medium">{filter.label}</div>
