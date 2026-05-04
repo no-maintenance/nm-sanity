@@ -1,147 +1,62 @@
-import type {ROOT_QUERYResult} from 'types/sanity/sanity.generated';
+import {useEffect} from 'react';
 
-import {Link, useLocation} from '@remix-run/react';
-import {cx} from 'class-variance-authority';
-import Autoplay from 'embla-carousel-autoplay';
-import {useEffect, useMemo} from 'react';
-import {stegaClean} from '@sanity/client/stega';
-
-import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
-import {useRootLoaderData} from '~/root';
-
-import {IconArrowRight} from '../icons/icon-arrow-right';
-import {SanityInternalLink} from '../sanity/link/sanity-internal-link';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '../ui/carousel';
-
-type AnnouncementBarProps = NonNullable<
-  NonNullable<ROOT_QUERYResult['header']>['announcementBar']
->[number];
+const MARQUEE_TEXT =
+  'SIGN UP FOR 10% OFF - NEXT RELEASE ON MAY 8TH AT 11AM PST/2PM EST - FREE SHIPPING OVER $250';
+const KLAVIYO_FORM_ID = 'Rc2Qwz';
+const COPIES = 8;
 
 export function AnnouncementBar() {
-  const {sanityRoot} = useRootLoaderData();
-  const {pathname} = useLocation();
-  const data = sanityRoot?.data;
-  const header = data?.header;
-  const announcementBar = header?.announcementBar;
-  
-  // Check fluid header settings
-  const enableFluidHeader = stegaClean((header as any)?.enableFluidHeader) || false;
-  const fluidHeaderOnHomePage = stegaClean((header as any)?.fluidHeaderOnHomePage) || false;
-  const isHomePage = pathname === '/';
-  
-  // Determine if fluid header is active for current page
-  const shouldHaveFluidHeader = enableFluidHeader && ((isHomePage && fluidHeaderOnHomePage));
-
-  // Add a useEffect to set the announcement bar height as a CSS variable
   useEffect(() => {
-    const announcementBarEl = document.getElementById('announcement-bar');
-    if (announcementBarEl) {
-      const height = announcementBarEl.clientHeight;
-      document.documentElement.style.setProperty('--announcement-bar-height', `${height}px`);
-    }
-    
+    const el = document.getElementById('announcement-bar');
+    if (!el) return;
+    const setHeight = () =>
+      document.documentElement.style.setProperty(
+        '--announcement-bar-height',
+        `${el.clientHeight}px`,
+      );
+    setHeight();
+    window.addEventListener('resize', setHeight);
     return () => {
+      window.removeEventListener('resize', setHeight);
       document.documentElement.style.removeProperty('--announcement-bar-height');
     };
-  }, [announcementBar]);
-  const plugins = useMemo(
-    () =>
-      header?.autoRotateAnnouncements
-        ? [Autoplay({delay: 5000, stopOnMouseEnter: true})]
-        : [],
-    [header],
-  );
+  }, []);
 
-  const colorsCssVars = useColorsCssVars({
-    selector: `#announcement-bar`,
-    settings: {
-      colorScheme: header?.announcementBarColorScheme ?? null,
-      customCss: null,
-      hide: null,
-      padding: null,
-    },
-  });
+  const handleClick = () => {
+    if (typeof window === 'undefined') return;
+    const w = window as any;
 
-  const isActive = (announcementBar?.length ?? 0) > 1;
+    if (w.klaviyo?.openForm) {
+      w.klaviyo.openForm(KLAVIYO_FORM_ID);
+      return;
+    }
 
-  // Don't render the announcement bar if there's no content or if fluid header is active
-  if (!announcementBar || shouldHaveFluidHeader) return null;
+    w._klOnsite = w._klOnsite || [];
+    w._klOnsite.push(['openForm', KLAVIYO_FORM_ID]);
+  };
 
   return (
-    <section className="bg-background text-foreground" id="announcement-bar">
-      <div className="container">
-        <style dangerouslySetInnerHTML={{__html: colorsCssVars}} />
-        <Carousel opts={{active: isActive, align: 'center'}} plugins={plugins}>
-          <CarouselContent className="relative ml-0 justify-center">
-            {announcementBar?.map((item) => (
-              <CarouselItem key={item._key}>
-                <Item
-                  _key={item._key}
-                  externalLink={item.externalLink}
-                  link={item.link}
-                  openInNewTab={item.openInNewTab}
-                  text={item.text}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {isActive && (
-            <>
-              <CarouselPrevious />
-              <CarouselNext />
-            </>
-          )}
-        </Carousel>
-      </div>
+    <section
+      className="bg-black text-white overflow-hidden"
+      id="announcement-bar"
+    >
+      <button
+        aria-label={MARQUEE_TEXT}
+        className="block w-full py-2 text-xs tracking-wider uppercase transition-opacity hover:opacity-80"
+        onClick={handleClick}
+        type="button"
+      >
+        <div
+          aria-hidden="true"
+          className="flex w-max animate-marquee whitespace-nowrap will-change-transform motion-reduce:animate-none"
+        >
+          {Array.from({length: COPIES}).map((_, i) => (
+            <span className="shrink-0 px-8" key={i}>
+              {MARQUEE_TEXT}
+            </span>
+          ))}
+        </div>
+      </button>
     </section>
-  );
-}
-
-function Item(props: AnnouncementBarProps) {
-  if (!props.text) return null;
-
-  const className = cx('flex w-full justify-center py-3 text-center');
-
-  return props.link ? (
-    <SanityInternalLink
-      className={cx(['group', className])}
-      data={{
-        _key: props.link.slug?.current ?? '',
-        _type: 'internalLink',
-        anchor: null,
-        link: props.link as any, // Type assertion to bypass type checking
-        name: props.text,
-      }}
-    >
-      <LinkWrapper>{props.text}</LinkWrapper>
-    </SanityInternalLink>
-  ) : props.externalLink ? (
-    <Link
-      className={cx(['group', className])}
-      rel={props.openInNewTab ? 'noopener noreferrer' : ''}
-      target={props.openInNewTab ? '_blank' : undefined}
-      to={props.externalLink}
-    >
-      <LinkWrapper>{props.text}</LinkWrapper>
-    </Link>
-  ) : (
-    <p className={className}>{props.text}</p>
-  );
-}
-
-function LinkWrapper({children}: {children: React.ReactNode}) {
-  return (
-    <p className="flex items-center text-sm underline-offset-4 group-hover:underline">
-      <span className="bg-background relative z-2 block pr-2">{children}</span>
-      <span className="-translate-x-[2px] transition-transform group-hover:translate-x-[-0.15px]">
-        <IconArrowRight />
-      </span>
-    </p>
   );
 }

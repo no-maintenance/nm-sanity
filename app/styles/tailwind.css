@@ -49,6 +49,17 @@
 
   --animate-shake: shake 0.5s ease-in-out;
 
+  @keyframes marquee {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-marquee: marquee 60s linear infinite;
+
   --typography-body: #374151;
   --typography-headings: #111827;
   --typography-links: #2563eb;
