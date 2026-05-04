@@ -71,13 +71,13 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
           {isOpen && (
             <Dialog.Portal forceMount>
               <div className="fixed inset-0 z-40">
-                <div className="fixed inset-x-0 top-0 h-[var(--desktopHeaderHeight)] bg-transparent pointer-events-none" />
+                <div className="fixed inset-x-0 top-0 h-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))] bg-transparent pointer-events-none" />
                 <Dialog.Overlay asChild>
                   <m.div
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
-                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[var(--desktopHeaderHeight)]  sm:h-[calc(100dvh-var(--desktopHeaderHeight))] h-[calc(100dvh-var(--desktopHeaderHeight)+7px)]"
+                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))]  sm:h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px))] h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px)+7px)]"
                   >
                     <div className="flex h-full flex-col">
                       <div className="">
