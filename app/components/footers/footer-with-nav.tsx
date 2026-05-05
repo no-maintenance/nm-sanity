@@ -1,11 +1,107 @@
 import type { FooterOfType, SectionDefaultProps } from 'types';
-import { Link } from '@remix-run/react';
+import { useAnalytics } from '@shopify/hydrogen';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
 import { useColorsCssVars } from '~/hooks/use-colors-css-vars';
 import { CountrySelector } from '~/components/layout/country-selector';
-import { NewsletterForm } from '~/components/klaviyo/newsletter';
+import { IconArrowRight } from '~/components/icons/icon-arrow-right';
+import { getKlaviyoSubscriptionRequestData } from '~/components/klaviyo/newsletter';
 import { SanityInternalLink } from '~/components/sanity/link/sanity-internal-link';
+import { KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID } from '~/sanity/constants';
 
 type FooterWithNavProps = FooterOfType<'footerWithNav'>;
+
+const inlineNewsletterSchema = z.object({
+  email: z.string().email('Please enter a valid email address.'),
+});
+
+function InlineNewsletter() {
+  const { publish } = useAnalytics();
+  const [submitting, setSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof inlineNewsletterSchema>>({
+    resolver: zodResolver(inlineNewsletterSchema),
+    defaultValues: { email: '' },
+  });
+
+  const onSubmit = async (data: z.infer<typeof inlineNewsletterSchema>) => {
+    setSubmitting(true);
+    try {
+      const url = `${KLAVIYO_BASE_URL}/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { revision: '2025-01-15', 'content-type': 'application/json' },
+        body: JSON.stringify({
+          data: getKlaviyoSubscriptionRequestData(data.email, 'footer'),
+        }),
+      });
+      if (res.ok) {
+        publish('custom_newsletter_signup', { source: 'footer', data });
+        reset();
+        toast('Thanks for subscribing!');
+      } else {
+        toast('Uh oh! Something went wrong', {
+          description: 'There was a problem with your request. Please try again later.',
+        });
+      }
+    } catch {
+      toast('Uh oh! Something went wrong', {
+        description: 'There was a problem with your request. Please try again later.',
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="py-6"
+    >
+      <div className="mx-auto flex w-full max-w-xl items-center justify-center gap-3 sm:gap-8">
+        <label
+          className="whitespace-nowrap text-[10px] uppercase tracking-wider sm:text-sm"
+          htmlFor="footer-newsletter-email"
+        >
+          Subscribe to our newsletter
+        </label>
+        <div className="flex flex-1 items-center border-b border-foreground sm:max-w-xs">
+          <input
+            aria-label="Email address"
+            autoComplete="email"
+            className="min-w-0 flex-1 bg-transparent py-1 text-center text-xs placeholder:text-foreground/50 outline-none sm:text-sm"
+            id="footer-newsletter-email"
+            placeholder="insert your email"
+            style={{ fontSize: '16px' }}
+            type="email"
+            {...register('email')}
+          />
+          <button
+            aria-label="Subscribe"
+            className="px-2 py-1 hover:opacity-70 disabled:opacity-50"
+            disabled={submitting}
+            type="submit"
+          >
+            <IconArrowRight />
+          </button>
+        </div>
+      </div>
+      {errors.email?.message && (
+        <p className="mx-auto mt-2 max-w-xl text-xs text-destructive sm:text-right">
+          {errors.email.message}
+        </p>
+      )}
+    </form>
+  );
+}
 
 export function FooterWithNav(
   props: SectionDefaultProps & { data: FooterWithNavProps },
@@ -52,33 +148,20 @@ export function FooterWithNav(
             </div>
             <div className="flex justify-center gap-2 ">
               <div className="flex justify-center items-center gap-2 flex-col">
-              {/* Right side: Newsletter */}
-              {data.showNewsletter && (
-                <div className="sm:max-w-md md:max-w-sm w-full max-w-full">
-                  <NewsletterForm
-                    hasSubmitBtn={false}
-                    id="footer-newsletter"
-                    source="footer"
-                    submitBtn="Subscribe"
-                  />
-                </div>
-              )}  
-              {data.showCountrySelector && (
-                <div className="flex  gap-5">
-                  <CountrySelector />
-                </div>
-              )}
+                {data.showCountrySelector && (
+                  <div className="flex  gap-5">
+                    <CountrySelector />
+                  </div>
+                )}
               </div>
             </div>
           </div>
-
-          
         </div>
+
+        <InlineNewsletter />
+
         <p className="mt-4 font-semibold text-lg text-center sm:text-3xl">{data.copyright || "© NO MAINTENANCE CORP. 2024"}</p>
-
       </section>
-
-
     </footer>
   );
 }
