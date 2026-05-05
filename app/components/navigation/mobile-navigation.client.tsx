@@ -46,8 +46,6 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
     e.preventDefault();
   };
 
-  if (!data) return null;
-
   return (
     <div className={cn(
       "block",

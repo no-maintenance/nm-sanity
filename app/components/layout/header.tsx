@@ -181,24 +181,32 @@ export function Header() {
     <ForwardedHeaderWrapper ref={headerRef} mobileNavOpen={mobileNavOpen} searchOpen={searchOpen} cartOpen={cartOpen}>
       <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
-        <div className={cn(
-          "flex items-center relative gap-4",
-          logoPosition === 'left' && "justify-between",
-          logoPosition === 'center' && "justify-between",
-          logoPosition === 'right' && "flex-row-reverse justify-between"
-        )}>
-          <div className="flex items-center gap-4">
-            {NavigationComponent}
-            {logoPosition === 'left' && LogoComponent}
-          </div>
-          {logoPosition === 'center' && (
-            <div className="absolute left-1/2 -translate-x-1/2">
+        {logoPosition === 'center' ? (
+          <div className="flex items-center gap-2">
+            <div className="flex flex-1 items-center justify-start gap-4 min-w-0">
+              {NavigationComponent}
+            </div>
+            <div className="shrink-0">
               {LogoComponent}
             </div>
-          )}
-          {logoPosition === 'right' && LogoComponent}
-          {Icons}
-        </div>
+            <div className="flex flex-1 items-center justify-end min-w-0">
+              {Icons}
+            </div>
+          </div>
+        ) : (
+          <div className={cn(
+            "flex items-center relative gap-4",
+            logoPosition === 'left' && "justify-between",
+            logoPosition === 'right' && "flex-row-reverse justify-between"
+          )}>
+            <div className="flex items-center gap-4">
+              {NavigationComponent}
+              {logoPosition === 'left' && LogoComponent}
+            </div>
+            {logoPosition === 'right' && LogoComponent}
+            {Icons}
+          </div>
+        )}
       </div>
     </ForwardedHeaderWrapper>
   );
