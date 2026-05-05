@@ -159,7 +159,7 @@ export function Header() {
   );
 
   const Icons = (
-    <div className="flex items-center md:gap-2">
+    <div className="flex items-center gap-1 md:gap-2">
       <div className="hidden sm:block">
         {showCountrySelectorIcon && <CountrySelector isIcon={true} />}
       </div>
@@ -182,14 +182,14 @@ export function Header() {
       <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
         {logoPosition === 'center' ? (
-          <div className="flex items-center gap-2">
-            <div className="flex flex-1 items-center justify-start gap-4 min-w-0">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center shrink-0">
               {NavigationComponent}
             </div>
-            <div className="shrink-0">
+            <div className="flex flex-1 items-center justify-center min-w-0 px-2">
               {LogoComponent}
             </div>
-            <div className="flex flex-1 items-center justify-end min-w-0">
+            <div className="flex items-center shrink-0 gap-2">
               {Icons}
             </div>
           </div>
@@ -477,8 +477,8 @@ function PredictiveSearchItem({
             'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter shadow-sm'
           }
           style={{
-            // Attach directly to the bottom of the header with no gap
-            top: 'var(--desktopHeaderHeight)',
+            // Attach directly to the bottom of the header, accounting for the announcement bar above it
+            top: 'calc(var(--announcement-bar-height, 0px) + var(--desktopHeaderHeight))',
             // Make sure it stays attached to header during animations/transitions
             position: 'fixed'
           }}
