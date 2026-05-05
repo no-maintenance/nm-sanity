@@ -452,6 +452,7 @@ function PredictiveSearchItem({
 }) {
   const predictiveSearchRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [popupTop, setPopupTop] = useState<number | null>(null);
 
   const handleToggleSearch = () => {
     const newOpenState = !open;
@@ -463,6 +464,22 @@ function PredictiveSearchItem({
       closeMobileNav(); // Close the mobile nav when search opens
     }
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const headerEl = document.querySelector('header');
+    if (!headerEl) return;
+    const update = () => {
+      setPopupTop(headerEl.getBoundingClientRect().bottom);
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, {passive: true});
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update);
+    };
+  }, [open]);
 
   return (
     <>
@@ -477,9 +494,10 @@ function PredictiveSearchItem({
             'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter shadow-sm'
           }
           style={{
-            // Attach directly to the bottom of the header, accounting for the announcement bar above it
-            top: 'calc(var(--announcement-bar-height, 0px) + var(--desktopHeaderHeight))',
-            // Make sure it stays attached to header during animations/transitions
+            // Anchor to the actual rendered bottom of the header so there is no gap
+            top: popupTop !== null
+              ? `${popupTop}px`
+              : 'calc(var(--announcement-bar-height, 0px) + var(--desktopHeaderHeight))',
             position: 'fixed'
           }}
         >
