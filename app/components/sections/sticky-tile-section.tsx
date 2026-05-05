@@ -87,7 +87,7 @@ export function StickyTileSection(
                         <Tile tile={stickyTile} isSticky={true} stickyHeight={stickyVhOffset} />
                     </div>
                 </div>
-                <div className='grid grid-cols-1 order-1 md:h-full'>
+                <div className='grid grid-cols-1 order-1 md:h-full md:content-center'>
                     {tiles.slice(1).map((tile, index) => (
                         <Tile key={tile._key || `tile-col1-${index}`} tile={tile} isSticky={false} stickyHeight={undefined} />
                     ))}
