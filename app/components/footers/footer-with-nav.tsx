@@ -64,36 +64,38 @@ function InlineNewsletter() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 border-t border-foreground py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+      className="border-t border-foreground py-6"
     >
-      <label
-        className="text-sm uppercase tracking-wider whitespace-nowrap"
-        htmlFor="footer-newsletter-email"
-      >
-        Subscribe to our newsletter
-      </label>
-      <div className="flex w-full items-center border-b border-foreground sm:max-w-md">
-        <input
-          aria-label="Email address"
-          autoComplete="email"
-          className="flex-1 bg-transparent py-1 text-sm italic placeholder:italic placeholder:text-foreground/50 outline-none"
-          id="footer-newsletter-email"
-          placeholder="insert your email"
-          style={{ fontSize: '16px' }}
-          type="email"
-          {...register('email')}
-        />
-        <button
-          aria-label="Subscribe"
-          className="px-2 py-1 hover:opacity-70 disabled:opacity-50"
-          disabled={submitting}
-          type="submit"
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-8">
+        <label
+          className="text-sm uppercase tracking-wider whitespace-nowrap"
+          htmlFor="footer-newsletter-email"
         >
-          <IconArrowRight />
-        </button>
+          Subscribe to our newsletter
+        </label>
+        <div className="flex w-full items-center border-b border-foreground sm:max-w-xs">
+          <input
+            aria-label="Email address"
+            autoComplete="email"
+            className="flex-1 bg-transparent py-1 text-sm italic placeholder:italic placeholder:text-foreground/50 outline-none"
+            id="footer-newsletter-email"
+            placeholder="insert your email"
+            style={{ fontSize: '16px' }}
+            type="email"
+            {...register('email')}
+          />
+          <button
+            aria-label="Subscribe"
+            className="px-2 py-1 hover:opacity-70 disabled:opacity-50"
+            disabled={submitting}
+            type="submit"
+          >
+            <IconArrowRight />
+          </button>
+        </div>
       </div>
       {errors.email?.message && (
-        <p className="text-xs text-destructive sm:basis-full sm:text-right">
+        <p className="mx-auto mt-2 max-w-xl text-xs text-destructive sm:text-right">
           {errors.email.message}
         </p>
       )}
