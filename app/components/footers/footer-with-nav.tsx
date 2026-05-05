@@ -68,7 +68,7 @@ function InlineNewsletter() {
     >
       <div className="mx-auto flex w-full max-w-xl items-center justify-center gap-3 sm:gap-8">
         <label
-          className="whitespace-nowrap text-[10px] uppercase tracking-wider sm:text-sm"
+          className="whitespace-nowrap text-[11.5px] uppercase tracking-wider sm:text-base"
           htmlFor="footer-newsletter-email"
         >
           Subscribe to our newsletter
@@ -77,10 +77,9 @@ function InlineNewsletter() {
           <input
             aria-label="Email address"
             autoComplete="email"
-            className="min-w-0 flex-1 bg-transparent py-1 text-center text-xs placeholder:text-foreground/50 outline-none sm:text-sm"
+            className="min-w-0 flex-1 bg-transparent py-1 text-center placeholder:text-foreground/50 outline-none"
             id="footer-newsletter-email"
             placeholder="insert your email"
-            style={{ fontSize: '16px' }}
             type="email"
             {...register('email')}
           />
