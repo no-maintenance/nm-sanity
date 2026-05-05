@@ -156,7 +156,7 @@ export function FooterWithNav(
           </div>
         </div>
 
-        {data.showNewsletter && <InlineNewsletter />}
+        <InlineNewsletter />
 
         <p className="mt-4 font-semibold text-lg text-center sm:text-3xl">{data.copyright || "© NO MAINTENANCE CORP. 2024"}</p>
       </section>
