@@ -182,17 +182,32 @@ export function Header() {
       <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
       <div className="container">
         {logoPosition === 'center' ? (
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center shrink-0">
-              {NavigationComponent}
+          <>
+            {/* Mobile: 3-column flex preserves spacing between logo and icons */}
+            <div className="sm:hidden flex items-center justify-between gap-3">
+              <div className="flex items-center shrink-0">
+                {NavigationComponent}
+              </div>
+              <div className="flex flex-1 items-center justify-center min-w-0 px-2">
+                {LogoComponent}
+              </div>
+              <div className="flex items-center shrink-0 gap-2">
+                {Icons}
+              </div>
             </div>
-            <div className="flex flex-1 items-center justify-center min-w-0 px-2">
-              {LogoComponent}
+            {/* Desktop: absolute centering keeps the logo truly centered to the viewport */}
+            <div className="hidden sm:flex items-center relative gap-4 justify-between">
+              <div className="flex items-center gap-4">
+                {NavigationComponent}
+              </div>
+              <div className="absolute left-1/2 -translate-x-1/2">
+                {LogoComponent}
+              </div>
+              <div className="flex items-center gap-2">
+                {Icons}
+              </div>
             </div>
-            <div className="flex items-center shrink-0 gap-2">
-              {Icons}
-            </div>
-          </div>
+          </>
         ) : (
           <div className={cn(
             "flex items-center relative gap-4",
