@@ -128,6 +128,10 @@ function Tile({
 
     const tileId = tile._key || `tile-${Math.random().toString(36).substr(2, 9)}`;
     const hasColorScheme = settings?.colorScheme != null;
+    const richtextHasLink = Array.isArray(richtext) && richtext.some((block: any) =>
+        block?._type === 'button' ||
+        block?.markDefs?.some((mark: any) => mark?._type === 'internalLink' || mark?._type === 'externalLink')
+    );
     const colorsCssVars = hasColorScheme ? useColorsCssVars({settings, selector: `#tile-${tileId}`}) : '';
     const portableTextComponents = useMemo(
         (): PortableTextComponents => ({
@@ -240,7 +244,7 @@ function Tile({
         </div>
     );
 
-    if (link?.slug?.current) {
+    if (link?.slug?.current && !richtextHasLink) {
         const internalLinkData = {
             link: tile.link,
         };
@@ -249,7 +253,7 @@ function Tile({
                 {tileContent}
             </SanityInternalLink>
         );
-    } else if (externalLink) {
+    } else if (externalLink && !richtextHasLink) {
         const externalLinkData: {
             _type: 'externalLink';
             _key: string;
