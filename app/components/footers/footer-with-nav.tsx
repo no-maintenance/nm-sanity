@@ -77,7 +77,7 @@ function InlineNewsletter() {
           <input
             aria-label="Email address"
             autoComplete="email"
-            className="min-w-0 flex-1 bg-transparent py-1 text-xs italic placeholder:italic placeholder:text-foreground/50 outline-none sm:text-sm"
+            className="min-w-0 flex-1 bg-transparent py-1 text-center text-xs placeholder:text-foreground/50 outline-none sm:text-sm"
             id="footer-newsletter-email"
             placeholder="insert your email"
             style={{ fontSize: '16px' }}
