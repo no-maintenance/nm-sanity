@@ -163,14 +163,12 @@ export function Header() {
       <div className="hidden sm:block">
         {showCountrySelectorIcon && <CountrySelector isIcon={true} />}
       </div>
-      <div className="hidden sm:block">
-        {showSearchIcon && (
-          <PredictiveSearchItem
-            closeMobileNav={closeMobileNav}
-            onSearchOpenChange={setSearchOpen}
-          />
-        )}
-      </div>
+      {showSearchIcon && (
+        <PredictiveSearchItem
+          closeMobileNav={closeMobileNav}
+          onSearchOpenChange={setSearchOpen}
+        />
+      )}
       <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
       <CartDrawer
         cartOpen={cartOpen}
