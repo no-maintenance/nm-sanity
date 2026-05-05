@@ -64,20 +64,20 @@ function InlineNewsletter() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="border-t border-foreground py-6"
+      className="py-6"
     >
-      <div className="mx-auto flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-8">
+      <div className="mx-auto flex w-full max-w-xl items-center justify-center gap-3 sm:gap-8">
         <label
-          className="text-sm uppercase tracking-wider whitespace-nowrap"
+          className="whitespace-nowrap text-[10px] uppercase tracking-wider sm:text-sm"
           htmlFor="footer-newsletter-email"
         >
           Subscribe to our newsletter
         </label>
-        <div className="flex w-full items-center border-b border-foreground sm:max-w-xs">
+        <div className="flex flex-1 items-center border-b border-foreground sm:max-w-xs">
           <input
             aria-label="Email address"
             autoComplete="email"
-            className="flex-1 bg-transparent py-1 text-sm italic placeholder:italic placeholder:text-foreground/50 outline-none"
+            className="min-w-0 flex-1 bg-transparent py-1 text-xs italic placeholder:italic placeholder:text-foreground/50 outline-none sm:text-sm"
             id="footer-newsletter-email"
             placeholder="insert your email"
             style={{ fontSize: '16px' }}
