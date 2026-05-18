@@ -164,7 +164,7 @@ export function ProductCard(props: {
               </CardMedia>
             )}
             <CardContent className="pl-0 pt-2 pb-0 mb-6 space-y-1">
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap underline-offset-4  uppercase ">
+              <div className="underline-offset-4 uppercase">
                 {product.title}
               </div>
               <div className="gap-truncate-e h-10">

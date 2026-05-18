@@ -44,3 +44,17 @@ jobs:
         run: pnpm dlx shopify hydrogen deploy --force
         env:
           SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_393454 }}
+
+      - name: Print preview URL
+        if: always()
+        run: |
+          if [ -f h2_deploy_log.json ]; then
+            echo "=== h2_deploy_log.json ==="
+            cat h2_deploy_log.json
+            echo ""
+            echo "=== Preview URL ==="
+            node -e "const d=require('./h2_deploy_log.json');console.log(d.url||d.previewUrl||JSON.stringify(d))"
+          else
+            echo "h2_deploy_log.json not found"
+            ls -la
+          fi
