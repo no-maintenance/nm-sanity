@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {cn} from '~/lib/utils';
 import {SanityExternalLink} from '../sanity/link/sanity-external-link';
 import {SanityInternalLink} from '../sanity/link/sanity-internal-link';
@@ -41,6 +41,23 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
   const {sanityRoot} = useRootLoaderData();
   const showHamburgerMenuOnDesktop = stegaClean(sanityRoot?.data?.header?.showHamburgerMenuOnDesktop);
 
+  // Anchor the drawer to the *live* bottom of the header so it never leaves
+  // a gap when the user has scrolled past the announcement bar.
+  const [drawerTop, setDrawerTop] = useState<number | null>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const headerEl = document.querySelector('header');
+    if (!headerEl) return;
+    const update = () => setDrawerTop(headerEl.getBoundingClientRect().bottom);
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, {passive: true});
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update);
+    };
+  }, [isOpen]);
+
 
   const avoidDefaultDomBehavior = (e: Event) => {
     e.preventDefault();
@@ -75,7 +92,12 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
-                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))]  sm:h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px))] h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px)+7px)]"
+                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto"
+                    style={
+                      drawerTop !== null
+                        ? {top: `${drawerTop}px`, height: `calc(100dvh - ${drawerTop}px)`}
+                        : undefined
+                    }
                   >
                     <div className="flex h-full flex-col">
                       <div className="">
