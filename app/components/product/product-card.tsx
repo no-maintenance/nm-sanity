@@ -163,7 +163,7 @@ export function ProductCard(props: {
                 />
               </CardMedia>
             )}
-            <CardContent className="pl-0 pt-2 pb-0 mb-6 space-y-1">
+            <CardContent className="pl-0 pt-2 pb-0 space-y-1">
               <div className="underline-offset-4 uppercase">
                 {product.title}
               </div>

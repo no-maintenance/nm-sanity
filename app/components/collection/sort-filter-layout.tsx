@@ -4,7 +4,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 
 import {AnimatePresence, m} from 'motion/react';
-import {Suspense, useState} from 'react';
+import {useState} from 'react';
 
 import type {CmsSectionSettings} from '~/hooks/use-colors-css-vars';
 
@@ -12,7 +12,6 @@ import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-dat
 import {useSanityThemeContent} from '~/hooks/use-sanity-theme-content';
 import {cn} from '~/lib/utils';
 
-import {ClientOnly} from '../client-only';
 import {IconFilters} from '../icons/icon-filters';
 import {
   Accordion,
@@ -22,9 +21,9 @@ import {
 } from '../ui/accordion-chevron';
 import {Button, IconButton} from '../ui/button';
 import {ScrollArea} from '../ui/scroll-area';
+import {AvailableSizeFilter, sortFilterValues} from './available-size-filter';
 import {DesktopSort} from './collection-sort';
 import {FilterMarkup} from './filter-markup';
-import {MobileDrawer} from './sort-mobile-drawer.client';
 export type AppliedFilter = {
   filter: ProductFilter;
   label: string;
@@ -39,6 +38,7 @@ export type SortParam =
 
 type Props = {
   appliedFilters?: AppliedFilter[];
+  availableSizes?: string[];
   children: React.ReactNode;
   filters: Filter[];
   onClearAllFilters: () => void;
@@ -50,6 +50,7 @@ export const FILTER_URL_PREFIX = 'filter.';
 
 export function SortFilter({
   appliedFilters = [],
+  availableSizes = [],
   children,
   filters,
   onClearAllFilters,
@@ -68,43 +69,8 @@ export function SortFilter({
 
   return (
     <>
-      {/* Desktop layout */}
-      <div className="touch:hidden hidden w-full lg:flex lg:items-center lg:justify-between">
-        <div className="flex items-center gap-2">
-          <IconButton onClick={() => setIsOpen(!isOpen)}>
-            <span className="sr-only">
-              {themeContent?.collection?.filterAndSort}
-            </span>
-            <IconFilters className="size-4" />
-          </IconButton>
-          <AnimatePresence>
-            {appliedFilters.length > 0 && (
-              <m.div
-                animate={{opacity: 1}}
-                exit={{opacity: 0}}
-                initial={{opacity: 0}}
-              >
-                <Button
-                  className={cn([
-                    'flex items-center gap-1',
-                    pending && 'pointer-events-none animate-pulse delay-500',
-                  ])}
-                  onClick={onClearAllFilters}
-                  variant="ghost"
-                >
-                  <span>{themeContent?.collection?.clearFilters}</span>
-                  <span className="tabular-nums">
-                    ({appliedFilters.length})
-                  </span>
-                </Button>
-              </m.div>
-            )}
-          </AnimatePresence>
-        </div>
-        <DesktopSort sectionSettings={sectionSettings} />
-      </div>
       <div className="relative lg:flex lg:flex-row lg:flex-wrap">
-        <div className="mt-6">
+        <div className="lg:mt-6">
           <div
             className={cn([
               'touch:hidden hidden lg:block',
@@ -116,22 +82,11 @@ export function SortFilter({
           >
             <DesktopFiltersDrawer
               appliedFilters={appliedFilters}
+              availableSizes={availableSizes}
               filters={filters}
             />
           </div>
         </div>
-        <ClientOnly fallback={null}>
-          {() => (
-            <Suspense>
-              <MobileDrawer
-                appliedFilters={appliedFilters}
-                filters={filters}
-                onClearAllFilters={onClearAllFilters}
-                productsCount={productsCount}
-              />
-            </Suspense>
-          )}
-        </ClientOnly>
         <div className="lg:flex-1">{children}</div>
       </div>
     </>
@@ -140,8 +95,12 @@ export function SortFilter({
 
 export function DesktopFiltersDrawer({
   appliedFilters = [],
+  availableSizes = [],
   filters = [],
 }: Omit<Props, 'children' | 'onClearAllFilters' | 'productsCount'>) {
+  const sizeAccordionValue = 'available-size';
+  const defaultOpen = filters.map((filter) => filter.id);
+  if (availableSizes.length) defaultOpen.push(sizeAccordionValue);
   return (
     <ScrollArea
       className={cn(
@@ -153,9 +112,21 @@ export function DesktopFiltersDrawer({
       <nav>
         <Accordion
           // Open filters by default
-          defaultValue={filters.map((filter) => filter.id)}
+          defaultValue={defaultOpen}
           type="multiple"
         >
+          {availableSizes.length > 0 && (
+            <AccordionItem
+              className="last:border-b-0"
+              key={sizeAccordionValue}
+              value={sizeAccordionValue}
+            >
+              <AccordionTrigger>Available Size</AccordionTrigger>
+              <AccordionContent>
+                <AvailableSizeFilter sizes={availableSizes} />
+              </AccordionContent>
+            </AccordionItem>
+          )}
           {filters.map((filter: Filter) => (
             <AccordionItem
               className="last:border-b-0"
@@ -165,7 +136,7 @@ export function DesktopFiltersDrawer({
               <AccordionTrigger>{filter.label}</AccordionTrigger>
               <AccordionContent>
                 <ul className="py-2" key={filter.id}>
-                  {filter.values?.map((option) => {
+                  {sortFilterValues(filter).map((option) => {
                     return (
                       <li className="pb-4" key={option.id}>
                         <FilterMarkup

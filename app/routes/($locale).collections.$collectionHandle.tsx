@@ -1,6 +1,9 @@
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import type {COLLECTION_QUERYResult} from 'types/sanity/sanity.generated';
-import type {CollectionDetailsQuery} from 'types/shopify/storefrontapi.generated';
+import type {
+  CollectionDetailsQuery,
+  MenuQuery,
+} from 'types/shopify/storefrontapi.generated';
 
 import {useLoaderData} from '@remix-run/react';
 import {Analytics} from '@shopify/hydrogen';
@@ -9,7 +12,9 @@ import invariant from 'tiny-invariant';
 
 import {CmsSection} from '~/components/cms-section';
 import {COLLECTION_QUERY as CMS_COLLECTION_QUERY} from '~/data/sanity/queries';
-import {COLLECTION_QUERY} from '~/data/shopify/queries';
+import {COLLECTION_QUERY, MENU_QUERY} from '~/data/shopify/queries';
+
+const MOBILE_CATEGORIES_MENU_HANDLE = 'mobile-categories';
 import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
@@ -44,9 +49,17 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
         language: storefront.i18n.language,
       },
     }),
+    storefront.query<MenuQuery>(MENU_QUERY, {
+      variables: {
+        country: storefront.i18n.country,
+        handle: MOBILE_CATEGORIES_MENU_HANDLE,
+        language: storefront.i18n.language,
+      },
+    }),
   ]);
 
-  const [cmsCollection, {collection}] = await collectionData;
+  const [cmsCollection, {collection}, {menu: mobileCategoriesMenu}] =
+    await collectionData;
 
   if (!collection?.id || !cmsCollection) {
     throw new Response('collection', {status: 404});
@@ -55,6 +68,7 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
   const {
     collectionListPromise,
     collectionProductGridPromise,
+    collectionSizesPromise,
     featuredCollectionPromise,
     featuredProductPromise,
   } = resolveShopifyPromises({
@@ -71,8 +85,10 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
     collection,
     collectionListPromise,
     collectionProductGridPromise,
+    collectionSizesPromise,
     featuredCollectionPromise,
     featuredProductPromise,
+    mobileCategoriesMenu,
     seo,
   };
 }

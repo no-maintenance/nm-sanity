@@ -78,6 +78,23 @@ export function Header() {
   const logoPosition = stegaClean(header?.logoPosition);
   const headerRef = useRef<HTMLElement>(null);
 
+  // Keep --header-height in sync with the actual rendered header so sticky
+  // elements below it (e.g. mobile category bar) sit flush against it.
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node || typeof ResizeObserver === 'undefined') return;
+    const setVar = () => {
+      document.documentElement.style.setProperty(
+        '--header-height',
+        `${node.getBoundingClientRect().height}px`,
+      );
+    };
+    setVar();
+    const ro = new ResizeObserver(setVar);
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
+
   // State for mobile navigation
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   // State for search open

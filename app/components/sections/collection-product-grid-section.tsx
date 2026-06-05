@@ -6,35 +6,39 @@ import type {
 } from 'types/shopify/storefrontapi.generated';
 
 import {
-  Await,
   useLoaderData,
   useLocation,
   useNavigate,
   useSearchParams,
 } from '@remix-run/react';
-import {Pagination} from '@shopify/hydrogen';
-import {Suspense, useCallback, useEffect, useMemo, useState} from 'react';
+import {Await} from '@remix-run/react';
+import {Suspense, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import type {loader} from '~/routes/($locale).collections.$collectionHandle';
 
+import {useInView} from '~/hooks/use-in-view';
+import {useLocalePath} from '~/hooks/use-locale-path';
 import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-data';
 import {useSanityThemeContent} from '~/hooks/use-sanity-theme-content';
-import {getAppliedFilters} from '~/lib/shopify-collection';
+import {getAppliedFilters, getAvailableSizes} from '~/lib/shopify-collection';
 import {cn} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
 
 import type {AppliedFilter} from '../collection/sort-filter-layout';
 
+import {sortSizes} from '../collection/available-size-filter';
+import {CollectionMobileNav} from '../collection/collection-mobile-nav';
 import {SortFilter} from '../collection/sort-filter-layout';
 import {ProductCardGrid} from '../product/product-card-grid';
 import {Skeleton} from '../skeleton';
 import {Button} from '../ui/button';
-import {useInView} from '~/hooks/use-in-view';
 
 type CollectionProductGridSectionProps =
   SectionOfType<'collectionProductGridSection'>;
 
 export type ShopifyCollection = CollectionProductGridQuery['collection'];
+
+type PageInfo = {endCursor?: null | string; hasNextPage?: boolean};
 
 export function CollectionProductGridSection(
   props: SectionDefaultProps & {data: CollectionProductGridSectionProps},
@@ -45,9 +49,18 @@ export function CollectionProductGridSection(
   const navigate = useNavigate();
   const {pathname} = useLocation();
   const collectionProductGridPromise = loaderData?.collectionProductGridPromise;
+  const collectionSizesPromise = loaderData?.collectionSizesPromise;
+  const combinedPromise = useMemo(
+    () =>
+      Promise.all([
+        collectionProductGridPromise,
+        collectionSizesPromise,
+      ] as const),
+    [collectionProductGridPromise, collectionSizesPromise],
+  );
   const columns = props.data.desktopColumns;
   const mobileColumns = props.data.mobileColumns;
-  const {themeContent} = useSanityThemeContent();
+  const productsPerPage = props.data.productsPerPage || 8;
 
   const handleClearFilters = useCallback(() => {
     navigate(pathname, {
@@ -77,7 +90,7 @@ export function CollectionProductGridSection(
                 mobile: mobileColumns,
               }}
               skeleton={{
-                cardsNumber: props.data.productsPerPage || 3,
+                cardsNumber: productsPerPage || 3,
               }}
             />
           </div>
@@ -88,7 +101,7 @@ export function CollectionProductGridSection(
     columns,
     handleClearFilters,
     mobileColumns,
-    props.data.productsPerPage,
+    productsPerPage,
     props.data.settings,
   ]);
 
@@ -98,9 +111,9 @@ export function CollectionProductGridSection(
         errorElement={
           <Skeleton isError>{CollectionProductGridSkeleton}</Skeleton>
         }
-        resolve={collectionProductGridPromise}
+        resolve={combinedPromise}
       >
-        {(result) => {
+        {([result, sizesResult]) => {
           const collection = result?.collection as ShopifyCollection;
 
           if (!collection) {
@@ -113,59 +126,39 @@ export function CollectionProductGridSection(
             searchParams,
           });
 
-          // Todo => add enableFiltering and enableSorting settings
+          const availableSizes = sortSizes(getAvailableSizes(sizesResult));
+
           return (
-            <div className="container -mt-[calc(var(--paddingTop)*0.75)] sm:-mt-[var(--paddingTop)]">
-              <SortFilter
+            <>
+              <CollectionMobileNav
                 appliedFilters={appliedFilters}
+                availableSizes={availableSizes}
                 filters={collection?.products.filters as Filter[]}
+                menu={loaderData?.mobileCategoriesMenu}
                 onClearAllFilters={handleClearFilters}
                 productsCount={collection?.products.nodes.length}
-                sectionSettings={props.data.settings}
-              >
-                <Pagination connection={collection?.products}>
-                  {({
-                    hasNextPage,
-                    isLoading,
-                    NextLink,
-                    nextPageUrl,
-                    nodes,
-                    PreviousLink,
-                    state,
-                  }) => (
-                    <>
-                      <div className="mb-6 flex items-center justify-center">
-                        <PreviousLink>
-                          {isLoading
-                            ? themeContent?.collection?.loading
-                            : themeContent?.collection?.loadPrevious}
-                        </PreviousLink>
-                      </div>
-                      <ProductsLoadedOnScroll
-                        appliedFilters={appliedFilters}
-                        columns={{
-                          desktop: columns,
-                          mobile: mobileColumns,
-                        }}
-                        hasNextPage={hasNextPage}
-                        inView={true}
-                        nextPageUrl={nextPageUrl}
-                        nodes={nodes}
-                        onClearAllFilters={handleClearFilters}
-                        state={state}
-                      />
-                      <div className="mt-6 flex items-center justify-center">
-                        <NextLink>
-                          {isLoading
-                            ? themeContent?.collection?.loading
-                            : themeContent?.collection?.loadMoreProducts}
-                        </NextLink>
-                      </div>
-                    </>
-                  )}
-                </Pagination>
-              </SortFilter>
-            </div>
+              />
+              <div className="container">
+                <SortFilter
+                  appliedFilters={appliedFilters}
+                  availableSizes={availableSizes}
+                  filters={collection?.products.filters as Filter[]}
+                  onClearAllFilters={handleClearFilters}
+                  productsCount={collection?.products.nodes.length}
+                  sectionSettings={props.data.settings}
+                >
+                  <InfiniteProducts
+                    appliedFilters={appliedFilters}
+                    collectionId={collection.id}
+                    columns={{desktop: columns, mobile: mobileColumns}}
+                    initialNodes={collection.products.nodes}
+                    initialPageInfo={collection.products.pageInfo}
+                    onClearAllFilters={handleClearFilters}
+                    productsPerPage={productsPerPage}
+                  />
+                </SortFilter>
+              </div>
+            </>
           );
         }}
       </Await>
@@ -173,45 +166,89 @@ export function CollectionProductGridSection(
   );
 }
 
-function ProductsLoadedOnScroll({
+function InfiniteProducts({
   appliedFilters,
+  collectionId,
   columns,
-  hasNextPage,
-  nextPageUrl,
-  nodes,
+  initialNodes,
+  initialPageInfo,
   onClearAllFilters,
-  state,
+  productsPerPage,
 }: {
   appliedFilters?: AppliedFilter[];
-  columns?: {
-    desktop?: null | number;
-    mobile?: null | number;
-  };
-  hasNextPage: boolean;
-  inView: boolean;
-  nextPageUrl: string;
-  nodes: ProductCardFragment[];
+  collectionId: string;
+  columns?: {desktop?: null | number; mobile?: null | number};
+  initialNodes: ProductCardFragment[];
+  initialPageInfo: PageInfo;
   onClearAllFilters: () => void;
-  state: unknown;
+  productsPerPage: number;
 }) {
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const {pending} = useOptimisticNavigationData<boolean>('clear-all-filters');
   const {themeContent} = useSanityThemeContent();
-  const [nextRef, nextInView] = useInView<HTMLDivElement>({ rootMargin: '200px' });
-  const [hasTriggered, setHasTriggered] = useState(false);
+  const apiPath = useLocalePath({path: '/api/collection-products'});
+
+  const [nodes, setNodes] = useState<ProductCardFragment[]>(initialNodes);
+  const [cursor, setCursor] = useState<null | string>(
+    initialPageInfo?.endCursor ?? null,
+  );
+  const [hasNextPage, setHasNextPage] = useState<boolean>(
+    Boolean(initialPageInfo?.hasNextPage),
+  );
+  const [loading, setLoading] = useState(false);
+  const loadingRef = useRef(false);
+
+  const inViewOptions = useMemo(() => ({rootMargin: '600px'}), []);
+  const [sentinelRef, inView] = useInView<HTMLDivElement>(inViewOptions);
+
+  // Reset when the server-provided list changes (new collection / filters).
+  useEffect(() => {
+    setNodes(initialNodes);
+    setCursor(initialPageInfo?.endCursor ?? null);
+    setHasNextPage(Boolean(initialPageInfo?.hasNextPage));
+  }, [initialNodes, initialPageInfo]);
 
   useEffect(() => {
-    if (nextInView && hasNextPage && !hasTriggered) {
-      setHasTriggered(true);
-      navigate(nextPageUrl, {
-        preventScrollReset: true,
-        replace: true,
-        state,
+    if (!inView || !hasNextPage || loadingRef.current) return;
+
+    loadingRef.current = true;
+    setLoading(true);
+
+    const params = new URLSearchParams(searchParams);
+    params.set('collectionId', collectionId);
+    params.set('first', String(productsPerPage));
+    if (cursor) params.set('cursor', cursor);
+
+    fetch(`${apiPath}?${params.toString()}`)
+      .then(
+        (res) =>
+          res.json() as Promise<{
+            nodes?: ProductCardFragment[];
+            pageInfo?: PageInfo;
+          }>,
+      )
+      .then((data) => {
+        setNodes((prev) => [...prev, ...(data.nodes ?? [])]);
+        setCursor(data.pageInfo?.endCursor ?? null);
+        setHasNextPage(Boolean(data.pageInfo?.hasNextPage));
+      })
+      .catch(() => {
+        // On failure, stop trying so we don't loop forever.
+        setHasNextPage(false);
+      })
+      .finally(() => {
+        loadingRef.current = false;
+        setLoading(false);
       });
-    } else if (!nextInView) {
-      setHasTriggered(false);
-    }
-  }, [nextInView, hasNextPage, nextPageUrl, navigate, state, hasTriggered]);
+  }, [
+    apiPath,
+    collectionId,
+    cursor,
+    hasNextPage,
+    inView,
+    productsPerPage,
+    searchParams,
+  ]);
 
   if (!nodes || nodes.length === 0) {
     return (
@@ -236,15 +273,22 @@ function ProductsLoadedOnScroll({
   return (
     <>
       <ProductCardGrid
-        columns={{
-          desktop: columns?.desktop,
-          mobile: columns?.mobile,
-        }}
+        columns={{desktop: columns?.desktop, mobile: columns?.mobile}}
         products={nodes}
       />
-      <div className="mt-6 flex items-center justify-center" ref={nextRef}>
-        {/* This wrapper is observed for inView to trigger next page load */}
-      </div>
+      {hasNextPage && (
+        <div
+          className="mt-6 flex items-center justify-center"
+          ref={sentinelRef}
+        >
+          <span
+            aria-live="polite"
+            className={cn('select-none', loading && 'animate-pulse')}
+          >
+            {themeContent?.collection?.loadMoreProducts}
+          </span>
+        </div>
+      )}
     </>
   );
 }

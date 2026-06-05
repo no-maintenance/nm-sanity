@@ -60,6 +60,18 @@
 
   --animate-marquee: marquee 60s linear infinite;
 
+  /* Gentle floating brand logo (site-protection background) */
+  @keyframes nm-float {
+    0%, 100% {
+      transform: translateY(-12px) scale(1);
+    }
+    50% {
+      transform: translateY(12px) scale(1.015);
+    }
+  }
+
+  --animate-nm-float: nm-float 8s ease-in-out infinite;
+
   --typography-body: #374151;
   --typography-headings: #111827;
   --typography-links: #2563eb;
@@ -129,6 +141,12 @@
     padding-bottom: var(--paddingBottom);
     padding-top: var(--paddingTop);
   }
+}
+
+/* Hide the sticky collection category bar while the mobile nav is open so it
+   doesn't peek through above the full-screen menu overlay. */
+body.mobile-nav-open .collection-category-bar {
+  display: none;
 }
 
 @layer utilities {

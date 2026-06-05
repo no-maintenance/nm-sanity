@@ -84,7 +84,16 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['testing.nomaintenance.us'],
+    allowedHosts: [
+      'testing.nomaintenance.us',
+      '.pinggy-free.link',
+      '.lhr.life',
+      '.serveousercontent.com',
+      '.loca.lt',
+      '.trycloudflare.com',
+      '.ngrok-free.app',
+      '.ngrok.io',
+    ],
     port: 3000,
     strictPort: false,
   },

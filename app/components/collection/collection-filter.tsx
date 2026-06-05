@@ -16,6 +16,7 @@ import useDebounce from 'react-use/esm/useDebounce';
 
 import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-data';
 import {useSanityThemeContent} from '~/hooks/use-sanity-theme-content';
+import {stripPaginationParams} from '~/lib/shopify-collection';
 import {cn} from '~/lib/utils';
 
 import type {AppliedFilter} from './sort-filter-layout';
@@ -187,9 +188,10 @@ export function PriceRangeFilter({
 
   useDebounce(
     () => {
+      const baseParams = stripPaginationParams(params);
       if (minPrice === undefined && maxPrice === undefined) {
-        params.delete(`${FILTER_URL_PREFIX}price`);
-        navigate(`${location.pathname}?${params.toString()}`, {
+        baseParams.delete(`${FILTER_URL_PREFIX}price`);
+        navigate(`${location.pathname}?${baseParams.toString()}`, {
           preventScrollReset: true,
           replace: true,
         });
@@ -200,7 +202,7 @@ export function PriceRangeFilter({
         ...(minPrice === undefined ? {} : {min: minPrice}),
         ...(maxPrice === undefined ? {} : {max: maxPrice}),
       };
-      const newParams = filterInputToParams({price}, params);
+      const newParams = filterInputToParams({price}, baseParams);
       navigate(`${location.pathname}?${newParams.toString()}`, {
         preventScrollReset: true,
         replace: true,
@@ -270,7 +272,7 @@ function getAppliedFilterLink(
   params: URLSearchParams,
   location: Location,
 ) {
-  const paramsClone = new URLSearchParams(params);
+  const paramsClone = stripPaginationParams(params);
   Object.entries(filter.filter).forEach(([key, value]) => {
     const fullKey = FILTER_URL_PREFIX + key;
     paramsClone.delete(fullKey, JSON.stringify(value));
@@ -283,7 +285,7 @@ function getFilterLink(
   params: URLSearchParams,
   location: ReturnType<typeof useLocation>,
 ) {
-  const paramsClone = new URLSearchParams(params);
+  const paramsClone = stripPaginationParams(params);
   const newParams = filterInputToParams(rawInput, paramsClone);
   return `${location.pathname}?${newParams.toString()}`;
 }

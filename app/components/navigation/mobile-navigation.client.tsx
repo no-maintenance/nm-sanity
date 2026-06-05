@@ -38,6 +38,17 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
   const setIsOpen = setOpen || setInternalOpen;
   
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+  // Flag the open state on <body> so other sticky UI (e.g. the collection
+  // category bar) can hide itself while the full-screen menu is open.
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.toggle('mobile-nav-open', isOpen);
+    return () => {
+      document.body.classList.remove('mobile-nav-open');
+    };
+  }, [isOpen]);
+
   const {sanityRoot} = useRootLoaderData();
   const showHamburgerMenuOnDesktop = stegaClean(sanityRoot?.data?.header?.showHamburgerMenuOnDesktop);
 
@@ -86,7 +97,10 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
           {isOpen && (
             <Dialog.Portal forceMount>
               <div className="fixed inset-0 z-40">
-                <div className="fixed inset-x-0 top-0 h-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))] bg-transparent pointer-events-none" />
+                <div
+                  className="fixed inset-x-0 top-0 bg-transparent pointer-events-none"
+                  style={drawerTop !== null ? {height: `${drawerTop}px`} : undefined}
+                />
                 <Dialog.Overlay asChild>
                   <m.div
                     initial={{opacity: 0}}
