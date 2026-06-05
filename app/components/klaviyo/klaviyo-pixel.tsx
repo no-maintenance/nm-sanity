@@ -6,80 +6,8 @@ declare global {
 }
 
 import {useEffect, useRef} from 'react';
-import {useLocation} from '@remix-run/react';
 import {useAnalytics} from '@shopify/hydrogen';
 import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
-
-const POPUP_SEEN_KEY = 'klaviyo-popup-seen-v2';
-
-function isHomePathname(pathname: string): boolean {
-  const segments = pathname.split('/').filter(Boolean);
-  if (segments.length === 0) return true;
-  if (segments.length === 1 && /^[a-z]{2}(-[a-z]{2})?$/i.test(segments[0])) {
-    return true;
-  }
-  return false;
-}
-
-function removeKlaviyoForms() {
-  if (typeof document === 'undefined') return;
-  document
-    .querySelectorAll<HTMLElement>('[class*="klaviyo-form-"]')
-    .forEach((el) => el.remove());
-}
-
-function useKlaviyoPopupGate() {
-  const {pathname} = useLocation();
-  const pathnameRef = useRef(pathname);
-  pathnameRef.current = pathname;
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    let popupIsOpen = false;
-    let seenThisSession = false;
-    try {
-      seenThisSession = sessionStorage.getItem(POPUP_SEEN_KEY) === 'true';
-    } catch {}
-
-    const shouldSuppress = () =>
-      !isHomePathname(pathnameRef.current) || seenThisSession;
-
-    const handleFormEvent = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (!detail) return;
-      if (detail.type === 'open') {
-        if (shouldSuppress()) {
-          removeKlaviyoForms();
-          return;
-        }
-        popupIsOpen = true;
-        seenThisSession = true;
-        try {
-          sessionStorage.setItem(POPUP_SEEN_KEY, 'true');
-        } catch {}
-      } else if (detail.type === 'close' || detail.type === 'submit') {
-        popupIsOpen = false;
-      }
-    };
-
-    window.addEventListener('klaviyoForms', handleFormEvent);
-
-    const observer = new MutationObserver(() => {
-      if (popupIsOpen) return;
-      if (!shouldSuppress()) return;
-      removeKlaviyoForms();
-    });
-    observer.observe(document.body, {childList: true, subtree: true});
-
-    if (shouldSuppress()) removeKlaviyoForms();
-
-    return () => {
-      window.removeEventListener('klaviyoForms', handleFormEvent);
-      observer.disconnect();
-    };
-  }, [pathname]);
-}
 
 // ---------------------------------------------------------------------------
 // Simplified Klaviyo loader without SPA manual mode
@@ -116,7 +44,6 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
 // ---------------------------------------------------------------------------
 export function KlaviyoPixel({id, nonce}: {id: string; nonce?: string}) {
   useLoadKlaviyo(id, nonce);
-  useKlaviyoPopupGate();
   const { debugEvent } = useAnalyticsDebug();
 
   const {register, subscribe} = useAnalytics();
