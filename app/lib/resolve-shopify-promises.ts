@@ -15,6 +15,7 @@ import {getPaginationVariables, parseGid} from '@shopify/hydrogen';
 
 import {
   COLLECTION_PRODUCT_GRID_QUERY,
+  COLLECTION_SIZES_QUERY,
   COLLECTIONS_QUERY,
   FEATURED_COLLECTION_QUERY,
   FEATURED_PRODUCT_QUERY,
@@ -84,7 +85,13 @@ export function resolveShopifyPromises({
     request,
     storefront,
   });
-  
+
+  const collectionSizesPromise = resolveCollectionSizesPromise({
+    collectionId,
+    document,
+    storefront,
+  });
+
   // Add support for product swimlane section
   const productSwimlaneSectionPromise = resolveProductSwimlaneSectionPromise({
     document,
@@ -95,6 +102,7 @@ export function resolveShopifyPromises({
   return {
     collectionListPromise,
     collectionProductGridPromise,
+    collectionSizesPromise,
     featuredCollectionPromise,
     featuredProductPromise,
     relatedProductsPromise,
@@ -285,6 +293,32 @@ async function resolveRelatedProductsPromise({
   }
 
   return promise || null;
+}
+
+async function resolveCollectionSizesPromise({
+  collectionId,
+  document,
+  storefront,
+}: Pick<PromiseResolverArgs, 'collectionId' | 'document' | 'storefront'>) {
+  if (document.data?._type !== 'collection' || !collectionId) {
+    return null;
+  }
+
+  const sections = getSections(document);
+  const hasProductGrid = sections?.some(
+    (section) => section._type === 'collectionProductGridSection',
+  );
+  if (!hasProductGrid) {
+    return null;
+  }
+
+  return storefront.query(COLLECTION_SIZES_QUERY, {
+    variables: {
+      country: storefront.i18n.country,
+      id: collectionId,
+      language: storefront.i18n.language,
+    },
+  });
 }
 
 async function resolveCollectionProductGridPromise({

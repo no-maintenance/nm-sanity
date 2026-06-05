@@ -272,6 +272,32 @@ export const COLLECTION_PRODUCT_GRID_QUERY = `#graphql
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
 
+export const COLLECTION_SIZES_QUERY = `#graphql
+  query CollectionSizes(
+    $id: ID!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    collection(id: $id) {
+      id
+      products(first: 250) {
+        nodes {
+          id
+          variants(first: 50) {
+            nodes {
+              availableForSale
+              selectedOptions {
+                name
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;
+
 export const FEATURED_COLLECTION_QUERY = `#graphql
   query FeaturedCollection(
     $id: ID!
@@ -381,6 +407,30 @@ query PaginatedProductsSearch(
 }
 
 ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+export const MENU_QUERY = `#graphql
+  query Menu($handle: String!, $country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    menu(handle: $handle) {
+      id
+      handle
+      items {
+        id
+        title
+        type
+        url
+        resourceId
+        items {
+          id
+          title
+          type
+          url
+          resourceId
+        }
+      }
+    }
+  }
 ` as const;
 
 export const API_ALL_PRODUCTS_QUERY = `#graphql

@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {cn} from '~/lib/utils';
 import {SanityExternalLink} from '../sanity/link/sanity-external-link';
 import {SanityInternalLink} from '../sanity/link/sanity-internal-link';
@@ -38,6 +38,32 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
   const setIsOpen = setOpen || setInternalOpen;
   
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+  // Flag the open state on <body> so other sticky UI (e.g. the collection
+  // category bar) can hide itself while the full-screen menu is open.
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.toggle('mobile-nav-open', isOpen);
+    return () => {
+      document.body.classList.remove('mobile-nav-open');
+    };
+  }, [isOpen]);
+
+  // Measure the header's actual bottom so the overlay sits flush under it at
+  // any scroll position. The static CSS offset assumed the (non-sticky)
+  // announcement bar was always on screen, which left a gap after scrolling.
+  const [overlayTop, setOverlayTop] = useState(0);
+  useEffect(() => {
+    if (!isOpen) return;
+    const measure = () => {
+      const el = headerRef?.current;
+      if (el) setOverlayTop(el.getBoundingClientRect().bottom);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [isOpen, headerRef]);
+
   const {sanityRoot} = useRootLoaderData();
   const showHamburgerMenuOnDesktop = stegaClean(sanityRoot?.data?.header?.showHamburgerMenuOnDesktop);
 
@@ -69,13 +95,17 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
           {isOpen && (
             <Dialog.Portal forceMount>
               <div className="fixed inset-0 z-40">
-                <div className="fixed inset-x-0 top-0 h-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))] bg-transparent pointer-events-none" />
+                <div
+                  className="fixed inset-x-0 top-0 bg-transparent pointer-events-none"
+                  style={{height: `${overlayTop}px`}}
+                />
                 <Dialog.Overlay asChild>
                   <m.div
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
-                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto sm:top-[calc(var(--desktopHeaderHeight)+var(--announcement-bar-height,0px))]  sm:h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px))] h-[calc(100dvh-var(--desktopHeaderHeight)-var(--announcement-bar-height,0px)+7px)]"
+                    className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto"
+                    style={{top: `${overlayTop}px`}}
                   >
                     <div className="flex h-full flex-col">
                       <div className="">
