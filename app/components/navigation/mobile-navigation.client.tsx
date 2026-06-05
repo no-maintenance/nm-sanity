@@ -49,23 +49,25 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
     };
   }, [isOpen]);
 
-  // Measure the header's actual bottom so the overlay sits flush under it at
-  // any scroll position. The static CSS offset assumed the (non-sticky)
-  // announcement bar was always on screen, which left a gap after scrolling.
-  const [overlayTop, setOverlayTop] = useState(0);
-  useEffect(() => {
-    if (!isOpen) return;
-    const measure = () => {
-      const el = headerRef?.current;
-      if (el) setOverlayTop(el.getBoundingClientRect().bottom);
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [isOpen, headerRef]);
-
   const {sanityRoot} = useRootLoaderData();
   const showHamburgerMenuOnDesktop = stegaClean(sanityRoot?.data?.header?.showHamburgerMenuOnDesktop);
+
+  // Anchor the drawer to the *live* bottom of the header so it never leaves
+  // a gap when the user has scrolled past the announcement bar.
+  const [drawerTop, setDrawerTop] = useState<number | null>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const headerEl = document.querySelector('header');
+    if (!headerEl) return;
+    const update = () => setDrawerTop(headerEl.getBoundingClientRect().bottom);
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, {passive: true});
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update);
+    };
+  }, [isOpen]);
 
 
   const avoidDefaultDomBehavior = (e: Event) => {
@@ -97,7 +99,7 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
               <div className="fixed inset-0 z-40">
                 <div
                   className="fixed inset-x-0 top-0 bg-transparent pointer-events-none"
-                  style={{height: `${overlayTop}px`}}
+                  style={drawerTop !== null ? {height: `${drawerTop}px`} : undefined}
                 />
                 <Dialog.Overlay asChild>
                   <m.div
@@ -105,7 +107,11 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                     className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto"
-                    style={{top: `${overlayTop}px`}}
+                    style={
+                      drawerTop !== null
+                        ? {top: `${drawerTop}px`, height: `calc(100dvh - ${drawerTop}px)`}
+                        : undefined
+                    }
                   >
                     <div className="flex h-full flex-col">
                       <div className="">

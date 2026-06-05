@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 
 const MARQUEE_TEXT =
-  'SIGN UP FOR 10% OFF - NEXT DROP ON MAY 29TH - FREE SHIPPING OVER $250';
+  'SIGN UP FOR 10% OFF - SS26 INSTALL 4: NOW LIVE - FREE SHIPPING OVER $250';
 const KLAVIYO_FORM_ID = 'Rc2Qwz';
 const COPIES = 8;
 
