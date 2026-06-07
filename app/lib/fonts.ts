@@ -21,31 +21,31 @@ export function generateFontsPreloadLinks({
 }) {
   const fonts = fontsData ? getFonts({fontsData}) : [];
   const preloadLinks: Array<PreloadLink> = [];
+  // Preload only the single best format per font (woff2 preferred). Preloading
+  // every format wastes bandwidth and competes with the format the browser
+  // actually uses, which slows it down and causes the font to flash in late.
   const fontTypes = ['woff2', 'woff', 'ttf'] as const;
   const seenUrls = new Set<string>();
 
   fonts.forEach((font) => {
-    fontTypes.forEach((fontType) => {
-      if (font[fontType]) {
-        const url = font[fontType].url as string;
+    const fontType = fontTypes.find((type) => font[type]);
+    if (!fontType) return;
 
-        // Skip if we've already added a preload for this URL
-        if (seenUrls.has(url)) {
-          return;
-        }
+    const asset = font[fontType];
+    if (!asset) return;
 
-        seenUrls.add(url);
+    const url = asset.url as string;
+    if (seenUrls.has(url)) return;
+    seenUrls.add(url);
 
-        preloadLinks.push({
-          as: 'font',
-          crossOrigin: 'anonymous',
-          href: url,
-          rel: 'preload',
-          tagName: 'link',
-          type: `font/${fontType}`,
-          key: url, // Add unique key for React
-        });
-      }
+    preloadLinks.push({
+      as: 'font',
+      crossOrigin: 'anonymous',
+      href: url,
+      rel: 'preload',
+      tagName: 'link',
+      type: `font/${fontType}`,
+      key: url,
     });
   });
 
