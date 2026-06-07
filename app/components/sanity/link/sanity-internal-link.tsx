@@ -50,6 +50,7 @@ export function SanityInternalLink(props: {
   data?: SanityInternalLinkDataProps;
   id?: string;
   onClick?: () => void;
+  reloadDocument?: boolean;
 }) {
   const {locale} = useRootLoaderData();
   const {children, className, data, id} = props;
@@ -84,6 +85,11 @@ export function SanityInternalLink(props: {
   // Remove encode stega data from url
   const url = stegaClean(`${path()}${anchor}`);
 
+  // Collection→collection client navigation hangs under v3_singleFetch, so
+  // force a full document load for collection links (and anywhere the caller
+  // explicitly opts in). This matches the collection category bar.
+  const reloadDocument = props.reloadDocument || documentType === 'collection';
+
   // Todo: add Navlink support
   return (
     <Link
@@ -93,7 +99,8 @@ export function SanityInternalLink(props: {
       ])}
       id={id}
       onClick={props.onClick}
-      prefetch="intent"
+      prefetch={reloadDocument ? 'none' : 'intent'}
+      reloadDocument={reloadDocument}
       to={url}
     >
       {children ? children : name}
