@@ -3,8 +3,9 @@ import type {MenuQuery} from 'types/shopify/storefrontapi.generated';
 import type {RefObject} from 'react';
 
 import {Link} from '@remix-run/react';
-import {Suspense, useEffect, useRef, useState} from 'react';
+import {Suspense, useRef, useState} from 'react';
 
+import {useIsomorphicLayoutEffect} from '~/hooks/use-isomorphic-layout-effect';
 import {useLocalePath} from '~/hooks/use-locale-path';
 import {cn} from '~/lib/utils';
 
@@ -142,10 +143,13 @@ export function CollectionMobileNav({
 }
 
 function ScrollIndicator({scrollRef}: {scrollRef: RefObject<HTMLElement>}) {
-  // width/left are percentages of the track.
-  const [thumb, setThumb] = useState({left: 0, visible: false, width: 100});
+  // width/left are percentages of the track. Start visible with a sensible
+  // default so the bar is present on the very first paint (no pop-in/flash on
+  // full-reload navigation); measurement then refines it or hides it if the
+  // categories don't overflow.
+  const [thumb, setThumb] = useState({left: 0, visible: true, width: 33});
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
