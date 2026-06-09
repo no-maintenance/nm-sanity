@@ -69,7 +69,7 @@ function generateFontFaces({fontsData}: {fontsData: FontsQuery}) {
             src: ${resolveFontAssetUrls(font)};
             font-weight: ${font.fontWeight};
             font-style: ${font.fontStyle};
-            font-display: optional;
+            font-display: block;
           }
         `.trim();
       })
