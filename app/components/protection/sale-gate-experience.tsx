@@ -175,6 +175,25 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
     return () => cancelAnimationFrame(id);
   }, [error, errorKey]);
 
+  // Auto-open the early-access modal 3s after load (once per session).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (sessionStorage.getItem('ss26-ea-autoshown')) return;
+    } catch {
+      /* sessionStorage may be unavailable */
+    }
+    const t = setTimeout(() => {
+      setModalOpen(true);
+      try {
+        sessionStorage.setItem('ss26-ea-autoshown', '1');
+      } catch {
+        /* ignore */
+      }
+    }, 3000);
+    return () => clearTimeout(t);
+  }, []);
+
   // Close the modal on Escape.
   useEffect(() => {
     if (!modalOpen) return;
