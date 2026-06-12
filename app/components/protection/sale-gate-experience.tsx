@@ -175,7 +175,7 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
     return () => cancelAnimationFrame(id);
   }, [error, errorKey]);
 
-  // Auto-open the early-access modal 3s after load (once per session).
+  // Auto-open the early-access modal 5s after load (once per session).
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
@@ -190,7 +190,7 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
       } catch {
         /* ignore */
       }
-    }, 3000);
+    }, 5000);
     return () => clearTimeout(t);
   }, []);
 
