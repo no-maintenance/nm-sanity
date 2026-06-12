@@ -96,11 +96,12 @@ const GATE_CSS = `
   font-family: ui-monospace, Menlo, Monaco, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Courier New", monospace;
 }
 .ss26-gate .ss26-modal.show { display: flex; }
-.ss26-gate .ss26-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(2px); }
+.ss26-gate .ss26-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
 .ss26-gate .ss26-modal-box {
   position: relative; width: min(460px, 88vw); background: #000;
   border: 1px solid rgba(255,255,255,0.6); padding: clamp(28px, 5vw, 44px);
   text-align: center; color: #fff;
+  transform: translateY(-30%); /* raise the popup up toward the top */
 }
 .ss26-gate .ss26-modal-close {
   position: absolute; top: 10px; right: 14px; background: none; border: none;
