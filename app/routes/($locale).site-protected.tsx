@@ -12,6 +12,7 @@ import {LockedView} from '~/components/protection/LockedView';
 import {PasswordGrantedView} from '~/components/protection/PasswordGrantedView';
 import {CountdownExpiredView} from '~/components/protection/CountdownExpiredView';
 import {ProtectedPuzzleContainer} from '~/components/protection/ProtectedPuzzleContainer';
+import {SaleGateExperience} from '~/components/protection/sale-gate-experience';
 import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 
 interface LoaderData {
@@ -552,6 +553,22 @@ export default function SiteProtected() {
   let effectiveViewState = currentViewState;
   if (actionData && 'newState' in actionData && actionData.newState) {
     effectiveViewState = actionData.newState as ProtectionViewState;
+  }
+
+  // SS26 sale: the site-wide locked gate uses the custom experience
+  // (3D logo + typed price sheet + glitch). Password is still validated
+  // server-side by the action above against the Sanity protectionConfig.
+  if (
+    effectiveViewState === 'locked' &&
+    protectionContext.type === 'site' &&
+    !protection.embeddedPuzzle
+  ) {
+    return (
+      <SaleGateExperience
+        redirectTo={redirectTo}
+        actionData={actionData as {error?: string; errorKey?: string | number} | null}
+      />
+    );
   }
 
   // If there's an embedded puzzle, render it with protection overlay
