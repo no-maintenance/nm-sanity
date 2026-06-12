@@ -92,7 +92,7 @@ const GATE_CSS = `
 .ss26-gate .ss26-signup:hover { opacity: 1; text-decoration: underline; }
 .ss26-gate .ss26-modal {
   position: fixed; inset: 0; z-index: 10; display: none;
-  align-items: center; justify-content: center;
+  align-items: flex-start; justify-content: center;
   font-family: ui-monospace, Menlo, Monaco, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Courier New", monospace;
 }
 .ss26-gate .ss26-modal.show { display: flex; }
@@ -101,7 +101,8 @@ const GATE_CSS = `
   position: relative; width: min(460px, 88vw); background: #000;
   border: 1px solid rgba(255,255,255,0.6); padding: clamp(28px, 5vw, 44px);
   text-align: center; color: #fff;
-  transform: translateY(-30%); /* raise the popup up toward the top */
+  /* center the popup at 25vh — midway between the top and the middle */
+  margin-top: 25vh; transform: translateY(-50%);
 }
 .ss26-gate .ss26-modal-close {
   position: absolute; top: 10px; right: 14px; background: none; border: none;
