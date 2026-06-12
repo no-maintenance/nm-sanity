@@ -64,6 +64,7 @@ const GATE_CSS = `
   padding: 12px 42px 12px 18px; outline: none;
 }
 .ss26-gate .ss26-pw-input::placeholder { color: rgba(255,255,255,0.8); letter-spacing: 0.28em; }
+.ss26-gate .ss26-pw-input:focus::placeholder { color: transparent; }
 .ss26-gate .ss26-pw-input.shake { animation: ss26-shake 0.4s ease-in-out; }
 @keyframes ss26-shake {
   0%,100% { transform: translateX(0); }
