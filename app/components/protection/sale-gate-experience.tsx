@@ -238,9 +238,9 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
       );
       if (res.ok) {
         setSubState('ok');
-        setSubMsg("You're on the list.");
+        setSubMsg("You're on the list. Be on the lookout for a password.");
         setEmail('');
-        setTimeout(() => setModalOpen(false), 1600);
+        setTimeout(() => setModalOpen(false), 4000);
       } else {
         setSubState('error');
         setSubMsg('Something went wrong. Try again.');
