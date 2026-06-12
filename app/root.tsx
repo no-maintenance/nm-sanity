@@ -226,7 +226,7 @@ export function Layout({children}: {children: React.ReactNode}) {
               shop={data.shop}
             >
               <MinimalLayout>{children}</MinimalLayout>
-              <CustomAnalytics />
+              <CustomAnalytics disableKlaviyo />
             </Analytics.Provider>
           ) : (
             <MinimalLayout>{children}</MinimalLayout>

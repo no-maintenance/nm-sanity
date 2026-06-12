@@ -7,7 +7,7 @@ import { useAnalyticsEnv } from '~/hooks/use-analytics-env';
 import { useEffect, useMemo } from 'react';
 import { useNonce } from '@shopify/hydrogen';
 
-export function CustomAnalytics() {
+export function CustomAnalytics({disableKlaviyo = false}: {disableKlaviyo?: boolean}) {
   const analyticsEnv = useAnalyticsEnv();
   const isDev = useIsDev();
   const nonce = useNonce();
@@ -43,7 +43,9 @@ export function CustomAnalytics() {
   
   return (
     <>
-      <KlaviyoPixel id={'RDT3xD'} nonce={nonce} />
+      {/* Klaviyo loads its onsite forms (e.g. the 10% popup). Skip it on the
+          password gate so the flyout doesn't cover the password field. */}
+      {!disableKlaviyo && <KlaviyoPixel id={'RDT3xD'} nonce={nonce} />}
     </>
   );
 }
