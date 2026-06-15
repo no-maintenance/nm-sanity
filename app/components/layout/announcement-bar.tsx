@@ -50,7 +50,7 @@ export function AnnouncementBar() {
           className="flex w-max animate-marquee whitespace-nowrap will-change-transform motion-reduce:animate-none"
         >
           {Array.from({length: COPIES}).map((_, i) => (
-            <span className="shrink-0 px-32" key={i}>
+            <span className="shrink-0 px-16 sm:px-32" key={i}>
               {MARQUEE_TEXT}
             </span>
           ))}
