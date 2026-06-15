@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 
-const MARQUEE_TEXT = 'SS26: SUMMER SALE NOW LIVE';
+const MARQUEE_TEXT = 'SS26: SUMMER SALE, UP TO 50% OFF';
 const KLAVIYO_FORM_ID = 'Rc2Qwz';
 const COPIES = 8;
 
