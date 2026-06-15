@@ -9,6 +9,7 @@ import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
 import {seoPayload} from '~/lib/seo.server';
+import {SaleHero} from '~/components/sections/sale-hero';
 
 import PageRoute from './($locale).$';
 
@@ -68,7 +69,15 @@ export async function loader({context, request}: LoaderFunctionArgs) {
 }
 
 /*
- * Homepage route component is the same as the page route component
- * so we can just export the page route component as the homepage route component.
+ * Homepage: the SS26 sale hero is hardcoded at the very top, followed by the
+ * CMS-managed sections (same renderer as every other page). Remove the old
+ * two-image hero section in Sanity Studio so it doesn't render twice.
  */
-export default PageRoute;
+export default function Homepage() {
+  return (
+    <>
+      <SaleHero />
+      <PageRoute />
+    </>
+  );
+}
