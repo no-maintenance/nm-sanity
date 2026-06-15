@@ -129,8 +129,8 @@ describe('Game Scenarios - Complete Gameplay Flows', () => {
 
   describe('Spangram Validation Scenarios', () => {
     it('should validate spangram spans top to bottom', () => {
-      // Path that touches top (row 0) and bottom (row 5)
-      const path = [0, 8, 16, 24, 32, 40];
+      // Path that touches top (row 0) and bottom (row 7)
+      const path = [0, 6, 12, 18, 24, 30, 36, 42];
       expect(spansOppositeEdges(path)).toBe(true);
     });
 

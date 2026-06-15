@@ -17,16 +17,16 @@ import {
 describe('Strands Logic - Position Utilities', () => {
   it('should convert index to position correctly', () => {
     expect(indexToPosition(0)).toEqual({row: 0, col: 0});
-    expect(indexToPosition(7)).toEqual({row: 0, col: 7});
-    expect(indexToPosition(8)).toEqual({row: 1, col: 0});
-    expect(indexToPosition(47)).toEqual({row: 5, col: 7});
+    expect(indexToPosition(7)).toEqual({row: 1, col: 1});
+    expect(indexToPosition(8)).toEqual({row: 1, col: 2});
+    expect(indexToPosition(47)).toEqual({row: 7, col: 5});
   });
 
   it('should convert position to index correctly', () => {
     expect(positionToIndex({row: 0, col: 0})).toBe(0);
-    expect(positionToIndex({row: 0, col: 7})).toBe(7);
-    expect(positionToIndex({row: 1, col: 0})).toBe(8);
-    expect(positionToIndex({row: 5, col: 7})).toBe(47);
+    expect(positionToIndex({row: 1, col: 1})).toBe(7);
+    expect(positionToIndex({row: 1, col: 2})).toBe(8);
+    expect(positionToIndex({row: 7, col: 5})).toBe(47);
   });
 
   it('should convert back and forth between index and position', () => {
@@ -44,14 +44,14 @@ describe('Strands Logic - Adjacency', () => {
   });
 
   it('should identify vertically adjacent cells', () => {
-    expect(areAdjacent(0, 8)).toBe(true); // down
-    expect(areAdjacent(8, 0)).toBe(true); // up
+    expect(areAdjacent(0, 6)).toBe(true); // down
+    expect(areAdjacent(6, 0)).toBe(true); // up
   });
 
   it('should identify diagonally adjacent cells', () => {
-    expect(areAdjacent(0, 9)).toBe(true); // down-right
-    expect(areAdjacent(1, 8)).toBe(true); // down-left
-    expect(areAdjacent(9, 0)).toBe(true); // up-left
+    expect(areAdjacent(0, 7)).toBe(true); // down-right
+    expect(areAdjacent(1, 6)).toBe(true); // down-left
+    expect(areAdjacent(7, 0)).toBe(true); // up-left
   });
 
   it('should not identify non-adjacent cells', () => {
@@ -73,17 +73,17 @@ describe('Strands Logic - Path Validation', () => {
   });
 
   it('should validate a simple vertical path', () => {
-    const path = [0, 8, 16, 24]; // vertical
+    const path = [0, 6, 12, 18]; // vertical
     expect(isValidPath(path)).toBe(true);
   });
 
   it('should validate a diagonal path', () => {
-    const path = [0, 9, 18, 27]; // diagonal
+    const path = [0, 7, 14, 21]; // diagonal
     expect(isValidPath(path)).toBe(true);
   });
 
   it('should validate a zigzag path', () => {
-    const path = [0, 1, 9, 10, 18]; // right, down-right, right, down
+    const path = [0, 1, 8, 9, 15]; // right, down-right, right, down
     expect(isValidPath(path)).toBe(true);
   });
 
@@ -124,7 +124,7 @@ describe('Strands Logic - Word Formation', () => {
 
 describe('Strands Logic - Spangram Detection', () => {
   it('should detect top-to-bottom span', () => {
-    const path = [0, 8, 16, 24, 32, 40]; // top to bottom
+    const path = [0, 6, 12, 18, 24, 30, 36, 42]; // top to bottom
     expect(spansOppositeEdges(path)).toBe(true);
   });
 
@@ -139,7 +139,7 @@ describe('Strands Logic - Spangram Detection', () => {
   });
 
   it('should not detect non-spanning paths', () => {
-    const path = [10, 11, 12, 19, 20]; // middle of grid
+    const path = [13, 14, 19, 20]; // middle of grid
     expect(spansOppositeEdges(path)).toBe(false);
   });
 
@@ -296,32 +296,32 @@ describe('Strands Logic - Time Formatting', () => {
 
 describe('Strands Logic - Neighbor Calculation', () => {
   it('should get all 8 neighbors for center cell', () => {
-    const neighbors = getNeighbors(18); // row 2, col 2
+    const neighbors = getNeighbors(8); // row 1, col 2
     expect(neighbors).toHaveLength(8);
-    expect(neighbors).toContain(9); // up-left
-    expect(neighbors).toContain(10); // up
-    expect(neighbors).toContain(11); // up-right
-    expect(neighbors).toContain(17); // left
-    expect(neighbors).toContain(19); // right
-    expect(neighbors).toContain(25); // down-left
-    expect(neighbors).toContain(26); // down
-    expect(neighbors).toContain(27); // down-right
+    expect(neighbors).toContain(1); // up-left
+    expect(neighbors).toContain(2); // up
+    expect(neighbors).toContain(3); // up-right
+    expect(neighbors).toContain(7); // left
+    expect(neighbors).toContain(9); // right
+    expect(neighbors).toContain(13); // down-left
+    expect(neighbors).toContain(14); // down
+    expect(neighbors).toContain(15); // down-right
   });
 
   it('should get 3 neighbors for top-left corner', () => {
     const neighbors = getNeighbors(0);
     expect(neighbors).toHaveLength(3);
     expect(neighbors).toContain(1); // right
-    expect(neighbors).toContain(8); // down
-    expect(neighbors).toContain(9); // down-right
+    expect(neighbors).toContain(6); // down
+    expect(neighbors).toContain(7); // down-right
   });
 
   it('should get 3 neighbors for bottom-right corner', () => {
     const neighbors = getNeighbors(47);
     expect(neighbors).toHaveLength(3);
     expect(neighbors).toContain(46); // left
-    expect(neighbors).toContain(39); // up
-    expect(neighbors).toContain(38); // up-left
+    expect(neighbors).toContain(41); // up
+    expect(neighbors).toContain(40); // up-left
   });
 
   it('should get 5 neighbors for edge cell (not corner)', () => {
