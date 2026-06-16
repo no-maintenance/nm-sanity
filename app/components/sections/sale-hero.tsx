@@ -14,7 +14,7 @@
 import {Link} from '@remix-run/react';
 
 const HERO_IMAGE = '/ss26-hero.jpg';
-const HERO_LINK = '/collections/sale-1';
+const HERO_LINK = '/collections/summersale';
 
 const HERO_CSS = `
 @font-face {

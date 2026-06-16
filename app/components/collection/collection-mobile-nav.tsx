@@ -77,8 +77,8 @@ export function CollectionMobileNav({
     items.push({
       id: 'category-sale',
       title: 'Sale',
-      // "ARCHIVE SALE SS26" collection
-      url: '/collections/sale-1',
+      // Summer Sale collection
+      url: '/collections/summersale',
     } as ShopifyMenuItem);
   }
 
