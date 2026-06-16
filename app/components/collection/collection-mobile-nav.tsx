@@ -24,6 +24,7 @@ const NAV_LINK_CLASS =
 // Desired left-to-right order of category labels (lowercased). Items not listed
 // here keep their menu order, appended after the known ones.
 const CATEGORY_ORDER = [
+  'sale',
   'new arrivals',
   'all',
   'denim',
@@ -67,6 +68,19 @@ export function CollectionMobileNav({
   const navRef = useRef<HTMLElement>(null);
 
   const items = [...(menu?.items ?? [])];
+
+  // Inject a "Sale" entry (far left) if the menu doesn't already include one.
+  const hasSale = items.some(
+    (item) => (item.title ?? '').toLowerCase().trim() === 'sale',
+  );
+  if (!hasSale) {
+    items.push({
+      id: 'category-sale',
+      title: 'Sale',
+      // Summer Sale collection
+      url: '/collections/summersale',
+    } as ShopifyMenuItem);
+  }
 
   // Inject an "All" entry if the menu doesn't already include one.
   const hasAll = items.some(
