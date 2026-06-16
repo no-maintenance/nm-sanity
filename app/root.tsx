@@ -40,6 +40,7 @@ import {generateFaviconUrls} from './lib/generate-favicon-urls';
 import tailwindCss from './styles/tailwind.css?url';
 import { Toaster } from '~/components/ui/sonner';
 import { KlaviyoPixel } from './components/klaviyo/klaviyo-pixel';
+import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 
 export type RootLoader = typeof loader;
 
@@ -117,6 +118,11 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   // Check if this is the site-protected route
   const url = new URL(request.url);
   const isSiteProtectedRoute = url.pathname.includes('/site-protected');
+
+  // Enforce the site-wide password gate for every route (not just the few
+  // that opted in). The guard self-exempts /api, /cms, assets, the gate
+  // itself, etc., and no-ops when no protection is enabled.
+  await requireUnprotectedAccess(context, request);
 
   const queryParams = {
     defaultLanguage: DEFAULT_LOCALE.language.toLowerCase(),
