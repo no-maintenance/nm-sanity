@@ -78,6 +78,16 @@ function isSizeFilter(filter: Pick<Filter, 'id' | 'label'>): boolean {
   return label === 'size' || id.endsWith('.size');
 }
 
+/**
+ * Shopify-provided filters we hide from the generic filter list because the
+ * UI already covers them elsewhere: "Style" via the category bar, and "Size"
+ * via the custom "Available Size" section (which is deduped/cleaned).
+ */
+export function isHiddenFilter(filter: Pick<Filter, 'label'>): boolean {
+  const label = (filter.label ?? '').toLowerCase().trim();
+  return label === 'style' || label === 'size';
+}
+
 export function sortFilterValues(filter: Filter): Filter['values'] {
   const values = filter.values ?? [];
   if (!isSizeFilter(filter)) return values;
@@ -92,17 +102,23 @@ function useToggleSize() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const selectedSize = params.get(AVAILABLE_SIZE_URL_PARAM);
+  // Multi-select: any number of sizes can be active at once.
+  const selectedSizes = params.getAll(AVAILABLE_SIZE_URL_PARAM);
 
   const toggleSize = useCallback(
     (size: string, optimisticId: string) => {
+      const current = params.getAll(AVAILABLE_SIZE_URL_PARAM);
+      const isApplied = current.includes(size);
+      const nextSizes = isApplied
+        ? current.filter((s) => s !== size)
+        : [...current, size];
+
       const next = stripPaginationParams(params);
-      const isApplied = selectedSize === size;
-      if (isApplied) {
-        next.delete(AVAILABLE_SIZE_URL_PARAM);
-      } else {
-        next.set(AVAILABLE_SIZE_URL_PARAM, size);
+      next.delete(AVAILABLE_SIZE_URL_PARAM);
+      for (const s of nextSizes) {
+        next.append(AVAILABLE_SIZE_URL_PARAM, s);
       }
+
       const query = next.toString();
       navigate(query ? `${location.pathname}?${query}` : location.pathname, {
         preventScrollReset: true,
@@ -113,10 +129,10 @@ function useToggleSize() {
         },
       });
     },
-    [navigate, params, selectedSize, location.pathname],
+    [navigate, params, location.pathname],
   );
 
-  return {selectedSize, toggleSize};
+  return {selectedSizes, toggleSize};
 }
 
 function SizeCheckbox({
@@ -174,7 +190,7 @@ function SizeCheckbox({
 }
 
 export function AvailableSizeFilter({sizes}: {sizes: string[]}) {
-  const {selectedSize, toggleSize} = useToggleSize();
+  const {selectedSizes, toggleSize} = useToggleSize();
 
   if (!sizes.length) return null;
 
@@ -188,7 +204,7 @@ export function AvailableSizeFilter({sizes}: {sizes: string[]}) {
               id={id}
               size={size}
               toggleSize={toggleSize}
-              urlChecked={selectedSize === size}
+              urlChecked={selectedSizes.includes(size)}
             />
           </li>
         );
@@ -198,7 +214,7 @@ export function AvailableSizeFilter({sizes}: {sizes: string[]}) {
 }
 
 export function MobileAvailableSizeFilter({sizes}: {sizes: string[]}) {
-  const {selectedSize, toggleSize} = useToggleSize();
+  const {selectedSizes, toggleSize} = useToggleSize();
 
   if (!sizes.length) return null;
 
@@ -213,7 +229,7 @@ export function MobileAvailableSizeFilter({sizes}: {sizes: string[]}) {
               isMobile
               size={size}
               toggleSize={toggleSize}
-              urlChecked={selectedSize === size}
+              urlChecked={selectedSizes.includes(size)}
             />
           </li>
         );

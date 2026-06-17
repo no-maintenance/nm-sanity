@@ -110,14 +110,18 @@ export function getFiltersFromParam(searchParams: URLSearchParams) {
     [] as ProductFilter[],
   );
 
-  const size = searchParams.get(AVAILABLE_SIZE_URL_PARAM);
-  if (size) {
-    filters.push({
-      variantOption: {
-        name: SIZE_VARIANT_OPTION_NAME,
-        value: size,
-      },
-    });
+  // Multiple selected sizes are OR'd by Shopify (verified), and AND'd with
+  // availability — i.e. "available products in any of the selected sizes".
+  const sizes = searchParams.getAll(AVAILABLE_SIZE_URL_PARAM);
+  if (sizes.length > 0) {
+    for (const size of sizes) {
+      filters.push({
+        variantOption: {
+          name: SIZE_VARIANT_OPTION_NAME,
+          value: size,
+        },
+      });
+    }
     filters.push({available: true});
   }
 

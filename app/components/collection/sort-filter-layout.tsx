@@ -21,7 +21,11 @@ import {
 } from '../ui/accordion-chevron';
 import {Button, IconButton} from '../ui/button';
 import {ScrollArea} from '../ui/scroll-area';
-import {AvailableSizeFilter, sortFilterValues} from './available-size-filter';
+import {
+  AvailableSizeFilter,
+  isHiddenFilter,
+  sortFilterValues,
+} from './available-size-filter';
 import {DesktopSort} from './collection-sort';
 import {FilterMarkup} from './filter-markup';
 export type AppliedFilter = {
@@ -127,7 +131,9 @@ export function DesktopFiltersDrawer({
               </AccordionContent>
             </AccordionItem>
           )}
-          {filters.map((filter: Filter) => (
+          {filters
+            .filter((filter: Filter) => !isHiddenFilter(filter))
+            .map((filter: Filter) => (
             <AccordionItem
               className="last:border-b-0"
               key={filter.id}
