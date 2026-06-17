@@ -274,7 +274,7 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
             />
             <button
               type="submit"
-              className={`ss26-pw-arrow${pwValue.length >= 10 ? ' show' : ''}`}
+              className={`ss26-pw-arrow${pwValue.length >= 4 ? ' show' : ''}`}
               aria-label="Enter site"
               tabIndex={-1}
             >
