@@ -263,6 +263,62 @@ export function getLocalePathForCountry(countryCode: string): string | null {
 }
 
 /**
+ * Reverse lookup from a Shopify "language-country" locale code
+ * (e.g. "ja-jp", "de-de") to the storefront's supported locale path prefix
+ * (e.g. "/ja", "/de"). The default locale ("en-us") maps to "" (no prefix).
+ */
+const ISO_CODE_TO_PATH_PREFIX: Record<string, string> = Object.entries(
+  countries,
+).reduce<Record<string, string>>((map, [key, locale]) => {
+  map[locale.isoCode.toLowerCase()] = key === 'default' ? '' : key;
+  return map;
+}, {});
+
+/** Matches a `language-country` path segment, e.g. "ja-jp", "en-jp", "de-de". */
+const LANG_COUNTRY_SEGMENT = /^[a-z]{2}-[a-z]{2}$/;
+
+/**
+ * Shopify Markets hands out `language-country` subfolder URLs (e.g. `/ja-jp`,
+ * `/en-jp`, `/de-de`). This storefront's locale map is keyed by short prefixes
+ * (`/ja`, `/de`, …), so those paths are otherwise treated as an unknown page
+ * handle and 404. Normalize them to the supported locale prefix.
+ *
+ * Resolution order:
+ *   1. Exact isoCode match → its canonical prefix (e.g. `ja-jp` → `/ja`).
+ *   2. Otherwise map by country code (e.g. `en-jp` → JP → `/ja`).
+ *   3. Otherwise fall back to the default storefront (`""`).
+ *
+ * Returns the redirect path (with the rest of the URL preserved), or null when
+ * the first segment isn't a `language-country` code that needs rewriting.
+ */
+export function getLocaleNormalizationRedirect(
+  request: Request,
+): string | null {
+  const url = new URL(request.url);
+  const segments = url.pathname.split('/'); // ["", "ja-jp", "products", ...]
+  const first = (segments[1] || '').toLowerCase();
+
+  if (!LANG_COUNTRY_SEGMENT.test(first)) return null;
+
+  // Already a supported locale key (e.g. "/ca-fr") — leave it untouched.
+  if (countries[`/${first}`]) return null;
+
+  let targetPrefix = ISO_CODE_TO_PATH_PREFIX[first];
+
+  if (targetPrefix === undefined) {
+    const country = first.split('-')[1]?.toUpperCase();
+    targetPrefix = (country && getLocalePathForCountry(country)) || '';
+  }
+
+  const rest = segments.slice(2).join('/');
+  const newPath = `${targetPrefix}${rest ? `/${rest}` : ''}` || '/';
+
+  if (newPath === url.pathname) return null;
+
+  return `${newPath}${url.search}`;
+}
+
+/**
  * Check if a request should be redirected based on geolocation.
  * Returns the redirect path if a redirect is needed, null otherwise.
  */

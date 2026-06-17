@@ -6,7 +6,7 @@ import {createRequestHandler} from '@shopify/remix-oxygen';
 import * as remixBuild from 'virtual:remix/server-build';
 
 import {createAppLoadContext} from '~/lib/context';
-import {getGeoRedirectPath} from 'countries';
+import {getGeoRedirectPath, getLocaleNormalizationRedirect} from 'countries';
 
 /*
  * Export a fetch handler in module format.
@@ -18,6 +18,22 @@ export default {
     executionContext: ExecutionContext,
   ): Promise<Response> {
     try {
+      // Normalize Shopify Markets "language-country" subfolder URLs
+      // (e.g. /ja-jp, /en-jp, /de-de) to this storefront's supported locale
+      // prefixes (/ja, /de, …) so international links don't 404.
+      const normalizedPath = getLocaleNormalizationRedirect(request);
+      if (normalizedPath) {
+        const url = new URL(request.url);
+        const redirectUrl = `${url.protocol}//${url.host}${normalizedPath}`;
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: redirectUrl,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+          },
+        });
+      }
+
       // Check for geolocation-based redirects before processing the request
       const geoRedirectPath = getGeoRedirectPath(request);
       if (geoRedirectPath) {
