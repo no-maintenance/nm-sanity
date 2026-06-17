@@ -222,7 +222,7 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
       );
       if (res.ok) {
         setSubState('ok');
-        setSubMsg("You're on the list. Be on the lookout for a password.");
+        setSubMsg('You\'re on the list. Use password "EASS26"');
         setEmail('');
         setTimeout(() => setModalOpen(false), 4000);
       } else {
