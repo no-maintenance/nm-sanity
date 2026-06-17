@@ -58,22 +58,38 @@ type SizesQueryResult = {
 export function getAvailableSizes(result: SizesQueryResult): string[] {
   const products = result?.collection?.products.nodes;
   if (!products) return [];
-  const sizes = new Set<string>();
+  // Collapse case-duplicate sizes (e.g. "Small" and "SMALL") into a single
+  // entry. Shopify's variantOption filter matches case-insensitively, so the
+  // chosen label still filters products that use the other casing. Prefer the
+  // nicer (non-all-uppercase) label for display.
+  const byKey = new Map<string, string>();
   for (const product of products) {
     for (const variant of product.variants.nodes) {
       if (!variant.availableForSale) continue;
       for (const option of variant.selectedOptions) {
         if (
-          option.name === SIZE_VARIANT_OPTION_NAME &&
-          option.value &&
-          !isExcludedSize(option.value)
+          option.name !== SIZE_VARIANT_OPTION_NAME ||
+          !option.value ||
+          isExcludedSize(option.value)
         ) {
-          sizes.add(option.value);
+          continue;
+        }
+        const value = option.value;
+        const key = value.toLowerCase().trim();
+        const existing = byKey.get(key);
+        if (!existing) {
+          byKey.set(key, value);
+        } else if (
+          existing === existing.toUpperCase() &&
+          value !== value.toUpperCase()
+        ) {
+          // Replace an all-uppercase label with a nicer-cased one.
+          byKey.set(key, value);
         }
       }
     }
   }
-  return Array.from(sizes);
+  return Array.from(byKey.values());
 }
 
 export function getFiltersFromParam(searchParams: URLSearchParams) {
