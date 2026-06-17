@@ -19,7 +19,11 @@ import {
   DrawerTrigger,
 } from '../ui/drawer';
 import {ScrollArea} from '../ui/scroll-area';
-import {MobileAvailableSizeFilter, sortFilterValues} from './available-size-filter';
+import {
+  MobileAvailableSizeFilter,
+  isHiddenFilter,
+  sortFilterValues,
+} from './available-size-filter';
 import {MobileSort} from './collection-sort';
 import {FilterMarkup} from './filter-markup';
 
@@ -80,10 +84,7 @@ export function MobileDrawer({
                   </div>
                 )}
                 {filters
-                  .filter(
-                    (filter: Filter) =>
-                      filter.label?.toLowerCase() !== 'style',
-                  )
+                  .filter((filter: Filter) => !isHiddenFilter(filter))
                   .map((filter: Filter) => (
                   <div className="my-8 border-t pt-8" key={filter.id}>
                     <div className="text-xl font-medium">{filter.label}</div>
