@@ -201,12 +201,54 @@ function InfiniteProducts({
   const inViewOptions = useMemo(() => ({rootMargin: '600px'}), []);
   const [sentinelRef, inView] = useInView<HTMLDivElement>(inViewOptions);
 
-  // Reset when the server-provided list changes (new collection / filters).
+  // Reset when the server-provided list changes (new collection / full load).
   useEffect(() => {
     setNodes(initialNodes);
     setCursor(initialPageInfo?.endCursor ?? null);
     setHasNextPage(Boolean(initialPageInfo?.hasNextPage));
   }, [initialNodes, initialPageInfo]);
+
+  // Filters/sort changed (same collection): refetch page 1 in place via the
+  // API instead of a full route reload. The route's shouldRevalidate skips the
+  // heavy loader (Sanity/Shopify/menu) on these param-only changes, so this is
+  // the only request that runs — fast.
+  const searchKey = searchParams.toString();
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    loadingRef.current = true;
+    setLoading(true);
+
+    const params = new URLSearchParams(searchParams);
+    params.set('collectionId', collectionId);
+    params.set('first', String(productsPerPage));
+
+    fetch(`${apiPath}?${params.toString()}`)
+      .then(
+        (res) =>
+          res.json() as Promise<{
+            nodes?: ProductCardFragment[];
+            pageInfo?: PageInfo;
+          }>,
+      )
+      .then((data) => {
+        setNodes(data.nodes ?? []);
+        setCursor(data.pageInfo?.endCursor ?? null);
+        setHasNextPage(Boolean(data.pageInfo?.hasNextPage));
+      })
+      .catch(() => {
+        setNodes([]);
+        setHasNextPage(false);
+      })
+      .finally(() => {
+        loadingRef.current = false;
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKey]);
 
   useEffect(() => {
     if (!inView || !hasNextPage || loadingRef.current) return;
