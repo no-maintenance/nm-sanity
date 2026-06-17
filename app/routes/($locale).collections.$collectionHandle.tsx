@@ -1,4 +1,5 @@
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
+import type {ShouldRevalidateFunction} from '@remix-run/react';
 import type {COLLECTION_QUERYResult} from 'types/sanity/sanity.generated';
 import type {
   CollectionDetailsQuery,
@@ -15,6 +16,25 @@ import {COLLECTION_QUERY as CMS_COLLECTION_QUERY} from '~/data/sanity/queries';
 import {COLLECTION_QUERY, MENU_QUERY} from '~/data/shopify/queries';
 
 const MOBILE_CATEGORIES_MENU_HANDLE = 'mobile-categories';
+
+/**
+ * Skip the heavy loader (Sanity + Shopify collection + menu + sizes) when only
+ * the query string changes on the same collection — i.e. applying filters or
+ * sorting. The product grid updates client-side via /api/collection-products,
+ * so re-running the whole route is pure latency. Full navigations (pathname
+ * change, mutations) revalidate normally.
+ */
+export const shouldRevalidate: ShouldRevalidateFunction = (args) => {
+  const {currentUrl, nextUrl, defaultShouldRevalidate} = args;
+  if (
+    currentUrl.pathname === nextUrl.pathname &&
+    currentUrl.search !== nextUrl.search
+  ) {
+    return false;
+  }
+  return defaultShouldRevalidate;
+};
+
 import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolve-shopify-promises';
 import {getSeoMetaFromMatches} from '~/lib/seo';
