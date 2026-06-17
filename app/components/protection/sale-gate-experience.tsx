@@ -131,6 +131,10 @@ const GATE_CSS = `
   margin-top: 14px; min-height: 12px; font-size: 10px; letter-spacing: 0.2em;
   text-transform: uppercase; color: rgba(255,255,255,0.8);
 }
+.ss26-gate .ss26-modal-msg.is-success {
+  margin-top: 18px; font-size: clamp(16px, 3vw, 22px); letter-spacing: 0.18em;
+  color: #fff;
+}
 @media (prefers-reduced-motion: reduce) {
   .ss26-gate .ss26-code::after { animation: none; }
 }
@@ -222,7 +226,7 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
       );
       if (res.ok) {
         setSubState('ok');
-        setSubMsg('You\'re on the list. Use password "EASS26"');
+        setSubMsg('PASSWORD: EASS26');
         setEmail('');
         setTimeout(() => setModalOpen(false), 4000);
       } else {
@@ -316,7 +320,11 @@ export function SaleGateExperience({redirectTo, actionData}: SaleGateExperienceP
             <button className="ss26-modal-submit" type="submit" disabled={subState === 'loading'}>
               Subscribe
             </button>
-            <div className="ss26-modal-msg" role="status" aria-live="polite">
+            <div
+              className={`ss26-modal-msg${subState === 'ok' ? ' is-success' : ''}`}
+              role="status"
+              aria-live="polite"
+            >
               {subMsg}
             </div>
           </form>
