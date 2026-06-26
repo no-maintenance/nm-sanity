@@ -5,6 +5,7 @@ import type {PAGE_QUERYResult} from 'types/sanity/sanity.generated';
 import {useLoaderData} from '@remix-run/react';
 import {DEFAULT_LOCALE} from 'countries';
 import {CmsSection} from '~/components/cms-section';
+import {CrashDenimHero} from '~/components/sections/crash-denim-hero';
 import {SaleHero} from '~/components/sections/sale-hero';
 import {PAGE_QUERY} from '~/data/sanity/queries';
 import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
@@ -81,7 +82,8 @@ export default function PageRoute() {
 
   return (
     <>
-      {/* SS26 sale hero renders on every locale's homepage (/, /fr, /ja, …). */}
+      {/* Crash Denim tile + SS26 sale hero render on every locale's homepage (/, /fr, /ja, …). */}
+      {isHome ? <CrashDenimHero /> : null}
       {isHome ? <SaleHero /> : null}
       {data?.sections && data.sections.length > 0
         ? data.sections.map((section, index) => (
