@@ -157,51 +157,64 @@ export function CollectionMobileNav({
 }
 
 function ScrollIndicator({scrollRef}: {scrollRef: RefObject<HTMLElement>}) {
-  // width/left are percentages of the track. Start visible with a sensible
-  // default so the bar is present on the very first paint (no pop-in/flash on
-  // full-reload navigation); measurement then refines it or hides it if the
-  // categories don't overflow.
-  const [thumb, setThumb] = useState({left: 0, visible: true, width: 33});
+  // Only the visible/hidden decision goes through React state (it changes
+  // rarely). The thumb's position/size is written straight to the DOM inside a
+  // rAF on scroll, with no CSS transition, so it tracks the finger 1:1 instead
+  // of lagging behind an animated margin.
+  const [visible, setVisible] = useState(true);
+  const thumbRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+    let raf = 0;
 
-    const update = () => {
+    const apply = () => {
+      raf = 0;
       const {clientWidth, scrollLeft, scrollWidth} = el;
       if (scrollWidth <= clientWidth + 1) {
-        setThumb({left: 0, visible: false, width: 100});
+        setVisible(false);
         return;
       }
+      setVisible(true);
+      const thumb = thumbRef.current;
+      if (!thumb) return;
       const width = (clientWidth / scrollWidth) * 100;
       const maxScroll = scrollWidth - clientWidth;
       const left = (scrollLeft / maxScroll) * (100 - width);
-      setThumb({left, visible: true, width});
+      thumb.style.width = `${width}%`;
+      thumb.style.marginLeft = `${left}%`;
     };
 
-    update();
-    el.addEventListener('scroll', update, {passive: true});
-    window.addEventListener('resize', update);
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+
+    apply();
+    el.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onScroll);
     let ro: null | ResizeObserver = null;
     if (typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(update);
+      ro = new ResizeObserver(onScroll);
       ro.observe(el);
     }
     return () => {
-      el.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       ro?.disconnect();
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [scrollRef]);
 
-  if (!thumb.visible) return null;
+  if (!visible) return null;
 
   return (
     <div className="w-full px-4 xl:px-8 pb-2">
       <div className="relative h-[3px] w-full">
         <div
-          className="absolute top-0 h-full rounded-full bg-neutral-400 transition-[margin] duration-75 ease-out"
-          style={{marginLeft: `${thumb.left}%`, width: `${thumb.width}%`}}
+          className="absolute top-0 h-full rounded-full bg-neutral-400"
+          ref={thumbRef}
+          style={{marginLeft: '0%', width: '33%'}}
         />
       </div>
     </div>
