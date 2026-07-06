@@ -52,7 +52,7 @@ export function ProductDetailsBlock(props: ProductDetailsBlockProps) {
   }
 
   return (
-    <div className="py-2 text-[13px] prose max-w-none [&_p]:mt-0 [&_p]:text-[13px] [&_a]:text-primary touch:[&_a]:active:underline notouch:[&_a]:hover:underline [&_a]:underline-offset-4">
+    <div className="py-2 prose max-w-none [&_p]:mt-0 [&_a]:text-primary touch:[&_a]:active:underline notouch:[&_a]:hover:underline [&_a]:underline-offset-4">
       <PortableText 
         value={localizedContent.value} 
         components={{

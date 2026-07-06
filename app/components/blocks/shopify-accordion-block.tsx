@@ -1,13 +1,13 @@
 import type { SectionOfType } from 'types';
 import { useProduct } from '@shopify/hydrogen-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
 } from '~/components/ui/accordion';
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { PriceBlock } from './price-block';
 import { ProductDetailsBlock } from './extra-product-information-block';
 import { ShopifyDescriptionBlock } from './shopify-description-block';
@@ -25,13 +25,17 @@ export type ShopifyAccordionBlockProps = NonNullable<
   defaultOpen?: boolean;
 };
 
-// Stable id for an accordion item, derived from its title.
-const accordionItemId = (title: string) =>
-  `accordion-${String(title).toLowerCase().replace(/\s+/g, '-')}`;
+export function ShopifyAccordionBlock(props: ShopifyAccordionBlockProps) {
+  const { product } = useProduct();
+  const { title, content, defaultOpen = false } = props;
 
-// Base richtext components for accordion content (no accordion/modal to avoid recursion)
-function useAccordionContentComponents(): PortableTextComponents {
-  return useMemo(
+  if (!product || !content) return null;
+
+  // Generate a unique ID for the accordion item
+  const itemId = `accordion-${String(title).toLowerCase().replace(/\s+/g, '-')}`;
+
+  // Base richtext components (no accordion or modal to avoid recursion)
+  const baseComponents: PortableTextComponents = useMemo(
     () => ({
       marks: {
         externalLink: (props: any) => (
@@ -55,65 +59,22 @@ function useAccordionContentComponents(): PortableTextComponents {
     }),
     []
   );
-}
-
-// A single accordion item. Must be rendered inside an <Accordion> root.
-export function ShopifyAccordionItem({ title, content }: ShopifyAccordionBlockProps) {
-  const components = useAccordionContentComponents();
-
-  if (!content) return null;
-
-  return (
-    <AccordionItem value={accordionItemId(title)}>
-      <AccordionTrigger className='uppercase font-normal'>{title}</AccordionTrigger>
-      <AccordionContent className="pb-1">
-        <div className="prose max-w-none [&_p]:mt-0 [&_p:last-child]:mb-0 [&>div]:py-0">
-          <PortableText value={content} components={components} />
-        </div>
-      </AccordionContent>
-    </AccordionItem>
-  );
-}
-
-// A set of accordions sharing one root, so only one item can be open at a time.
-export function ShopifyAccordionGroup({
-  accordions,
-}: {
-  accordions: ShopifyAccordionBlockProps[];
-}) {
-  const { product } = useProduct();
-
-  const items = accordions.filter((a) => a?.content);
-  // Start with the flagged item, otherwise the first one.
-  const initialItem = items.find((a) => a.defaultOpen) ?? items[0];
-  const [value, setValue] = useState(
-    initialItem ? accordionItemId(initialItem.title) : '',
-  );
-
-  if (!product || items.length === 0) return null;
 
   return (
     <Accordion
       type="single"
       collapsible
-      value={value}
-      // Never allow zero open: minimizing the open item opens the other one
-      // instead (e.g. minimizing Description pops Details up, and vice versa).
-      onValueChange={(next) => {
-        if (next) return setValue(next);
-        const other = items.find((a) => accordionItemId(a.title) !== value);
-        setValue(other ? accordionItemId(other.title) : value);
-      }}
+      defaultValue={defaultOpen ? itemId : undefined}
       className="w-full"
     >
-      {items.map((a, i) => (
-        <ShopifyAccordionItem key={a._key || i} {...a} />
-      ))}
+      <AccordionItem value={itemId}>
+        <AccordionTrigger className='uppercase font-normal'>{title}</AccordionTrigger>
+        <AccordionContent>
+          <div className="prose max-w-none [&_p]:mt-0">
+            <PortableText value={content} components={baseComponents} />
+          </div>
+        </AccordionContent>
+      </AccordionItem>
     </Accordion>
   );
-}
-
-// Standalone single accordion (kept for backwards compatibility).
-export function ShopifyAccordionBlock(props: ShopifyAccordionBlockProps) {
-  return <ShopifyAccordionGroup accordions={[props]} />;
 }
