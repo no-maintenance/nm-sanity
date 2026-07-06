@@ -158,9 +158,9 @@ function ProductInformationGrid({
             shouldStick && 'lg:self-start h-full'
           )}
         >
-          <div 
+          <div
             className={cn(
-              shouldStick && 'lg:sticky hiddenScroll lg:top-[calc(var(--height-nav)+6rem)] lg:max-h-[calc(100vh-var(--height-nav)-6rem)] lg:overflow-y-auto lg:max-w-lg lg:p-8 mx-auto',
+              shouldStick && 'lg:sticky hiddenScroll lg:top-[var(--header-height,4rem)] lg:max-h-[calc(100vh-var(--header-height,4rem))] lg:overflow-y-auto lg:max-w-lg lg:px-8 lg:pb-8 mx-auto',
               'flex flex-col items-start'
             )}
           >
