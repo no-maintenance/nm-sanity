@@ -17,12 +17,13 @@ import type {AddToCartButtonBlockProps} from './product-form';
 import {PriceBlock} from '../blocks/price-block';
 import {ProductDetailsBlock} from '../blocks/extra-product-information-block';
 import ProductModalBlock from '../blocks/product-modal-block';
-import {ShopifyAccordionBlock} from '../blocks/shopify-accordion-block';
+import {ShopifyAccordionBlock, ShopifyAccordionGroup} from '../blocks/shopify-accordion-block';
 import {ShopifyDescriptionBlock} from '../blocks/shopify-description-block';
 import {ShopifyTitleBlock} from '../blocks/shopify-title-block';
 import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-link-annotation';
 import {InternalLinkAnnotation} from '../sanity/richtext/components/internal-link-annotation';
 import {ProductForm} from './product-form';
+import {cn} from '~/lib/utils';
 
 export function ProductDetails({
   data,
@@ -45,6 +46,34 @@ export function ProductDetails({
           _type: 'modalGroup',
           _key: `modalGroup-${i}`,
           modals,
+        });
+        i = j;
+      } else {
+        result.push(blocks[i]);
+        i++;
+      }
+    }
+    return result;
+  }
+
+  // Pre-process richtext to group adjacent shopifyAccordion blocks so they share
+  // a single accordion root — that way only one (e.g. Description or Details) can
+  // be open at a time.
+  function groupAccordionBlocks(blocks: any[]) {
+    const result: any[] = [];
+    let i = 0;
+    while (i < blocks.length) {
+      if (blocks[i]._type === 'shopifyAccordion') {
+        const accordions = [];
+        let j = i;
+        while (j < blocks.length && blocks[j]._type === 'shopifyAccordion') {
+          accordions.push(blocks[j]);
+          j++;
+        }
+        result.push({
+          _type: 'accordionGroup',
+          _key: `accordionGroup-${i}`,
+          accordions,
         });
         i = j;
       } else {
@@ -90,6 +119,10 @@ export function ProductDetails({
         shopifyAccordion: (props: any) => (
           <ShopifyAccordionBlock {...props.value} />
         ),
+        // Grouped accordions share one root so only one can be open at a time
+        accordionGroup: (props: {value: {accordions: any[]}}) => (
+          <ShopifyAccordionGroup accordions={props.value.accordions} />
+        ),
         productModal: (props: {value: ProductModalBlockProps}) => (
           <ProductModalBlock value={props.value} />
         ),
@@ -110,15 +143,50 @@ export function ProductDetails({
   );
 
   // Pre-process richtext before rendering
-  const processedRichtext = data.richtext ? groupModalBlocks(data.richtext) : [];
+  const processedRichtext = data.richtext
+    ? groupAccordionBlocks(groupModalBlocks(data.richtext))
+    : [];
+
+  // Split the blocks so the purchase summary (title, price, add-to-cart,
+  // Shop Pay) stays pinned to the top while the description and other blocks
+  // below it scroll underneath, on both mobile and desktop. Boundary = the
+  // add-to-cart block.
+  const addToCartIndex = processedRichtext.findIndex(
+    (block) => block._type === 'addToCartButton',
+  );
+  const stickyBlocks =
+    addToCartIndex >= 0
+      ? processedRichtext.slice(0, addToCartIndex + 1)
+      : processedRichtext;
+  const scrollBlocks =
+    addToCartIndex >= 0 ? processedRichtext.slice(addToCartIndex + 1) : [];
+
+  // On desktop, the scrollable-gallery layout makes this column its own sticky,
+  // internally-scrolling container. There the summary should pin to the top of
+  // that column (top-0). In other layouts the page scrolls on desktop, so the
+  // summary stays below the header (the mobile offset carries over).
+  const columnIsScrollContainer =
+    !!data &&
+    'galleryStyle' in data &&
+    (data as ProductInformationSectionProps).galleryStyle !== 'simple' &&
+    (data as ProductInformationSectionProps).stickyProductInfo !== false;
 
   return (
     <div className="container space-y-1 lg:max-w-none lg:px-0">
-      {processedRichtext.length > 0 && (
-        <PortableText
-          components={defaultComponents}
-          value={processedRichtext}
-        />
+      {stickyBlocks.length > 0 && (
+        <div
+          className={cn(
+            'sticky top-(--header-height) z-10 space-y-1 bg-background pb-2',
+            columnIsScrollContainer && 'lg:top-0',
+          )}
+        >
+          <PortableText components={defaultComponents} value={stickyBlocks} />
+        </div>
+      )}
+      {scrollBlocks.length > 0 && (
+        <div className="space-y-1">
+          <PortableText components={defaultComponents} value={scrollBlocks} />
+        </div>
       )}
     </div>
   );
