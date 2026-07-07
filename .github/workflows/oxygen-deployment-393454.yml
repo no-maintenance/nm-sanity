@@ -41,7 +41,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build and Publish to Oxygen
-        run: pnpm dlx shopify hydrogen deploy --force
+        # Use the repo-pinned Shopify CLI (from package.json) instead of `pnpm dlx
+        # shopify`, which always pulls the LATEST CLI at deploy time. A newer CLI
+        # regressed the Oxygen asset upload (site served HTML but 404'd all JS/CSS).
+        run: pnpm exec shopify hydrogen deploy --force
         env:
           SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_393454 }}
 
