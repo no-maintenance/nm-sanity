@@ -82,9 +82,9 @@ export default function PageRoute() {
 
   return (
     <>
-      {/* Crash Denim tile + SS26 sale hero render on every locale's homepage (/, /fr, /ja, …). */}
-      {isHome ? <CrashDenimHero /> : null}
+      {/* SS26 sale hero + Crash Denim tile render on every locale's homepage (/, /fr, /ja, …). */}
       {isHome ? <SaleHero /> : null}
+      {isHome ? <CrashDenimHero /> : null}
       {data?.sections && data.sections.length > 0
         ? data.sections.map((section, index) => (
             <CmsSection data={section} index={index} key={section._key} />
