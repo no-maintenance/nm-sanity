@@ -1,18 +1,23 @@
 /**
- * "Crash Denim" home tile.
+ * "Haze Denim" home tile.
  *
  * Sits at the very top of the homepage, above the SS26 sale hero. A full-bleed
- * denim editorial with a "CRASH DENIM" headline pinned to the bottom-left,
+ * denim editorial with a "HAZE DENIM" headline pinned to the bottom-left,
  * set in the same SS26 display font as the sale hero but at half the size.
  * Links through to the New Arrivals collection.
  *
- * Asset (committed to /public):
- *   - /crash-denim-tile.jpg   wide denim editorial, NO baked-in text
+ * Desktop shows the full triptych; mobile swaps to a tighter crop of the right
+ * two photos so the denim reads at portrait sizes.
+ *
+ * Assets (committed to /public):
+ *   - /haze-hero.jpg         full triptych, NO baked-in text (desktop)
+ *   - /haze-hero-mobile.jpg  right two photos, NO baked-in text (mobile)
  */
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/crash-denim-tile.jpg';
+const HERO_IMAGE = '/haze-hero.jpg';
+const HERO_IMAGE_MOBILE = '/haze-hero-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -70,10 +75,6 @@ const HERO_CSS = `
   .crash-denim__title {
     font-size: 3.65vw;
   }
-  /* center the crop on the seated denim figure (left photo) instead of the seam */
-  .crash-denim__img {
-    object-position: 12% center;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -86,17 +87,20 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Crash Denim — New Arrivals"
+      aria-label="Shop Haze Denim — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
-      <img
-        className="crash-denim__img"
-        src={HERO_IMAGE}
-        alt="Crash Denim"
-        fetchPriority="high"
-        decoding="async"
-      />
-      <h1 className="crash-denim__title">CRASH DENIM</h1>
+      <picture>
+        <source media="(max-width: 768px)" srcSet={HERO_IMAGE_MOBILE} />
+        <img
+          className="crash-denim__img"
+          src={HERO_IMAGE}
+          alt="Haze Denim"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
+      <h1 className="crash-denim__title">HAZE DENIM</h1>
     </Link>
   );
 }
