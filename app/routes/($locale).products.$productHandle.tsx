@@ -3,7 +3,7 @@ import type {PRODUCT_QUERYResult} from 'types/sanity/sanity.generated';
 import type {ProductQuery} from 'types/shopify/storefrontapi.generated';
 
 import {useLoaderData} from '@remix-run/react';
-import {Analytics, getSelectedProductOptions} from '@shopify/hydrogen';
+import {Analytics, CacheNone, getSelectedProductOptions} from '@shopify/hydrogen';
 import {ProductProvider} from '@shopify/hydrogen-react';
 import {DEFAULT_LOCALE} from 'countries';
 import invariant from 'tiny-invariant';
@@ -51,9 +51,29 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
     }),
   ]);
 
-  const [cmsProduct, {product}] = await productData;
+  const [cmsProduct, shopifyProduct] = await productData;
+  let {product} = shopifyProduct;
 
-  if (!product?.id || !cmsProduct) {
+  // A freshly-published product can briefly be absent from the cached Storefront
+  // response. Before giving up, retry the query uncached so newly-launched
+  // products don't intermittently render "not found" while caches warm up.
+  if (!product?.id) {
+    const fresh = await storefront.query<ProductQuery>(PRODUCT_QUERY, {
+      cache: CacheNone(),
+      variables: {
+        country: storefront.i18n.country,
+        handle: productHandle,
+        language: storefront.i18n.language,
+        selectedOptions,
+      },
+    });
+    product = fresh.product;
+  }
+
+  // Only a genuinely missing Shopify product is a 404. A momentarily-missing CMS
+  // document (e.g. Sanity CDN lag right after a publish) must NOT 404 — the page
+  // falls back to the default product template so the product still renders.
+  if (!product?.id) {
     throw new Response('product', {status: 404});
   }
 
@@ -105,10 +125,8 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const {
-    cmsProduct: {data},
-    product,
-  } = useLoaderData<typeof loader>();
+  const {cmsProduct, product} = useLoaderData<typeof loader>();
+  const data = cmsProduct?.data;
 
   const template = data?.product?.template || data?.defaultProductTemplate;
   const selectedVariant = product.variants.nodes[0];
