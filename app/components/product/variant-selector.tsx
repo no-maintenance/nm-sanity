@@ -4,11 +4,13 @@ import type {PartialObjectDeep} from 'type-fest/source/partial-deep';
 import type {ProductVariantFragmentFragment} from 'types/shopify/storefrontapi.generated';
 
 import {Link, useNavigate} from '@remix-run/react';
+import {stegaClean} from '@sanity/client/stega';
 import {parseGid} from '@shopify/hydrogen';
 import {cx} from 'class-variance-authority';
 import {m} from 'motion/react';
 import {useCallback, useMemo} from 'react';
 
+import {resolveSwatch} from '~/lib/color-swatch';
 import {useHydrated} from '~/hooks/use-hydrated';
 import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-data';
 import {useSelectedVariant} from '~/hooks/use-selected-variant';
@@ -101,15 +103,31 @@ export function VariantSelector(props: {
     [props.options, selectedVariant, props.variants],
   );
 
-  return options?.map((option) => (
-    <div key={option.name}>
-      {/* <div>{option.name}</div> */}
-      <Pills handle={selectedVariant?.product?.handle} option={option} />
-    </div>
-  ));
+  return options?.map((option) => {
+    // Render the "Color" option as filled circular swatches, but only when
+    // every value resolves to a real color — otherwise fall back to text so
+    // we never show blank/mismatched circles.
+    const isColorOption = /colou?r/i.test(stegaClean(option.name ?? ''));
+    const asSwatches =
+      isColorOption &&
+      option.values.length > 0 &&
+      option.values.every((v) => resolveSwatch(v.value));
+
+    return (
+      <div key={option.name}>
+        {/* <div>{option.name}</div> */}
+        <Pills
+          asSwatches={asSwatches}
+          handle={selectedVariant?.product?.handle}
+          option={option}
+        />
+      </div>
+    );
+  });
 }
 
 function Pills(props: {
+  asSwatches?: boolean;
   handle: string | undefined;
   option: {
     name: string | undefined;
@@ -157,8 +175,30 @@ function Pills(props: {
     [navigate, optimisticId],
   );
 
+  if (props.asSwatches) {
+    const activeLabel =
+      values.find((value) => value.isActive)?.value ?? props.option.value;
+    return (
+      <div className="mt-1">
+        {activeLabel && <div className="mb-2 text-sm">{activeLabel}</div>}
+        <m.div className="flex flex-wrap items-center gap-x-3 gap-y-2" layout>
+          {values.map((value) => (
+            <ColorSwatch
+              handle={props.handle}
+              key={value.value}
+              onSelectVariant={handleSelectVariant}
+              option={props.option}
+              pending={pending}
+              {...value}
+            />
+          ))}
+        </m.div>
+      </div>
+    );
+  }
+
   return (
-    <m.div 
+    <m.div
       className="mt-1 flex items-center gap-x-6"
       layout
       layoutRoot
@@ -256,6 +296,85 @@ function VariantItem(props: {
   );
 }
 
+
+function ColorSwatch(props: {
+  handle?: string;
+  isActive: boolean;
+  isAvailable: boolean;
+  onSelectVariant: (value: string, search: string) => void;
+  option: {
+    name: string | undefined;
+    value: string | undefined;
+    values: VariantOptionValue[];
+  };
+  pending: boolean;
+  search: string;
+  value: string;
+}) {
+  const {
+    isActive,
+    isAvailable,
+    onSelectVariant,
+    pending,
+    search,
+    value,
+  } = props;
+  const isHydrated = useHydrated();
+  const swatch = resolveSwatch(value);
+
+  const wrapperClass = cx([
+    'relative inline-flex h-7 w-7 items-center justify-center rounded-full',
+    'transition-transform duration-200',
+    'focus-visible:outline-hidden focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    isActive
+      ? 'ring-1 ring-black ring-offset-2'
+      : 'notouch:hover:scale-110',
+    !isAvailable && 'opacity-40',
+  ]);
+
+  const circleClass = cx([
+    'h-full w-full rounded-full',
+    swatch?.isLight ? 'border border-black/15' : 'border border-black/5',
+  ]);
+
+  const circle = (
+    <span className="relative block h-full w-full">
+      <span
+        className={circleClass}
+        style={{background: swatch?.background}}
+      />
+      {/* Diagonal strike for sold-out colors */}
+      {!isAvailable && (
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span className="h-px w-[140%] -rotate-45 bg-black/50" />
+        </span>
+      )}
+    </span>
+  );
+
+  return isHydrated ? (
+    <m.button
+      aria-label={value}
+      aria-pressed={isActive}
+      className={wrapperClass}
+      disabled={pending}
+      onClick={() => onSelectVariant(value, search)}
+      style={{WebkitTapHighlightColor: 'transparent'}}
+      title={value}
+    >
+      {circle}
+    </m.button>
+  ) : (
+    <Link
+      aria-label={value}
+      className={wrapperClass}
+      title={value}
+      to={search}
+    >
+      {circle}
+    </Link>
+  );
+}
 
 function Pill(props: {
   handle?: string;
