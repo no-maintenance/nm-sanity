@@ -29,6 +29,7 @@ const CATEGORY_ORDER = [
   'denim',
   'outerwear',
   'leather',
+  'footwear',
   'bottoms',
   'jersey',
   'shirting',
@@ -78,6 +79,18 @@ export function CollectionMobileNav({
       title: 'All',
       // "Shop All" collection on the live store (same target as nomaintenance.us)
       url: '/collections/nomaintenance',
+    } as ShopifyMenuItem);
+  }
+
+  // Inject a "Footwear" entry if the menu doesn't already include one.
+  const hasFootwear = items.some(
+    (item) => (item.title ?? '').toLowerCase().trim() === 'footwear',
+  );
+  if (!hasFootwear) {
+    items.push({
+      id: 'category-footwear',
+      title: 'Footwear',
+      url: '/collections/footwear',
     } as ShopifyMenuItem);
   }
 
