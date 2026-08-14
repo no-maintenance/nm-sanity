@@ -1,23 +1,19 @@
 /**
- * "Haze Denim" home tile.
+ * "Kumo Sneakers" home hero.
  *
- * Sits at the very top of the homepage, above the SS26 sale hero. A full-bleed
- * denim editorial with a "HAZE DENIM" headline pinned to the bottom-left,
- * set in the same SS26 display font as the sale hero but at half the size.
- * Links through to the New Arrivals collection.
- *
- * Desktop shows the full triptych; mobile swaps to a tighter crop of the right
- * two photos so the denim reads at portrait sizes.
+ * Full-bleed campaign photo with a "KUMO SNEAKERS" headline pinned to the
+ * bottom-left, set in the SS26 display font. Desktop uses a landscape crop of
+ * the shoes; mobile uses the full portrait frame. Links to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /haze-hero.jpg         full triptych, NO baked-in text (desktop)
- *   - /haze-hero-mobile.jpg  right two photos, NO baked-in text (mobile)
+ *   - /kumo-hero.jpg         landscape crop, NO baked-in text (desktop)
+ *   - /kumo-hero-mobile.jpg  full portrait frame, NO baked-in text (mobile)
  */
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/haze-hero.jpg';
-const HERO_IMAGE_MOBILE = '/haze-hero-mobile.jpg';
+const HERO_IMAGE = '/kumo-hero.jpg';
+const HERO_IMAGE_MOBILE = '/kumo-hero-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -87,7 +83,7 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Haze Denim — New Arrivals"
+      aria-label="Shop Kumo Sneakers — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
       <picture>
@@ -95,12 +91,12 @@ export function CrashDenimHero() {
         <img
           className="crash-denim__img"
           src={HERO_IMAGE}
-          alt="Haze Denim"
+          alt="Kumo Sneakers"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">HAZE DENIM</h1>
+      <h1 className="crash-denim__title">KUMO SNEAKERS</h1>
     </Link>
   );
 }
