@@ -1,19 +1,20 @@
 /**
- * "Kumo Sneakers" home hero.
+ * "Spiral Zip Boot" home hero.
  *
- * Full-bleed campaign photo with a "KUMO SNEAKERS" headline pinned to the
- * bottom-left, set in the SS26 display font. Desktop uses a landscape crop of
- * the shoes; mobile uses the full portrait frame. Links to New Arrivals.
+ * Full-bleed campaign photo with a "SPIRAL ZIP BOOT: RELEASING 8/21" headline
+ * pinned to the bottom-left, set in the SS26 display font. Desktop uses the full
+ * landscape frame; mobile uses a portrait crop of the right boot cluster. Links
+ * to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /kumo-hero.jpg         landscape crop, NO baked-in text (desktop)
- *   - /kumo-hero-mobile.jpg  full portrait frame, NO baked-in text (mobile)
+ *   - /spiral-hero.jpg         full landscape frame, NO baked-in text (desktop)
+ *   - /spiral-hero-mobile.jpg  portrait crop, NO baked-in text (mobile)
  */
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/kumo-hero.jpg';
-const HERO_IMAGE_MOBILE = '/kumo-hero-mobile.jpg';
+const HERO_IMAGE = '/spiral-hero.jpg';
+const HERO_IMAGE_MOBILE = '/spiral-hero-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -45,6 +46,18 @@ const HERO_CSS = `
   object-position: center center;
   display: block;
 }
+/* bottom scrim so the white headline stays legible over the light photo */
+.crash-denim::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0));
+  z-index: 0;
+  pointer-events: none;
+}
 .crash-denim__title {
   position: absolute;
   /* bottom-left corner, inset from the edges */
@@ -66,10 +79,13 @@ const HERO_CSS = `
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
-/* portrait/mobile: half the sale hero's mobile headline (7.3vw) */
+/* portrait/mobile: wrap the longer release headline instead of overflowing */
 @media (max-width: 768px) {
   .crash-denim__title {
-    font-size: 3.65vw;
+    font-size: 5.5vw;
+    white-space: normal;
+    max-width: 72vw;
+    line-height: 1.15;
   }
 }
 
@@ -83,7 +99,7 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Kumo Sneakers — New Arrivals"
+      aria-label="Shop Spiral Zip Boot — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
       <picture>
@@ -91,12 +107,12 @@ export function CrashDenimHero() {
         <img
           className="crash-denim__img"
           src={HERO_IMAGE}
-          alt="Kumo Sneakers"
+          alt="Spiral Zip Boot"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">KUMO SNEAKERS</h1>
+      <h1 className="crash-denim__title">SPIRAL ZIP BOOT: RELEASING 8/21</h1>
     </Link>
   );
 }
