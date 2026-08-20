@@ -7,14 +7,18 @@
  * to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /spiral-hero.jpg         full landscape frame, NO baked-in text (desktop)
- *   - /spiral-hero-mobile.jpg  portrait crop, NO baked-in text (mobile)
+ *   - /spiral-boot-creative.jpg         landscape frame, NO baked-in text (desktop)
+ *   - /spiral-boot-creative-mobile.jpg  portrait crop, NO baked-in text (mobile)
+ *
+ * Note: filenames are versioned on each art change so the year-long asset cache
+ * (Cache-Control: max-age=31536000) doesn't serve a stale image to returning
+ * visitors. Bump the suffix whenever the photo changes.
  */
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/spiral-hero.jpg';
-const HERO_IMAGE_MOBILE = '/spiral-hero-mobile.jpg';
+const HERO_IMAGE = '/spiral-boot-creative.jpg';
+const HERO_IMAGE_MOBILE = '/spiral-boot-creative-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
