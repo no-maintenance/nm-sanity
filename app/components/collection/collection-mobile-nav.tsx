@@ -160,7 +160,14 @@ function ScrollIndicator({scrollRef}: {scrollRef: RefObject<HTMLElement>}) {
   // rarely). The thumb's position/size is written straight to the DOM inside a
   // rAF on scroll, with no CSS transition, so it tracks the finger 1:1 instead
   // of lagging behind an animated margin.
-  const [visible, setVisible] = useState(true);
+  //
+  // Start hidden and only reveal after measuring real overflow. Otherwise a
+  // full-width desktop (where the categories fit and nothing overflows) would
+  // render the bar in the initial HTML, paint it, then hide it once the layout
+  // effect runs — a visible blip on every navigation. Hidden-first means it
+  // only ever appears when the row is actually scrollable (narrow/minimized
+  // windows, mobile).
+  const [visible, setVisible] = useState(false);
   const thumbRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
