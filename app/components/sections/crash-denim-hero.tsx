@@ -116,7 +116,7 @@ export function CrashDenimHero() {
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">SPIRAL ZIP BOOT: RELEASING 8/21</h1>
+      <h1 className="crash-denim__title">SPIRAL ZIP BOOT: NOW LIVE</h1>
     </Link>
   );
 }
