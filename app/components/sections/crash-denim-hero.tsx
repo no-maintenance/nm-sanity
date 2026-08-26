@@ -1,14 +1,14 @@
 /**
- * "Spiral Zip Boot" home hero.
+ * "Pre-Fall Seasonal Denim" home hero.
  *
- * Full-bleed campaign photo with a "SPIRAL ZIP BOOT: RELEASING 8/21" headline
- * pinned to the bottom-left, set in the SS26 display font. Desktop uses the full
- * landscape frame; mobile uses a portrait crop of the right boot cluster. Links
- * to New Arrivals.
+ * Full-bleed campaign flat-lay with a "PRE-FALL SEASONAL DENIM RELEASE: 8/28"
+ * headline pinned to the bottom-left, set in the SS26 display font. Desktop uses
+ * the full landscape frame; mobile uses a portrait crop of the center washes.
+ * Links to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /spiral-boot-creative.jpg         landscape frame, NO baked-in text (desktop)
- *   - /spiral-boot-creative-mobile.jpg  portrait crop, NO baked-in text (mobile)
+ *   - /prefall-denim.jpg         landscape flat-lay, NO baked-in text (desktop)
+ *   - /prefall-denim-mobile.jpg  portrait crop, NO baked-in text (mobile)
  *
  * Note: filenames are versioned on each art change so the year-long asset cache
  * (Cache-Control: max-age=31536000) doesn't serve a stale image to returning
@@ -17,8 +17,8 @@
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/spiral-boot-creative.jpg';
-const HERO_IMAGE_MOBILE = '/spiral-boot-creative-mobile.jpg';
+const HERO_IMAGE = '/prefall-denim.jpg';
+const HERO_IMAGE_MOBILE = '/prefall-denim-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -103,7 +103,7 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Spiral Zip Boot — New Arrivals"
+      aria-label="Shop Pre-Fall Seasonal Denim — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
       <picture>
@@ -111,12 +111,12 @@ export function CrashDenimHero() {
         <img
           className="crash-denim__img"
           src={HERO_IMAGE}
-          alt="Spiral Zip Boot"
+          alt="Pre-Fall Seasonal Denim"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">SPIRAL ZIP BOOT: NOW LIVE</h1>
+      <h1 className="crash-denim__title">PRE-FALL SEASONAL DENIM RELEASE: 8/28</h1>
     </Link>
   );
 }
