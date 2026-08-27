@@ -7,8 +7,8 @@
  * Links to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /prefall-denim.jpg         landscape flat-lay, NO baked-in text (desktop)
- *   - /prefall-denim-mobile.jpg  portrait crop, NO baked-in text (mobile)
+ *   - /aug26-landing.jpg         landscape editorial, NO baked-in text (desktop)
+ *   - /aug26-landing-mobile.jpg  portrait editorial, NO baked-in text (mobile)
  *
  * Note: filenames are versioned on each art change so the year-long asset cache
  * (Cache-Control: max-age=31536000) doesn't serve a stale image to returning
@@ -17,8 +17,8 @@
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/prefall-denim.jpg';
-const HERO_IMAGE_MOBILE = '/prefall-denim-mobile.jpg';
+const HERO_IMAGE = '/aug26-landing.jpg';
+const HERO_IMAGE_MOBILE = '/aug26-landing-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -81,6 +81,16 @@ const HERO_CSS = `
   /* half the sale hero headline (5.7vw) */
   font-size: 2.85vw;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* desktop: size the hero to the landscape art's aspect ratio so the FULL
+   image shows (no cover-crop). Height follows the 16:9 photo instead of the
+   viewport. */
+@media (min-width: 769px) {
+  .crash-denim {
+    height: auto;
+    aspect-ratio: 2880 / 1310;
+  }
 }
 
 /* portrait/mobile: wrap the longer release headline instead of overflowing */
