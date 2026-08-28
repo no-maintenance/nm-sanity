@@ -126,7 +126,7 @@ export function CrashDenimHero() {
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">PRE-FALL SEASONAL DENIM RELEASE: 8/28</h1>
+      <h1 className="crash-denim__title">PRE-FALL SEASONAL DENIM: LIVE NOW</h1>
     </Link>
   );
 }
