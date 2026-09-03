@@ -1,7 +1,7 @@
 import type { Variants } from 'motion/react';
 import type { CSSProperties } from 'react';
 
-import { Link, useLocation } from '@remix-run/react';
+import { Await, Link, useLocation } from '@remix-run/react';
 import { getImageDimensions } from '@sanity/asset-utils';
 import { stegaClean } from '@sanity/client/stega';
 import { cx } from 'class-variance-authority';
@@ -244,13 +244,31 @@ export function Header() {
   );
 }
 
-function AccountLink({ className }: { className?: string }) {
+function AccountIconLink({ className, to }: { className?: string; to: string }) {
   return (
     <IconButton asChild>
-      <Link className={className} to="/account">
+      <Link className={className} to={to}>
         <IconAccount className="md:size-6 size-5" />
       </Link>
     </IconButton>
+  );
+}
+
+function AccountLink({ className }: { className?: string }) {
+  const { isLoggedIn } = useRootLoaderData() ?? {};
+  // Logged-in customers go to their account; everyone else lands on the
+  // branded /signup entry point (Shopify's passwordless flow handles both
+  // sign-up and sign-in). Default to /signup until the promise resolves.
+  const signedOut = <AccountIconLink className={className} to="/signup" />;
+
+  return (
+    <Suspense fallback={signedOut}>
+      <Await errorElement={signedOut} resolve={isLoggedIn}>
+        {(loggedIn) => (
+          <AccountIconLink className={className} to={loggedIn ? '/account' : '/signup'} />
+        )}
+      </Await>
+    </Suspense>
   );
 }
 
