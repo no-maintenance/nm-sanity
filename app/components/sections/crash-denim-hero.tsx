@@ -1,14 +1,14 @@
 /**
- * "Pre-Fall Seasonal Denim" home hero.
+ * "Double Collar Polo & Moc Toe Loafer" home hero.
  *
- * Full-bleed campaign flat-lay with a "PRE-FALL SEASONAL DENIM RELEASE: 8/28"
- * headline pinned to the bottom-left, set in the SS26 display font. Desktop uses
- * the full landscape frame; mobile uses a portrait crop of the center washes.
- * Links to New Arrivals.
+ * Full-bleed campaign diptych with a "DOUBLE COLLAR POLO & MOC TOE LOAFER: 9/3"
+ * headline pinned to the bottom-left, set in the SS26 display font. Desktop
+ * shows the full 16:9 diptych; mobile centers on the left-panel model. Links
+ * to New Arrivals.
  *
  * Assets (committed to /public):
- *   - /aug26-landing.jpg         landscape editorial, NO baked-in text (desktop)
- *   - /aug26-landing-mobile.jpg  portrait editorial, NO baked-in text (mobile)
+ *   - /sept3-landing.jpg         landscape diptych, NO baked-in text (desktop)
+ *   - /sept3-landing-mobile.jpg  left-panel model crop, NO baked-in text (mobile)
  *
  * Note: filenames are versioned on each art change so the year-long asset cache
  * (Cache-Control: max-age=31536000) doesn't serve a stale image to returning
@@ -17,8 +17,8 @@
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/aug26-landing.jpg';
-const HERO_IMAGE_MOBILE = '/aug26-landing-mobile.jpg';
+const HERO_IMAGE = '/sept3-landing.jpg';
+const HERO_IMAGE_MOBILE = '/sept3-landing-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -113,7 +113,7 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Pre-Fall Seasonal Denim — New Arrivals"
+      aria-label="Shop Double Collar Polo & Moc Toe Loafer — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
       <picture>
@@ -121,12 +121,12 @@ export function CrashDenimHero() {
         <img
           className="crash-denim__img"
           src={HERO_IMAGE}
-          alt="Pre-Fall Seasonal Denim"
+          alt="Double Collar Polo & Moc Toe Loafer"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">PRE-FALL SEASONAL DENIM: LIVE NOW</h1>
+      <h1 className="crash-denim__title">DOUBLE COLLAR POLO &amp; MOC TOE LOAFER: 9/3</h1>
     </Link>
   );
 }
