@@ -79,7 +79,7 @@ const HERO_CSS = `
   letter-spacing: 0.04em;
   line-height: 1.04;
   /* half the sale hero headline (5.7vw) */
-  font-size: 2.85vw;
+  font-size: 2.5vw;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
