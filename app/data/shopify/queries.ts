@@ -51,6 +51,24 @@ query Product(
       description
       title
     }
+    colorGroup: metafield(namespace: "custom", key: "color_group") {
+      references(first: 20) {
+        nodes {
+          ... on Product {
+            id
+            handle
+            title
+            availableForSale
+            featuredImage {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
   }
 }
 ${MEDIA_FRAGMENT}
