@@ -126,7 +126,7 @@ export function CrashDenimHero() {
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">DOUBLE COLLAR POLO &amp; MOC TOE LOAFER: 9/3</h1>
+      <h1 className="crash-denim__title">DOUBLE COLLAR POLO &amp; MOC TOE LOAFER: 9/4</h1>
     </Link>
   );
 }
