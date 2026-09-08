@@ -223,6 +223,12 @@ export const HEADER_FRAGMENT = defineQuery(`{
   },
   announcementBarColorScheme -> ${COLOR_SCHEME_FRAGMENT},
   autoRotateAnnouncements,
+  hero {
+    desktopImage ${IMAGE_FRAGMENT},
+    mobileImage ${IMAGE_FRAGMENT},
+    headline,
+    link,
+  },
   blur,
   showCountrySelectorIcon,
   showSearchIcon,
