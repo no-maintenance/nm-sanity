@@ -17,8 +17,8 @@
 
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/sept3-landing.jpg';
-const HERO_IMAGE_MOBILE = '/sept3-landing-mobile.jpg';
+const HERO_IMAGE = '/sept11-landing.jpg';
+const HERO_IMAGE_MOBILE = '/sept11-landing-mobile.jpg';
 const HERO_LINK = '/collections/new-arrivals';
 
 const HERO_CSS = `
@@ -78,8 +78,8 @@ const HERO_CSS = `
   text-align: left;
   letter-spacing: 0.04em;
   line-height: 1.04;
-  /* half the sale hero headline (5.7vw) */
-  font-size: 2.5vw;
+  /* desktop headline ~50px @1440 (3.47vw), scales with viewport */
+  font-size: 3.47vw;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
@@ -89,12 +89,17 @@ const HERO_CSS = `
 @media (min-width: 769px) {
   .crash-denim {
     height: auto;
-    aspect-ratio: 2880 / 1310;
+    aspect-ratio: 2880 / 1360;
   }
 }
 
-/* portrait/mobile: wrap the longer release headline instead of overflowing */
+/* portrait/mobile: keep the full-bleed frame but anchor the crop near the top
+   so the model's head stays in view (cover trims the lower edge instead), and
+   wrap the longer release headline. */
 @media (max-width: 768px) {
+  .crash-denim__img {
+    object-position: center top;
+  }
   .crash-denim__title {
     font-size: 5.5vw;
     white-space: normal;
@@ -113,7 +118,7 @@ export function CrashDenimHero() {
     <Link
       to={HERO_LINK}
       className="crash-denim"
-      aria-label="Shop Double Collar Polo & Moc Toe Loafer — New Arrivals"
+      aria-label="Shop FW26 Delivery 3 — New Arrivals"
     >
       <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
       <picture>
@@ -121,12 +126,12 @@ export function CrashDenimHero() {
         <img
           className="crash-denim__img"
           src={HERO_IMAGE}
-          alt="Double Collar Polo & Moc Toe Loafer"
+          alt="FW26 Delivery 3"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">DOUBLE COLLAR POLO &amp; MOC TOE LOAFER: NOW LIVE</h1>
+      <h1 className="crash-denim__title">FW26 DELIVERY 3: RELEASING 9/11</h1>
     </Link>
   );
 }
