@@ -1,27 +1,70 @@
 /**
- * "Double Collar Polo & Moc Toe Loafer" home hero.
+ * Home Hero — the full-bleed image + headline at the top of the homepage.
  *
- * Full-bleed campaign diptych with a "DOUBLE COLLAR POLO & MOC TOE LOAFER: 9/3"
- * headline pinned to the bottom-left, set in the SS26 display font. Desktop
- * shows the full 16:9 diptych; mobile centers on the left-panel model. Links
- * to New Arrivals.
+ * Content is editable in Sanity Studio under Header → "Home Hero"
+ * (desktop image, mobile image, headline, link). If a field is empty, it falls
+ * back to the hardcoded values below, so the hero never renders blank and always
+ * matches the last shipped art. Read-path mirrors the announcement bar.
  *
- * Assets (committed to /public):
- *   - /sept3-landing.jpg         landscape diptych, NO baked-in text (desktop)
- *   - /sept3-landing-mobile.jpg  left-panel model crop, NO baked-in text (mobile)
- *
- * Note: filenames are versioned on each art change so the year-long asset cache
- * (Cache-Control: max-age=31536000) doesn't serve a stale image to returning
- * visitors. Bump the suffix whenever the photo changes.
+ * Desktop shows the full image uncropped (the frame's aspect-ratio follows the
+ * uploaded desktop image); mobile is full-bleed, top-anchored so the subject's
+ * head stays in view. The headline sits bottom-left over a scrim.
  */
 
+import {getImageDimensions} from '@sanity/asset-utils';
+import {stegaClean} from '@sanity/client/stega';
+import imageUrlBuilder from '@sanity/image-url';
 import {Link} from '@remix-run/react';
 
-const HERO_IMAGE = '/sept11-landing.jpg';
-const HERO_IMAGE_MOBILE = '/sept11-landing-mobile.jpg';
-const HERO_LINK = '/collections/new-arrivals';
+import {useRootLoaderData} from '~/root';
 
-const HERO_CSS = `
+// Fallbacks — keep in sync with the last shipped hero so nothing changes if the
+// CMS fields are empty.
+const FALLBACK_DESKTOP = '/sept11-landing.jpg';
+const FALLBACK_MOBILE = '/sept11-landing-mobile.jpg';
+const FALLBACK_LINK = '/collections/new-arrivals';
+const FALLBACK_HEADLINE = 'FW26 DELIVERY 3: RELEASING 9/11';
+const FALLBACK_ALT = 'FW26 Delivery 3';
+const FALLBACK_DESKTOP_RATIO = '2880 / 1360';
+
+const SRCSET_WIDTHS = [750, 1080, 1500, 2000, 2560, 2880, 3840];
+
+/** Build responsive src/srcSet for a Sanity image (respecting hotspot/crop). */
+function buildHeroImage(
+  image: any,
+  env?: {PUBLIC_SANITY_STUDIO_DATASET?: string; PUBLIC_SANITY_STUDIO_PROJECT_ID?: string},
+) {
+  const ref: string | undefined = image?.asset?._ref ?? image?._ref;
+  if (!ref || !env?.PUBLIC_SANITY_STUDIO_PROJECT_ID) return null;
+
+  let dims: {height: number; width: number};
+  try {
+    dims = getImageDimensions(ref);
+  } catch {
+    return null;
+  }
+
+  const builder = imageUrlBuilder({
+    dataset: env.PUBLIC_SANITY_STUDIO_DATASET,
+    projectId: env.PUBLIC_SANITY_STUDIO_PROJECT_ID,
+  })
+    .image({_ref: ref, crop: image?.crop, hotspot: image?.hotspot})
+    .auto('format');
+
+  const widths = SRCSET_WIDTHS.filter((w) => w <= dims.width);
+  if (widths.length === 0) widths.push(dims.width);
+
+  return {
+    alt: stegaClean(image?.altText)?.trim() || '',
+    height: dims.height,
+    src: builder.width(Math.min(dims.width, 2880)).url(),
+    srcSet: widths.map((w) => `${builder.width(w).url()} ${w}w`).join(', '),
+    width: dims.width,
+  };
+}
+
+function buildCss(desktopRatio: string) {
+  return `
 @font-face {
   font-family: "SS26 Display";
   src: url("/fonts/ss26-display.otf") format("opentype");
@@ -83,18 +126,17 @@ const HERO_CSS = `
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
-/* desktop: size the hero to the landscape art's aspect ratio so the FULL
-   image shows (no cover-crop). Height follows the 16:9 photo instead of the
-   viewport. */
+/* desktop: size the hero to the desktop art's aspect ratio so the FULL image
+   shows (no cover-crop). Height follows the photo instead of the viewport. */
 @media (min-width: 769px) {
   .crash-denim {
     height: auto;
-    aspect-ratio: 2880 / 1360;
+    aspect-ratio: ${desktopRatio};
   }
 }
 
 /* portrait/mobile: keep the full-bleed frame but anchor the crop near the top
-   so the model's head stays in view (cover trims the lower edge instead), and
+   so the subject's head stays in view (cover trims the lower edge instead), and
    wrap the longer release headline. */
 @media (max-width: 768px) {
   .crash-denim__img {
@@ -112,26 +154,49 @@ const HERO_CSS = `
   .crash-denim__title { text-shadow: none; }
 }
 `;
+}
 
 export function CrashDenimHero() {
+  const {env, sanityRoot} = useRootLoaderData();
+  const hero = sanityRoot?.data?.header?.hero;
+
+  const desktop = buildHeroImage(hero?.desktopImage, env);
+  const mobile = buildHeroImage(hero?.mobileImage, env);
+
+  const headline = stegaClean(hero?.headline)?.trim() || FALLBACK_HEADLINE;
+  const link = stegaClean(hero?.link)?.trim() || FALLBACK_LINK;
+
+  const desktopSrc = desktop?.src || FALLBACK_DESKTOP;
+  const mobileSrc = mobile?.src || FALLBACK_MOBILE;
+  const alt = desktop?.alt || FALLBACK_ALT;
+  const desktopRatio = desktop
+    ? `${desktop.width} / ${desktop.height}`
+    : FALLBACK_DESKTOP_RATIO;
+
   return (
     <Link
-      to={HERO_LINK}
+      to={link}
       className="crash-denim"
-      aria-label="Shop FW26 Delivery 3 — New Arrivals"
+      aria-label={`Shop ${headline}`}
     >
-      <style dangerouslySetInnerHTML={{__html: HERO_CSS}} />
+      <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio)}} />
       <picture>
-        <source media="(max-width: 768px)" srcSet={HERO_IMAGE_MOBILE} />
+        <source
+          media="(max-width: 768px)"
+          srcSet={mobile?.srcSet || mobileSrc}
+          sizes="100vw"
+        />
         <img
           className="crash-denim__img"
-          src={HERO_IMAGE}
-          alt="FW26 Delivery 3"
+          src={desktopSrc}
+          srcSet={desktop?.srcSet}
+          sizes="100vw"
+          alt={alt}
           fetchPriority="high"
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">FW26 DELIVERY 3: RELEASING 9/11</h1>
+      <h1 className="crash-denim__title">{headline}</h1>
     </Link>
   );
 }
