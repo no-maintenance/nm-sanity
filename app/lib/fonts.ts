@@ -28,6 +28,14 @@ export function generateFontsPreloadLinks({
   const seenUrls = new Set<string>();
 
   fonts.forEach((font) => {
+    // Only preload upright (roman) weights. Italic faces are essentially never
+    // used above the fold, so eagerly preloading them (~37KB each) just steals
+    // bandwidth from the LCP image on first paint. They still load normally via
+    // their @font-face rule when actually needed. This roughly halves the font
+    // bytes fetched at highest priority on initial load.
+    const fontStyle = (font.fontStyle || '').toString().toLowerCase();
+    if (fontStyle.includes('italic') || fontStyle.includes('oblique')) return;
+
     const fontType = fontTypes.find((type) => font[type]);
     if (!fontType) return;
 
