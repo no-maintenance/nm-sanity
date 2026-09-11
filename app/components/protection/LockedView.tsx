@@ -105,10 +105,9 @@ export function LockedView({
                 Enter Site
               </Button>
             </Form>
-            <JoinEarlyAccessDialog 
-              open={joinOpen} 
+            <JoinEarlyAccessDialog
+              open={joinOpen}
               onOpenChange={setJoinOpen}
-              password={protection.password}
               redirectTo={redirectTo}
             >
               <Button className="w-full">

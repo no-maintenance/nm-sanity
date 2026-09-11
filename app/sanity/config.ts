@@ -46,6 +46,17 @@ export function defineSanityConfig(
   config: SanityConfig & {shopifyStoreDomain: string},
 ) {
   const {dataset} = config;
+
+  // Staff-only preview: append the shared secret the storefront route requires.
+  // Set SANITY_STUDIO_PREVIEW_SECRET in the Studio env to the same value as the
+  // storefront's SANITY_STUDIO_PREVIEW_SECRET. Without it, preview stays off.
+  const previewSecret = import.meta.env.SANITY_STUDIO_PREVIEW_SECRET as
+    | string
+    | undefined;
+  const previewEnableUrl = previewSecret
+    ? `${SANITY_STUDIO_PREVIEW_URL}?secret=${encodeURIComponent(previewSecret)}`
+    : SANITY_STUDIO_PREVIEW_URL;
+
   const devOnlyPlugins = [
     visionTool({
       defaultApiVersion: SANITY_API_VERSION,
@@ -71,7 +82,7 @@ export function defineSanityConfig(
       structureTool({structure, defaultDocumentNode}),
       customDocumentActions({shopifyStoreDomain: config.shopifyStoreDomain}),
       presentationTool({
-        previewUrl: {previewMode: {enable: SANITY_STUDIO_PREVIEW_URL}},
+        previewUrl: {previewMode: {enable: previewEnableUrl}},
         resolve: {
           locations,
         },

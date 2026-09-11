@@ -14,6 +14,43 @@ import {CountdownExpiredView} from '~/components/protection/CountdownExpiredView
 import {ProtectedPuzzleContainer} from '~/components/protection/ProtectedPuzzleContainer';
 import {SaleGateExperience} from '~/components/protection/sale-gate-experience';
 import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
+import {KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID} from '~/sanity/constants';
+
+/**
+ * Server-side early-access signup. Best-effort: never blocks access on a
+ * Klaviyo failure. Runs only inside the route action (server), so no key is
+ * involved (public client endpoint) and the sale password is never sent to
+ * the browser.
+ */
+async function subscribeToEarlyAccess(email: string, source: string) {
+  try {
+    const url = `${KLAVIYO_BASE_URL}/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`;
+    await fetch(url, {
+      method: 'POST',
+      headers: {'content-type': 'application/json', revision: '2025-01-15'},
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: source,
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email,
+                  subscriptions: {email: {marketing: {consent: 'SUBSCRIBED'}}},
+                },
+              },
+            },
+          },
+          relationships: {list: {data: {type: 'list', id: 'Wimtnj'}}},
+        },
+      }),
+    });
+  } catch (err) {
+    console.error('[early-access] Klaviyo subscribe failed:', err);
+  }
+}
 
 interface LoaderData {
   protection?: ProtectionConfig;
@@ -317,8 +354,15 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     ? {headers: {'Set-Cookie': await passwordSession.commit()}}
     : undefined;
 
+  // SECURITY: never serialize the gate password to the browser. It is only
+  // ever compared server-side (in the action). The client receives the config
+  // with `password` stripped out.
+  const clientProtection = protection
+    ? {...protection, password: undefined}
+    : protection;
+
   return json<LoaderData>({
-    protection,
+    protection: clientProtection,
     protectionContext,
     redirectTo,
     serverTime: new Date().toISOString(),
@@ -408,6 +452,81 @@ export async function action({context, request}: ActionFunctionArgs) {
   } else if (data?.globalProtection) {
     protection = data.globalProtection;
     protectionSource = 'global';
+  }
+
+  // Handle early-access signup: capture the email server-side and grant access.
+  // Access no longer depends on the client knowing the password.
+  if (actionType === 'early-access') {
+    const email = String(formData.get('email') || '').trim();
+    const consentRaw = formData.get('consent');
+    const consented = consentRaw === 'on' || consentRaw === 'true';
+
+    if (!email.includes('@') || email.length < 3) {
+      return json({
+        error: 'Please enter a valid email address',
+        errorKey: generateErrorKey(),
+      });
+    }
+    if (!consented) {
+      return json({
+        error: 'Please accept the terms to continue',
+        errorKey: generateErrorKey(),
+      });
+    }
+    if (!protection) {
+      return json({
+        error: 'Access is not available right now',
+        errorKey: generateErrorKey(),
+      });
+    }
+
+    // Best-effort email capture; never blocks access.
+    await subscribeToEarlyAccess(email, 'strands-game-early-access');
+
+    // Grant access the same way a correct password would.
+    if (protectionSource === 'collection' && protection?._id) {
+      passwordSession.authenticateFor(protection._id);
+    } else if (protectionSource === 'global') {
+      passwordSession.authenticateGlobally();
+    }
+
+    const targetPath = await resolveRedirectTarget(
+      sanity,
+      protection,
+      redirectTo,
+      context.locale,
+    );
+    passwordSession.clearPendingRedirect();
+    return redirect(targetPath, {
+      headers: {'Set-Cookie': await passwordSession.commit()},
+    });
+  }
+
+  // Countdown expired while the visitor was already authenticated (password-
+  // granted state). Re-evaluate server-side using the existing session; no
+  // password is submitted from the client.
+  if (actionType === 'refresh-on-expiry') {
+    const alreadyAuthed =
+      protectionSource === 'collection' && protection?._id
+        ? passwordSession.isAuthenticatedFor(protection._id)
+        : passwordSession.isGloballyAuthenticated();
+    const countdownExpired = protection?.countdown
+      ? new Date(protection.countdown) <= new Date()
+      : false;
+
+    if (protection && alreadyAuthed && countdownExpired) {
+      const targetPath = await resolveRedirectTarget(
+        sanity,
+        protection,
+        redirectTo,
+        context.locale,
+      );
+      passwordSession.clearPendingRedirect();
+      return redirect(targetPath, {
+        headers: {'Set-Cookie': await passwordSession.commit()},
+      });
+    }
+    return json({ok: false});
   }
 
   // Handle puzzle completion
