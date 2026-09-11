@@ -181,7 +181,6 @@ export function ProtectedPuzzleContainer({
             protectionViewState={viewState === 'fully-unlocked' ? undefined : viewState}
             protectionError={actionError}
             protectionErrorKey={actionErrorKey}
-            protectionPassword={protection.password}
             redirectTo={redirectTo}
           />
         </div>

@@ -40,9 +40,7 @@ interface StrandsGameProps {
   protectionError?: string;
   /** Unique key for protection error to retrigger animations */
   protectionErrorKey?: string | number;
-  /** Password for newsletter signup dialog */
-  protectionPassword?: string;
-  /** Redirect URL after password entry/newsletter signup */
+  /** Redirect URL after newsletter signup */
   redirectTo?: string;
 }
 
@@ -58,7 +56,6 @@ export function StrandsGame({
   protectionViewState,
   protectionError,
   protectionErrorKey,
-  protectionPassword,
   redirectTo,
 }: StrandsGameProps) {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -239,7 +236,6 @@ export function StrandsGame({
           <JoinEarlyAccessDialog
             open={joinOpen}
             onOpenChange={setJoinOpen}
-            password={protectionPassword}
             redirectTo={redirectTo}
           >
             <Button size="sm" className="w-1/2">

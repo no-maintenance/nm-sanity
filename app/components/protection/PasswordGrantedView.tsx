@@ -72,16 +72,18 @@ export function PasswordGrantedView({
     setIsHydrated(true);
   }, []);
 
-  // Handle countdown expiration
+  // Handle countdown expiration. The visitor is already authenticated in this
+  // view, so we ask the server to re-evaluate and unlock (no password needed
+  // client-side).
   useEffect(() => {
-    if (isExpired && protection?.countdown && !hasSubmittedExpirationRef.current && protection.password) {
+    if (isExpired && protection?.countdown && !hasSubmittedExpirationRef.current) {
       hasSubmittedExpirationRef.current = true;
       const form = document.getElementById('countdown-expired-form') as HTMLFormElement;
       if (form) {
         form.requestSubmit();
       }
     }
-  }, [isExpired, protection?.countdown, protection?.password]);
+  }, [isExpired, protection?.countdown]);
 
   // Get localized content with state-specific fallbacks
   const title = getLocalizedValue(protection.passwordGrantedTitle) || 'Access Granted';
@@ -92,13 +94,12 @@ export function PasswordGrantedView({
   if (isSidebar) {
     return (
       <>
-        {/* Hidden form for countdown expiration */}
-        {protection.password && (
-          <Form method="post" id="countdown-expired-form" className="hidden">
-            <input type="hidden" name="password" value={protection.password} />
-            <input type="hidden" name="redirectTo" value={redirectTo || ''} />
-          </Form>
-        )}
+        {/* Hidden form for countdown expiration. Posts no password: the server
+            grants full access based on the already-authenticated session. */}
+        <Form method="post" id="countdown-expired-form" className="hidden">
+          <input type="hidden" name="actionType" value="refresh-on-expiry" />
+          <input type="hidden" name="redirectTo" value={redirectTo || ''} />
+        </Form>
         <div className="flex flex-col p-6 space-y-6 w-[350px] mx-auto">
         {protection.countdown && (
           <div className="text-center">
@@ -131,10 +132,9 @@ export function PasswordGrantedView({
 
         {/* Newsletter CTA */}
         <div>
-          <JoinEarlyAccessDialog 
-            open={joinOpen} 
+          <JoinEarlyAccessDialog
+            open={joinOpen}
             onOpenChange={setJoinOpen}
-            password={protection.password}
             redirectTo={redirectTo}
           >
             <Button className="w-full">

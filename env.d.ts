@@ -40,6 +40,7 @@ declare global {
     PUBLIC_SANITY_STUDIO_PROJECT_ID: string;
     SANITY_STUDIO_USE_PREVIEW_MODE: string;
     SANITY_STUDIO_TOKEN: string;
+    SANITY_STUDIO_PREVIEW_SECRET: string;
     SESSION_SECRET: string;
     SHOP_ID: string;
     GOOGLE_ANALYTICS_ID?: string;
