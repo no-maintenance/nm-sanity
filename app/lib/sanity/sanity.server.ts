@@ -21,10 +21,21 @@ import {
 import {getSanityClient} from './sanity-client.server';
 import {hashQuery} from './utils';
 
-// TODO: Change back to CacheLong() after development
-// Temporarily set to 1 minute for faster cache refresh during development
+// Edge-cache strategy for Sanity (CMS) query results.
+//
+// `max-age=60` keeps the CMS publish-to-live delay short (~60s), so editorial
+// changes — banners, drops, timed launches — still go live within about a
+// minute, preserving the fast-publish workflow.
+//
+// `stale-while-revalidate` is intentionally long (24h): once the 60s freshness
+// window passes, visitors are still served the last cached copy *instantly*
+// while the data refreshes in the background. This is what prevents the
+// cold-start blank wait — after a quiet traffic period the cache used to fully
+// expire (the old value was only 60s here), forcing the next visitor to block
+// on 2-3 uncached CMS round-trips (~2s+ TTFB). With a long SWR the page is
+// always served from cache and refreshed invisibly.
 const DEFAULT_CACHE_STRATEGY = {
-  mode: 'public, max-age=60, stale-while-revalidate=60',
+  mode: 'public, max-age=60, stale-while-revalidate=86400',
 } as CachingStrategy;
 
 export type CreateSanityLoaderOptions = {
