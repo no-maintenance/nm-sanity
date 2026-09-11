@@ -1,8 +1,9 @@
 import {useEffect} from 'react';
 
+import {openSignup} from '~/components/signup/open-signup';
+
 const MARQUEE_TEXT =
   'DOUBLE COLLAR POLO & MOC TOE LOAFER NOW LIVE, SIGN UP FOR 10% OFF YOUR FIRST PURCHASE';
-const KLAVIYO_FORM_ID = 'Rc2Qwz';
 const COPIES = 8;
 
 export function AnnouncementBar() {
@@ -23,16 +24,7 @@ export function AnnouncementBar() {
   }, []);
 
   const handleClick = () => {
-    if (typeof window === 'undefined') return;
-    const w = window as any;
-
-    if (w.klaviyo?.openForm) {
-      w.klaviyo.openForm(KLAVIYO_FORM_ID);
-      return;
-    }
-
-    w._klOnsite = w._klOnsite || [];
-    w._klOnsite.push(['openForm', KLAVIYO_FORM_ID]);
+    openSignup();
   };
 
   return (

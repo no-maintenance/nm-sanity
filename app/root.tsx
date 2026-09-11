@@ -207,6 +207,9 @@ export function Layout({children}: {children: React.ReactNode}) {
   const isCmsRoute = pathname.includes('/cms');
   const isProfilerRoute = pathname.includes('/subrequest-profiler');
   const isSiteProtectedRoute = pathname.includes('/site-protected');
+  // Branded signup landing renders full-bleed (moving background), no header/footer.
+  const isSignupRoute = /(^|\/)signup(-parallax)?\/?$/.test(pathname);
+  const isMinimalRoute = isSiteProtectedRoute || isSignupRoute;
   const skipLayout = isCmsRoute || isProfilerRoute;
 
   return (
@@ -223,8 +226,8 @@ export function Layout({children}: {children: React.ReactNode}) {
       <body className="bg-background text-foreground flex min-h-screen flex-col overflow-x-hidden">
         {skipLayout ? (
           children
-        ) : isSiteProtectedRoute ? (
-          // Use minimal layout for site-protected page (no header/footer)
+        ) : isMinimalRoute ? (
+          // Use minimal layout for full-bleed pages (site-protected, signup) — no header/footer
           data ? (
             <Analytics.Provider
               cart={data.cart}

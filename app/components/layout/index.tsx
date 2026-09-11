@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { useRootLoaderData } from '~/root';
 
 import { ClientOnly } from '../client-only';
+import { SignupOverlay } from '../signup/signup-overlay';
 import { TogglePreviewMode } from '../sanity/toggle-preview-mode';
 import { VisualEditing } from '../sanity/visual-editing.client';
 import { TailwindIndicator } from '../tailwind-indicator';
@@ -47,6 +48,7 @@ export function AppLayout({ children = null }: LayoutProps) {
             {children}
           </main>
           <Footer />
+          <ClientOnly fallback={null}>{() => <SignupOverlay />}</ClientOnly>
           <TailwindIndicator />
           {sanityPreviewMode ? (
             <ClientOnly fallback={null}>

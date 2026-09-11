@@ -72,6 +72,35 @@
 
   --animate-nm-float: nm-float 8s ease-in-out infinite;
 
+  /* Water-flow emblem: a slow, smooth float/sway — the emblem drifts and
+     breathes gently like a reflection on moving water. The fine ripple comes
+     from the SVG displacement; this just adds the calm buoyant motion.
+     Amplitude scales with --nm-warp. */
+  @keyframes nm-water {
+    0% {
+      transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+    25% {
+      transform: translate(calc(0.6% * var(--nm-warp, 1)), calc(-1% * var(--nm-warp, 1)))
+        scale(calc(1 + 0.02 * var(--nm-warp, 1)), calc(1 - 0.015 * var(--nm-warp, 1)))
+        rotate(calc(0.6deg * var(--nm-warp, 1)));
+    }
+    50% {
+      transform: translate(0, calc(0.9% * var(--nm-warp, 1)))
+        scale(calc(1 - 0.015 * var(--nm-warp, 1)), calc(1 + 0.02 * var(--nm-warp, 1)))
+        rotate(0deg);
+    }
+    75% {
+      transform: translate(calc(-0.6% * var(--nm-warp, 1)), calc(-0.6% * var(--nm-warp, 1)))
+        scale(calc(1 + 0.015 * var(--nm-warp, 1)), calc(1 - 0.01 * var(--nm-warp, 1)))
+        rotate(calc(-0.6deg * var(--nm-warp, 1)));
+    }
+    100% {
+      transform: translate(0, 0) scale(1, 1) rotate(0deg);
+    }
+  }
+  --animate-nm-warp: nm-water 11s ease-in-out infinite;
+
   --typography-body: #374151;
   --typography-headings: #111827;
   --typography-links: #2563eb;
@@ -335,3 +364,15 @@ body.mobile-nav-open .collection-category-bar {
 
 @custom-variant touch (@media (pointer: coarse));
 @custom-variant notouch (@media (hover: hover));
+
+/* Liquid-warp NO MAINTENANCE emblem: kill the displacement filter when the
+   viewer prefers reduced motion (beats the inline `filter` via !important). */
+@media (prefers-reduced-motion: reduce) {
+  .nm-warp {
+    filter: none !important;
+  }
+  .nm-warp-motion {
+    animation: none !important;
+    transform: none !important;
+  }
+}
