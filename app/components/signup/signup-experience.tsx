@@ -97,6 +97,21 @@ const SIGNUP_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .nm-signup-bgvideo { display: none; }
 }
+/* iOS Safari draws a native play-button overlay on any video it thinks the user
+   should start manually (e.g. when autoplay is blocked in Low Power Mode). These
+   videos are decorative + muted, so strip all native media controls so no play
+   button ever shows on top of the design. */
+.nm-signup video::-webkit-media-controls,
+.nm-signup video::-webkit-media-controls-enclosure,
+.nm-signup video::-webkit-media-controls-panel,
+.nm-signup video::-webkit-media-controls-play-button,
+.nm-signup video::-webkit-media-controls-start-playback-button,
+.nm-signup video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
 /* Gentle veil so the form stays legible over the brighter light-leak areas. */
 .nm-signup-veil {
@@ -355,21 +370,42 @@ export function SignupExperience({
   );
   const [msg, setMsg] = useState('');
 
-  // Force autoplay. React doesn't reliably set the `muted` property before the
-  // first paint, so some browsers treat the video as unmuted and refuse to
-  // autoplay — leaving a black background and never firing onPlaying/onCanPlay
-  // (so it stays hidden). Set muted explicitly and kick off play() ourselves.
+  // Force autoplay/looping. React doesn't reliably set the `muted` property before
+  // the first paint, so some browsers treat the video as unmuted and refuse to
+  // autoplay — leaving a black background and never firing onPlaying/onCanPlay (so
+  // it stays hidden). Mobile Safari also blocks autoplay entirely in Low Power
+  // Mode. Set muted explicitly, kick off play() ourselves, and retry the loop on
+  // the first user interaction (and when the tab becomes visible) so it recovers
+  // whenever autoplay was blocked.
   useEffect(() => {
-    for (const v of [bgVideoRef.current, glitchVideoRef.current]) {
-      if (!v) continue;
-      v.muted = true;
-      v.defaultMuted = true;
-      const p = v.play();
-      if (p && typeof p.catch === 'function') p.catch(() => {});
-    }
+    const videos = [bgVideoRef.current, glitchVideoRef.current].filter(
+      (v): v is HTMLVideoElement => v != null,
+    );
+    const kick = () => {
+      for (const v of videos) {
+        v.muted = true;
+        v.defaultMuted = true;
+        const p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      }
+    };
+    kick();
     // Safety net: if playback stalls but a frame is available, still reveal it.
     const bg = bgVideoRef.current;
     if (bg && bg.readyState >= 2) setBgReady(true);
+
+    const onInteract = () => kick();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') kick();
+    };
+    window.addEventListener('touchstart', onInteract, {passive: true});
+    window.addEventListener('pointerdown', onInteract, {passive: true});
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('touchstart', onInteract);
+      window.removeEventListener('pointerdown', onInteract);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, []);
 
   async function onSubmit(e: React.FormEvent) {
