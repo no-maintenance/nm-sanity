@@ -1,9 +1,13 @@
-import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import type {MetaFunction} from '@remix-run/react';
+import {SignupExperience} from '~/components/signup/signup-experience';
 
-// Branded entry point for account creation / sign-in.
-// Shopify's New Customer Accounts uses a single passwordless (email code)
-// flow for both signing up and logging in, so this mirrors /account/login
-// and simply hands off to Shopify's hosted authentication page.
-export async function loader({context}: LoaderFunctionArgs) {
-  return context.customerAccount.login();
+// Branded account/newsletter signup landing. Renders full-bleed over a slowly
+// drifting background image (see MinimalLayout wiring in root.tsx). Existing
+// customers can hand off to Shopify's hosted sign-in via the "Sign In" link.
+export const meta: MetaFunction = () => {
+  return [{title: 'Sign Up | No Maintenance'}];
+};
+
+export default function Signup() {
+  return <SignupExperience />;
 }

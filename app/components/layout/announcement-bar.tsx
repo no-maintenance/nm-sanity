@@ -1,13 +1,13 @@
 import {stegaClean} from '@sanity/client/stega';
 import {useEffect} from 'react';
 
+import {openSignup} from '~/components/signup/open-signup';
 import {useRootLoaderData} from '~/root';
 
 // Fallback used only if the Sanity announcement bar is empty. Keep this in sync
 // with the live copy so the banner never renders blank if the CMS field clears.
 const DEFAULT_MARQUEE_TEXT =
   'FW26 DELIVERY 3: RELEASING 9/11 AT 11AM PST/2PM EST, SIGN UP FOR 10% OFF YOUR FIRST PURCHASE';
-const KLAVIYO_FORM_ID = 'Rc2Qwz';
 const COPIES = 8;
 
 export function AnnouncementBar() {
@@ -34,16 +34,7 @@ export function AnnouncementBar() {
   }, [marqueeText]);
 
   const handleClick = () => {
-    if (typeof window === 'undefined') return;
-    const w = window as any;
-
-    if (w.klaviyo?.openForm) {
-      w.klaviyo.openForm(KLAVIYO_FORM_ID);
-      return;
-    }
-
-    w._klOnsite = w._klOnsite || [];
-    w._klOnsite.push(['openForm', KLAVIYO_FORM_ID]);
+    openSignup();
   };
 
   return (
