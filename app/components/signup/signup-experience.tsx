@@ -97,16 +97,6 @@ const SIGNUP_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .nm-signup-bgvideo { display: none; }
 }
-/* Static background image — the fallback shown when the moving video can't
-   autoplay (e.g. iOS Low Power Mode). Same full-bleed cover framing as the video. */
-.nm-signup-bgimg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
 /* iOS Safari draws a native play-button overlay on any video it thinks the user
    should start manually (e.g. when autoplay is blocked in Low Power Mode). These
    videos are decorative + muted, so strip all native media controls so no play
@@ -305,7 +295,6 @@ const SIGNUP_CSS = `
   min-height: calc(100dvh - var(--nm-chrome));
 }
 .nm-signup.is-embedded .nm-signup-bgvideo,
-.nm-signup.is-embedded .nm-signup-bgimg,
 .nm-signup.is-embedded .nm-signup-veil,
 .nm-signup.is-embedded .nm-signup-glitch,
 .nm-signup.is-embedded .nm-signup-close {
@@ -376,81 +365,48 @@ export function SignupExperience({
   const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(false);
   const [bgReady, setBgReady] = useState(false);
-  // True when the background video can't autoplay (e.g. iOS Low Power Mode). We
-  // then unmount the <video> and show a static image instead, so iOS never draws
-  // its native play-button over the design.
-  const [bgBlocked, setBgBlocked] = useState(false);
-  const engagedRef = useRef(false);
   const [state, setState] = useState<'idle' | 'loading' | 'ok' | 'error'>(
     'idle',
   );
   const [msg, setMsg] = useState('');
 
-  // Force autoplay/looping and handle blocked autoplay gracefully.
-  // React doesn't reliably set `muted` before first paint (some browsers then
-  // refuse to autoplay), and mobile Safari blocks autoplay entirely in Low Power
-  // Mode — where it also stamps a native play-button over the paused video that
-  // CSS can't remove. So: force muted + call play(); if the background video can't
-  // autoplay, swap it for a static image (no <video> element = no play button);
-  // retry on the first user gesture and when the tab becomes visible so the loop
-  // recovers as soon as it's allowed.
+  // Force autoplay/looping. React doesn't reliably set the `muted` property before
+  // the first paint, so some browsers treat the video as unmuted and refuse to
+  // autoplay. Set muted explicitly, kick off play() ourselves, and retry on the
+  // first user interaction (scroll/tap) and when the tab becomes visible so the
+  // muted loop starts as soon as it's allowed.
   useEffect(() => {
-    const playGlitch = () => {
-      const g = glitchVideoRef.current;
-      if (!g) return;
-      g.muted = true;
-      g.defaultMuted = true;
-      const p = g.play();
-      if (p && typeof p.catch === 'function') p.catch(() => {});
-    };
-    const playBg = () => {
-      const v = bgVideoRef.current;
-      if (!v) return;
-      v.muted = true;
-      v.defaultMuted = true;
-      const p = v.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => setBgBlocked(false)).catch(() => {
-          if (!engagedRef.current) setBgBlocked(true);
-        });
+    const videos = [bgVideoRef.current, glitchVideoRef.current].filter(
+      (v): v is HTMLVideoElement => v != null,
+    );
+    const kick = () => {
+      for (const v of videos) {
+        v.muted = true;
+        v.defaultMuted = true;
+        const p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
       }
     };
-    playGlitch();
-    playBg();
+    kick();
     // Safety net: if playback stalls but a frame is available, still reveal it.
     const bg = bgVideoRef.current;
     if (bg && bg.readyState >= 2) setBgReady(true);
 
-    const onInteract = () => {
-      // A real user gesture lets us start playback even when autoplay was blocked.
-      engagedRef.current = true;
-      setBgBlocked(false); // remount the video; the effect below plays it
-      playGlitch();
-    };
+    const onInteract = () => kick();
     const onVisible = () => {
-      if (document.visibilityState === 'visible') playBg();
+      if (document.visibilityState === 'visible') kick();
     };
     window.addEventListener('touchstart', onInteract, {passive: true});
     window.addEventListener('pointerdown', onInteract, {passive: true});
+    window.addEventListener('scroll', onInteract, {passive: true});
     document.addEventListener('visibilitychange', onVisible);
     return () => {
       window.removeEventListener('touchstart', onInteract);
       window.removeEventListener('pointerdown', onInteract);
+      window.removeEventListener('scroll', onInteract);
       document.removeEventListener('visibilitychange', onVisible);
     };
   }, []);
-
-  // Play the background video whenever it (re)mounts after the user has engaged
-  // (e.g. tapped once in Low Power Mode). A user gesture allows muted playback.
-  useEffect(() => {
-    if (bgBlocked || !engagedRef.current) return;
-    const v = bgVideoRef.current;
-    if (!v) return;
-    v.muted = true;
-    v.defaultMuted = true;
-    const p = v.play();
-    if (p && typeof p.catch === 'function') p.catch(() => {});
-  }, [bgBlocked]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -527,34 +483,20 @@ export function SignupExperience({
     >
       <style dangerouslySetInnerHTML={{__html: SIGNUP_CSS}} />
 
-      {bgBlocked ? (
-        // Autoplay blocked (e.g. iOS Low Power Mode): show a static still instead
-        // of the <video>, so iOS never draws a play-button over the design.
-        <picture>
-          <source media="(max-width: 640px)" srcSet="/signup-bg-mobile.jpg" />
-          <img
-            className="nm-signup-bgimg"
-            src="/signup-bg-desktop.jpg"
-            alt=""
-            aria-hidden="true"
-          />
-        </picture>
-      ) : (
-        <video
-          ref={bgVideoRef}
-          className={`nm-signup-bgvideo${bgReady ? ' is-ready' : ''}`}
-          src="/signup-bg.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          onLoadedData={() => setBgReady(true)}
-          onPlaying={() => setBgReady(true)}
-          onCanPlay={() => setBgReady(true)}
-        />
-      )}
+      <video
+        ref={bgVideoRef}
+        className={`nm-signup-bgvideo${bgReady ? ' is-ready' : ''}`}
+        src="/signup-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        onLoadedData={() => setBgReady(true)}
+        onPlaying={() => setBgReady(true)}
+        onCanPlay={() => setBgReady(true)}
+      />
       <div className="nm-signup-veil" aria-hidden="true" />
       <div className="nm-signup-glitch" aria-hidden="true">
         <video
