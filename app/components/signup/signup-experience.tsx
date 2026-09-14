@@ -1,5 +1,5 @@
 import {Link} from '@remix-run/react';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID} from '~/sanity/constants';
 import {NmWaterGlitch} from '~/components/nm-water-glitch';
 import {NmLogo3D} from '~/components/nm-logo-3d';
@@ -264,15 +264,86 @@ const SIGNUP_CSS = `
   color: #fff;
   text-shadow: 0 1px 12px rgba(0,0,0,0.85);
 }
+
+/* Embedded (page) mode: render inside the normal site layout, below the
+   announcement bar + header. The signup becomes a section that fills exactly
+   the space under the site chrome, so the whole form is visible on landing
+   without scrolling. Its video/veil/glitch are bounded to that section. */
+.nm-signup.is-embedded {
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  height: auto;
+  /* Height of the announcement bar + header (both set as runtime CSS vars). */
+  --nm-chrome: calc(var(--announcement-bar-height, 0px) + var(--header-height, 0px));
+  min-height: calc(100vh - var(--nm-chrome));
+  min-height: calc(100dvh - var(--nm-chrome));
+}
+.nm-signup.is-embedded .nm-signup-bgvideo,
+.nm-signup.is-embedded .nm-signup-veil,
+.nm-signup.is-embedded .nm-signup-glitch,
+.nm-signup.is-embedded .nm-signup-close {
+  position: absolute;
+}
+.nm-signup.is-embedded .nm-signup-content {
+  height: auto;
+  min-height: calc(100vh - var(--nm-chrome));
+  min-height: calc(100dvh - var(--nm-chrome));
+  /* Tighter vertical rhythm so everything fits under the header on landing. */
+  padding: clamp(6px, 1.4vh, 16px) 20px;
+}
+/* Bigger parallax logo. The 3D logo box is ~1.27:1, so its width drives a large
+   height — cap it by viewport height too (min of width- and height-based caps)
+   so it grows on tall screens but never overflows short ones. */
+.nm-signup.is-embedded .nm-signup-logo-3d {
+  width: min(clamp(240px, 48vw, 420px), 52vh);
+}
+.nm-signup.is-embedded .nm-signup-logo {
+  margin-bottom: clamp(2px, 0.6vh, 8px);
+}
+/* Slightly smaller form so it makes room for the larger logo and still fits. */
+.nm-signup.is-embedded .nm-signup-inner {
+  width: min(380px, 86vw);
+}
+.nm-signup.is-embedded .nm-signup-sub {
+  font-size: 10px;
+  margin-bottom: clamp(8px, 1.3vh, 14px);
+}
+.nm-signup.is-embedded .nm-signup-input {
+  padding: clamp(7px, 1.1vh, 11px) 16px;
+  font-size: 13px;
+}
+.nm-signup.is-embedded .nm-signup-consent {
+  margin-top: clamp(7px, 1.2vh, 12px);
+}
+.nm-signup.is-embedded .nm-signup-consent label {
+  font-size: 9.5px;
+}
+.nm-signup.is-embedded .nm-signup-submit {
+  margin-top: clamp(8px, 1.4vh, 14px);
+  padding: 11px 30px;
+  font-size: 11px;
+  min-width: 150px;
+}
+.nm-signup.is-embedded .nm-signup-msg {
+  margin-top: 10px;
+  min-height: 8px;
+}
 `;
 
 export function SignupExperience({
   onClose,
   logo = 'logo3d',
+  embedded = false,
 }: {
   onClose?: () => void;
   logo?: SignupLogo;
+  // When true, render as an in-page section (keeps the site header/footer)
+  // instead of a fixed full-viewport overlay.
+  embedded?: boolean;
 }) {
+  const bgVideoRef = useRef<HTMLVideoElement>(null);
+  const glitchVideoRef = useRef<HTMLVideoElement>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -283,6 +354,23 @@ export function SignupExperience({
     'idle',
   );
   const [msg, setMsg] = useState('');
+
+  // Force autoplay. React doesn't reliably set the `muted` property before the
+  // first paint, so some browsers treat the video as unmuted and refuse to
+  // autoplay — leaving a black background and never firing onPlaying/onCanPlay
+  // (so it stays hidden). Set muted explicitly and kick off play() ourselves.
+  useEffect(() => {
+    for (const v of [bgVideoRef.current, glitchVideoRef.current]) {
+      if (!v) continue;
+      v.muted = true;
+      v.defaultMuted = true;
+      const p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    }
+    // Safety net: if playback stalls but a frame is available, still reveal it.
+    const bg = bgVideoRef.current;
+    if (bg && bg.readyState >= 2) setBgReady(true);
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -351,10 +439,16 @@ export function SignupExperience({
   }
 
   return (
-    <div className="nm-signup" role="dialog" aria-modal="true" aria-label="Sign up">
+    <div
+      className={`nm-signup${embedded ? ' is-embedded' : ''}`}
+      role={embedded ? undefined : 'dialog'}
+      aria-modal={embedded ? undefined : 'true'}
+      aria-label="Sign up"
+    >
       <style dangerouslySetInnerHTML={{__html: SIGNUP_CSS}} />
 
       <video
+        ref={bgVideoRef}
         className={`nm-signup-bgvideo${bgReady ? ' is-ready' : ''}`}
         src="/signup-bg.mp4"
         autoPlay
@@ -363,12 +457,14 @@ export function SignupExperience({
         playsInline
         preload="auto"
         aria-hidden="true"
+        onLoadedData={() => setBgReady(true)}
         onPlaying={() => setBgReady(true)}
         onCanPlay={() => setBgReady(true)}
       />
       <div className="nm-signup-veil" aria-hidden="true" />
       <div className="nm-signup-glitch" aria-hidden="true">
         <video
+          ref={glitchVideoRef}
           src="/signup-glitch.mp4"
           autoPlay
           muted

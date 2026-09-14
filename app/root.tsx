@@ -208,6 +208,8 @@ export function Layout({children}: {children: React.ReactNode}) {
   const isProfilerRoute = pathname.includes('/subrequest-profiler');
   const isSiteProtectedRoute = pathname.includes('/site-protected');
   // Branded signup landing renders full-bleed (moving background), no header/footer.
+  // (/subscription intentionally excluded — it keeps the normal announcement bar
+  // + header + footer and renders the signup as an in-page section instead.)
   const isSignupRoute = /(^|\/)signup(-parallax)?\/?$/.test(pathname);
   const isMinimalRoute = isSiteProtectedRoute || isSignupRoute;
   const skipLayout = isCmsRoute || isProfilerRoute;
