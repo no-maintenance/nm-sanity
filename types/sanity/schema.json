@@ -11039,6 +11039,14 @@
           },
           "optional": true
         },
+        "headlineSize": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "rangeSlider"
+          },
+          "optional": true
+        },
         "link": {
           "type": "objectAttribute",
           "value": {

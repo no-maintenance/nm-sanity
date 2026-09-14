@@ -35,7 +35,7 @@ function buildHeroImage(
   env?: {PUBLIC_SANITY_STUDIO_DATASET?: string; PUBLIC_SANITY_STUDIO_PROJECT_ID?: string},
 ) {
   const ref: string | undefined = image?.asset?._ref ?? image?._ref;
-  if (!ref || !env?.PUBLIC_SANITY_STUDIO_PROJECT_ID) return null;
+  if (!ref || !env?.PUBLIC_SANITY_STUDIO_PROJECT_ID || !env?.PUBLIC_SANITY_STUDIO_DATASET) return null;
 
   let dims: {height: number; width: number};
   try {
@@ -63,7 +63,7 @@ function buildHeroImage(
   };
 }
 
-function buildCss(desktopRatio: string) {
+function buildCss(desktopRatio: string, headlineFontSize: string) {
   return `
 @font-face {
   font-family: "SS26 Display";
@@ -117,13 +117,15 @@ function buildCss(desktopRatio: string) {
   font-family: "SS26 Display", ui-monospace, Menlo, Monaco, monospace;
   font-weight: 400;
   text-transform: uppercase;
-  white-space: nowrap;
+  /* wrap long headlines instead of overflowing the right edge */
+  white-space: normal;
+  max-width: 92vw;
   text-align: left;
   letter-spacing: 0.04em;
-  line-height: 1.04;
-  /* desktop headline: scales with viewport but capped so it stays ~50px on
-     large monitors instead of ballooning (min 24px, ~50px @1440, max 50px) */
-  font-size: clamp(24px, 3.47vw, 50px);
+  line-height: 1.08;
+  /* desktop headline size: uses the CMS "Headline size" slider when set,
+     otherwise a responsive default (min 24px, ~50px @1440, capped 50px) */
+  font-size: ${headlineFontSize};
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
@@ -167,6 +169,13 @@ export function CrashDenimHero() {
   const headline = stegaClean(hero?.headline)?.trim() || FALLBACK_HEADLINE;
   const link = stegaClean(hero?.link)?.trim() || FALLBACK_LINK;
 
+  // Desktop headline size from the CMS slider (px), else responsive default.
+  const headlineSize = hero?.headlineSize;
+  const headlineFontSize =
+    typeof headlineSize === 'number' && headlineSize > 0
+      ? `${headlineSize}px`
+      : 'clamp(24px, 3.47vw, 50px)';
+
   const desktopSrc = desktop?.src || FALLBACK_DESKTOP;
   const mobileSrc = mobile?.src || FALLBACK_MOBILE;
   const alt = desktop?.alt || FALLBACK_ALT;
@@ -180,7 +189,7 @@ export function CrashDenimHero() {
       className="crash-denim"
       aria-label={`Shop ${headline}`}
     >
-      <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio)}} />
+      <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio, headlineFontSize)}} />
       <picture>
         <source
           media="(max-width: 768px)"

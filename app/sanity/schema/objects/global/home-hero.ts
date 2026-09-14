@@ -42,6 +42,14 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'headlineSize',
+      title: 'Headline size (desktop)',
+      description: 'Drag to make the headline bigger or smaller on desktop. Leave empty for the default (~50px). Mobile sizes itself automatically.',
+      type: 'rangeSlider',
+      options: {min: 24, max: 80, suffix: 'px'},
+      validation: (Rule) => Rule.min(24).max(80),
+    }),
+    defineField({
       name: 'link',
       title: 'Link (path)',
       description: 'Where clicking the hero goes, e.g. /collections/new-arrivals',
