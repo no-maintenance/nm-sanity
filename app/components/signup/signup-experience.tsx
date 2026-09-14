@@ -34,38 +34,49 @@ const SIGNUP_CSS = `
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   font-family: ui-monospace, Menlo, Monaco, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Courier New", monospace;
-  /* Cinematic reveal echoing the reference: the screen dissolves in (slow fade +
-     gentle settle) while a soft white mist sweeps across and clears — the
-     cloud-dissolve that reveals each scene in the reference site. */
-  animation: nm-signup-dissolve 1.1s ease both;
-  will-change: transform, opacity;
+  /* The backdrop (video + veil) snaps in quickly; the logo + form themselves
+     glitch into place on top (see .nm-signup-content). */
+  animation: nm-signup-dissolve 0.25s ease-out both;
+  will-change: opacity;
 }
 @keyframes nm-signup-dissolve {
-  from { opacity: 0; transform: scale(1.05); }
-  to   { opacity: 1; transform: scale(1); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-/* Soft white cloud that sweeps across and clears to reveal the signup. It's a
-   real organic cloud (fractal-noise via SVG feTurbulence), not a flat gradient,
-   so it has wispy edges like the reference site's cloud-dissolve. It drifts in
-   from the left, passes over the screen, and exits right while fading. */
-.nm-signup-cloud {
+/* Real B&W datamosh/glitch footage flashes over the screen then snaps away to
+   reveal the signup — screen-blended so the clip's black drops out and only the
+   white glitch shows. Actual footage (not CSS), so it reads like a real digital
+   glitch transition. Grayscale-locked to stay on-brand. */
+.nm-signup-glitch {
   position: fixed;
-  inset: -45%;
+  inset: 0;
   z-index: 2;
   pointer-events: none;
-  animation: nm-signup-cloud-sweep 2.1s cubic-bezier(0.37, 0, 0.35, 1) both;
-  will-change: transform, opacity;
+  mix-blend-mode: screen;
+  animation: nm-signup-glitch-out 0.36s steps(12, end) both;
+  will-change: opacity;
 }
-.nm-signup-cloud-svg { width: 100%; height: 100%; display: block; }
-@keyframes nm-signup-cloud-sweep {
-  0%   { opacity: 0;    transform: translate3d(-36%, -6%, 0) scale(1.05); }
-  20%  { opacity: 0.96; }
-  55%  { opacity: 0.72; }
-  100% { opacity: 0;    transform: translate3d(40%, 5%, 0) scale(1.22); }
+.nm-signup-glitch video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Crush toward black so only the brightest streaks stay white (less white
+     overall, more black) under the screen blend. */
+  filter: grayscale(1) brightness(0.55) contrast(2.1);
+}
+/* Flicker as it clears — a glitch stutters out rather than fading smoothly.
+   Fewer flickers = calmer, quicker glitch. */
+@keyframes nm-signup-glitch-out {
+  0%   { opacity: 0.65; }
+  40%  { opacity: 0.65; }
+  58%  { opacity: 0.25; }
+  74%  { opacity: 0.55; }
+  100% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .nm-signup { animation: none; }
-  .nm-signup-cloud { display: none; }
+  .nm-signup-glitch { display: none; }
 }
 .nm-signup * { box-sizing: border-box; }
 
@@ -126,6 +137,22 @@ const SIGNUP_CSS = `
   justify-content: center;
   text-align: center;
   padding: clamp(20px, 4vh, 48px) 20px;
+  /* The design itself glitches into place — hidden at first, then stutters in at
+     jittered/clipped offsets (hard step cuts) and lands clean, synced to the
+     glitch overlay flashing out on top. */
+  animation: nm-signup-content-glitch 0.36s steps(1, end) both;
+  will-change: transform, opacity, clip-path;
+}
+@keyframes nm-signup-content-glitch {
+  0%, 18% { opacity: 0; transform: translate3d(0,0,0); clip-path: inset(0 0 100% 0); }
+  32% { opacity: 1; transform: translate3d(-8px, 0, 0); clip-path: inset(0 0 55% 0); }
+  46% { opacity: 0.3; transform: translate3d(6px, 0, 0); }
+  60% { opacity: 1; transform: translate3d(-4px, 0, 0); clip-path: inset(0 0 18% 0); }
+  80% { opacity: 1; transform: translate3d(2px, 0, 0); clip-path: inset(0 0 0 0); }
+  100% { opacity: 1; transform: translate3d(0,0,0); clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nm-signup-content { animation: none; }
 }
 .nm-signup-inner { width: min(440px, 90vw); }
 
@@ -340,51 +367,14 @@ export function SignupExperience({
         onCanPlay={() => setBgReady(true)}
       />
       <div className="nm-signup-veil" aria-hidden="true" />
-      <div className="nm-signup-cloud" aria-hidden="true">
-        <svg
-          className="nm-signup-cloud-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <filter
-            id="nmSignupCloud"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
-            colorInterpolationFilters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.008 0.013"
-              numOctaves={4}
-              seed={11}
-              stitchTiles="stitch"
-              result="n"
-            >
-              <animate
-                attributeName="baseFrequency"
-                dur="7s"
-                values="0.008 0.013;0.010 0.016;0.008 0.013"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            <feColorMatrix
-              in="n"
-              type="matrix"
-              values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.5 -0.55"
-            />
-            <feGaussianBlur stdDeviation="7" />
-          </filter>
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill="#fff"
-            filter="url(#nmSignupCloud)"
-          />
-        </svg>
+      <div className="nm-signup-glitch" aria-hidden="true">
+        <video
+          src="/signup-glitch.mp4"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+        />
       </div>
 
       {onClose ? (
