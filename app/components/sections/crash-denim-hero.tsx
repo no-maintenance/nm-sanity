@@ -121,8 +121,9 @@ function buildCss(desktopRatio: string) {
   text-align: left;
   letter-spacing: 0.04em;
   line-height: 1.04;
-  /* desktop headline ~50px @1440 (3.47vw), scales with viewport */
-  font-size: 3.47vw;
+  /* desktop headline: scales with viewport but capped so it stays ~50px on
+     large monitors instead of ballooning (min 24px, ~50px @1440, max 50px) */
+  font-size: clamp(24px, 3.47vw, 50px);
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
@@ -143,7 +144,7 @@ function buildCss(desktopRatio: string) {
     object-position: center top;
   }
   .crash-denim__title {
-    font-size: 5.5vw;
+    font-size: clamp(18px, 5.5vw, 34px);
     white-space: normal;
     max-width: 72vw;
     line-height: 1.15;
