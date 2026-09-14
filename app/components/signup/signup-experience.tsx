@@ -97,6 +97,16 @@ const SIGNUP_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .nm-signup-bgvideo { display: none; }
 }
+/* Static background image — the mobile background (and the SSR/initial render).
+   Same full-bleed cover framing as the video. */
+.nm-signup-bgimg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
 /* iOS Safari draws a native play-button overlay on any video it thinks the user
    should start manually (e.g. when autoplay is blocked in Low Power Mode). These
    videos are decorative + muted, so strip all native media controls so no play
@@ -295,6 +305,7 @@ const SIGNUP_CSS = `
   min-height: calc(100dvh - var(--nm-chrome));
 }
 .nm-signup.is-embedded .nm-signup-bgvideo,
+.nm-signup.is-embedded .nm-signup-bgimg,
 .nm-signup.is-embedded .nm-signup-veil,
 .nm-signup.is-embedded .nm-signup-glitch,
 .nm-signup.is-embedded .nm-signup-close {
@@ -365,48 +376,42 @@ export function SignupExperience({
   const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(false);
   const [bgReady, setBgReady] = useState(false);
+  // null until measured on the client. Mobile/touch devices get a static image
+  // background instead of the video, so mobile Safari never draws its native
+  // play-button (autoplay is blocked there in Low Power Mode etc.). Desktop keeps
+  // the moving video. Starts as `null` so the server + first client render agree
+  // (both render the image) — no hydration mismatch, and the 9MB video is never
+  // fetched on mobile.
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [state, setState] = useState<'idle' | 'loading' | 'ok' | 'error'>(
     'idle',
   );
   const [msg, setMsg] = useState('');
 
-  // Force autoplay/looping. React doesn't reliably set the `muted` property before
-  // the first paint, so some browsers treat the video as unmuted and refuse to
-  // autoplay. Set muted explicitly, kick off play() ourselves, and retry on the
-  // first user interaction (scroll/tap) and when the tab becomes visible so the
-  // muted loop starts as soon as it's allowed.
+  // Detect touch/mobile devices (where video autoplay is unreliable).
   useEffect(() => {
-    const videos = [bgVideoRef.current, glitchVideoRef.current].filter(
-      (v): v is HTMLVideoElement => v != null,
-    );
-    const kick = () => {
-      for (const v of videos) {
-        v.muted = true;
-        v.defaultMuted = true;
-        const p = v.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
-      }
-    };
-    kick();
-    // Safety net: if playback stalls but a frame is available, still reveal it.
+    const mq = window.matchMedia('(hover: none) and (pointer: coarse)');
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener?.('change', onChange);
+    return () => mq.removeEventListener?.('change', onChange);
+  }, []);
+
+  // Desktop only: force the background + glitch videos to play. React doesn't
+  // reliably set `muted` before first paint, so set it explicitly and kick off
+  // play() ourselves.
+  useEffect(() => {
+    if (isMobile !== false) return;
+    for (const v of [bgVideoRef.current, glitchVideoRef.current]) {
+      if (!v) continue;
+      v.muted = true;
+      v.defaultMuted = true;
+      const p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    }
     const bg = bgVideoRef.current;
     if (bg && bg.readyState >= 2) setBgReady(true);
-
-    const onInteract = () => kick();
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') kick();
-    };
-    window.addEventListener('touchstart', onInteract, {passive: true});
-    window.addEventListener('pointerdown', onInteract, {passive: true});
-    window.addEventListener('scroll', onInteract, {passive: true});
-    document.addEventListener('visibilitychange', onVisible);
-    return () => {
-      window.removeEventListener('touchstart', onInteract);
-      window.removeEventListener('pointerdown', onInteract);
-      window.removeEventListener('scroll', onInteract);
-      document.removeEventListener('visibilitychange', onVisible);
-    };
-  }, []);
+  }, [isMobile]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -483,31 +488,48 @@ export function SignupExperience({
     >
       <style dangerouslySetInnerHTML={{__html: SIGNUP_CSS}} />
 
-      <video
-        ref={bgVideoRef}
-        className={`nm-signup-bgvideo${bgReady ? ' is-ready' : ''}`}
-        src="/signup-bg.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-        onLoadedData={() => setBgReady(true)}
-        onPlaying={() => setBgReady(true)}
-        onCanPlay={() => setBgReady(true)}
-      />
-      <div className="nm-signup-veil" aria-hidden="true" />
-      <div className="nm-signup-glitch" aria-hidden="true">
+      {isMobile === false ? (
+        // Desktop: moving video background (autoplay works reliably here).
         <video
-          ref={glitchVideoRef}
-          src="/signup-glitch.mp4"
+          ref={bgVideoRef}
+          className={`nm-signup-bgvideo${bgReady ? ' is-ready' : ''}`}
+          src="/signup-bg.mp4"
           autoPlay
           muted
+          loop
           playsInline
           preload="auto"
+          aria-hidden="true"
+          onLoadedData={() => setBgReady(true)}
+          onPlaying={() => setBgReady(true)}
+          onCanPlay={() => setBgReady(true)}
         />
-      </div>
+      ) : (
+        // Mobile (and initial render): static image background — no <video>, so no
+        // iOS play-button, and the 9MB clip is never fetched on cellular.
+        <picture>
+          <source media="(max-width: 640px)" srcSet="/signup-bg-mobile.jpg" />
+          <img
+            className="nm-signup-bgimg"
+            src="/signup-bg-desktop.jpg"
+            alt=""
+            aria-hidden="true"
+          />
+        </picture>
+      )}
+      <div className="nm-signup-veil" aria-hidden="true" />
+      {isMobile === false ? (
+        <div className="nm-signup-glitch" aria-hidden="true">
+          <video
+            ref={glitchVideoRef}
+            src="/signup-glitch.mp4"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+          />
+        </div>
+      ) : null}
 
       {onClose ? (
         <button
