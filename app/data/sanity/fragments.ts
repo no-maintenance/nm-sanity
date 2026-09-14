@@ -227,6 +227,7 @@ export const HEADER_FRAGMENT = defineQuery(`{
     desktopImage ${IMAGE_FRAGMENT},
     mobileImage ${IMAGE_FRAGMENT},
     headline,
+    headlineSize,
     link,
   },
   blur,
