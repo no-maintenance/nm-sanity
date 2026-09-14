@@ -11,6 +11,10 @@ const GROUPS = [
     title: 'Announcement Bar',
   },
   {
+    name: 'hero',
+    title: 'Home Hero',
+  },
+  {
     name: 'settings',
     title: 'Settings',
   },
@@ -38,6 +42,12 @@ export default defineType({
       type: 'boolean',
       group: 'announcementBar',
       initialValue: false,
+    }),
+    defineField({
+      name: 'hero',
+      title: 'Home Hero',
+      group: 'hero',
+      type: 'homeHero',
     }),
     defineField({
       name: 'menu',

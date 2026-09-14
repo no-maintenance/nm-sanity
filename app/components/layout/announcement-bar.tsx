@@ -1,12 +1,22 @@
+import {stegaClean} from '@sanity/client/stega';
 import {useEffect} from 'react';
 
 import {openSignup} from '~/components/signup/open-signup';
+import {useRootLoaderData} from '~/root';
 
-const MARQUEE_TEXT =
-  'DOUBLE COLLAR POLO & MOC TOE LOAFER NOW LIVE, SIGN UP FOR 10% OFF YOUR FIRST PURCHASE';
+// Fallback used only if the Sanity announcement bar is empty. Keep this in sync
+// with the live copy so the banner never renders blank if the CMS field clears.
+const DEFAULT_MARQUEE_TEXT =
+  'FW26 DELIVERY 3: RELEASING 9/11 AT 11AM PST/2PM EST, SIGN UP FOR 10% OFF YOUR FIRST PURCHASE';
 const COPIES = 8;
 
 export function AnnouncementBar() {
+  const {sanityRoot} = useRootLoaderData();
+  const sanityText = stegaClean(
+    sanityRoot?.data?.header?.announcementBar?.[0]?.text,
+  )?.trim();
+  const marqueeText = sanityText || DEFAULT_MARQUEE_TEXT;
+
   useEffect(() => {
     const el = document.getElementById('announcement-bar');
     if (!el) return;
@@ -21,7 +31,7 @@ export function AnnouncementBar() {
       window.removeEventListener('resize', setHeight);
       document.documentElement.style.removeProperty('--announcement-bar-height');
     };
-  }, []);
+  }, [marqueeText]);
 
   const handleClick = () => {
     openSignup();
@@ -33,7 +43,7 @@ export function AnnouncementBar() {
       id="announcement-bar"
     >
       <button
-        aria-label={MARQUEE_TEXT}
+        aria-label={marqueeText}
         className="block w-full py-2 text-xs tracking-wider uppercase transition-opacity hover:opacity-80"
         onClick={handleClick}
         type="button"
@@ -44,7 +54,7 @@ export function AnnouncementBar() {
         >
           {Array.from({length: COPIES}).map((_, i) => (
             <span className="shrink-0 px-8 sm:px-32" key={i}>
-              {MARQUEE_TEXT}
+              {marqueeText}
             </span>
           ))}
         </div>

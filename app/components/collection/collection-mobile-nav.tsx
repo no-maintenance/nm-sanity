@@ -30,6 +30,7 @@ const CATEGORY_ORDER = [
   'outerwear',
   'leather',
   'footwear',
+  'knitwear',
   'bottoms',
   'jersey',
   'shirting',
@@ -91,6 +92,19 @@ export function CollectionMobileNav({
       id: 'category-footwear',
       title: 'Footwear',
       url: '/collections/footwear',
+    } as ShopifyMenuItem);
+  }
+
+  // Inject a "Knitwear" entry if the menu doesn't already include one.
+  const hasKnitwear = items.some(
+    (item) => (item.title ?? '').toLowerCase().trim() === 'knitwear',
+  );
+  if (!hasKnitwear) {
+    items.push({
+      id: 'category-knitwear',
+      title: 'Knitwear',
+      // KNITWEAR collection uses the 'knits' handle on the live store
+      url: '/collections/knits',
     } as ShopifyMenuItem);
   }
 

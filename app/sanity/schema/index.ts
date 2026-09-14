@@ -22,6 +22,7 @@ import columnContent from './objects/global/columnContent';
 import contentAlignment from './objects/global/content-alignment';
 import contentPosition from './objects/global/content-position';
 import footersList from './objects/global/footers-list';
+import homeHero from './objects/global/home-hero';
 import padding from './objects/global/padding';
 import productModal from './objects/global/product-modal';
 import productRichtext from './objects/global/product-richtext';
@@ -128,6 +129,7 @@ const objects = [
   externalLink,
   nestedNavigation,
   footersList,
+  homeHero,
   sectionsList,
   productSections,
   collectionSections,
