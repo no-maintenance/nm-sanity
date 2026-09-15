@@ -188,7 +188,7 @@ const SIGNUP_CSS = `
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: clamp(20px, 4vh, 48px) 20px;
+  padding: clamp(12px, 2.6vh, 44px) 20px;
   /* The design itself glitches into place — hidden at first, then stutters in at
      jittered/clipped offsets (hard step cuts) and lands clean, synced to the
      glitch overlay flashing out on top. */
@@ -261,9 +261,11 @@ const SIGNUP_CSS = `
   width: clamp(150px, 34vw, 260px);
   margin: 0 auto clamp(14px, 3vh, 32px);
 }
-/* The 3D logo reads smaller in the same box, so give it 50% more room. */
+/* The 3D logo reads smaller in the same box, so give it 50% more room — but cap
+   it by viewport height so the whole overlay always fits on screen (no scroll),
+   staying big on tall screens and shrinking on short ones. */
 .nm-signup-logo-3d {
-  width: clamp(225px, 51vw, 390px);
+  width: min(clamp(225px, 51vw, 390px), 40vh);
 }
 
 .nm-signup-sub {
