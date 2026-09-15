@@ -35,24 +35,6 @@ export function NmLogo3D({className}: {className?: string}) {
       ref={ref}
       className={cn('select-none', className)}
       style={{aspectRatio: '1275 / 1005', position: 'relative'}}
-    >
-      {/* Static logo shown while the 3D version loads, so the slot is always the
-          logo (transparent PNG) or dark — never a white/blank box. The init
-          fades this out once the 3D canvas has drawn its first frame. */}
-      <img
-        src="/nm-logo-white.png"
-        alt=""
-        aria-hidden="true"
-        className="nm-logo-3d-placeholder"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
-          transition: 'opacity 0.25s ease',
-        }}
-      />
-    </div>
+    />
   );
 }
