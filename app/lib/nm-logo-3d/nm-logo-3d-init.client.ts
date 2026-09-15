@@ -28,11 +28,14 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.display = 'block';
-  // Keep the canvas hidden until the logo has actually rendered its first frame,
-  // so no blank/white box flashes in the logo's slot before it appears.
   canvas.style.opacity = '0';
   canvas.style.transition = 'opacity 0.25s ease';
-  mount.appendChild(canvas);
+  // Render fully transparent until there's a logo to show (no white/blank flash).
+  renderer.setClearColor(0x000000, 0);
+  // NOTE: the canvas is deliberately NOT added to the DOM here. An empty WebGL
+  // canvas can flash white for a frame on real GPUs, so we only attach it once
+  // the logo mesh has actually been drawn (see the reveal block below). Rendering
+  // works off-DOM; sizing reads the mount element, not the canvas.
 
   let mesh: THREE.Group | null = null;
   let geo: THREE.PlaneGeometry | null = null;
@@ -105,10 +108,14 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
       mesh.rotation.x = curRX + idleX;
     }
     renderer.render(scene, camera);
-    // Fade the canvas in once the logo mesh exists and has been drawn.
+    // Attach + fade the canvas in only once the logo mesh has been drawn, so the
+    // slot stays empty (transparent) until the logo is ready — never a white box.
     if (!revealed && mesh) {
       revealed = true;
-      canvas.style.opacity = '1';
+      if (!stopped && !canvas.parentNode) mount.appendChild(canvas);
+      requestAnimationFrame(() => {
+        canvas.style.opacity = '1';
+      });
     }
   }
   animate();
