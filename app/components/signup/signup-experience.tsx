@@ -107,6 +107,12 @@ const SIGNUP_CSS = `
   object-fit: cover;
   pointer-events: none;
 }
+/* Desktop (mouse/trackpad) uses the video, never the static image. Hide it at
+   first paint so it never flashes on desktop before JS swaps in the video (the
+   image only renders in SSR/initial markup, which desktop briefly parses). */
+@media (hover: hover) and (pointer: fine) {
+  .nm-signup-bgimg { display: none; }
+}
 /* iOS Safari draws a native play-button overlay on any video it thinks the user
    should start manually (e.g. when autoplay is blocked in Low Power Mode). These
    videos are decorative + muted, so strip all native media controls so no play
