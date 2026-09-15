@@ -25,6 +25,9 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(getW(), getH());
   const canvas = renderer.domElement;
+  canvas.style.position = 'absolute';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.display = 'block';
@@ -108,13 +111,18 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
       mesh.rotation.x = curRX + idleX;
     }
     renderer.render(scene, camera);
-    // Attach + fade the canvas in only once the logo mesh has been drawn, so the
-    // slot stays empty (transparent) until the logo is ready — never a white box.
+    // Attach + fade the canvas in only once the logo mesh has been drawn, then
+    // fade out the static placeholder. The slot only ever shows the logo (PNG
+    // then 3D) or dark — never a white box.
     if (!revealed && mesh) {
       revealed = true;
       if (!stopped && !canvas.parentNode) mount.appendChild(canvas);
       requestAnimationFrame(() => {
         canvas.style.opacity = '1';
+        const placeholder = mount.querySelector<HTMLElement>(
+          '.nm-logo-3d-placeholder',
+        );
+        if (placeholder) placeholder.style.opacity = '0';
       });
     }
   }
