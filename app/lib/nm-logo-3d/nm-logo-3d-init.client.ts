@@ -21,7 +21,14 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   const camera = new THREE.PerspectiveCamera(35, getW() / getH(), 0.1, 100);
   camera.position.set(0, 0, 7.5);
 
-  const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+    premultipliedAlpha: false,
+    // Keep the rendered frame in the buffer so the browser never composites a
+    // cleared/undefined buffer (which flashes white on some GPUs).
+    preserveDrawingBuffer: true,
+  });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(getW(), getH());
   const canvas = renderer.domElement;
@@ -31,6 +38,7 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.display = 'block';
+  canvas.style.background = 'transparent';
   canvas.style.opacity = '0';
   canvas.style.transition = 'opacity 0.25s ease';
   // Render fully transparent until there's a logo to show (no white/blank flash).
@@ -111,18 +119,14 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
       mesh.rotation.x = curRX + idleX;
     }
     renderer.render(scene, camera);
-    // Attach + fade the canvas in only once the logo mesh has been drawn, then
-    // fade out the static placeholder. The slot only ever shows the logo (PNG
-    // then 3D) or dark — never a white box.
+    // Attach + fade the canvas in only once the logo mesh has actually been
+    // drawn (render already ran this frame, buffer preserved). The slot stays
+    // dark until then — never a white box.
     if (!revealed && mesh) {
       revealed = true;
       if (!stopped && !canvas.parentNode) mount.appendChild(canvas);
       requestAnimationFrame(() => {
         canvas.style.opacity = '1';
-        const placeholder = mount.querySelector<HTMLElement>(
-          '.nm-logo-3d-placeholder',
-        );
-        if (placeholder) placeholder.style.opacity = '0';
       });
     }
   }
