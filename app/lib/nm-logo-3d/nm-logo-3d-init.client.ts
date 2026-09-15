@@ -28,6 +28,10 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.display = 'block';
+  // Keep the canvas hidden until the logo has actually rendered its first frame,
+  // so no blank/white box flashes in the logo's slot before it appears.
+  canvas.style.opacity = '0';
+  canvas.style.transition = 'opacity 0.25s ease';
   mount.appendChild(canvas);
 
   let mesh: THREE.Group | null = null;
@@ -87,6 +91,7 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
 
   let t = 0;
   let raf: number | undefined;
+  let revealed = false;
   function animate() {
     if (stopped) return;
     raf = requestAnimationFrame(animate);
@@ -100,6 +105,11 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
       mesh.rotation.x = curRX + idleX;
     }
     renderer.render(scene, camera);
+    // Fade the canvas in once the logo mesh exists and has been drawn.
+    if (!revealed && mesh) {
+      revealed = true;
+      canvas.style.opacity = '1';
+    }
   }
   animate();
 
