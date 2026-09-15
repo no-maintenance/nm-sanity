@@ -96,6 +96,21 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
   window.addEventListener('pointermove', onPointer, {passive: true});
   window.addEventListener('touchmove', onTouch, {passive: true});
 
+  // A WebGL context that gets lost — e.g. the GPU reclaiming it during a page
+  // reload/navigation — renders the canvas as a solid WHITE box. Hide the canvas
+  // the instant that happens (and when the page is being torn down) so the logo
+  // slot goes dark, never white. preventDefault keeps the context restorable.
+  const hideCanvas = () => {
+    canvas.style.visibility = 'hidden';
+  };
+  const onContextLost = (e: Event) => {
+    e.preventDefault();
+    hideCanvas();
+  };
+  canvas.addEventListener('webglcontextlost', onContextLost, false);
+  window.addEventListener('pagehide', hideCanvas);
+  window.addEventListener('beforeunload', hideCanvas);
+
   const ro = new ResizeObserver(() => {
     camera.aspect = getW() / getH();
     camera.updateProjectionMatrix();
@@ -137,6 +152,9 @@ export function initNmLogo3D(mount: HTMLElement): () => void {
     if (raf) cancelAnimationFrame(raf);
     window.removeEventListener('pointermove', onPointer);
     window.removeEventListener('touchmove', onTouch);
+    window.removeEventListener('pagehide', hideCanvas);
+    window.removeEventListener('beforeunload', hideCanvas);
+    canvas.removeEventListener('webglcontextlost', onContextLost);
     ro.disconnect();
     geo?.dispose();
     mat?.map?.dispose();
