@@ -22,6 +22,27 @@ function toE164(raw: string): string {
   return `+${digits}`;
 }
 
+// Limited-release countdown shown above the logo. Update these when the release
+// changes (or clear RELEASE_TEXT to hide the whole block).
+const RELEASE_TEXT = 'Double Rivet Leather Jacket releasing 9/18';
+// Target: 11:00 AM Pacific on 9/18/2026 (PDT = UTC-7) → 18:00 UTC.
+const RELEASE_AT_MS = Date.parse('2026-09-18T18:00:00Z');
+// Once the timer hits zero, the countdown is replaced by this live link.
+const LIVE_TEXT = 'Double Rivet Leather Jacket: Live Now';
+const PRODUCT_PATH = '/products/double-rivet-calfskin-leather-jacket-black';
+
+type TimeLeft = {days: number; hours: number; minutes: number; seconds: number};
+function getTimeLeft(): TimeLeft {
+  const ms = Math.max(0, RELEASE_AT_MS - Date.now());
+  return {
+    days: Math.floor(ms / 86400000),
+    hours: Math.floor((ms % 86400000) / 3600000),
+    minutes: Math.floor((ms % 3600000) / 60000),
+    seconds: Math.floor((ms % 60000) / 1000),
+  };
+}
+const pad2 = (n: number) => String(n).padStart(2, '0');
+
 const SIGNUP_CSS = `
 .nm-signup {
   position: fixed;
@@ -31,7 +52,8 @@ const SIGNUP_CSS = `
   height: 100dvh;
   background: #000;
   color: #fff;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-font-smoothing: antialiased;
   font-family: ui-monospace, Menlo, Monaco, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Courier New", monospace;
   /* The backdrop (video + veil) snaps in quickly; the logo + form themselves
@@ -161,11 +183,10 @@ const SIGNUP_CSS = `
 .nm-signup-content {
   position: relative;
   z-index: 1;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
   padding: clamp(20px, 4vh, 48px) 20px;
   /* The design itself glitches into place — hidden at first, then stutters in at
@@ -185,7 +206,55 @@ const SIGNUP_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .nm-signup-content { animation: none; }
 }
-.nm-signup-inner { width: min(440px, 90vw); }
+.nm-signup-inner { width: min(440px, 90vw); margin-block: auto; }
+
+/* Limited-release announcement + live countdown, above the logo. */
+.nm-signup-release {
+  margin: 0 0 clamp(8px, 1.5vh, 14px);
+  font-size: clamp(10px, 1.3vw, 12px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.85);
+}
+.nm-signup-countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 2.6vw, 24px);
+  margin: 0 0 clamp(14px, 2.6vh, 28px);
+}
+.nm-signup-cd-unit { display: flex; flex-direction: column; align-items: center; }
+.nm-signup-cd-num {
+  font-size: clamp(20px, 3.4vw, 34px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.85);
+}
+.nm-signup-cd-label {
+  margin-top: 6px;
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+}
+/* Shown in place of the countdown once the release is live. */
+.nm-signup-live {
+  display: inline-block;
+  margin: 0 0 clamp(14px, 2.6vh, 28px);
+  font-size: clamp(11px, 1.5vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.85);
+  transition: opacity 0.2s;
+}
+.nm-signup-live:hover { opacity: 0.75; }
 
 /* Moving logo — sits where the wordmark was. */
 .nm-signup-logo {
@@ -309,6 +378,10 @@ const SIGNUP_CSS = `
   --nm-chrome: calc(var(--announcement-bar-height, 0px) + var(--header-height, 0px));
   min-height: calc(100vh - var(--nm-chrome));
   min-height: calc(100dvh - var(--nm-chrome));
+  /* How far to drop the countdown from the header. The logo cancels this with a
+     matching negative margin, so ONLY the countdown moves down (logo/form stay
+     put), landing it midway between the header and the logo. */
+  --nm-cd-drop: clamp(16px, 3.4vh, 34px);
 }
 .nm-signup.is-embedded .nm-signup-bgvideo,
 .nm-signup.is-embedded .nm-signup-bgimg,
@@ -328,9 +401,12 @@ const SIGNUP_CSS = `
    height — cap it by viewport height too (min of width- and height-based caps)
    so it grows on tall screens but never overflows short ones. */
 .nm-signup.is-embedded .nm-signup-logo-3d {
-  width: min(clamp(240px, 48vw, 420px), 52vh);
+  width: min(clamp(200px, 42vw, 360px), 38vh);
 }
 .nm-signup.is-embedded .nm-signup-logo {
+  /* Cancel the countdown's drop so the logo (and everything below it) stays put
+     while only the countdown moves down. */
+  margin-top: calc(-1 * var(--nm-cd-drop));
   margin-bottom: clamp(2px, 0.6vh, 8px);
 }
 /* Slightly smaller form so it makes room for the larger logo and still fits. */
@@ -361,6 +437,21 @@ const SIGNUP_CSS = `
   margin-top: 10px;
   min-height: 8px;
 }
+.nm-signup.is-embedded .nm-signup-release {
+  font-size: 10px;
+  margin-top: var(--nm-cd-drop);
+  margin-bottom: clamp(5px, 0.9vh, 10px);
+}
+.nm-signup.is-embedded .nm-signup-live {
+  /* Match the countdown's drop so the logo stays put when it swaps in. */
+  margin-top: var(--nm-cd-drop);
+  font-size: 12px;
+}
+.nm-signup.is-embedded .nm-signup-countdown {
+  margin-bottom: clamp(9px, 1.5vh, 18px);
+  gap: clamp(10px, 2.2vw, 20px);
+}
+.nm-signup.is-embedded .nm-signup-cd-num { font-size: clamp(17px, 2.8vw, 28px); }
 `;
 
 export function SignupExperience({
@@ -393,6 +484,24 @@ export function SignupExperience({
     'idle',
   );
   const [msg, setMsg] = useState('');
+  // null until measured on the client (server + first render agree → no
+  // hydration mismatch), then ticks every second toward the release time.
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+
+  useEffect(() => {
+    const tick = () => setTimeLeft(getTimeLeft());
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+  // The release has landed once the timer reaches all zeros (getTimeLeft clamps
+  // negatives to 0). null on server/first render, so it never flips during SSR.
+  const isLive =
+    timeLeft !== null &&
+    timeLeft.days === 0 &&
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0;
 
   // Detect touch/mobile devices (where video autoplay is unreliable).
   useEffect(() => {
@@ -550,6 +659,51 @@ export function SignupExperience({
 
       <div className="nm-signup-content">
         <div className="nm-signup-inner">
+          {/* Countdown only on the dedicated /subscription page (embedded),
+              never on the pop-up overlay. Once the timer ends it becomes a
+              "Live Now" link to the product. */}
+          {embedded && RELEASE_TEXT ? (
+            isLive ? (
+              <Link className="nm-signup-live" to={PRODUCT_PATH}>
+                {LIVE_TEXT}
+              </Link>
+            ) : (
+              <>
+                <p className="nm-signup-release">{RELEASE_TEXT}</p>
+                <div
+                  className="nm-signup-countdown"
+                  role="timer"
+                  aria-label="Time until release"
+                >
+                  <div className="nm-signup-cd-unit">
+                    <span className="nm-signup-cd-num">
+                      {pad2(timeLeft?.days ?? 0)}
+                    </span>
+                    <span className="nm-signup-cd-label">Days</span>
+                  </div>
+                  <div className="nm-signup-cd-unit">
+                    <span className="nm-signup-cd-num">
+                      {pad2(timeLeft?.hours ?? 0)}
+                    </span>
+                    <span className="nm-signup-cd-label">Hours</span>
+                  </div>
+                  <div className="nm-signup-cd-unit">
+                    <span className="nm-signup-cd-num">
+                      {pad2(timeLeft?.minutes ?? 0)}
+                    </span>
+                    <span className="nm-signup-cd-label">Minutes</span>
+                  </div>
+                  <div className="nm-signup-cd-unit">
+                    <span className="nm-signup-cd-num">
+                      {pad2(timeLeft?.seconds ?? 0)}
+                    </span>
+                    <span className="nm-signup-cd-label">Seconds</span>
+                  </div>
+                </div>
+              </>
+            )
+          ) : null}
+
           {logo === 'logo3d' ? (
             <NmLogo3D className="nm-signup-logo nm-signup-logo-3d" />
           ) : (
