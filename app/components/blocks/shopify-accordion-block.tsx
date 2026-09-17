@@ -13,6 +13,7 @@ import { ProductDetailsBlock } from './extra-product-information-block';
 import { ShopifyDescriptionBlock } from './shopify-description-block';
 import { ShopifyTitleBlock } from './shopify-title-block';
 import { ProductForm } from '../product/product-form';
+import { PurchasePanelContext } from '../product/purchase-panel-context';
 import { ExternalLinkAnnotation } from '../sanity/richtext/components/external-link-annotation';
 import { InternalLinkAnnotation } from '../sanity/richtext/components/internal-link-annotation';
 
@@ -68,7 +69,10 @@ export function ShopifyAccordionItem({ title, content }: ShopifyAccordionBlockPr
       <AccordionTrigger className='uppercase font-normal'>{title}</AccordionTrigger>
       <AccordionContent className="pb-1">
         <div className="prose max-w-none [&_p]:mt-0 [&_p:last-child]:mb-0 [&>div]:py-0">
-          <PortableText value={content} components={components} />
+          {/* Accordion bodies keep the original title/brand even on the PDP. */}
+          <PurchasePanelContext.Provider value={false}>
+            <PortableText value={content} components={components} />
+          </PurchasePanelContext.Provider>
         </div>
       </AccordionContent>
     </AccordionItem>

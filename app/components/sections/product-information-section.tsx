@@ -50,7 +50,7 @@ export function ProductInformationSection(
                     <MediaGallery aspectRatio={aspectRatio} />
                   )
                 }
-                productDetails={<ProductDetails data={data} />}
+                productDetails={<ProductDetails data={data} isPurchasePanel />}
               />
             </Skeleton>
           }
@@ -67,7 +67,7 @@ export function ProductInformationSection(
                       <MediaGallery aspectRatio={aspectRatio} />
                     )
                   }
-                  productDetails={<ProductDetails data={data} />}
+                  productDetails={<ProductDetails data={data} isPurchasePanel />}
                 />
               </Skeleton>
             }
@@ -89,7 +89,7 @@ export function ProductInformationSection(
                         <MediaGallery aspectRatio={aspectRatio} />
                       )
                     }
-                    productDetails={<ProductDetails data={data} />}
+                    productDetails={<ProductDetails data={data} isPurchasePanel />}
                   />
                 </ProductVariantsContext.Provider>
               );
@@ -110,7 +110,7 @@ export function ProductInformationSection(
           <MediaGallery aspectRatio={aspectRatio} />
         )
       }
-      productDetails={<ProductDetails data={data} />}
+      productDetails={<ProductDetails data={data} isPurchasePanel />}
     />
   );
 }
