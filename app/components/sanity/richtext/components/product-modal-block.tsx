@@ -30,13 +30,13 @@ function SizeChartTable({ table }: SizeChartTableProps) {
   if (!table?.rows || table.rows.length === 0) return null;
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white text-base">
+      <table className="w-full table-auto bg-white text-[13px] md:text-base">
         <thead>
           <tr>
             {table.rows[0]?.cells?.map((cell: string, i: number) => (
               <th
                 key={i}
-                className="md:px-4 px-2 py-3 font-semibold text-black text-start border-b whitespace-nowrap"
+                className="md:px-4 px-1.5 py-3 font-semibold text-black text-start border-b align-bottom"
               >
                 {cell}
               </th>
@@ -49,7 +49,7 @@ function SizeChartTable({ table }: SizeChartTableProps) {
               {row.cells?.map((cell: string, j: number) => (
                 <td
                   key={j}
-                  className="md:px-4 px-2 py-3 border-bwhitespace-nowrap text-black"
+                  className="md:px-4 px-1.5 py-3 border-b text-black whitespace-nowrap"
                 >
                   {cell}
                 </td>
