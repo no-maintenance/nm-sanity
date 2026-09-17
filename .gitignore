@@ -20,3 +20,5 @@ node_modules
 # Sanity scripts cache
 app/sanity/**/cache.json
 *.csv
+# gstack local artifacts (security reports, analytics)
+.gstack/

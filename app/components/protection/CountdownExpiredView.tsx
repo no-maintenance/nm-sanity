@@ -77,7 +77,6 @@ export function CountdownExpiredView({
           <JoinEarlyAccessDialog
             open={joinOpen}
             onOpenChange={setJoinOpen}
-            password={protection.password}
             redirectTo={redirectTo}
           >
             <Button className="w-full">
