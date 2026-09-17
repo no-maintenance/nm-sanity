@@ -20,6 +20,7 @@ import ProductModalBlock from '../blocks/product-modal-block';
 import {ShopifyAccordionBlock, ShopifyAccordionGroup} from '../blocks/shopify-accordion-block';
 import {ShopifyDescriptionBlock} from '../blocks/shopify-description-block';
 import {ShopifyTitleBlock} from '../blocks/shopify-title-block';
+import {PurchasePanelContext} from './purchase-panel-context';
 import {ExternalLinkAnnotation} from '../sanity/richtext/components/external-link-annotation';
 import {InternalLinkAnnotation} from '../sanity/richtext/components/internal-link-annotation';
 import {ProductForm} from './product-form';
@@ -27,8 +28,10 @@ import {cn} from '~/lib/utils';
 
 export function ProductDetails({
   data,
+  isPurchasePanel = false,
 }: {
   data: FeaturedProductSectionProps | ProductInformationSectionProps;
+  isPurchasePanel?: boolean;
 }) {
   // Pre-process richtext to group adjacent productModal blocks
   function groupModalBlocks(blocks: any[]) {
@@ -172,22 +175,24 @@ export function ProductDetails({
     (data as ProductInformationSectionProps).stickyProductInfo !== false;
 
   return (
-    <div className="container space-y-1 lg:max-w-none lg:px-0">
-      {stickyBlocks.length > 0 && (
-        <div
-          className={cn(
-            'sticky top-(--header-height) z-10 space-y-1 bg-background pb-2',
-            columnIsScrollContainer && 'lg:top-0',
-          )}
-        >
-          <PortableText components={defaultComponents} value={stickyBlocks} />
-        </div>
-      )}
-      {scrollBlocks.length > 0 && (
-        <div className="space-y-1">
-          <PortableText components={defaultComponents} value={scrollBlocks} />
-        </div>
-      )}
-    </div>
+    <PurchasePanelContext.Provider value={isPurchasePanel}>
+      <div className="container space-y-1 lg:max-w-none lg:px-0">
+        {stickyBlocks.length > 0 && (
+          <div
+            className={cn(
+              'sticky top-(--header-height) z-10 space-y-1 bg-background pb-2',
+              columnIsScrollContainer && 'lg:top-0',
+            )}
+          >
+            <PortableText components={defaultComponents} value={stickyBlocks} />
+          </div>
+        )}
+        {scrollBlocks.length > 0 && (
+          <div className="space-y-1">
+            <PortableText components={defaultComponents} value={scrollBlocks} />
+          </div>
+        )}
+      </div>
+    </PurchasePanelContext.Provider>
   );
 }
