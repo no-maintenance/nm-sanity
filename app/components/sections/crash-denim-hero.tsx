@@ -117,14 +117,13 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   font-family: "SS26 Display", ui-monospace, Menlo, Monaco, monospace;
   font-weight: 400;
   text-transform: uppercase;
-  /* wrap long headlines instead of overflowing the right edge */
-  white-space: normal;
-  max-width: 92vw;
+  /* desktop: keep the headline on ONE line (auto-fit sizing, see component) */
+  white-space: nowrap;
   text-align: left;
   letter-spacing: 0.04em;
-  line-height: 1.08;
-  /* desktop headline size: uses the CMS "Headline size" slider when set,
-     otherwise a responsive default (min 24px, ~50px @1440, capped 50px) */
+  line-height: 1.04;
+  /* auto-fit: shrinks just enough to fit the headline on one line; the CMS
+     "Headline size" slider caps the max (short headlines stay ~50px). */
   font-size: ${headlineFontSize};
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
@@ -169,12 +168,17 @@ export function CrashDenimHero() {
   const headline = stegaClean(hero?.headline)?.trim() || FALLBACK_HEADLINE;
   const link = stegaClean(hero?.link)?.trim() || FALLBACK_LINK;
 
-  // Desktop headline size from the CMS slider (px), else responsive default.
-  const headlineSize = hero?.headlineSize;
-  const headlineFontSize =
-    typeof headlineSize === 'number' && headlineSize > 0
-      ? `${headlineSize}px`
-      : 'clamp(24px, 3.47vw, 50px)';
+  // Desktop headline: auto-fit to ONE line. `fitVw` is the largest size (in vw)
+  // at which the headline still fits the ~92vw text area on one line, derived
+  // from its length (~0.85em avg per character in the SS26 display font). The
+  // CMS "Headline size" slider (or a 50px default) caps the max, so short
+  // headlines stay ~50px and long ones shrink just enough to fit.
+  const maxPx =
+    typeof hero?.headlineSize === 'number' && hero.headlineSize > 0
+      ? hero.headlineSize
+      : 50;
+  const fitVw = 92 / (Math.max(headline.length, 1) * 0.85);
+  const headlineFontSize = `min(${maxPx}px, ${fitVw.toFixed(2)}vw)`;
 
   const desktopSrc = desktop?.src || FALLBACK_DESKTOP;
   const mobileSrc = mobile?.src || FALLBACK_MOBILE;
