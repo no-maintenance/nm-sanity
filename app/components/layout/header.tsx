@@ -257,15 +257,15 @@ function AccountIconLink({ className, to }: { className?: string; to: string }) 
 function AccountLink({ className }: { className?: string }) {
   const { isLoggedIn } = useRootLoaderData() ?? {};
   // Logged-in customers go to their account; everyone else lands on the
-  // branded /signup entry point (Shopify's passwordless flow handles both
-  // sign-up and sign-in). Default to /signup until the promise resolves.
-  const signedOut = <AccountIconLink className={className} to="/signup" />;
+  // /subscription signup page, which renders inside the site layout (header +
+  // footer stay visible). Default to /subscription until the promise resolves.
+  const signedOut = <AccountIconLink className={className} to="/subscription" />;
 
   return (
     <Suspense fallback={signedOut}>
       <Await errorElement={signedOut} resolve={isLoggedIn}>
         {(loggedIn) => (
-          <AccountIconLink className={className} to={loggedIn ? '/account' : '/signup'} />
+          <AccountIconLink className={className} to={loggedIn ? '/account' : '/subscription'} />
         )}
       </Await>
     </Suspense>

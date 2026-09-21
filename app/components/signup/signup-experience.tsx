@@ -27,9 +27,6 @@ function toE164(raw: string): string {
 const RELEASE_TEXT = 'Double Rivet Leather Jacket releasing 9/18';
 // Target: 11:00 AM Pacific on 9/18/2026 (PDT = UTC-7) → 18:00 UTC.
 const RELEASE_AT_MS = Date.parse('2026-09-18T18:00:00Z');
-// Once the timer hits zero, the countdown is replaced by this live link.
-const LIVE_TEXT = 'Double Rivet Leather Jacket: Live Now';
-const PRODUCT_PATH = '/products/double-rivet-calfskin-leather-jacket-black';
 
 type TimeLeft = {days: number; hours: number; minutes: number; seconds: number};
 function getTimeLeft(): TimeLeft {
@@ -662,14 +659,10 @@ export function SignupExperience({
       <div className="nm-signup-content">
         <div className="nm-signup-inner">
           {/* Countdown only on the dedicated /subscription page (embedded),
-              never on the pop-up overlay. Once the timer ends it becomes a
-              "Live Now" link to the product. */}
+              never on the pop-up overlay. Once the timer ends the block is
+              hidden entirely (no "Live Now" link). */}
           {embedded && RELEASE_TEXT ? (
-            isLive ? (
-              <Link className="nm-signup-live" to={PRODUCT_PATH}>
-                {LIVE_TEXT}
-              </Link>
-            ) : (
+            isLive ? null : (
               <>
                 <p className="nm-signup-release">{RELEASE_TEXT}</p>
                 <div
