@@ -256,16 +256,16 @@ function AccountIconLink({ className, to }: { className?: string; to: string }) 
 
 function AccountLink({ className }: { className?: string }) {
   const { isLoggedIn } = useRootLoaderData() ?? {};
-  // Logged-in customers go to their account; everyone else lands on the
-  // /subscription signup page, which renders inside the site layout (header +
-  // footer stay visible). Default to /subscription until the promise resolves.
-  const signedOut = <AccountIconLink className={className} to="/subscription" />;
+  // Logged-in customers go to their account dashboard; everyone else lands on
+  // the branded account page (LOGIN + CREATE ACCOUNT). Default to the login page
+  // until the promise resolves.
+  const signedOut = <AccountIconLink className={className} to="/account/login" />;
 
   return (
     <Suspense fallback={signedOut}>
       <Await errorElement={signedOut} resolve={isLoggedIn}>
         {(loggedIn) => (
-          <AccountIconLink className={className} to={loggedIn ? '/account' : '/subscription'} />
+          <AccountIconLink className={className} to={loggedIn ? '/account' : '/account/login'} />
         )}
       </Await>
     </Suspense>
