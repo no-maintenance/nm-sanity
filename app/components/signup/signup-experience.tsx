@@ -1,4 +1,4 @@
-import {Link} from '@remix-run/react';
+import {Form, Link} from '@remix-run/react';
 import {useEffect, useRef, useState} from 'react';
 import {KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID} from '~/sanity/constants';
 import {NmWaterGlitch} from '~/components/nm-water-glitch';
@@ -451,19 +451,83 @@ const SIGNUP_CSS = `
   gap: clamp(10px, 2.2vw, 20px);
 }
 .nm-signup.is-embedded .nm-signup-cd-num { font-size: clamp(17px, 2.8vw, 28px); }
+
+/* ---- Account variant: LOGIN + CREATE ACCOUNT ---- */
+.nm-signup-inner--account { width: min(1040px, 92vw); }
+.nm-signup-heading {
+  margin: 0 0 clamp(14px, 2.4vh, 22px);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.85);
+}
+.nm-signup-cols {
+  display: flex;
+  gap: clamp(28px, 6vw, 80px);
+  align-items: flex-start;
+  justify-content: center;
+}
+.nm-signup-col {
+  flex: 1 1 0;
+  min-width: 0;
+  /* Match the /subscription form-box width so the fields aren't squished. */
+  max-width: 400px;
+}
+/* Stack the two columns on phones/tablets. */
+@media (max-width: 720px) {
+  .nm-signup-cols {
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(28px, 5vh, 44px);
+  }
+  .nm-signup-col {
+    width: 100%;
+    max-width: 380px;
+  }
+}
+/* Embedded (inside the site layout, with header): let the section grow with the
+   stacked mobile content and the page scroll normally, instead of clipping. */
+.nm-signup.is-embedded.is-account {
+  overflow: visible;
+}
+.nm-signup.is-embedded.is-account .nm-signup-content {
+  padding: clamp(28px, 5vh, 56px) 20px;
+}
+/* The /subscription tuning caps .nm-signup-inner at 380px (single column). The
+   account page needs room for two columns — override it (higher specificity). */
+.nm-signup.is-embedded.is-account .nm-signup-inner--account {
+  width: min(920px, 92vw);
+}
+/* Full-bleed overlay (no header): scroll internally for tall content. */
+.nm-signup.is-account:not(.is-embedded) {
+  overflow-y: auto;
+}
+.nm-signup.is-account:not(.is-embedded) .nm-signup-content {
+  height: auto;
+  min-height: 100%;
+  padding: clamp(56px, 9vh, 96px) 20px clamp(40px, 7vh, 72px);
+}
 `;
 
 export function SignupExperience({
   onClose,
   logo = 'logo3d',
   embedded = false,
+  variant = 'signup',
 }: {
   onClose?: () => void;
   logo?: SignupLogo;
   // When true, render as an in-page section (keeps the site header/footer)
   // instead of a fixed full-viewport overlay.
   embedded?: boolean;
+  // 'signup' = single newsletter form (the /subscription page + banner overlay).
+  // 'account' = the account page: a LOGIN column (email → Shopify secure login)
+  // beside a CREATE ACCOUNT column (the same Klaviyo newsletter form).
+  variant?: 'signup' | 'account';
 }) {
+  const isAccount = variant === 'account';
   const bgVideoRef = useRef<HTMLVideoElement>(null);
   const glitchVideoRef = useRef<HTMLVideoElement>(null);
   const [firstName, setFirstName] = useState('');
@@ -593,12 +657,116 @@ export function SignupExperience({
     }
   }
 
+  const logoEl =
+    logo === 'logo3d' ? (
+      <NmLogo3D className="nm-signup-logo nm-signup-logo-3d" />
+    ) : (
+      <NmWaterGlitch className="nm-signup-logo" />
+    );
+
+  const successBlock = (
+    <p className="nm-signup-success">
+      You&rsquo;re in.
+      <br />
+      Watch your inbox.
+    </p>
+  );
+
+  // The Klaviyo newsletter form — the "create account" side. Shared by the
+  // /subscription page and the account page's CREATE ACCOUNT column.
+  const createAccountForm = (
+    <form onSubmit={onSubmit} autoComplete="off">
+      <div className="nm-signup-fields">
+        <input
+          className="nm-signup-input"
+          type="text"
+          name="first_name"
+          placeholder="First Name"
+          autoComplete="given-name"
+          aria-label="First name"
+          value={firstName}
+          onChange={(ev) => setFirstName(ev.target.value)}
+        />
+        <input
+          className="nm-signup-input"
+          type="text"
+          name="last_name"
+          placeholder="Last Name"
+          autoComplete="family-name"
+          aria-label="Last name"
+          value={lastName}
+          onChange={(ev) => setLastName(ev.target.value)}
+        />
+        <input
+          className="nm-signup-input"
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          autoComplete="email"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+          aria-label="Email address"
+          value={email}
+          onChange={(ev) => setEmail(ev.target.value)}
+        />
+        <input
+          className="nm-signup-input"
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          autoComplete="tel"
+          aria-label="Phone number"
+          value={phone}
+          onChange={(ev) => setPhone(ev.target.value)}
+        />
+      </div>
+
+      <div className="nm-signup-consent">
+        <input
+          id="nm-signup-consent"
+          type="checkbox"
+          checked={consent}
+          onChange={(ev) => setConsent(ev.target.checked)}
+        />
+        <label htmlFor="nm-signup-consent">
+          I agree to receive recurring marketing emails and automated texts and
+          accept the{' '}
+          <Link to="/policies/terms-of-service">Terms of Service</Link> &amp;{' '}
+          <Link to="/policies/privacy-policy">Privacy Policy</Link>. Msg &amp;
+          data rates may apply.
+        </label>
+      </div>
+
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <button
+          className="nm-signup-submit"
+          type="submit"
+          disabled={state === 'loading'}
+        >
+          {state === 'loading' ? 'Signing Up…' : 'Submit'}
+        </button>
+      </div>
+
+      <div
+        className={`nm-signup-msg${state === 'error' ? ' is-error' : ''}`}
+        role="status"
+        aria-live="polite"
+      >
+        {msg}
+      </div>
+    </form>
+  );
+
   return (
     <div
-      className={`nm-signup${embedded ? ' is-embedded' : ''}`}
-      role={embedded ? undefined : 'dialog'}
-      aria-modal={embedded ? undefined : 'true'}
-      aria-label="Sign up"
+      className={`nm-signup${embedded ? ' is-embedded' : ''}${
+        isAccount ? ' is-account' : ''
+      }`}
+      role={embedded || isAccount ? undefined : 'dialog'}
+      aria-modal={embedded || isAccount ? undefined : 'true'}
+      aria-label={isAccount ? 'Account' : 'Sign up'}
     >
       <style dangerouslySetInnerHTML={{__html: SIGNUP_CSS}} />
 
@@ -654,159 +822,113 @@ export function SignupExperience({
         >
           ✕
         </button>
+      ) : isAccount && !embedded ? (
+        // Full-bleed overlay (no site header) — the ✕ returns to the home page.
+        <Link className="nm-signup-close" to="/" aria-label="Close">
+          ✕
+        </Link>
       ) : null}
 
       <div className="nm-signup-content">
-        <div className="nm-signup-inner">
-          {/* Countdown only on the dedicated /subscription page (embedded),
-              never on the pop-up overlay. Once the timer ends the block is
-              hidden entirely (no "Live Now" link). */}
-          {embedded && RELEASE_TEXT ? (
-            isLive ? null : (
-              <>
-                <p className="nm-signup-release">{RELEASE_TEXT}</p>
-                <div
-                  className="nm-signup-countdown"
-                  role="timer"
-                  aria-label="Time until release"
-                >
-                  <div className="nm-signup-cd-unit">
-                    <span className="nm-signup-cd-num">
-                      {pad2(timeLeft?.days ?? 0)}
-                    </span>
-                    <span className="nm-signup-cd-label">Days</span>
+        {isAccount ? (
+          // Account page: LOGIN (email → Shopify secure login) beside CREATE
+          // ACCOUNT (the Klaviyo newsletter form). Two columns on desktop,
+          // stacked on mobile.
+          <div className="nm-signup-inner nm-signup-inner--account">
+            {logoEl}
+
+            <div className="nm-signup-cols">
+              <section className="nm-signup-col">
+                <h2 className="nm-signup-heading">Login</h2>
+                {/* Posts to this route's action → context.customerAccount.login()
+                    which redirects to Shopify's secure login (passwords are
+                    handled there, not on our site). */}
+                <Form method="post" className="nm-signup-loginform">
+                  <div className="nm-signup-fields">
+                    <input
+                      className="nm-signup-input"
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      required
+                      autoComplete="email"
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck={false}
+                      aria-label="Email address"
+                    />
                   </div>
-                  <div className="nm-signup-cd-unit">
-                    <span className="nm-signup-cd-num">
-                      {pad2(timeLeft?.hours ?? 0)}
-                    </span>
-                    <span className="nm-signup-cd-label">Hours</span>
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <button className="nm-signup-submit" type="submit">
+                      Sign In
+                    </button>
                   </div>
-                  <div className="nm-signup-cd-unit">
-                    <span className="nm-signup-cd-num">
-                      {pad2(timeLeft?.minutes ?? 0)}
-                    </span>
-                    <span className="nm-signup-cd-label">Minutes</span>
-                  </div>
-                  <div className="nm-signup-cd-unit">
-                    <span className="nm-signup-cd-num">
-                      {pad2(timeLeft?.seconds ?? 0)}
-                    </span>
-                    <span className="nm-signup-cd-label">Seconds</span>
-                  </div>
-                </div>
-              </>
-            )
-          ) : null}
+                </Form>
+              </section>
 
-          {logo === 'logo3d' ? (
-            <NmLogo3D className="nm-signup-logo nm-signup-logo-3d" />
-          ) : (
-            <NmWaterGlitch className="nm-signup-logo" />
-          )}
-
-          {state === 'ok' ? (
-            <p className="nm-signup-success">
-              You&rsquo;re in.
-              <br />
-              Watch your inbox.
-            </p>
-          ) : (
-            <>
-              <p className="nm-signup-sub">
-                Sign up for 10% off your first purchase.
-              </p>
-
-              <form onSubmit={onSubmit} autoComplete="off">
-                <div className="nm-signup-fields">
-                  <input
-                    className="nm-signup-input"
-                    type="text"
-                    name="first_name"
-                    placeholder="First Name"
-                    autoComplete="given-name"
-                    aria-label="First name"
-                    value={firstName}
-                    onChange={(ev) => setFirstName(ev.target.value)}
-                  />
-                  <input
-                    className="nm-signup-input"
-                    type="text"
-                    name="last_name"
-                    placeholder="Last Name"
-                    autoComplete="family-name"
-                    aria-label="Last name"
-                    value={lastName}
-                    onChange={(ev) => setLastName(ev.target.value)}
-                  />
-                  <input
-                    className="nm-signup-input"
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    required
-                    autoComplete="email"
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck={false}
-                    aria-label="Email address"
-                    value={email}
-                    onChange={(ev) => setEmail(ev.target.value)}
-                  />
-                  <input
-                    className="nm-signup-input"
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    autoComplete="tel"
-                    aria-label="Phone number"
-                    value={phone}
-                    onChange={(ev) => setPhone(ev.target.value)}
-                  />
-                </div>
-
-                <div className="nm-signup-consent">
-                  <input
-                    id="nm-signup-consent"
-                    type="checkbox"
-                    checked={consent}
-                    onChange={(ev) => setConsent(ev.target.checked)}
-                  />
-                  <label htmlFor="nm-signup-consent">
-                    I agree to receive recurring marketing emails and automated
-                    texts and accept the{' '}
-                    <Link to="/policies/terms-of-service">
-                      Terms of Service
-                    </Link>{' '}
-                    &amp;{' '}
-                    <Link to="/policies/privacy-policy">Privacy Policy</Link>.
-                    Msg &amp; data rates may apply.
-                  </label>
-                </div>
-
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <button
-                    className="nm-signup-submit"
-                    type="submit"
-                    disabled={state === 'loading'}
+              <section className="nm-signup-col">
+                <h2 className="nm-signup-heading">Create Account</h2>
+                {state === 'ok' ? successBlock : createAccountForm}
+              </section>
+            </div>
+          </div>
+        ) : (
+          <div className="nm-signup-inner">
+            {/* Countdown only on the dedicated /subscription page (embedded),
+                never on the pop-up overlay. Once the timer ends the block is
+                hidden entirely (no "Live Now" link). */}
+            {embedded && RELEASE_TEXT ? (
+              isLive ? null : (
+                <>
+                  <p className="nm-signup-release">{RELEASE_TEXT}</p>
+                  <div
+                    className="nm-signup-countdown"
+                    role="timer"
+                    aria-label="Time until release"
                   >
-                    {state === 'loading' ? 'Signing Up…' : 'Submit'}
-                  </button>
-                </div>
+                    <div className="nm-signup-cd-unit">
+                      <span className="nm-signup-cd-num">
+                        {pad2(timeLeft?.days ?? 0)}
+                      </span>
+                      <span className="nm-signup-cd-label">Days</span>
+                    </div>
+                    <div className="nm-signup-cd-unit">
+                      <span className="nm-signup-cd-num">
+                        {pad2(timeLeft?.hours ?? 0)}
+                      </span>
+                      <span className="nm-signup-cd-label">Hours</span>
+                    </div>
+                    <div className="nm-signup-cd-unit">
+                      <span className="nm-signup-cd-num">
+                        {pad2(timeLeft?.minutes ?? 0)}
+                      </span>
+                      <span className="nm-signup-cd-label">Minutes</span>
+                    </div>
+                    <div className="nm-signup-cd-unit">
+                      <span className="nm-signup-cd-num">
+                        {pad2(timeLeft?.seconds ?? 0)}
+                      </span>
+                      <span className="nm-signup-cd-label">Seconds</span>
+                    </div>
+                  </div>
+                </>
+              )
+            ) : null}
 
-                <div
-                  className={`nm-signup-msg${
-                    state === 'error' ? ' is-error' : ''
-                  }`}
-                  role="status"
-                  aria-live="polite"
-                >
-                  {msg}
-                </div>
-              </form>
-            </>
-          )}
-        </div>
+            {logoEl}
+
+            {state === 'ok' ? (
+              successBlock
+            ) : (
+              <>
+                <p className="nm-signup-sub">
+                  Sign up for 10% off your first purchase.
+                </p>
+                {createAccountForm}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
