@@ -5,6 +5,7 @@ import {flattenConnection, useProduct} from '@shopify/hydrogen-react';
 
 import {useProductVariants} from '../sections/product-information-section';
 import {AddToCartForm} from './add-to-cart-form';
+import {ColorSwatches} from './color-swatches';
 import {VariantSelector} from './variant-selector';
 
 export type AddToCartButtonBlockProps = NonNullable<
@@ -23,6 +24,7 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
   if (variantsContextData?.variants) {
     return (
       <div className={containerClass}>
+        <ColorSwatches />
         <VariantSelector
           options={product.options}
           variants={variantsContextData?.variants}
@@ -42,6 +44,7 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
 
   return (
     <div className={containerClass}>
+      <ColorSwatches />
       <VariantSelector options={product.options} variants={variants} />
       <AddToCartForm
         showQuantitySelector={showQuantitySelector}
