@@ -93,23 +93,21 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   object-position: center center;
   display: block;
 }
-/* bottom scrim so the white headline stays legible over the light photo */
+/* left scrim so the white headline stays legible over the photo */
 .crash-denim::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 42%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0));
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 50%);
   z-index: 0;
   pointer-events: none;
 }
 .crash-denim__title {
   position: absolute;
-  /* bottom-left corner, inset from the edges */
+  /* left edge, vertically centered */
   left: 4vw;
-  bottom: 5svh;
+  top: 50%;
+  transform: translateY(-50%);
   margin: 0;
   z-index: 1;
   pointer-events: none;
