@@ -106,7 +106,7 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   position: absolute;
   /* left edge, vertically centered */
   left: 4vw;
-  top: 50%;
+  top: 44%;
   transform: translateY(-50%);
   margin: 0;
   z-index: 1;
@@ -174,7 +174,7 @@ export function CrashDenimHero() {
   const maxPx =
     typeof hero?.headlineSize === 'number' && hero.headlineSize > 0
       ? hero.headlineSize
-      : 50;
+      : 15;
   const fitVw = 92 / (Math.max(headline.length, 1) * 0.85);
   const headlineFontSize = `min(${maxPx}px, ${fitVw.toFixed(2)}vw)`;
 
