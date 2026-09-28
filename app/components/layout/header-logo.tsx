@@ -18,7 +18,7 @@ export function Logo(props: {
   const siteName = sanitySettings?.siteName;
 
   const front = !logo?._ref ? (
-    <div className="md:scale-100 scale-80 font-heading flex h-11 items-center justify-center text-2xl whitespace-nowrap">
+    <div className="md:scale-100 scale-[0.4] font-heading flex h-11 items-center justify-center text-2xl whitespace-nowrap">
       {siteName}
     </div>
   ) : (
