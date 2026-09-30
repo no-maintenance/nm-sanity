@@ -18,7 +18,14 @@ export function Logo(props: {
   const siteName = sanitySettings?.siteName;
 
   const front = !logo?._ref ? (
-    <div className="md:scale-100 scale-80 font-heading flex h-11 items-center justify-center text-2xl whitespace-nowrap">
+    // The wordmark is a fixed ~223px wide (whitespace-nowrap) and sits between
+    // the menu button and the search/account/cart icons. There isn't room for
+    // it at full size on narrow phones, so it scales up to the largest size
+    // that fits the available gap (≈ viewport − 188px) and reaches full size
+    // (scale-100) around 427px and on desktop. Breakpoints are tuned to real
+    // iPhone widths (375 SE/mini, 390/393 std, 402 Pro, 414 Plus, 428+ Pro Max)
+    // so every device gets as large a logo as fits without touching the icons.
+    <div className="font-heading flex h-11 items-center justify-center text-2xl whitespace-nowrap scale-[0.75] min-[375px]:scale-[0.8] min-[390px]:scale-[0.85] min-[402px]:scale-[0.9] min-[414px]:scale-[0.95] min-[428px]:scale-100">
       {siteName}
     </div>
   ) : (

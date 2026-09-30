@@ -158,8 +158,8 @@ function Pills(props: {
   );
 
   return (
-    <m.div 
-      className="mt-1 flex items-center gap-x-6"
+    <m.div
+      className="mt-1 flex items-center gap-x-3 overflow-x-auto hiddenScroll sm:gap-x-6"
       layout
       layoutRoot
     >
@@ -206,7 +206,7 @@ function VariantItem(props: {
   const layoutId = handle! + option.name + section?.id;
 
   const buttonClass = cx([
-    'select-none py-1 text-sm disabled:cursor-pointer relative',
+    'select-none py-1 text-xs sm:text-sm whitespace-nowrap shrink-0 disabled:cursor-pointer relative',
     'focus-visible:outline-hidden focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   ]);
   

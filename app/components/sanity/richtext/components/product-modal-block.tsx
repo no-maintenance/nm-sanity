@@ -30,13 +30,13 @@ function SizeChartTable({ table }: SizeChartTableProps) {
   if (!table?.rows || table.rows.length === 0) return null;
   return (
     <div className="overflow-x-auto">
-      <table className="w-full table-auto bg-white text-[13px] md:text-base">
+      <table className="w-full table-auto bg-white text-[11px] md:text-base">
         <thead>
           <tr>
             {table.rows[0]?.cells?.map((cell: string, i: number) => (
               <th
                 key={i}
-                className="md:px-4 px-1.5 py-3 font-semibold text-black text-start border-b align-bottom"
+                className="md:px-4 px-1.5 py-3 font-semibold text-black text-start border-b align-bottom whitespace-nowrap"
               >
                 {cell}
               </th>
