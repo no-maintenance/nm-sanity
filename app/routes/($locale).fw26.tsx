@@ -294,9 +294,12 @@ const CTA_CLASS =
 function ShopButton() {
   return (
     <div className="flex justify-center px-4 py-14 md:py-20">
-      <Link to={SHOP_LINK} style={{fontSize: '8.4px'}} className={CTA_CLASS}>
+      {/* Full-page navigation: /collections/fw26 collides with this route's
+          ($locale)/fw26 pattern on client-side nav, so force a document load
+          which the server routes correctly to the collection page. */}
+      <a href={SHOP_LINK} style={{fontSize: '8.4px'}} className={CTA_CLASS}>
         Shop the collection
-      </Link>
+      </a>
     </div>
   );
 }
@@ -502,7 +505,10 @@ function RoadmapCaption({
 /* ------------------------------------------------------------------ */
 
 export default function FW26() {
-  const {products} = useLoaderData<typeof loader>();
+  // Guard against null loader data (e.g. if this route is ever matched without
+  // its loader running) so the page can never white-screen.
+  const data = useLoaderData<typeof loader>();
+  const products = data?.products ?? [];
   return (
     <div className="fw26 w-full overflow-x-clip bg-background text-foreground">
       {/* Season heading */}
@@ -547,6 +553,7 @@ export default function FW26() {
                 alt="Velum Jacket"
                 title="Velum Jacket"
                 description={VELUM_DESC}
+                price="325"
                 href={NEW_ARRIVALS_LINK}
               />
               <HoverProduct
