@@ -14,6 +14,7 @@ import { useLocalePath } from '~/hooks/use-locale-path';
 import { cn } from '~/lib/utils';
 import { useRootLoaderData } from '~/root';
 
+import Hamburger from '~/components/hamburger';
 import { ClientOnly } from '../client-only';
 import { headerVariants } from '../cva/header';
 import { IconAccount } from '../icons/icon-account';
@@ -41,9 +42,12 @@ function FluidHeaderScrollHandler() {
       // Let CSS resolve the (live) banner height so this self-corrects once the
       // banner measures itself; JS only injects the current scroll offset. The
       // header follows the page up and clamps at the very top (max 0).
+      // +0.5rem keeps a small gap below the banner so the resting position
+      // matches the pre-hydration fallback (2.5rem) — the header stays in that
+      // slightly-lower spot instead of snapping up on load.
       root.style.setProperty(
         '--fluid-header-top',
-        `max(0px, calc(var(--announcement-bar-height, 2.5rem) - ${window.scrollY}px))`,
+        `max(0px, calc(var(--announcement-bar-height, 2rem) + 0.5rem - ${window.scrollY}px))`,
       );
     };
     const onScroll = () => {
@@ -146,7 +150,27 @@ export function Header() {
         "touch:block",
         !showHamburgerMenuOnDesktop && "lg:hidden",
       )}>
-        <ClientOnly>
+        <ClientOnly
+          fallback={
+            // Server-rendered static hamburger so the header is complete on first
+            // paint (no flash / logo re-center when the client-only nav hydrates).
+            // Matches the real trigger's button + scaled Hamburger below.
+            <button
+              aria-label="main menu"
+              className="p-0 focus:outline-none focus-visible:outline-none"
+              type="button"
+            >
+              <div className="origin-center scale-80 sm:scale-100">
+                <Hamburger
+                  distance="lg"
+                  label="main menu"
+                  size={21}
+                  toggled={false}
+                />
+              </div>
+            </button>
+          }
+        >
           {() => (
             <Suspense>
               <MobileNavigation
