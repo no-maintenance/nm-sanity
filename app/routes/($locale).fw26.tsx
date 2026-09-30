@@ -25,7 +25,8 @@ export const meta: MetaFunction = () => [
 const SHOP_LINK = '/collections/fw26';
 const NEW_ARRIVALS_LINK = '/collections/new-arrivals';
 
-// Full runway film — web-optimized H.264 (1080p, ~22MB). Autoplays muted + loops.
+// Full runway film — web-optimized H.264 (1080p, ~14MB, faststart). Autoplays
+// muted + loops; falls back to an animated WebP loop in iOS Low Power Mode.
 const RUNWAY_VIDEO_URL = '/fw26/videos/runway.mp4';
 
 /* ------------------------------------------------------------------ */
@@ -208,13 +209,41 @@ function HeroVideo({
 
 function RunwayVideo() {
   const ref = useRef<HTMLVideoElement>(null);
+  const [useAnimatedImage, setUseAnimatedImage] = useState(false);
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
     v.muted = true;
+    // iOS Low Power Mode blocks autoplay; fall back to a looping animated WebP.
+    let swapped = false;
+    const swap = () => {
+      if (!swapped) {
+        swapped = true;
+        setUseAnimatedImage(true);
+      }
+    };
     const p = v.play();
-    if (p) p.catch(() => {});
+    if (p) p.catch(swap);
+    // `paused` (not currentTime) so a slow-buffering large file isn't falsely
+    // swapped — only swap when playback is actually blocked/paused.
+    const t = setTimeout(() => {
+      if (v.paused) swap();
+    }, 2500);
+    return () => clearTimeout(t);
   }, []);
+
+  if (useAnimatedImage) {
+    return (
+      <img
+        src="/fw26/videos/runway.webp"
+        alt="FW26 runway film"
+        className="block aspect-[599/399] w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
   return (
     <video
       ref={ref}
