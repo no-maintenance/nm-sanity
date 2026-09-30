@@ -600,9 +600,17 @@ function PredictiveSearchItem({
                 </div>
                 {inputRef?.current && inputRef.current.value !== '' && (
                   <div
-                    className={
-                      'h-screen-no-nav overflow-auto hiddenScroll'
-                    }
+                    className={'overflow-auto hiddenScroll'}
+                    style={{
+                      // Bound the results to the space left below the search bar
+                      // so more than one row of products can actually scroll.
+                      // (The old `h-screen-no-nav` class was never defined, so the
+                      // container had no height limit and overflow never engaged.)
+                      maxHeight:
+                        popupTop !== null
+                          ? `calc(100dvh - ${popupTop}px - var(--height-nav, 4rem))`
+                          : 'calc(100dvh - var(--announcement-bar-height, 0px) - var(--desktopHeaderHeight) - var(--height-nav, 4rem))',
+                    }}
                   >
                     <div
                       ref={predictiveSearchRef}

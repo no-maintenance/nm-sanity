@@ -362,9 +362,9 @@ function SearchResultsProductsGrid({
         </div>
         {searchTerm.current && (
           <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`} >
-            <Button className={'my-gutter'}>
-              View all results for <q>{searchTerm.current}</q>
-              &nbsp; →
+            <Button className={'my-gutter bg-black text-white notouch:hover:bg-black/90 hover:active:bg-black/80'}>
+              <span>View all results for &ldquo;{searchTerm.current}&rdquo;</span>
+              <span aria-hidden="true" className={'ml-2'}>&rarr;</span>
             </Button>
           </Link>
         )}
