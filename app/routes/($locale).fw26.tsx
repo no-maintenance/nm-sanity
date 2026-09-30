@@ -145,6 +145,7 @@ function HeroVideo({
   start: number;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [useAnimatedImage, setUseAnimatedImage] = useState(false);
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
@@ -158,13 +159,42 @@ function HeroVideo({
     };
     if (v.readyState >= 1) seek();
     else v.addEventListener('loadedmetadata', seek, {once: true});
+
+    // iOS Low Power Mode blocks video autoplay at the OS level. If play() is
+    // rejected — or the video never actually starts — swap in an animated WebP
+    // which loops even in Low Power Mode (it renders as an image, not a video).
+    let swapped = false;
+    const swap = () => {
+      if (!swapped) {
+        swapped = true;
+        setUseAnimatedImage(true);
+      }
+    };
     const p = v.play();
-    if (p) p.catch(() => {});
+    if (p) p.catch(swap);
+    const t = setTimeout(() => {
+      if (v.paused || v.currentTime < 0.02) swap();
+    }, 2000);
+    return () => clearTimeout(t);
   }, [start]);
+
+  if (useAnimatedImage) {
+    return (
+      <img
+        src={`/fw26/videos/${name}.webp`}
+        alt={alt}
+        className="block aspect-[4/5] w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
   return (
     <video
       ref={ref}
       src={`/fw26/videos/${name}.mp4?v=2`}
+      poster={`/fw26/videos/${name}-poster.jpg`}
       className="block aspect-[4/5] w-full object-cover"
       autoPlay
       muted
