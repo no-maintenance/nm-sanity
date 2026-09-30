@@ -547,6 +547,7 @@ export default function FW26() {
                 alt="Velum Jacket"
                 title="Velum Jacket"
                 description={VELUM_DESC}
+                price="325"
                 href={NEW_ARRIVALS_LINK}
               />
               <HoverProduct
