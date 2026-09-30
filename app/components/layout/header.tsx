@@ -28,31 +28,39 @@ import { PredictiveSearchForm } from '~/components/search';
 import { IconClose } from '~/components/icons/icon-close';
 import { CountrySelector } from '~/components/layout/country-selector';
 
-// Client-only component to handle scroll events for fluid header
-function FluidHeaderScrollHandler({
-  onScroll,
-}: {
-  onScroll: (scrolled: boolean) => void;
-}) {
+// Client-only component: makes the fluid header scroll up *with* the page
+// (following the announcement banner) and ease onto the very top once the
+// banner has scrolled away — a smooth transition instead of a snap. It keeps a
+// `--fluid-header-top` CSS var in sync = max(0, bannerHeight - scrollY).
+function FluidHeaderScrollHandler() {
   useEffect(() => {
-    // Check initial scroll position on mount
-    const checkScroll = () => {
-      // Lower threshold to detect scroll sooner
-      const scrolled = window.scrollY > 10;
-      onScroll(scrolled);
+    let raf = 0;
+    const root = document.documentElement;
+    const update = () => {
+      raf = 0;
+      // Let CSS resolve the (live) banner height so this self-corrects once the
+      // banner measures itself; JS only injects the current scroll offset. The
+      // header follows the page up and clamps at the very top (max 0).
+      root.style.setProperty(
+        '--fluid-header-top',
+        `max(0px, calc(var(--announcement-bar-height, 2.5rem) - ${window.scrollY}px))`,
+      );
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
     };
 
-    // Run once on mount
-    checkScroll();
+    update();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onScroll);
 
-    // Set up event listener
-    window.addEventListener('scroll', checkScroll);
-
-    // Clean up
     return () => {
-      window.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      root.style.removeProperty('--fluid-header-top');
     };
-  }, [onScroll]);
+  }, []);
 
   return null;
 }
@@ -294,12 +302,9 @@ function HeaderWrapper(props: {
 
   // Check if current page should have fluid header
   const isHomePage = pathname === '/';
-  const shouldHaveFluidHeader = enableFluidHeader &&
-    ((isHomePage && fluidHeaderOnHomePage));
-
-  // State to track scroll position for fluid header
-  // Initialize to transparent (false) for fluid headers, solid (true) for regular headers
-  const [isScrolled, setIsScrolled] = useState(!shouldHaveFluidHeader);
+  // Homepage always uses the fluid (transparent, adaptive, overlaying the hero)
+  // header. Kept independent of CMS flags so it can't flip off.
+  const shouldHaveFluidHeader = isHomePage;
 
   // Mobile nav state, search state, and cart state
   const { mobileNavOpen = false, searchOpen = false, cartOpen = false } = props;
@@ -310,20 +315,34 @@ function HeaderWrapper(props: {
       fluidHeaderTextColor === 'black' ? 'text-black' :
         'text-foreground';
 
-  // Determine if header should be in solid state (scrolled, nav open, search open, or cart open)
-  const isSolidState = isScrolled || mobileNavOpen || searchOpen || cartOpen;
+  // Fluid header stays transparent/adaptive while scrolling; only opening a
+  // panel (nav / search / cart) forces the solid state for readability.
+  const isSolidState = mobileNavOpen || searchOpen || cartOpen;
 
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',
-    // Position: fixed when fluid header, sticky when normal header
-    shouldHaveFluidHeader ? 'fixed top-0 left-0 right-0 z-40' :
-      (sticky !== 'none' ? 'sticky top-0 z-40' : ''),
+    // Position: fluid header is fixed and sits *below* the announcement banner
+    // at the top of the page, then follows the page up and eases onto the very
+    // top once the banner has scrolled away (smooth, never overlaps the banner).
+    // The 2.5rem fallback matches a single-line banner so the header sits below
+    // it even before JS/hydration sets the exact --announcement-bar-height.
+    shouldHaveFluidHeader
+      ? 'fixed left-0 right-0 z-40 top-[var(--fluid-header-top,var(--announcement-bar-height,2.5rem))]'
+      : (sticky !== 'none' ? 'sticky top-0 z-40' : ''),
+
+    // Compact vertical padding for the fluid header so the logo/icons hug the
+    // banner (matches the standard header's tight spacing instead of the taller
+    // section-padding box). Overrides section-padding's top/bottom only.
+    shouldHaveFluidHeader && '!py-1.5 sm:!py-1.5',
 
     // Apply fluid header styles
     shouldHaveFluidHeader ? (
       isSolidState
         ? 'bg-background text-foreground'
-        : `bg-transparent ${fluidTextColorClass}`
+        : // transparent over the hero: white + difference blend renders the
+          // logo/icons as the inverse ("opposite") of whatever is behind them,
+          // so they stay legible over both light and dark areas of the photo.
+          'bg-transparent text-white mix-blend-difference'
     ) : 'bg-background text-foreground',
 
     // Only apply blur when not in transparent state
@@ -355,7 +374,7 @@ function HeaderWrapper(props: {
       {shouldHaveFluidHeader && (
         <ClientOnly>
           {() => (
-            <FluidHeaderScrollHandler onScroll={setIsScrolled} />
+            <FluidHeaderScrollHandler />
           )}
         </ClientOnly>
       )}
