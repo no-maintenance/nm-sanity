@@ -65,6 +65,7 @@ import shopifyCollectionRule from './objects/shopify/shopify-collection-rule';
 import shopifyProduct from './objects/shopify/shopify-product';
 import shopifyProductVariant from './objects/shopify/shopify-product-variant';
 import footer from './singletons/footer';
+import fw26Roadmap from './singletons/fw26-roadmap';
 import header from './singletons/header';
 import home from './singletons/home';
 import settings from './singletons/settings';
@@ -82,7 +83,7 @@ import gridGenerator from './objects/games/grid-generator';
 import hintWordAnalyzer from './objects/games/hint-word-analyzer';
 import canonicalGrid from './objects/games/canonical-grid';
 
-const singletons = [home, header, footer, settings, themeContent];
+const singletons = [home, header, footer, settings, themeContent, fw26Roadmap];
 const documents = [
   page,
   color,

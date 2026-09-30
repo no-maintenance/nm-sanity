@@ -18,6 +18,7 @@ export const structure: StructureResolver = (S, context) => {
     .title('Content')
     .items([
       singleton(S, SINGLETONS.home),
+      singleton(S, SINGLETONS.fw26Roadmap),
       S.documentTypeListItem('page').icon(PanelsTopLeft),
       S.listItem()
         .title('Editorials')
