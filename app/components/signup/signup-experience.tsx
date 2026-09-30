@@ -24,9 +24,10 @@ function toE164(raw: string): string {
 
 // Limited-release countdown shown above the logo. Update these when the release
 // changes (or clear RELEASE_TEXT to hide the whole block).
-const RELEASE_TEXT = 'Double Rivet Leather Jacket releasing 9/18';
-// Target: 11:00 AM Pacific on 9/18/2026 (PDT = UTC-7) → 18:00 UTC.
-const RELEASE_AT_MS = Date.parse('2026-09-18T18:00:00Z');
+const RELEASE_TEXT = 'FW26 DELIVERY 4';
+// Target: 11:00 AM Pacific on 10/9/2026. Oct 9 is still PDT (DST ends Nov 1),
+// so 11:00 PDT (UTC-7) → 18:00 UTC — matches the "11AM PST/2PM EST" banner.
+const RELEASE_AT_MS = Date.parse('2026-10-09T18:00:00Z');
 
 type TimeLeft = {days: number; hours: number; minutes: number; seconds: number};
 function getTimeLeft(): TimeLeft {
