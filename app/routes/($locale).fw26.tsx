@@ -32,15 +32,15 @@ const RUNWAY_VIDEO_URL = '/fw26/videos/runway.mp4';
 /* Content                                                             */
 /* ------------------------------------------------------------------ */
 
-// Top hero grid — six full runway films. Each begins at its matched timestamp
-// on load, then loops the full clip.
+// Top hero grid — six full runway films, each playing from the start and
+// looping infinitely.
 const HERO_VIDEOS = [
-  {name: 'warr-topleft', alt: 'FW26 runway film', start: 6.2},
-  {name: 'rob-topmiddle', alt: 'FW26 runway film', start: 6.17},
-  {name: 'aaron-topright', alt: 'FW26 runway film', start: 7.05},
-  {name: 'amu-bottomleft', alt: 'FW26 runway film', start: 7.02},
-  {name: 'warr-bottommiddle', alt: 'FW26 runway film', start: 6.14},
-  {name: 'rob-bottomright', alt: 'FW26 runway film', start: 6.23},
+  {name: 'warr-topleft', alt: 'FW26 runway film', start: 0},
+  {name: 'rob-topmiddle', alt: 'FW26 runway film', start: 0},
+  {name: 'aaron-topright', alt: 'FW26 runway film', start: 0},
+  {name: 'amu-bottomleft', alt: 'FW26 runway film', start: 0},
+  {name: 'warr-bottommiddle', alt: 'FW26 runway film', start: 0},
+  {name: 'rob-bottomright', alt: 'FW26 runway film', start: 0},
 ];
 
 const WALK_LOOKS = [
@@ -164,7 +164,7 @@ function HeroVideo({
   return (
     <video
       ref={ref}
-      src={`/fw26/videos/${name}.mp4`}
+      src={`/fw26/videos/${name}.mp4?v=2`}
       className="block aspect-[4/5] w-full object-cover"
       autoPlay
       muted
