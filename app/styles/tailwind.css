@@ -285,6 +285,11 @@ body.mobile-nav-open .collection-category-bar {
       font-size: 14px !important;
     }
   }
+
+  /* FW26 newsletter input: match the SUBSCRIBE button text sizing */
+  input#fw26-newsletter-email {
+    font-size: 8.4px !important;
+  }
   button,
   [role='button'] {
     cursor: pointer;

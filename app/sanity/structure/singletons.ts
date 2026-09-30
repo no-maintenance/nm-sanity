@@ -6,6 +6,7 @@ import {
   HomeIcon,
   InsertAboveIcon,
   InsertBelowIcon,
+  ThLargeIcon,
 } from '@sanity/icons';
 
 type Singleton = {
@@ -53,6 +54,12 @@ export const SINGLETONS: {
     _type: 'settings',
     title: 'Settings',
     icon: CogIcon,
+  },
+  fw26Roadmap: {
+    id: 'fw26Roadmap',
+    _type: 'fw26Roadmap',
+    title: 'FW26 Roadmap',
+    icon: ThLargeIcon,
   },
 };
 
