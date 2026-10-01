@@ -178,6 +178,17 @@ body.mobile-nav-open .collection-category-bar {
   display: none;
 }
 
+/* Fluid (transparent) header: keep the wordmark + icons consistently white and
+   readable over any background by giving them a soft shadow, instead of a
+   per-pixel difference blend (which split the logo into two colors at tonal
+   edges). The shadow provides edge contrast on light backgrounds too. */
+.fluid-header-legible {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+.fluid-header-legible svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
 @layer utilities {
   .animate-shake {
     animation: shake 0.5s ease-in-out;

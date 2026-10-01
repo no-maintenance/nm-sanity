@@ -343,29 +343,6 @@ function HeaderWrapper(props: {
   // panel (nav / search / cart) forces the solid state for readability.
   const isSolidState = mobileNavOpen || searchOpen || cartOpen;
 
-  // Over the hero (dark photo) the logo/icons stay clean white. Once the header
-  // scrolls past the hero onto the lighter content below, switch on the
-  // difference blend so they invert and stay legible on light backgrounds.
-  const [overLightContent, setOverLightContent] = useState(false);
-  useEffect(() => {
-    if (!shouldHaveFluidHeader) {
-      setOverLightContent(false);
-      return;
-    }
-    const update = () => {
-      // The hero fills roughly one viewport; once scrolled most of the way past
-      // it, the lighter sections sit behind the fixed header.
-      setOverLightContent(window.scrollY > window.innerHeight * 0.85);
-    };
-    update();
-    window.addEventListener('scroll', update, {passive: true});
-    window.addEventListener('resize', update);
-    return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
-  }, [shouldHaveFluidHeader]);
-
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',
     // Position: fluid header is fixed and sits *below* the announcement banner
@@ -386,12 +363,10 @@ function HeaderWrapper(props: {
     shouldHaveFluidHeader ? (
       isSolidState
         ? 'bg-background text-foreground'
-        : overLightContent
-          ? // over the lighter sections below the hero: difference blend inverts
-            // the logo/icons so they stay legible on light backgrounds.
-            'bg-transparent text-white mix-blend-difference'
-          : // over the hero: keep the logo/icons clean white (no inversion).
-            'bg-transparent text-white'
+        : // Transparent overlay: logo/icons stay consistently white (no invert /
+          // no sharp color change). A soft shadow (see .fluid-header-legible)
+          // keeps them readable over both dark and light areas behind them.
+          'bg-transparent text-white fluid-header-legible'
     ) : 'bg-background text-foreground',
 
     // Only apply blur when not in transparent state
