@@ -6,6 +6,7 @@ import {useLoaderData} from '@remix-run/react';
 import {DEFAULT_LOCALE} from 'countries';
 import {CmsSection} from '~/components/cms-section';
 import {CrashDenimHero} from '~/components/sections/crash-denim-hero';
+import {HomeTiles} from '~/components/sections/home-tiles';
 import {PAGE_QUERY} from '~/data/sanity/queries';
 import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 import {mergeMeta} from '~/lib/meta';
@@ -83,6 +84,7 @@ export default function PageRoute() {
     <>
       {/* Crash Denim tile renders on every locale's homepage (/, /fr, /ja, …). */}
       {isHome ? <CrashDenimHero /> : null}
+      {isHome ? <HomeTiles /> : null}
       {data?.sections && data.sections.length > 0
         ? data.sections.map((section, index) => (
             <CmsSection data={section} index={index} key={section._key} />
