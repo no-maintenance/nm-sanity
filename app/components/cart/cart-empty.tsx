@@ -11,6 +11,13 @@ import type {CartLayouts} from '.';
 import {ProgressiveMotionDiv} from '../progressive-motion';
 import {Button} from '../ui/button';
 
+// Force the Continue Shopping button black instead of the theme's primary
+// colour (a brown/taupe from the Sanity colour scheme). Scoped to this button so
+// the site-wide primary button colour is unchanged. Hover/active are overridden
+// too, otherwise they'd fall back to the primary colour on interaction.
+const emptyCartButtonClass =
+  'bg-black text-white notouch:hover:bg-black/90 hover:active:bg-black/80';
+
 export function CartEmpty({
   layout = 'drawer',
   onClose,
@@ -54,16 +61,18 @@ export function CartEmpty({
               layout === 'drawer' && 'justify-center text-center',
             ])}
           >
-            <span>{themeContent?.cart?.emptyMessage}</span>
+            {/* The empty-cart blurb (themeContent.cart.emptyMessage) is
+                intentionally not rendered — the Continue Shopping button is
+                enough on its own. Restore this line to bring it back. */}
             <div>
               {layout === 'page' ? (
-                <Button asChild>
+                <Button asChild className={emptyCartButtonClass}>
                   <Link prefetch="intent" to={collectionsPath}>
                     {themeContent?.cart?.continueShopping}
                   </Link>
                 </Button>
               ) : (
-                <Button onClick={onClose}>
+                <Button className={emptyCartButtonClass} onClick={onClose}>
                   {themeContent?.cart?.continueShopping}
                 </Button>
               )}
