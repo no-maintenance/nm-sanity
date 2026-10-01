@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useLocalePath } from '~/hooks/use-locale-path';
 import { useSanityThemeContent } from '~/hooks/use-sanity-theme-content';
 import CleanString from '../sanity/clean-string';
+import { splitTitleNameColor } from '~/lib/product-title';
 import { abbreviateSize } from '~/lib/size-label';
 import { cn } from '~/lib/utils';
 import { useRootLoaderData } from '~/root';
@@ -43,6 +44,13 @@ export function ProductCard(props: {
     ? flattenConnection(product?.variants)
     : null;
   const firstVariant = variants?.[0];
+
+  // "Name - Colour" titles render as two lines (name above colour, no dash).
+  // Titles without a colour — or with a size/sample suffix — come back with an
+  // empty colour and show the name alone. Same helper the product page uses.
+  const {color: productColor, name: productName} = splitTitleNameColor(
+    product?.title,
+  );
 
   // Check if all variants are sold out
   const allVariantsSoldOut = variants?.every(variant => !variant.availableForSale) ?? false;
@@ -165,8 +173,14 @@ export function ProductCard(props: {
               </CardMedia>
             )}
             <CardContent className="pl-0 pt-2 pb-0 space-y-1">
+              {/* Name on the first line, colour on the second — no " - "
+                  separator. Both lines share the card's font size. `truncate`
+                  keeps the name to a single line at every breakpoint; the
+                  colour line always renders (a non-breaking space when a
+                  product has no colour) so prices stay aligned across a row. */}
               <div className="underline-offset-4 uppercase">
-                {product.title}
+                <div className="truncate">{productName}</div>
+                <div className="truncate">{productColor || '\u00A0'}</div>
               </div>
               <div className="gap-truncate-e h-10">
 
