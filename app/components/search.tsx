@@ -173,16 +173,19 @@ function SearchResultsProductsGrid({
                 product,
                 `q=${encodeURIComponent(searchTerm)}`,
               );
-  
+              // Guard: a product with no variants would otherwise throw here and
+              // (no route ErrorBoundary) take down the whole /search page.
+              const firstVariant = product.variants?.nodes?.[0];
+
               return (
                 <div className="search-results-item" key={product.id}>
                   <Link
                     prefetch="intent"
                     to={`/products/${product.handle}${trackingParams}`}
                   >
-                    {product.variants.nodes[0].image && (
+                    {firstVariant?.image && (
                       <Image
-                        data={product.variants.nodes[0].image}
+                        data={firstVariant.image}
                         alt={product.title}
                         width={50}
                       />
@@ -190,7 +193,9 @@ function SearchResultsProductsGrid({
                     <div>
                       <p>{product.title}</p>
                       <small>
-                        <Money data={product.variants.nodes[0].price} />
+                        {firstVariant?.price && (
+                          <Money data={firstVariant.price} />
+                        )}
                       </small>
                     </div>
                   </Link>
@@ -443,7 +448,7 @@ function SearchResultsProductsGrid({
   
   function SearchResultProduct({goToSearchResult, item}: SearchResultItemProps) {
     const { sanityRoot } = useRootLoaderData();
-    const { data } = stegaClean(sanityRoot);
+    const { data } = stegaClean(sanityRoot) ?? {};
     const style = data?.settings?.productCards?.style;
     const textAlignment = data?.settings?.productCards?.textAlignment || 'left';
     const aspectRatio = data?.settings?.productCards?.imageAspectRatio || 'video';
