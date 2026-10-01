@@ -161,7 +161,7 @@ function Pills(props: {
 
   return (
     <m.div
-      className="mt-1 flex items-center gap-x-3 overflow-x-auto hiddenScroll sm:gap-x-6"
+      className="mt-1 flex items-center gap-x-8 overflow-x-auto hiddenScroll sm:gap-x-6"
       layout
       layoutRoot
     >
