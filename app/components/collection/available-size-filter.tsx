@@ -5,6 +5,7 @@ import {useCallback} from 'react';
 
 import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-data';
 import {AVAILABLE_SIZE_URL_PARAM, stripPaginationParams} from '~/lib/shopify-collection';
+import {abbreviateSize, SIZE_ALIASES} from '~/lib/size-label';
 import {cn} from '~/lib/utils';
 
 import {Checkbox} from '../ui/checkbox';
@@ -24,23 +25,9 @@ const SIZE_ORDER = [
   '4XL',
 ];
 
-// Maps long-form size labels Shopify returns ("X-Small", "Medium", ...) to the
-// canonical short codes used in SIZE_ORDER.
-const SIZE_ALIASES: Record<string, string> = {
-  'XX-SMALL': 'XXS',
-  'XXSMALL': 'XXS',
-  'X-SMALL': 'XS',
-  'XSMALL': 'XS',
-  'SMALL': 'S',
-  'MEDIUM': 'M',
-  'LARGE': 'L',
-  'X-LARGE': 'XL',
-  'XLARGE': 'XL',
-  'XX-LARGE': 'XXL',
-  'XXLARGE': 'XXL',
-  'XXX-LARGE': 'XXXL',
-  'XXXLARGE': 'XXXL',
-};
+// SIZE_ALIASES (long-form Shopify labels -> canonical short codes used in
+// SIZE_ORDER) now lives in ~/lib/size-label, shared with the product card and
+// the product page size selector so all three display the same short codes.
 
 function sizeRank(size: string): number {
   const upper = size.toUpperCase().trim();
@@ -183,7 +170,7 @@ function SizeCheckbox({
         )}
         htmlFor={id}
       >
-        {size}
+        {abbreviateSize(size)}
       </Label>
     </div>
   );

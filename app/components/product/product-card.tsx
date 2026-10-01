@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useLocalePath } from '~/hooks/use-locale-path';
 import { useSanityThemeContent } from '~/hooks/use-sanity-theme-content';
 import CleanString from '../sanity/clean-string';
+import { abbreviateSize } from '~/lib/size-label';
 import { cn } from '~/lib/utils';
 import { useRootLoaderData } from '~/root';
 
@@ -234,19 +235,24 @@ function ProductCardVariants({
 }) {
   return (
     <>
-      {variants?.map((variant, idx) => (
-        <h4 key={`variant-${idx}`} className={'inline text-base'}>
-          {variant.availableForSale ? (
-            variant.title
-          ) : (
-            <span
-              className={cn(['strike', variant.title.length < 4 && 'small'])}
-            >
-              {variant.title}
-            </span>
-          )}
-        </h4>
-      ))}
+      {variants?.map((variant, idx) => {
+        // Display the short size code ("XS"), not Shopify's long-form title
+        // ("X-Small"). The strike sizing keys off the rendered label so the
+        // sold-out line still fits the shorter text.
+        const label = abbreviateSize(variant.title);
+
+        return (
+          <h4 key={`variant-${idx}`} className={'inline text-base'}>
+            {variant.availableForSale ? (
+              label
+            ) : (
+              <span className={cn(['strike', label.length < 4 && 'small'])}>
+                {label}
+              </span>
+            )}
+          </h4>
+        );
+      })}
     </>
   );
 }
