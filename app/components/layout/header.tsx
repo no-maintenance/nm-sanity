@@ -642,6 +642,9 @@ function PredictiveSearchItem({
                   />
                   &nbsp;
                   <Button
+                    // "GO" is the visible label; keep a descriptive accessible
+                    // name so screen readers still announce what it does.
+                    aria-label="Search"
                     variant={'ghost'}
                     className={'outline-offset-0'}
                     onClick={() => {
@@ -650,7 +653,7 @@ function PredictiveSearchItem({
                         : `/search`;
                     }}
                   >
-                    Search
+                    GO
                   </Button>
                 </div>
                 {inputRef?.current && inputRef.current.value !== '' && (
