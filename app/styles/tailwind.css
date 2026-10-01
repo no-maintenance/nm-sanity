@@ -297,6 +297,11 @@ body.mobile-nav-open .collection-category-bar {
     }
   }
 
+  /* Header search input: match the ADD TO CART button text sizing */
+  input#header-search {
+    font-size: 12px !important;
+  }
+
   /* FW26 newsletter input: match the SUBSCRIBE button text sizing */
   input#fw26-newsletter-email {
     font-size: 8.4px !important;
