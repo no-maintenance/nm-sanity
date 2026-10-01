@@ -42,12 +42,12 @@ function FluidHeaderScrollHandler() {
       // Let CSS resolve the (live) banner height so this self-corrects once the
       // banner measures itself; JS only injects the current scroll offset. The
       // header follows the page up and clamps at the very top (max 0).
-      // +0.5rem keeps a small gap below the banner so the resting position
-      // matches the pre-hydration fallback (2.5rem) — the header stays in that
-      // slightly-lower spot instead of snapping up on load.
+      // The header box sits flush against the banner (no gap) so an opaque
+      // header never reveals a sliver of page below the banner. The lowered
+      // "down" look is achieved with top padding on the content, not a top gap.
       root.style.setProperty(
         '--fluid-header-top',
-        `max(0px, calc(var(--announcement-bar-height, 2rem) + 0.5rem - ${window.scrollY}px))`,
+        `max(0px, calc(var(--announcement-bar-height, 2rem) - ${window.scrollY}px))`,
       );
     };
     const onScroll = () => {
@@ -368,19 +368,21 @@ function HeaderWrapper(props: {
 
   const headerClassName = cx([
     'section-padding pointer-events-auto  w-full',
-    // Position: fluid header is fixed and sits *below* the announcement banner
-    // at the top of the page, then follows the page up and eases onto the very
-    // top once the banner has scrolled away (smooth, never overlaps the banner).
-    // The 2.5rem fallback matches a single-line banner so the header sits below
-    // it even before JS/hydration sets the exact --announcement-bar-height.
+    // Position: fluid header is fixed and sits flush below the announcement
+    // banner, then follows the page up and eases onto the very top once the
+    // banner has scrolled away (smooth, never overlaps the banner). The 2rem
+    // fallback matches the measured single-line banner height so the box sits
+    // flush even before JS/hydration — no load shift, and no gap for an opaque
+    // header to reveal when the menu/search/cart opens.
     shouldHaveFluidHeader
-      ? 'fixed left-0 right-0 z-40 top-[var(--fluid-header-top,var(--announcement-bar-height,2.5rem))]'
+      ? 'fixed left-0 right-0 z-40 top-[var(--fluid-header-top,var(--announcement-bar-height,2rem))]'
       : (sticky !== 'none' ? 'sticky top-0 z-40' : ''),
 
-    // Compact vertical padding for the fluid header so the logo/icons hug the
-    // banner (matches the standard header's tight spacing instead of the taller
-    // section-padding box). Overrides section-padding's top/bottom only.
-    shouldHaveFluidHeader && '!py-1.5 sm:!py-1.5',
+    // Vertical padding for the fluid header: extra top padding drops the
+    // logo/icons into the lowered "down" position while the header box itself
+    // stays flush with the banner (so there's never a gap sliver). Overrides
+    // section-padding's top/bottom only.
+    shouldHaveFluidHeader && '!pt-3.5 !pb-1.5 sm:!pt-3.5 sm:!pb-1.5',
 
     // Apply fluid header styles
     shouldHaveFluidHeader ? (
