@@ -44,8 +44,10 @@ const CSS = `
   width: 100%;
   background: #0a0a0a;
   /* cancel the <main> flex column's section gap so the tiles sit flush against
-     the hero (no white seam). Uses the same var/breakpoint as that gap. */
+     the hero above AND the next section below (no white seam on either edge).
+     Uses the same var/breakpoint as that gap. */
   margin-top: calc(var(--space-between-template-sections) * -0.75);
+  margin-bottom: calc(var(--space-between-template-sections) * -1);
 }
 @media (min-width: 640px) {
   .home-tiles {
