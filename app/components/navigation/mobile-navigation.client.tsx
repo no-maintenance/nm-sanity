@@ -106,6 +106,7 @@ export function MobileNavigation({data, headerRef, navFontSize, open = false, se
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
+                    transition={{duration: 0}}
                     className="fixed inset-x-0 bottom-0 bg-background pointer-events-auto"
                     style={
                       drawerTop !== null
