@@ -75,14 +75,6 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  /* Inter (variable, latin) — self-hosted; used at the 18pt optical size. */
-  font-family: "Inter 18pt";
-  src: url("/fonts/inter-latin-var.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
 
 .crash-denim {
   position: relative;
@@ -123,13 +115,8 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   z-index: 1;
   pointer-events: none;
   color: #fff;
-  font-family: "Inter 18pt", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  /* pin the 18pt optical size of the variable Inter face */
-  font-optical-sizing: none;
-  /* declare wght in variation-settings too, otherwise the variable face falls
-     back to 400 in some engines when variation-settings is present. */
-  font-variation-settings: "opsz" 18, "wght" 250;
-  font-weight: 250;
+  font-family: "SS26 Display", ui-monospace, Menlo, Monaco, monospace;
+  font-weight: 400;
   text-transform: uppercase;
   /* desktop: keep the headline on ONE line (auto-fit sizing, see component) */
   white-space: nowrap;
