@@ -546,8 +546,42 @@ function PredictiveSearchItem({
   onSearchOpenChange?: (open: boolean) => void;
 }) {
   const predictiveSearchRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [popupTop, setPopupTop] = useState<number | null>(null);
+  const {pathname: searchPathname} = useLocation();
+
+  const closeSearch = useCallback(() => {
+    setOpen(false);
+    if (onSearchOpenChange) {
+      onSearchOpenChange(false);
+    }
+  }, [onSearchOpenChange]);
+
+  // Retract the search bar on navigation — e.g. tapping the logo to go home, or
+  // any nav/search-result link. Guarded on an actual pathname change so opening
+  // the drawer (which doesn't navigate) never closes it immediately.
+  const prevPathname = useRef(searchPathname);
+  useEffect(() => {
+    if (prevPathname.current === searchPathname) return;
+    prevPathname.current = searchPathname;
+    closeSearch();
+  }, [searchPathname, closeSearch]);
+
+  // Clicking the logo while already on that page doesn't change the pathname,
+  // so the effect above wouldn't fire. Close on any link click outside the
+  // drawer too; links inside the drawer navigate and are handled above.
+  useEffect(() => {
+    if (!open) return;
+    const handleLinkClick = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      const link = target?.closest?.('a[href]');
+      if (!link || drawerRef.current?.contains(link)) return;
+      closeSearch();
+    };
+    document.addEventListener('click', handleLinkClick);
+    return () => document.removeEventListener('click', handleLinkClick);
+  }, [open, closeSearch]);
 
   const handleToggleSearch = () => {
     const newOpenState = !open;
@@ -585,6 +619,7 @@ function PredictiveSearchItem({
       </IconButton>
       {open && (
         <div
+          ref={drawerRef}
           className={
             'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter shadow-sm'
           }
