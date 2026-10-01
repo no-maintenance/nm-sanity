@@ -35,15 +35,32 @@ const DEFAULT_SEARCH_TYPES: PredictiveSearchTypes[] = [
  * requested by the SearchForm component
  */
 export async function loader({request, params, context}: LoaderFunctionArgs) {
-  const search = await fetchPredictiveSearchResults({
-    params,
-    request,
-    context,
-  });
+  // Degrade gracefully: this loader is hit by the header search fetcher on every
+  // keystroke/open. A transient Shopify failure must NOT throw — an unhandled
+  // fetcher error bubbles to the root ErrorBoundary and flashes the full-page
+  // "An error occurred" screen. On failure, return empty results instead.
+  try {
+    const search = await fetchPredictiveSearchResults({
+      params,
+      request,
+      context,
+    });
 
-  return json(search, {
-    headers: {'Cache-Control': `max-age=${search.searchTerm ? 60 : 3600}`},
-  });
+    return json(search, {
+      headers: {'Cache-Control': `max-age=${search.searchTerm ? 60 : 3600}`},
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Predictive search failed:', error);
+    return json(
+      {
+        searchResults: {results: NO_PREDICTIVE_SEARCH_RESULTS, totalResults: 0},
+        searchTerm: '',
+        searchTypes: DEFAULT_SEARCH_TYPES,
+      },
+      {headers: {'Cache-Control': 'no-store'}},
+    );
+  }
 }
 
 async function fetchPredictiveSearchResults({

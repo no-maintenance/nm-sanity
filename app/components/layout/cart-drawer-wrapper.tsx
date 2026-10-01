@@ -28,7 +28,11 @@ export default function CartDrawerWrapper({
 
   return (
     <Suspense fallback={<Badge count={0} />}>
-      <Await resolve={rootData?.cart}>
+      {/* errorElement is required: this lives in the header on every page, so a
+          transient cart-fetch rejection would otherwise bubble to the root
+          ErrorBoundary and flash the full-page "An error occurred" screen on an
+          unrelated click/re-render. Degrade to an empty cart badge instead. */}
+      <Await errorElement={<Badge count={0} />} resolve={rootData?.cart}>
         {(cart) => (
           <Badge
             cart={cart as CartApiQueryFragment}
