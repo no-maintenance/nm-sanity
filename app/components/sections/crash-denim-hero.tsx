@@ -63,7 +63,7 @@ function buildHeroImage(
   };
 }
 
-function buildCss(desktopRatio: string, headlineFontSize: string) {
+function buildCss(desktopRatio: string, headlineFontSize: string, headlineFontSizeMobile: string) {
   return `
 /* expose the desktop hero's aspect ratio so sibling sections (e.g. the home
    tiles) can match the hero's height and stay in sync on image swaps. */
@@ -71,6 +71,13 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
 @font-face {
   font-family: "SS26 Display";
   src: url("/fonts/ss26-display.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Alte Haas Grotesk";
+  src: url("/fonts/alte-haas-grotesk.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -115,13 +122,14 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
   z-index: 1;
   pointer-events: none;
   color: #fff;
-  font-family: "SS26 Display", ui-monospace, Menlo, Monaco, monospace;
+  font-family: "Alte Haas Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-weight: 400;
   text-transform: uppercase;
   /* desktop: keep the headline on ONE line (auto-fit sizing, see component) */
   white-space: nowrap;
   text-align: left;
-  letter-spacing: 0.04em;
+  /* tracking 25 */
+  letter-spacing: 0.025em;
   line-height: 1.04;
   /* auto-fit: shrinks just enough to fit the headline on one line; the CMS
      "Headline size" slider caps the max (short headlines stay ~50px). */
@@ -136,20 +144,23 @@ function buildCss(desktopRatio: string, headlineFontSize: string) {
     height: auto;
     aspect-ratio: ${desktopRatio};
   }
+  /* desktop headline placement — matches the design (more indented + lower). */
+  .crash-denim__title {
+    left: 11.5vw;
+    top: 49%;
+  }
 }
 
 /* portrait/mobile: keep the full-bleed frame but anchor the crop near the top
-   so the subject's head stays in view (cover trims the lower edge instead), and
-   wrap the longer release headline. */
+   so the subject's head stays in view (cover trims the lower edge instead). The
+   headline stays on ONE line (auto-fit, same as desktop) to match the design. */
 @media (max-width: 768px) {
   .crash-denim__img {
     object-position: center top;
   }
+  /* mobile headline is smaller than desktop (matches the design ~12px). */
   .crash-denim__title {
-    font-size: clamp(18px, 5.5vw, 34px);
-    white-space: normal;
-    max-width: 72vw;
-    line-height: 1.15;
+    font-size: ${headlineFontSizeMobile};
   }
 }
 
@@ -170,16 +181,18 @@ export function CrashDenimHero() {
   const link = stegaClean(hero?.link)?.trim() || FALLBACK_LINK;
 
   // Desktop headline: auto-fit to ONE line. `fitVw` is the largest size (in vw)
-  // at which the headline still fits the ~92vw text area on one line, derived
-  // from its length (~0.85em avg per character in the SS26 display font). The
-  // CMS "Headline size" slider (or a 50px default) caps the max, so short
-  // headlines stay ~50px and long ones shrink just enough to fit.
+  // at which the headline still fits on one line. The CMS "Headline size" slider
+  // caps the desktop max (set to 17 for the current design).
   const maxPx =
     typeof hero?.headlineSize === 'number' && hero.headlineSize > 0
       ? hero.headlineSize
-      : 15;
+      : 17;
+  // Mobile headline reads ~0.7x the desktop size in the design (desktop ~17px,
+  // mobile ~12px), so give mobile its own, smaller cap.
+  const mobileMaxPx = maxPx * 0.7;
   const fitVw = 92 / (Math.max(headline.length, 1) * 0.85);
   const headlineFontSize = `min(${maxPx}px, ${fitVw.toFixed(2)}vw)`;
+  const headlineFontSizeMobile = `min(${mobileMaxPx.toFixed(2)}px, ${fitVw.toFixed(2)}vw)`;
 
   const desktopSrc = desktop?.src || FALLBACK_DESKTOP;
   const mobileSrc = mobile?.src || FALLBACK_MOBILE;
@@ -194,7 +207,7 @@ export function CrashDenimHero() {
       className="crash-denim"
       aria-label={`Shop ${headline}`}
     >
-      <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio, headlineFontSize)}} />
+      <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio, headlineFontSize, headlineFontSizeMobile)}} />
       <picture>
         <source
           media="(max-width: 768px)"
