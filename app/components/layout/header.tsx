@@ -625,10 +625,20 @@ function PredictiveSearchItem({
                     name="q"
                     onChange={fetchResults}
                     onFocus={fetchResults}
-                    placeholder="Search"
+                    placeholder="SEARCH"
                     ref={inputRef}
                     type="search"
-                    className={'flex-1 h-10 px-2 border rounded-sm'}
+                    /* Matches the ADD TO CART button's type: 12px / 600 /
+                       uppercase (tracking is already 1px via inheritance).
+                       The size comes from the `input#header-search` rule in
+                       tailwind.css — the global `input { font-size: 16px
+                       !important }` Safari-zoom guard outranks a utility
+                       class, so per-input sizes are set there (same pattern as
+                       the footer and FW26 newsletter inputs). */
+                    id="header-search"
+                    className={
+                      'flex-1 h-10 px-2 border rounded-sm font-semibold uppercase'
+                    }
                   />
                   &nbsp;
                   <Button
