@@ -5,9 +5,13 @@
  * Each tile links somewhere (defaults to New Arrivals), cover-crops its photo to
  * a shared frame so both columns line up, and shows a centred Inter caption that
  * matches the hero headline's weight.
+ *
+ * Links use plain <a> (full document navigation), NOT Remix <Link>: the targets
+ * /fw26 and /collections/fw26 collide with the ($locale)/fw26 route pattern on
+ * client-side nav (React Router can match ($locale)=collections → fw26), which
+ * intermittently 404s. A document load lets the server route them correctly —
+ * the same reason the /fw26 route's own "Shop the collection" CTA uses <a href>.
  */
-import {Link} from '@remix-run/react';
-
 const TILES = [
   {
     alt: 'FW26 — full looks',
@@ -139,9 +143,9 @@ export function HomeTiles() {
     <section className="home-tiles" aria-label="Featured">
       <style dangerouslySetInnerHTML={{__html: CSS}} />
       {TILES.map((tile) => (
-        <Link
+        <a
           key={tile.src}
-          to={tile.link}
+          href={tile.link}
           className="home-tiles__tile"
           aria-label={tile.alt}
         >
@@ -154,7 +158,7 @@ export function HomeTiles() {
             style={{objectPosition: tile.position}}
           />
           <span className="home-tiles__caption">{tile.label}</span>
-        </Link>
+        </a>
       ))}
     </section>
   );
