@@ -12,6 +12,8 @@ import {useCallback, useMemo} from 'react';
 import {useHydrated} from '~/hooks/use-hydrated';
 import {useOptimisticNavigationData} from '~/hooks/use-optimistic-navigation-data';
 import {useSelectedVariant} from '~/hooks/use-selected-variant';
+import {SIZE_VARIANT_OPTION_NAME} from '~/lib/shopify-collection';
+import {abbreviateSize} from '~/lib/size-label';
 
 import {useSection} from '../cms-section';
 
@@ -205,6 +207,15 @@ function VariantItem(props: {
   const section = useSection();
   const layoutId = handle! + option.name + section?.id;
 
+  // Show the short size code ("XS") instead of Shopify's long-form value
+  // ("X-Small"). Only the Size option is abbreviated — other options (colour,
+  // material) render verbatim. The underlying `value` is untouched, so
+  // selection, URLs, and the cart still use the real Shopify variant name.
+  const isSizeOption =
+    (option.name ?? '').trim().toLowerCase() ===
+    SIZE_VARIANT_OPTION_NAME.toLowerCase();
+  const label = isSizeOption ? abbreviateSize(value) : value;
+
   const buttonClass = cx([
     'select-none py-1 text-xs sm:text-sm whitespace-nowrap shrink-0 disabled:cursor-pointer relative',
     'focus-visible:outline-hidden focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
@@ -225,7 +236,7 @@ function VariantItem(props: {
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      <m.span className={textClass}>{value}</m.span>
+      <m.span className={textClass}>{label}</m.span>
       
       {/* Animated underline */}
       <div className="h-px ">
@@ -244,7 +255,7 @@ function VariantItem(props: {
     </m.button>
   ) : (
     <Link className={buttonClass} to={search}>
-      <span className={textClass}>{value}</span>
+      <span className={textClass}>{label}</span>
       
       {/* Static underline for non-JS */}
       <div className="h-px ">
