@@ -173,14 +173,16 @@ export function ProductCard(props: {
               </CardMedia>
             )}
             <CardContent className="pl-0 pt-2 pb-0 space-y-1">
-              {/* Name on the first line, colour on the second — no " - "
-                  separator. Both lines share the card's font size. `truncate`
-                  keeps the name to a single line at every breakpoint; the
-                  colour line always renders (a non-breaking space when a
-                  product has no colour) so prices stay aligned across a row. */}
-              <div className="underline-offset-4 uppercase">
+              {/* Name on the first line, colour (grey) on the second — no
+                  " - " separator. The type steps down on narrow screens so
+                  names still fit: several collections render 2 columns on
+                  mobile, leaving each card only ~153px wide at 390px.
+                  `truncate` keeps the name to one line, and the colour line
+                  always renders (a non-breaking space when a product has no
+                  colour) so prices stay aligned across a row. */}
+              <div className="underline-offset-4 max-sm:tracking-tight text-[10px] uppercase sm:text-[11px] md:text-xs">
                 <div className="truncate">{productName}</div>
-                <div className="truncate">{productColor || '\u00A0'}</div>
+                <div className="truncate text-gray-500">{productColor || '\u00A0'}</div>
               </div>
               <div className="gap-truncate-e h-10">
 
