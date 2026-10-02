@@ -78,6 +78,11 @@ function isSizeChartContent(content: unknown): content is {
 export interface ProductModalBlockProps {
   value: {
     triggerLabel: string;
+    /**
+     * When set, the trigger renders as a plain link to this URL instead of
+     * opening a modal (e.g. "Returns and Exchanges" -> the policy page).
+     */
+    linkUrl?: string;
     modalTitle: string;
     content: PortableTextBlock[];
   };
@@ -91,7 +96,7 @@ export interface ProductModalBlockProps {
 export default function ProductModalBlock(props: ProductModalBlockProps) {
   const { value, productSizeChart } = props;
   const [open, setOpen] = useState(false);
-  const { triggerLabel, modalTitle, content } = value;
+  const { triggerLabel, linkUrl, modalTitle, content } = value;
   const {product} = useProduct();
   // Use the product's sizeChart if productSizeChart is not provided
   const sizeChart = productSizeChart || (product && 'sizeChart' in product ? (product as any).sizeChart : undefined);
@@ -127,6 +132,24 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
       ...portableTextMarks,
     },
   };
+
+  // A link-style entry (e.g. "Returns and Exchanges") renders as a plain
+  // anchor, styled identically to the modal triggers so it still lines up in
+  // the Size Guide row. External URLs open in a new tab.
+  if (linkUrl) {
+    const isExternal = /^https?:\/\//i.test(linkUrl);
+    return (
+      <a
+        className="text-sm font-medium text-primary underline"
+        href={linkUrl}
+        {...(isExternal
+          ? {rel: 'noopener noreferrer', target: '_blank'}
+          : {})}
+      >
+        {triggerLabel}
+      </a>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
