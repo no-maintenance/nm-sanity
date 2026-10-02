@@ -218,7 +218,11 @@ export function Header() {
           onSearchOpenChange={setSearchOpen}
         />
       )}
-      <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
+      {/* Account is desktop-only: dropping it on mobile frees the width the
+          centred wordmark needs. */}
+      <div className="hidden sm:block">
+        <AccountLink className="focus:ring-primary/5 relative flex items-center justify-center" />
+      </div>
       <CartDrawer
         cartOpen={cartOpen}
         onCartOpenChange={handleCartOpenChange}
@@ -232,13 +236,15 @@ export function Header() {
       <div className="container">
         {logoPosition === 'center' ? (
           <>
-            {/* Mobile: 3-column flex preserves spacing between logo and icons */}
-            <div className="sm:hidden flex items-center justify-between gap-3">
+            {/* Mobile: absolutely centre the wordmark so it sits mid-screen
+                rather than mid-gap. The menu button and icons have different
+                widths, so a flex row would always push it off-centre. */}
+            <div className="sm:hidden relative flex items-center justify-between gap-3">
               <div className="flex items-center shrink-0">
                 {NavigationComponent}
               </div>
-              <div className="flex flex-1 items-center justify-center min-w-0 px-2">
-                {LogoComponent}
+              <div className="pointer-events-none absolute left-1/2 -translate-x-1/2">
+                <div className="pointer-events-auto">{LogoComponent}</div>
               </div>
               <div className="flex items-center shrink-0 gap-2">
                 {Icons}
