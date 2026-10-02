@@ -113,7 +113,10 @@ export function FooterWithNav(
 
   return (
     <footer className="bg-white container ">
-      <section className="mt-16 mb-5 sm:px-4">
+      {/* The section above the footer already contributes ~60px of
+          bottom padding, so a further 64px here left a large empty band
+          on mobile. Keep the roomier gap from md up. */}
+      <section className="mt-4 mb-5 sm:px-4 md:mt-16">
         <style dangerouslySetInnerHTML={{ __html: colorsCssVars }} />
         <div className="mx-auto mb-4 md:mb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
