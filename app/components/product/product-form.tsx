@@ -17,7 +17,10 @@ export function ProductForm(props: AddToCartButtonBlockProps) {
   const {product} = useProduct();
   const variantsContextData = useProductVariants();
   const showQuantitySelector = props.quantitySelector;
-  const containerClass = 'grid gap-4 mt-2 mb-4';
+  // mb-1 (not mb-4) so the Size Guide / Returns row sits close under the
+  // purchase buttons. The full gap below Shop Pay is this margin plus the
+  // sticky wrapper's pb-2 and the column's space-y-1 — 16px in total.
+  const containerClass = 'grid gap-4 mt-2 mb-1';
   if (!product) return null;
 
   if (variantsContextData?.variants) {
