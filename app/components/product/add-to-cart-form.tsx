@@ -170,8 +170,12 @@ export function AddToCartForm(props: {
                         // (base, hover, active) has to be overridden or the
                         // button flashes back to the theme colour on hover.
                         'border-black bg-black text-white',
-                        'notouch:hover:bg-black/90 notouch:hover:text-white',
-                        'hover:active:bg-black/80 active:text-white',
+                        // Hover lifts to a clear dark grey (the old black/90 was
+                        // rgb(26,26,26) — effectively invisible against black).
+                        // Pressed goes a step darker for feedback. Border tracks
+                        // the fill so the edge doesn't stay pure black.
+                        'notouch:hover:border-neutral-700 notouch:hover:bg-neutral-700 notouch:hover:text-white',
+                        'hover:active:border-neutral-800 hover:active:bg-neutral-800 active:text-white',
                         isOutOfStock && 'opacity-50',
                         // Opacity does not change when is loading to prevent flickering
                         'data-[loading="true"]:disabled:opacity-100',
