@@ -119,6 +119,14 @@ export function CollectionMobileNav({
         'sticky z-30',
         'top-[var(--header-height,64px)]',
         'bg-background',
+        // --header-height is measured by JS after mount. Until it lands (and if
+        // it ever goes stale) the sticky offset falls back to 64px while the
+        // real header is ~59px, so the bar parks just below the header and the
+        // grid shows through the sliver. Bleed the bar's own background upward
+        // to fill it. The header is z-40 against this bar's z-30, so the strip
+        // always paints behind the header and is invisible when flush.
+        'before:pointer-events-none before:absolute before:inset-x-0',
+        'before:bottom-full before:h-10 before:bg-background before:content-[""]',
       )}
     >
       <div className="flex items-stretch">

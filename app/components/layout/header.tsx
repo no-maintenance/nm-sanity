@@ -6,7 +6,7 @@ import { getImageDimensions } from '@sanity/asset-utils';
 import { stegaClean } from '@sanity/client/stega';
 import { cx } from 'class-variance-authority';
 import { m, transform, useMotionValueEvent, useTransform } from 'motion/react';
-import React, { Suspense, useEffect, useState, useRef, useId, useCallback } from 'react';
+import React, { Suspense, useEffect, useLayoutEffect, useState, useRef, useId, useCallback } from 'react';
 
 import { useBoundedScroll } from '~/hooks/use-bounded-scroll';
 import { useColorsCssVars } from '~/hooks/use-colors-css-vars';
@@ -69,6 +69,11 @@ function FluidHeaderScrollHandler() {
   return null;
 }
 
+// useLayoutEffect warns during SSR (layout effects never run on the server), so
+// pick the effect that's valid for the current environment.
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export function Header() {
   const { sanityRoot } = useRootLoaderData();
   const data = sanityRoot?.data;
@@ -92,7 +97,11 @@ export function Header() {
 
   // Keep --header-height in sync with the actual rendered header so sticky
   // elements below it (e.g. mobile category bar) sit flush against it.
-  useEffect(() => {
+  // useLayoutEffect on the client so the real height is written before paint —
+  // with a plain useEffect those elements render one frame at the fallback
+  // offset first, which shows as a sliver under the header. Falls back to
+  // useEffect on the server, where layout effects don't run.
+  useIsomorphicLayoutEffect(() => {
     const node = headerRef.current;
     if (!node || typeof ResizeObserver === 'undefined') return;
     const setVar = () => {
