@@ -16,16 +16,27 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'linkUrl',
+      title: 'Link URL (optional)',
+      description:
+        'If set, the trigger becomes a plain link to this URL instead of opening a modal. Leave empty to use the modal content below.',
+      type: 'url',
+      validation: (Rule) =>
+        Rule.uri({allowRelative: true, scheme: ['http', 'https']}),
+    }),
+    defineField({
       name: 'modalTitle',
       title: 'Modal Title',
       description: 'Title shown at the top of the modal',
-      type: 'string'
+      type: 'string',
+      hidden: ({parent}) => Boolean(parent?.linkUrl),
     }),
     defineField({
       name: 'content',
       title: 'Modal Content',
       description: 'Content for the modal body. ',
       type: 'array',
+      hidden: ({parent}) => Boolean(parent?.linkUrl),
       of: [
         {
           type: 'block',

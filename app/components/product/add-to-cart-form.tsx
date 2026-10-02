@@ -165,6 +165,13 @@ export function AddToCartForm(props: {
                       variant={'outline'}
                       className={cn([
                         'w-full',
+                        // Solid black CTA. The `outline` variant is a light
+                        // background with a border, so every state it sets
+                        // (base, hover, active) has to be overridden or the
+                        // button flashes back to the theme colour on hover.
+                        'border-black bg-black text-white',
+                        'notouch:hover:bg-black/90 notouch:hover:text-white',
+                        'hover:active:bg-black/80 active:text-white',
                         isOutOfStock && 'opacity-50',
                         // Opacity does not change when is loading to prevent flickering
                         'data-[loading="true"]:disabled:opacity-100',
