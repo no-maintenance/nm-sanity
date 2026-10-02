@@ -140,7 +140,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
     const isExternal = /^https?:\/\//i.test(linkUrl);
     return (
       <a
-        className="text-sm font-medium text-primary underline"
+        className="text-sm font-medium text-primary uppercase underline"
         href={linkUrl}
         {...(isExternal
           ? {rel: 'noopener noreferrer', target: '_blank'}
@@ -154,7 +154,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="text-sm font-medium text-primary underline">
+        <button className="text-sm font-medium text-primary uppercase underline">
           {triggerLabel}
         </button>
       </DialogTrigger>
