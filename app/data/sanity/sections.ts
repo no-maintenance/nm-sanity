@@ -212,6 +212,8 @@ export const STICKY_TILE_SECTION_FRAGMENT = defineQuery(`{
     mediaType,
     image ${IMAGE_FRAGMENT},
     video ${MUX_VIDEO_FRAGMENT},
+    videoUrl,
+    videoPoster,
     "richtext": coalesce(
       richtext[_key == $language][0].value[] ${RICHTEXT_FRAGMENT},
       richtext[_key == $defaultLanguage][0].value[] ${RICHTEXT_FRAGMENT},
