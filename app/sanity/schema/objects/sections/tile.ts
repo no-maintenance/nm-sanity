@@ -50,6 +50,22 @@ export default defineType({
       hidden: ({parent}) => parent?.mediaType !== 'video',
     }),
     defineField({
+      name: 'videoUrl',
+      title: 'Self-hosted video URL',
+      type: 'string',
+      hidden: ({parent}) => parent?.mediaType !== 'video',
+      description:
+        'Optional. A path to a video in /public (e.g. /store-reel-v1.mp4). When set, this is used instead of the Mux video above — cheaper and lighter for short silent loops. Always pair it with a poster.',
+    }),
+    defineField({
+      name: 'videoPoster',
+      title: 'Self-hosted video poster',
+      type: 'string',
+      hidden: ({parent}) => parent?.mediaType !== 'video' || !parent?.videoUrl,
+      description:
+        'Still shown before the video loads (e.g. /store-reel-v1-poster.jpg). Keeps the tile from flashing empty.',
+    }),
+    defineField({
       name: 'richtext',
       title: 'Banner Rich Text',
       type: 'internationalizedArrayBannerRichtext', // Assuming this is a defined type

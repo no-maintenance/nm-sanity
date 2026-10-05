@@ -31,6 +31,8 @@ interface ResolvedSanityLink {
 interface TilePropsFallback {
     _key?: string;
     mediaType?: 'image' | 'video' | null;
+    videoUrl?: null | string;
+    videoPoster?: null | string;
     image?: any;
     video?: any;
     richtext?: any;
@@ -112,6 +114,8 @@ function Tile({
         mediaType = 'image',
         image,
         video,
+        videoUrl,
+        videoPoster,
         richtext,
         link,
         externalLink,
@@ -126,7 +130,10 @@ function Tile({
     const colorsCssVars = hasColorScheme ? useColorsCssVars({settings, selector: `#tile-${tileId}`}) : '';
     const portableTextComponents = useMemo((): PortableTextComponents => ({}), []);
 
-    const hasMedia = (mediaType === 'image' && image?.asset) || (mediaType === 'video' && video?.asset);
+    const selfHostedVideo = mediaType === 'video' && !!videoUrl;
+    const hasMedia =
+        (mediaType === 'image' && image?.asset) ||
+        (mediaType === 'video' && (video?.asset || selfHostedVideo));
 
     let mediaContainerClassName = 'aspect-auto'; // Default
     if (mediaType === 'video' && tile.video?.asset?.data?.aspect_ratio) {
@@ -136,6 +143,24 @@ function Tile({
         // ... other mappings ...
     }
 
+    // A plain <video> for self-hosted loops. preload="none" + poster means the
+    // tile paints instantly from a ~20KB still and the mp4 only downloads once
+    // it's actually on screen, so it never blocks page load. muted+playsInline
+    // are required for autoplay on iOS.
+    const SelfHostedVideo = ({className}: {className?: string}) => (
+        <video
+            autoPlay
+            className={className}
+            loop
+            muted
+            playsInline
+            poster={videoPoster || undefined}
+            preload="none"
+        >
+            <source src={videoUrl || ''} type="video/mp4" />
+        </video>
+    );
+
     const tileInnerContent = isSticky ? (
         <div
             className="w-full flex flex-col relative h-full"
@@ -143,15 +168,19 @@ function Tile({
         >
             {hasMedia && (
                 <div className="relative w-full overflow-hidden h-full">
-                    <SanityMedia
-                        image={image}
-                        video={video}
-                        mediaType={mediaType}
-                        className="w-full object-cover h-full"
-                        objectFit="cover"
-                        priority
-                        hiddenControls={mediaType === 'video'}
-                    />
+                    {selfHostedVideo ? (
+                        <SelfHostedVideo className="w-full object-cover h-full" />
+                    ) : (
+                        <SanityMedia
+                            image={image}
+                            video={video}
+                            mediaType={mediaType}
+                            className="w-full object-cover h-full"
+                            objectFit="cover"
+                            priority
+                            hiddenControls={mediaType === 'video'}
+                        />
+                    )}
                 </div>
             )}
             {richtext && (
@@ -175,14 +204,18 @@ function Tile({
                     'relative w-full overflow-hidden',
                     mediaContainerClassName,
                 )}>
-                    <SanityMedia
-                        image={image}
-                        video={video}
-                        mediaType={mediaType}
-                        className="w-full object-cover"
-                        objectFit="cover"
-                        hiddenControls={mediaType === 'video'}
-                    />
+                    {selfHostedVideo ? (
+                        <SelfHostedVideo className="w-full object-cover" />
+                    ) : (
+                        <SanityMedia
+                            image={image}
+                            video={video}
+                            mediaType={mediaType}
+                            className="w-full object-cover"
+                            objectFit="cover"
+                            hiddenControls={mediaType === 'video'}
+                        />
+                    )}
                 </div>
             )}
             <div className={cn(
