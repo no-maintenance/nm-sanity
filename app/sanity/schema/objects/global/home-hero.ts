@@ -44,10 +44,15 @@ export default defineType({
     defineField({
       name: 'headlineSize',
       title: 'Headline size (desktop)',
-      description: 'Drag to make the headline bigger or smaller on desktop. Leave empty for the default (~50px). Mobile sizes itself automatically.',
+      description: 'Drag to make the headline bigger or smaller on desktop. Leave empty for the default (17px). Mobile sizes itself automatically (~0.7x).',
       type: 'rangeSlider',
-      options: {min: 24, max: 80, suffix: 'px'},
-      validation: (Rule) => Rule.min(24).max(80),
+      // The current hero design runs ~17px desktop (see crash-denim-hero.tsx),
+      // but this range used to start at 24 — leaving the saved value of 17
+      // permanently invalid. Sanity disables Publish when ANY field on a
+      // document fails validation, so that stale floor silently blocked every
+      // edit to the Header (announcement bar, nav, everything). Floor is now 10.
+      options: {min: 10, max: 80, suffix: 'px'},
+      validation: (Rule) => Rule.min(10).max(80),
     }),
     defineField({
       name: 'link',
