@@ -297,9 +297,18 @@ body.mobile-nav-open .collection-category-bar {
     }
   }
 
-  /* Header search input: match the ADD TO CART button text sizing */
+  /* Header search input. iOS Safari zooms the whole page when a focused input
+     renders under 16px — which is what the global rule above exists to prevent.
+     So touch devices get 16px (no zoom), and pointer devices, which can't
+     trigger that zoom at all, keep the 12px that matches the ADD TO CART
+     button. Keyed off pointer type rather than width so iPads are covered too. */
   input#header-search {
     font-size: 12px !important;
+  }
+  @media (pointer: coarse) {
+    input#header-search {
+      font-size: 16px !important;
+    }
   }
 
   /* FW26 newsletter input: match the SUBSCRIBE button text sizing */
