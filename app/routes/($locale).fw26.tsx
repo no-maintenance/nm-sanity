@@ -620,7 +620,9 @@ export default function FW26() {
                 alt="Torai Wide Leg Pants in Hickory Stripe"
                 title="Torai Wide Leg Pants in Hickory Stripe"
                 description={TORAI_DESC}
-                href={NEW_ARRIVALS_LINK}
+                price="290"
+                available
+                href="https://nomaintenance.us/products/torai-wide-leg-denim-hickory-stripe"
               />
             </div>
           </div>
