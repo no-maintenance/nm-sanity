@@ -22,12 +22,14 @@ const TILES = [
     src: '/hometile-left-v1.jpg',
   },
   {
-    alt: 'FW26 — jacket detail',
+    alt: 'FW26 — bomber jacket hanging in the warehouse',
     label: 'SHOP FW26 COLLECTION',
     link: '/collections/fw26',
-    // keep the face/collar in frame
-    position: 'center 25%',
-    src: '/hometile-right-v1.jpg',
+    // already cropped to the tile's desktop frame (8:9) around the jacket, so a
+    // plain centre keeps it centred at both breakpoints — mobile's 4:5 frame
+    // only trims 5% off each side.
+    position: 'center',
+    src: '/hometile-right-v2.jpg',
   },
 ];
 
