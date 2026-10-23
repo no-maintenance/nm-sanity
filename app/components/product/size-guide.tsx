@@ -307,18 +307,25 @@ function GarmentDrawing({
   // Horizontal arrows carry the number inside a break in the line, the way the
   // mockups draw them; vertical and diagonal ones sit it alongside instead.
   const inline = arrow?.label === 'above';
+
+  // Half the label's ink width — measured once painted, estimated before.
+  const halfW = value ? (ink ? ink.w : value.length * FONT * 0.5) / 2 : 0;
+
+  // A number beside a vertical/diagonal line clears the line by a fixed gap on
+  // its *near* edge, whatever its width. Offsetting the centre by a constant
+  // (the old +70) let a wide "63.5cm" overrun back onto the line while a narrow
+  // "30"" sat clear; keying off the measured width keeps every label off it.
+  const SIDE_GAP = 34;
   const off =
     arrow?.label === 'right'
-      ? {x: 70, y: 0}
+      ? {x: SIDE_GAP + halfW, y: 0}
       : arrow?.label === 'left'
-        ? {x: -70, y: 0}
+        ? {x: -(SIDE_GAP + halfW), y: 0}
         : {x: 0, y: 0};
 
-  // Half-width of the break in the line: measured ink plus breathing room,
-  // falling back to a character-count estimate for the first frame.
-  const gap = value
-    ? Math.max(46, (ink ? ink.w : value.length * FONT * 0.5) / 2 + FONT * 0.42)
-    : 0;
+  // Half-width of the break in the line for an inline (above) number: measured
+  // ink plus breathing room.
+  const gap = value ? Math.max(46, halfW + FONT * 0.42) : 0;
   let legs: {x1: number; x2: number; y1: number; y2: number}[] = [];
   if (arrow) {
     if (inline && value && mid) {

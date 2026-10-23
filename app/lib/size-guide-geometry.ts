@@ -48,6 +48,15 @@ export interface GarmentSpec {
 type Raw = [number, number, number, number, ArrowSpec['label']];
 type RawGuides = [null | [number, number], null | [number, number]];
 
+/**
+ * Where the trouser legs separate, normalised to the bottoms drawing.
+ * Found structurally (.context/tools/find-crotch.py): scan down the drawing for
+ * the first row where a sustained white gap opens between the inner leg seams.
+ * Scanning up from the hem doesn't work — these are sketchy lines, so a stray
+ * break in a seam reads as the gap closing well above the real crotch.
+ */
+const CROTCH: [number, number] = [0.514, 0.4622];
+
 function garment(
   src: string,
   imgW: number,
@@ -77,24 +86,28 @@ function garment(
 
 export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
   bottoms: garment('/sizeguide/bottoms.png', 712, 1192, {
+    // Rise and inseam both meet at CROTCH, so their arrows end on that row and
+    // their leaders run flat to it. Probing in from the arrow (how every other
+    // leader was found) stops at the outer leg seam instead, which left the
+    // dots short of the crotch.
     inseam: {
-      a: [0.982, 0.438, 0.982, 0.966, 'right'],
-      g: [[0.8806, 0.4379], [0.3469, 0.9656]],
+      a: [0.982, CROTCH[1], 0.982, 0.966, 'left'],
+      g: [CROTCH, [0.3469, 0.9656]],
     },
     legOpening: {
       a: [0.055, 1.001, 0.41, 1.017, 'above'],
       g: [[0.0618, 0.9505], [0.4171, 0.9622]],
     },
     rise: {
-      a: [0.982, 0.039, 0.986, 0.435, 'right'],
-      g: [[0.5913, 0.0403], [0.8778, 0.4354]],
+      a: [0.982, 0.039, 0.986, CROTCH[1], 'right'],
+      g: [[0.5913, 0.0403], CROTCH],
     },
     thigh: {
       a: [0.136, 0.459, 0.49, 0.484, 'above'],
       g: [null, null],
     },
     waist: {
-      a: [0.235, -0.091, 0.792, -0.091, 'above'],
+      a: [0.235, -0.025, 0.792, -0.025, 'above'],
       g: [[0.2346, 0.0369], [0.7921, 0.0453]],
     },
   }),
@@ -148,8 +161,8 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       g: [[0.2583, 0.1787], [0.034, 0.9106]],
     },
     totalLength: {
-      a: [0.958, 0.074, 0.958, 0.855, 'right'],
-      g: [[0.617, 0.0741], null],
+      a: [0.958, 0.074, 0.958, 0.846, 'right'],
+      g: [[0.617, 0.0741], [0.5, 0.846]],
     },
   }),
   shirting: garment('/sizeguide/shirting.png', 1104, 1061, {
@@ -199,8 +212,8 @@ export function viewBoxFor(g: GarmentSpec): string {
     grow(a.x2, a.y2);
     for (const gu of a.guides) if (gu) grow(gu.x, gu.y);
     // Numbers sitting beside a line need their own clearance.
-    if (a.label === 'left') grow(Math.min(a.x1, a.x2) - 150, a.y1);
-    if (a.label === 'right') grow(Math.max(a.x1, a.x2) + 150, a.y1);
+    if (a.label === 'left') grow(Math.min(a.x1, a.x2) - 200, a.y1);
+    if (a.label === 'right') grow(Math.max(a.x1, a.x2) + 200, a.y1);
     if (a.label === 'above') grow(a.x1, Math.min(a.y1, a.y2) - 55);
   }
   const m = 28;

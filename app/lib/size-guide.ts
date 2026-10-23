@@ -186,7 +186,7 @@ export function formatMeasurement(raw: string | undefined, unit: Unit): string {
   if (unit === 'in') {
     return `${trim(inches)}"`;
   }
-  return `${trim(Math.round(inches * 2.54 * 10) / 10)}cm`;
+  return `${Math.round(inches * 2.54)}cm`;
 }
 
 function trim(n: number): string {
