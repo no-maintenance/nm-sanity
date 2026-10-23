@@ -14,7 +14,7 @@
  * "S/M | L/XL") resolve to no garment and fall back to the plain table.
  */
 
-import {useEffect, useMemo, useState} from 'react';
+import {useMemo, useRef, useState} from 'react';
 
 import type {
   MeasurementKey,
@@ -26,6 +26,7 @@ import type {
 import {cn} from '~/lib/utils';
 import {GARMENTS, viewBoxFor} from '~/lib/size-guide-geometry';
 import {formatMeasurement, parseSizeChart} from '~/lib/size-guide';
+import {useIsomorphicLayoutEffect} from '~/hooks/use-isomorphic-layout-effect';
 
 const ARROW_RED = '#AB1A1A';
 const LABEL_FONT = 'Helvetica, Arial, sans-serif';
@@ -40,21 +41,32 @@ const LABEL_FONT = 'Helvetica, Arial, sans-serif';
  * in on the arrow.
  *
  * Canvas reports true ink extents, so measure there and offset by the
- * difference. Returns zeroes until measured (and on the server), which just
- * means the pre-measurement frame looks like it did before.
+ * difference. It runs in a layout effect so the correction lands before paint
+ * — with a plain effect the first painted frame is the uncorrected one — and
+ * it reads the font off the rendered element rather than assuming LABEL_FONT,
+ * so a stylesheet overriding the presentation attribute can't silently skew
+ * the measurement.
  */
-function useInkCentring(text: null | string, fontPx: number) {
+function useInkCentring(
+  ref: React.RefObject<null | SVGTextElement>,
+  text: null | string,
+  fontPx: number,
+) {
   const [off, setOff] = useState<null | {dx: number; dy: number; w: number}>(
     null,
   );
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!text) {
       setOff(null);
       return;
     }
     const ctx = document.createElement('canvas').getContext('2d');
     if (!ctx) return;
-    ctx.font = `${fontPx}px ${LABEL_FONT}`;
+    const el = ref.current;
+    const cs = el ? getComputedStyle(el) : null;
+    ctx.font = cs?.fontFamily
+      ? `${cs.fontSize || `${fontPx}px`} ${cs.fontFamily}`
+      : `${fontPx}px ${LABEL_FONT}`;
     const m = ctx.measureText(text);
     const {
       actualBoundingBoxAscent: asc,
@@ -74,7 +86,7 @@ function useInkCentring(text: null | string, fontPx: number) {
       // True ink width, for sizing the break in the line around it.
       w: left + right,
     });
-  }, [text, fontPx]);
+  }, [text, fontPx, ref]);
   return off;
 }
 
@@ -286,7 +298,8 @@ function GarmentDrawing({
   const arrow = garment.arrows[measurement];
   const vb = viewBoxFor(garment);
   const FONT = 42;
-  const ink = useInkCentring(value, FONT);
+  const textRef = useRef<SVGTextElement>(null);
+  const ink = useInkCentring(textRef, value, FONT);
 
   const mid = arrow
     ? {x: (arrow.x1 + arrow.x2) / 2, y: (arrow.y1 + arrow.y2) / 2}
@@ -394,6 +407,7 @@ function GarmentDrawing({
           ))}
           {value && mid ? (
             <text
+              ref={textRef}
               // Once measured, the baseline is positioned explicitly so the
               // ink sits on the line; dominant-baseline is the fallback for
               // the first frame.
