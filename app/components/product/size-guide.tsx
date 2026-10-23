@@ -14,7 +14,7 @@
  * "S/M | L/XL") resolve to no garment and fall back to the plain table.
  */
 
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 import type {
   MeasurementKey,
@@ -28,6 +28,55 @@ import {GARMENTS, viewBoxFor} from '~/lib/size-guide-geometry';
 import {formatMeasurement, parseSizeChart} from '~/lib/size-guide';
 
 const ARROW_RED = '#AB1A1A';
+const LABEL_FONT = 'Helvetica, Arial, sans-serif';
+
+/**
+ * Optical centring for the arrow's number.
+ *
+ * SVG centres text on its *advance* box, which isn't where the ink sits. A
+ * trailing inch mark carries side bearing, so `21.5"` reads shifted left; and
+ * digits don't fill the em box vertically, so the line crosses above their
+ * middle. Both are a few units — invisible at a glance, obvious once you zoom
+ * in on the arrow.
+ *
+ * Canvas reports true ink extents, so measure there and offset by the
+ * difference. Returns zeroes until measured (and on the server), which just
+ * means the pre-measurement frame looks like it did before.
+ */
+function useInkCentring(text: null | string, fontPx: number) {
+  const [off, setOff] = useState<null | {dx: number; dy: number; w: number}>(
+    null,
+  );
+  useEffect(() => {
+    if (!text) {
+      setOff(null);
+      return;
+    }
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) return;
+    ctx.font = `${fontPx}px ${LABEL_FONT}`;
+    const m = ctx.measureText(text);
+    const {
+      actualBoundingBoxAscent: asc,
+      actualBoundingBoxDescent: desc,
+      actualBoundingBoxLeft: left,
+      actualBoundingBoxRight: right,
+    } = m;
+    if (![asc, desc, left, right, m.width].every((n) => Number.isFinite(n))) {
+      setOff(null);
+      return;
+    }
+    setOff({
+      // Advance centre -> ink centre.
+      dx: m.width / 2 - (right - left) / 2,
+      // Baseline offset that puts the ink's middle on the line.
+      dy: (asc - desc) / 2,
+      // True ink width, for sizing the break in the line around it.
+      w: left + right,
+    });
+  }, [text, fontPx]);
+  return off;
+}
 
 export interface ModelMeasurements {
   chest?: string;
@@ -237,6 +286,7 @@ function GarmentDrawing({
   const arrow = garment.arrows[measurement];
   const vb = viewBoxFor(garment);
   const FONT = 42;
+  const ink = useInkCentring(value, FONT);
 
   const mid = arrow
     ? {x: (arrow.x1 + arrow.x2) / 2, y: (arrow.y1 + arrow.y2) / 2}
@@ -251,8 +301,11 @@ function GarmentDrawing({
         ? {x: -70, y: 0}
         : {x: 0, y: 0};
 
-  // Half-width of the break, from the rendered string.
-  const gap = value ? Math.max(46, value.length * FONT * 0.33) : 0;
+  // Half-width of the break in the line: measured ink plus breathing room,
+  // falling back to a character-count estimate for the first frame.
+  const gap = value
+    ? Math.max(46, (ink ? ink.w : value.length * FONT * 0.5) / 2 + FONT * 0.42)
+    : 0;
   let legs: {x1: number; x2: number; y1: number; y2: number}[] = [];
   if (arrow) {
     if (inline && value && mid) {
@@ -341,17 +394,20 @@ function GarmentDrawing({
           ))}
           {value && mid ? (
             <text
-              dominantBaseline="middle"
+              // Once measured, the baseline is positioned explicitly so the
+              // ink sits on the line; dominant-baseline is the fallback for
+              // the first frame.
+              dominantBaseline={ink ? undefined : 'middle'}
               fill="#111"
-              fontFamily="Helvetica, Arial, sans-serif"
+              fontFamily={LABEL_FONT}
               fontSize={FONT}
               paintOrder="stroke"
               stroke="#fff"
               strokeLinejoin="round"
               strokeWidth={inline ? 4 : 14}
               textAnchor="middle"
-              x={mid.x + off.x}
-              y={mid.y + off.y}
+              x={mid.x + off.x + (ink?.dx ?? 0)}
+              y={mid.y + off.y + (ink?.dy ?? 0)}
             >
               {value}
             </text>
