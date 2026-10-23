@@ -124,12 +124,16 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           // inside the table rather than widening the modal.
           'w-full grid-cols-[minmax(0,1fr)] p-4 pt-4 md:p-6',
           hasSizeChart
-            ? 'sm:max-w-5xl max-h-[90vh] overflow-y-auto md:p-10'
+            // max-h (not a fixed h) + flex column: a chart with no diagram
+            // (footwear, accessories) keeps a modal its own size, while a tall
+            // illustrated one clamps here and its flex-1 drawing shrinks to fit.
+            // overflow-hidden because nothing inside should scroll.
+            ? 'sm:max-w-5xl max-h-[92vh] flex flex-col overflow-hidden gap-0 md:p-8'
             : 'max-w-2xl',
         )}
         variant="wide"
       >
-        <div className="flex items-center justify-between">
+        <div className={cn('flex items-center justify-between', hasSizeChart && 'shrink-0')}>
           {modalTitle && (
             <DialogTitle
               className={cn(
@@ -146,7 +150,13 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           </DialogClose>
         </div>
         {content && (
-          <div className={cn(!hasSizeChart && 'prose max-w-none [&_p]:mt-0')}>
+          <div
+            className={cn(
+              hasSizeChart
+                ? 'flex min-h-0 flex-1 flex-col'
+                : 'prose max-w-none [&_p]:mt-0',
+            )}
+          >
             <PortableText value={content} components={portableTextComponents} />
           </div>
         )}

@@ -103,17 +103,22 @@ function IllustratedGuide({
   const value = formatMeasurement(raw, unit);
 
   return (
-    <div className="min-w-0 text-black">
+    // The whole guide is sized to the modal rather than the other way round:
+    // the controls and table take the height they need, and the drawing absorbs
+    // whatever is left, so nothing ever has to scroll.
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col text-black">
       {/* minmax(0,1fr) on the stacked layout too, or the wide table below sets
           the column's intrinsic width and pushes the modal past the viewport. */}
-      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
-        <GarmentDrawing
-          garment={garment}
-          measurement={active}
-          value={raw ? value : null}
-        />
+      <div className="grid min-h-0 min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
+        <div className="flex min-h-0 items-center justify-center">
+          <GarmentDrawing
+            garment={garment}
+            measurement={active}
+            value={raw ? value : null}
+          />
+        </div>
 
-        <div className="flex min-w-0 flex-col gap-6 md:pt-2">
+        <div className="flex min-h-0 min-w-0 flex-col gap-4 overflow-hidden md:gap-6 md:pt-2">
           {/* Sizes */}
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {chart.sizes.map((s) => (
@@ -180,8 +185,8 @@ function IllustratedGuide({
         </div>
       </div>
 
-      <div className="mt-10 min-w-0">
-        <PlainTable chart={chart} unit={unit} />
+      <div className="mt-4 min-w-0 shrink-0 md:mt-8">
+        <PlainTable chart={chart} compact unit={unit} />
       </div>
     </div>
   );
@@ -267,10 +272,10 @@ function GarmentDrawing({
 
   return (
     <svg
-      // Trousers are roughly twice as tall as they are wide, so an unbounded
-      // height pushed the table off the modal. Cap it and let the SVG letterbox
-      // itself inside the column.
-      className="h-auto max-h-[56vh] w-full self-start"
+      // Sized by its parent in both axes and letterboxed, so a tall garment
+      // (trousers) shrinks to the space left over instead of pushing the table
+      // out of the modal.
+      className="h-full max-h-full w-full"
       preserveAspectRatio="xMidYMid meet"
       role="img"
       viewBox={vb}
@@ -357,20 +362,39 @@ function GarmentDrawing({
   );
 }
 
-function PlainTable({chart, unit}: {chart: ParsedSizeChart; unit?: Unit}) {
+function PlainTable({
+  chart,
+  compact,
+  unit,
+}: {
+  chart: ParsedSizeChart;
+  /** Tightens the rows when the table shares the modal with the diagram. */
+  compact?: boolean;
+  unit?: Unit;
+}) {
+  const cell = cn(
+    'border border-neutral-300 px-1.5 md:px-4',
+    compact ? 'py-1 md:py-1.5' : 'py-2.5',
+  );
+  // Headers are the widest cells ("LEG OPENING"); letting them wrap on narrow
+  // screens is what keeps the table inside the modal instead of scrolling.
+  const head = cn(
+    cell,
+    'text-start font-semibold uppercase tracking-[0.04em] whitespace-normal md:whitespace-nowrap',
+  );
   return (
     <div className="w-full max-w-full overflow-x-auto">
-      <table className="w-full table-auto border-collapse text-[11px] md:text-sm">
+      <table
+        className={cn(
+          'w-full table-auto border-collapse',
+          compact ? 'text-[10px] md:text-xs' : 'text-[11px] md:text-sm',
+        )}
+      >
         <thead>
           <tr>
-            <th className="border border-neutral-300 px-2 py-2.5 text-start font-semibold uppercase tracking-[0.04em] md:px-4">
-              Size
-            </th>
+            <th className={head}>Size</th>
             {chart.columns.map((c) => (
-              <th
-                className="border border-neutral-300 px-2 py-2.5 text-start font-semibold uppercase tracking-[0.04em] whitespace-nowrap md:px-4"
-                key={c.key}
-              >
+              <th className={head} key={c.key}>
                 {c.label}
               </th>
             ))}
@@ -379,14 +403,9 @@ function PlainTable({chart, unit}: {chart: ParsedSizeChart; unit?: Unit}) {
         <tbody>
           {chart.sizes.map((s) => (
             <tr key={s}>
-              <td className="border border-neutral-300 px-2 py-2.5 whitespace-nowrap md:px-4">
-                {s}
-              </td>
+              <td className={cn(cell, 'whitespace-nowrap')}>{s}</td>
               {chart.columns.map((c) => (
-                <td
-                  className="border border-neutral-300 px-2 py-2.5 whitespace-nowrap md:px-4"
-                  key={c.key}
-                >
+                <td className={cn(cell, 'whitespace-nowrap')} key={c.key}>
                   {unit
                     ? formatMeasurement(chart.values[s]?.[c.key], unit)
                     : (chart.values[s]?.[c.key] ?? '—')}
