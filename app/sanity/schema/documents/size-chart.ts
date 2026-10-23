@@ -31,6 +31,20 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'modelMeasurements',
+      title: 'Model Measurements',
+      type: 'object',
+      description:
+        'Shown beside the size guide diagram. Leave blank to use the site default (6ft 1", size M, chest 35.5", waist 31").',
+      options: { collapsed: true, collapsible: true },
+      fields: [
+        { name: 'height', title: 'Model Height', type: 'string', description: 'e.g. 6ft 1"' },
+        { name: 'sizeWorn', title: 'Size Worn', type: 'string', description: 'e.g. M' },
+        { name: 'chest', title: 'Chest', type: 'string', description: 'e.g. 35.5"' },
+        { name: 'waist', title: 'Waist', type: 'string', description: 'e.g. 31"' },
+      ],
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'richtext',

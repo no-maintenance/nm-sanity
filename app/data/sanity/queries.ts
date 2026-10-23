@@ -107,11 +107,15 @@ export const PRODUCT_QUERY = defineQuery(`{
   'product': *[_type == "product" && store.slug.current == $productHandle][0] {
     store {
       gid,
+      // Picks which garment drawing the size guide shows. Not available on the
+      // Storefront API product, but the Shopify sync keeps it current here.
+      productType,
     },
     extraProductInformation[] ${BASE_RICHTEXT_FRAGMENT},
     sizeChart->{
       table,
       description,
+      modelMeasurements,
       image {
         asset->{url},
         alt
