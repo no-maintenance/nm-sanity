@@ -86,12 +86,8 @@ function useInkCentring(
     setOff({
       // Advance centre -> ink centre.
       dx: m.width / 2 - (right - left) / 2,
-      // Baseline offset that puts the digits' middle on the line. Keyed off
-      // Helvetica's cap height (~0.717em) rather than the measured ascent:
-      // canvas ascent is unreliable across engines (it read high here and left
-      // the numerals hanging below the line), so a fixed cap ratio centres the
-      // digits dead on the line in every browser. fontPx is in SVG user units.
-      dy: (fontPx * 0.717) / 2,
+      // Baseline offset that puts the digits' middle on the line.
+      dy: (asc - desc) / 2,
       // True ink width, for sizing the break in the line around it.
       w: left + right,
       // Ink height, for breaks in a vertical line.

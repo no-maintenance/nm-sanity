@@ -49,13 +49,17 @@ type Raw = [number, number, number, number, ArrowSpec['label']];
 type RawGuides = [null | [number, number], null | [number, number]];
 
 /**
- * Where the trouser legs separate, normalised to the bottoms drawing.
- * Found structurally (.context/tools/find-crotch.py): scan down the drawing for
- * the first row where a sustained white gap opens between the inner leg seams.
- * Scanning up from the hem doesn't work — these are sketchy lines, so a stray
- * break in a seam reads as the gap closing well above the real crotch.
+ * The crotch apex — the point the rise and inseam leaders have to touch.
+ *
+ * Found by .context/tools/find-crotch.py, which took three goes. Scanning up
+ * from the hem lands far too low: these are sketchy lines, so a stray break in
+ * a seam reads as the gap closing. Fitting the two inner seams and intersecting
+ * them overshoots the other way, because the seams curve near the apex and the
+ * far-field slope opens too fast. What works is scanning down for the first row
+ * carrying a *small* (>=4px) gap that then stays open — threshold low enough to
+ * catch the apex itself, sustained long enough to reject noise.
  */
-const CROTCH: [number, number] = [0.514, 0.4622];
+const CROTCH: [number, number] = [0.5169, 0.4379];
 
 function garment(
   src: string,
@@ -104,7 +108,7 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
     },
     // Number in a break in the line, as the mockup draws it.
     rise: {
-      a: [0.982, 0.039, 0.986, CROTCH[1], 'above'],
+      a: [0.787, 0.039, 0.787, CROTCH[1], 'above'],
       g: [[0.23, 0.0403], CROTCH],
     },
     thigh: {
