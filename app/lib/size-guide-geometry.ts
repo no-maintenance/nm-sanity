@@ -90,17 +90,22 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
     // their leaders run flat to it. Probing in from the arrow (how every other
     // leader was found) stops at the outer leg seam instead, which left the
     // dots short of the crotch.
+    //
+    // The inseam arrow runs *down the right leg* rather than outside the
+    // garment — measured off the supplied reference at 0.178 of the garment's
+    // width right of the crotch, with its number in a break in the line.
     inseam: {
-      a: [0.982, CROTCH[1], 0.982, 0.966, 'left'],
-      g: [CROTCH, [0.3469, 0.9656]],
+      a: [0.6771, CROTCH[1], 0.6771, 0.966, 'above'],
+      g: [CROTCH, [0.5976, 0.9656]],
     },
     legOpening: {
       a: [0.055, 1.001, 0.41, 1.017, 'above'],
       g: [[0.0618, 0.9505], [0.4171, 0.9622]],
     },
+    // Number in a break in the line, as the mockup draws it.
     rise: {
-      a: [0.982, 0.039, 0.986, CROTCH[1], 'right'],
-      g: [[0.5913, 0.0403], CROTCH],
+      a: [0.982, 0.039, 0.986, CROTCH[1], 'above'],
+      g: [[0.23, 0.0403], CROTCH],
     },
     thigh: {
       a: [0.136, 0.459, 0.49, 0.484, 'above'],
@@ -214,7 +219,14 @@ export function viewBoxFor(g: GarmentSpec): string {
     // Numbers sitting beside a line need their own clearance.
     if (a.label === 'left') grow(Math.min(a.x1, a.x2) - 200, a.y1);
     if (a.label === 'right') grow(Math.max(a.x1, a.x2) + 200, a.y1);
-    if (a.label === 'above') grow(a.x1, Math.min(a.y1, a.y2) - 55);
+    // A number inside a break in the line straddles it, so make room on both
+    // axes — a vertical arrow (rise, inseam) needs the horizontal half-width,
+    // a horizontal one the vertical.
+    if (a.label === 'above') {
+      const mx = (a.x1 + a.x2) / 2;
+      grow(mx - 110, Math.min(a.y1, a.y2) - 55);
+      grow(mx + 110, Math.max(a.y1, a.y2) + 55);
+    }
   }
   const m = 28;
   return [minX - m, minY - m, maxX - minX + 2 * m, maxY - minY + 2 * m].join(' ');

@@ -52,7 +52,7 @@ function useInkCentring(
   text: null | string,
   fontPx: number,
 ) {
-  const [off, setOff] = useState<null | {dx: number; dy: number; w: number}>(
+  const [off, setOff] = useState<null | {dx: number; dy: number; h: number; w: number}>(
     null,
   );
   useIsomorphicLayoutEffect(() => {
@@ -69,11 +69,16 @@ function useInkCentring(
       : `${fontPx}px ${LABEL_FONT}`;
     const m = ctx.measureText(text);
     const {
-      actualBoundingBoxAscent: asc,
-      actualBoundingBoxDescent: desc,
       actualBoundingBoxLeft: left,
       actualBoundingBoxRight: right,
     } = m;
+    // Centre on the digits' cap height, not the whole string's ink box. The
+    // unit mark (the tall " in inches, the x-height "cm") would otherwise skew
+    // the measured ascent and leave the numerals sitting off the line; a plain
+    // digit gives the true cap-height box so the number reads dead-centre.
+    const d = ctx.measureText('0');
+    const asc = d.actualBoundingBoxAscent;
+    const desc = d.actualBoundingBoxDescent;
     if (![asc, desc, left, right, m.width].every((n) => Number.isFinite(n))) {
       setOff(null);
       return;
@@ -81,10 +86,16 @@ function useInkCentring(
     setOff({
       // Advance centre -> ink centre.
       dx: m.width / 2 - (right - left) / 2,
-      // Baseline offset that puts the ink's middle on the line.
-      dy: (asc - desc) / 2,
+      // Baseline offset that puts the digits' middle on the line. Keyed off
+      // Helvetica's cap height (~0.717em) rather than the measured ascent:
+      // canvas ascent is unreliable across engines (it read high here and left
+      // the numerals hanging below the line), so a fixed cap ratio centres the
+      // digits dead on the line in every browser. fontPx is in SVG user units.
+      dy: (fontPx * 0.717) / 2,
       // True ink width, for sizing the break in the line around it.
       w: left + right,
+      // Ink height, for breaks in a vertical line.
+      h: asc + desc,
     });
   }, [text, fontPx, ref]);
   return off;
@@ -310,6 +321,10 @@ function GarmentDrawing({
 
   // Half the label's ink width — measured once painted, estimated before.
   const halfW = value ? (ink ? ink.w : value.length * FONT * 0.5) / 2 : 0;
+  const halfH = value ? (ink ? ink.h : FONT * 0.72) / 2 : 0;
+  // A break in a vertical line has to clear the number's height, not its width.
+  const steep =
+    !!arrow && Math.abs(arrow.y2 - arrow.y1) > Math.abs(arrow.x2 - arrow.x1);
 
   // A number beside a vertical/diagonal line clears the line by a fixed gap on
   // its *near* edge, whatever its width. Offsetting the centre by a constant
@@ -323,9 +338,11 @@ function GarmentDrawing({
         ? {x: -(SIDE_GAP + halfW), y: 0}
         : {x: 0, y: 0};
 
-  // Half-width of the break in the line for an inline (above) number: measured
-  // ink plus breathing room.
-  const gap = value ? Math.max(46, halfW + FONT * 0.42) : 0;
+  // Half-length of the break in the line for an inline number: the ink's
+  // extent along the arrow, plus breathing room.
+  const gap = value
+    ? Math.max(46, (steep ? halfH : halfW) + FONT * 0.42)
+    : 0;
   let legs: {x1: number; x2: number; y1: number; y2: number}[] = [];
   if (arrow) {
     if (inline && value && mid) {
