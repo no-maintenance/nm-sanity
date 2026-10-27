@@ -74,6 +74,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           modelMeasurements={sizeChart?.modelMeasurements}
           productType={productType}
           table={sizeChart?.table}
+          title={product?.title}
         />
       ),
       productDetails: (props: {value: ProductDetailsBlockProps}) => (

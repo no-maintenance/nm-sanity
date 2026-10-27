@@ -120,12 +120,15 @@ interface Props {
   modelMeasurements?: ModelMeasurements | null;
   productType?: null | string;
   table?: null | SizeChartTable;
+  /** Product name — decides the drawing when productType is missing or when
+      the name says long-sleeved (the jersey sketch is a short-sleeve tee). */
+  title?: null | string;
 }
 
-export function SizeGuide({modelMeasurements, productType, table}: Props) {
+export function SizeGuide({modelMeasurements, productType, table, title}: Props) {
   const chart = useMemo(
-    () => parseSizeChart(table, productType),
-    [table, productType],
+    () => parseSizeChart(table, productType, title),
+    [table, productType, title],
   );
 
   if (!chart) {

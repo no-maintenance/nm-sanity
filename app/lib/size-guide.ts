@@ -91,6 +91,31 @@ const PRODUCT_TYPE_GARMENT: Record<string, GarmentKey> = {
   shirting: 'shirting',
 };
 
+/**
+ * Types that are never a garment silhouette, whatever their chart says. The
+ * leather belt's chart is transposed and carries a "Waist" row, which would
+ * otherwise resolve it to the trousers drawing.
+ */
+const NON_GARMENT_TYPES = new Set(['accessories', 'footwear']);
+
+/**
+ * Long-sleeved pieces, by name. The jersey sketch is a short-sleeve tee, so
+ * anything with sleeves has to use the knitwear one whatever Shopify files it
+ * under — most of these are typed "Jersey" there.
+ */
+const LONG_SLEEVE = /\b(hoodie|hooded|long[\s-]?sleeve|longsleeve|sweatshirt|thermal|crewneck|sweater|cardigan|henley|knit)\b/i;
+
+/**
+ * Fallback when Shopify has no productType — several vintage tees have none,
+ * and without this they take the generic tops default and get drawn as a
+ * jacket. Ordered: "t-shirt" has to beat "shirt".
+ */
+const TITLE_GARMENT: [RegExp, GarmentKey][] = [
+  [/\b(t-?shirt|tee|tank)\b/i, 'jersey'],
+  [/\b(jacket|coat|parka|bomber|vest|anorak)\b/i, 'outerwear'],
+  [/\bshirt\b/i, 'shirting'],
+];
+
 const BOTTOMS_KEYS = new Set<MeasurementKey>([
   'inseam',
   'legOpening',
@@ -148,6 +173,7 @@ export interface ParsedSizeChart {
 export function parseSizeChart(
   table: SizeChartTable | null | undefined,
   productType?: null | string,
+  title?: null | string,
 ): null | ParsedSizeChart {
   const raw = table?.rows?.filter((r) => r?.cells?.length) ?? [];
   if (raw.length < 2) return null;
@@ -180,18 +206,49 @@ export function parseSizeChart(
   }
   if (!sizes.length) return null;
 
-  const isBottoms = columns.some((c) => BOTTOMS_KEYS.has(c.key));
-  const byType = PRODUCT_TYPE_GARMENT[(productType ?? '').toLowerCase().trim()];
-  let garment: GarmentKey | null = null;
-  if (isBottoms) {
-    garment = 'bottoms';
-  } else if (columns.length) {
-    // A tops chart with no (or an unmapped) product type still gets a sensible
-    // silhouette rather than falling back to the bare table.
-    garment = byType && byType !== 'bottoms' ? byType : 'outerwear';
-  }
+  return {
+    columns,
+    garment: resolveGarment(columns, productType, title),
+    sizes,
+    values,
+  };
+}
 
-  return {columns, garment, sizes, values};
+/**
+ * Pick the drawing. Order matters:
+ *
+ * 1. Accessories and footwear get no drawing at all.
+ * 2. Bottoms measurements then mean trousers, so a denim jacket filed under
+ *    "Denim" still gets the jacket sketch.
+ * 3. A long-sleeved name beats productType: the jersey sketch is a short-sleeve
+ *    tee, and most hoodies and long sleeves are filed as "Jersey" in Shopify.
+ * 4. Then productType, then the name, then the tops default.
+ */
+function resolveGarment(
+  columns: ParsedSizeChart['columns'],
+  productType?: null | string,
+  title?: null | string,
+): GarmentKey | null {
+  if (!columns.length) return null;
+
+  // Before anything else: a belt or a shoe is never a garment silhouette. The
+  // belt's chart is transposed and carries a "Waist" row, so checking the
+  // bottoms columns first would resolve it to trousers.
+  const type = (productType ?? '').toLowerCase().trim();
+  if (NON_GARMENT_TYPES.has(type)) return null;
+
+  if (columns.some((c) => BOTTOMS_KEYS.has(c.key))) return 'bottoms';
+
+  const name = title ?? '';
+  if (LONG_SLEEVE.test(name)) return 'knitwear';
+
+  const byType = PRODUCT_TYPE_GARMENT[type];
+  if (byType && byType !== 'bottoms') return byType;
+
+  for (const [re, g] of TITLE_GARMENT) {
+    if (re.test(name)) return g;
+  }
+  return 'outerwear';
 }
 
 /**
