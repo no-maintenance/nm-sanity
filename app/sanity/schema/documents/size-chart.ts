@@ -31,6 +31,25 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'garmentType',
+      title: 'Garment Type',
+      type: 'string',
+      description:
+        'Which measurement diagram to show for this product. Choose "Footwear" for products that should show the table only (no diagram). Leave blank to auto-detect from the product type.',
+      options: {
+        layout: 'dropdown',
+        list: [
+          { title: 'Bottoms', value: 'bottoms' },
+          { title: 'Outerwear', value: 'outerwear' },
+          { title: 'Footwear', value: 'footwear' },
+          { title: 'Hoodie', value: 'hoodie' },
+          { title: 'Knitwear / Jersey Longsleeve', value: 'knitwear' },
+          { title: 'Jersey Shortsleeve', value: 'jersey' },
+          { title: 'Shorts', value: 'shorts' },
+        ],
+      },
+    }),
+    defineField({
       name: 'modelMeasurements',
       title: 'Model Measurements',
       type: 'object',

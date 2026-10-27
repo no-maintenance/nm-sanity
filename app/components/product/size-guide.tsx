@@ -117,6 +117,8 @@ const DEFAULT_MODEL: ModelMeasurements = {
 };
 
 interface Props {
+  /** Explicit "Garment Type" from the Sanity size chart; overrides auto-detection. */
+  garmentType?: null | string;
   modelMeasurements?: ModelMeasurements | null;
   productType?: null | string;
   table?: null | SizeChartTable;
@@ -125,10 +127,10 @@ interface Props {
   title?: null | string;
 }
 
-export function SizeGuide({modelMeasurements, productType, table, title}: Props) {
+export function SizeGuide({garmentType, modelMeasurements, productType, table, title}: Props) {
   const chart = useMemo(
-    () => parseSizeChart(table, productType, title),
-    [table, productType, title],
+    () => parseSizeChart(table, productType, title, garmentType),
+    [table, productType, title, garmentType],
   );
 
   if (!chart) {

@@ -76,6 +76,23 @@ const HEADER_ALIASES: Record<string, MeasurementKey> = {
   'waist': 'waist',
 };
 
+/**
+ * The size chart's explicit "Garment Type" dropdown -> which line drawing to
+ * show. Set in Sanity, this overrides every auto-detection rule below. 'footwear'
+ * maps to null on purpose: the product shows its table with no diagram. Hoodies
+ * and shorts reuse the nearest silhouette (knitwear / bottoms) until they have
+ * their own drawings.
+ */
+const SELECTION_GARMENT: Record<string, GarmentKey | null> = {
+  bottoms: 'bottoms',
+  footwear: null,
+  hoodie: 'knitwear',
+  jersey: 'jersey',
+  knitwear: 'knitwear',
+  outerwear: 'outerwear',
+  shorts: 'bottoms',
+};
+
 /** Shopify `productType` -> which line drawing to show. */
 const PRODUCT_TYPE_GARMENT: Record<string, GarmentKey> = {
   bottoms: 'bottoms',
@@ -174,6 +191,7 @@ export function parseSizeChart(
   table: SizeChartTable | null | undefined,
   productType?: null | string,
   title?: null | string,
+  garmentType?: null | string,
 ): null | ParsedSizeChart {
   const raw = table?.rows?.filter((r) => r?.cells?.length) ?? [];
   if (raw.length < 2) return null;
@@ -208,7 +226,7 @@ export function parseSizeChart(
 
   return {
     columns,
-    garment: resolveGarment(columns, productType, title),
+    garment: resolveGarment(columns, productType, title, garmentType),
     sizes,
     values,
   };
@@ -228,7 +246,16 @@ function resolveGarment(
   columns: ParsedSizeChart['columns'],
   productType?: null | string,
   title?: null | string,
+  garmentType?: null | string,
 ): GarmentKey | null {
+  // An explicit "Garment Type" picked on the size chart in Sanity wins over
+  // every heuristic below — including 'footwear', which maps to null so the
+  // product shows its table with no diagram.
+  const selection = (garmentType ?? '').toLowerCase().trim();
+  if (selection && selection in SELECTION_GARMENT) {
+    return SELECTION_GARMENT[selection];
+  }
+
   if (!columns.length) return null;
 
   // Before anything else: a belt or a shoe is never a garment silhouette. The
@@ -240,15 +267,25 @@ function resolveGarment(
   if (columns.some((c) => BOTTOMS_KEYS.has(c.key))) return 'bottoms';
 
   const name = title ?? '';
-  if (LONG_SLEEVE.test(name)) return 'knitwear';
-
   const byType = PRODUCT_TYPE_GARMENT[type];
-  if (byType && byType !== 'bottoms') return byType;
-
-  for (const [re, g] of TITLE_GARMENT) {
-    if (re.test(name)) return g;
+  let garment: GarmentKey = 'outerwear';
+  if (byType && byType !== 'bottoms') {
+    garment = byType;
+  } else {
+    for (const [re, g] of TITLE_GARMENT) {
+      if (re.test(name)) {
+        garment = g;
+        break;
+      }
+    }
   }
-  return 'outerwear';
+
+  // Only ever redirect *away from jersey*: that sketch is a short-sleeve tee,
+  // so a sleeved garment filed under it needs the knitwear one instead. The
+  // shirting and outerwear sketches already have long sleeves, so a
+  // "Long Sleeve Shirt" must stay on shirting.
+  if (garment === 'jersey' && LONG_SLEEVE.test(name)) return 'knitwear';
+  return garment;
 }
 
 /**

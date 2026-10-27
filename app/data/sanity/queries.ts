@@ -114,6 +114,7 @@ export const PRODUCT_QUERY = defineQuery(`{
     extraProductInformation[] ${BASE_RICHTEXT_FRAGMENT},
     sizeChart->{
       table,
+      garmentType,
       description,
       modelMeasurements,
       image {
