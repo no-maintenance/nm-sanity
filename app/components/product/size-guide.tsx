@@ -140,15 +140,88 @@ export function SizeGuide({garmentType, modelMeasurements, productType, table, t
       </p>
     );
   }
-  // A chart we can't illustrate (footwear, accessories) still shows its table.
-  if (!chart.garment || !chart.columns.length) {
-    return <PlainTable chart={chart} />;
+  // A chart with no measurements can still have a drawing — footwear's is an
+  // EU/US conversion. Show the sketch beside the table as a reference, with no
+  // measurement tabs, size picker or unit toggle, since none of them apply.
+  if (!chart.columns.length) {
+    return chart.garment ? (
+      <ReferenceOnlyGuide chart={chart} garment={GARMENTS[chart.garment]} />
+    ) : (
+      <RawTable grid={chart.raw} />
+    );
+  }
+  if (!chart.garment) {
+    return <RawTable grid={chart.raw} />;
   }
   return (
     <IllustratedGuide
       chart={chart}
       model={modelMeasurements ?? DEFAULT_MODEL}
     />
+  );
+}
+
+/** Drawing + the chart as authored. No arrows, because there are none. */
+function ReferenceOnlyGuide({
+  chart,
+  garment,
+}: {
+  chart: ParsedSizeChart;
+  garment: (typeof GARMENTS)[keyof typeof GARMENTS];
+}) {
+  return (
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col text-black">
+      <div className="grid min-h-0 min-w-0 flex-1 grid-cols-[minmax(0,1fr)] items-center gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
+        <div className="flex min-h-0 items-center justify-center">
+          <GarmentDrawing garment={garment} measurement={null} value={null} />
+        </div>
+        <div className="min-w-0">
+          <RawTable grid={chart.raw} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The chart exactly as authored — used when its columns aren't measurements
+ * (footwear's EU/US, a belt's S/M | L/XL). Running those through the
+ * measurement model would drop every column it didn't recognise.
+ */
+function RawTable({grid}: {grid: string[][]}) {
+  if (!grid.length) return null;
+  const [head, ...body] = grid;
+  return (
+    <div className="w-full max-w-full overflow-x-auto">
+      <table className="w-full table-auto border-collapse text-[11px] md:text-sm">
+        <thead>
+          <tr>
+            {head.map((c, i) => (
+              <th
+                className="border border-neutral-300 px-1.5 py-1.5 text-start font-semibold uppercase tracking-[0.04em] md:px-4"
+                key={i}
+              >
+                {c}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.map((row, r) => (
+            <tr key={r}>
+              {head.map((_, i) => (
+                <td
+                  className="border border-neutral-300 px-1.5 py-1.5 whitespace-nowrap md:px-4"
+                  key={i}
+                >
+                  {row[i] ?? ''}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

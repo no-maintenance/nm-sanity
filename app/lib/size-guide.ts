@@ -26,10 +26,13 @@ export type MeasurementKey =
 
 export type GarmentKey =
   | 'bottoms'
+  | 'footwear'
+  | 'hoodie'
   | 'jersey'
   | 'knitwear'
   | 'outerwear'
-  | 'shirting';
+  | 'shirting'
+  | 'shorts';
 
 export type Unit = 'cm' | 'in';
 
@@ -78,19 +81,17 @@ const HEADER_ALIASES: Record<string, MeasurementKey> = {
 
 /**
  * The size chart's explicit "Garment Type" dropdown -> which line drawing to
- * show. Set in Sanity, this overrides every auto-detection rule below. 'footwear'
- * maps to null on purpose: the product shows its table with no diagram. Hoodies
- * and shorts reuse the nearest silhouette (knitwear / bottoms) until they have
- * their own drawings.
+ * show. Set in Sanity, this overrides every auto-detection rule below.
  */
 const SELECTION_GARMENT: Record<string, GarmentKey | null> = {
   bottoms: 'bottoms',
-  footwear: null,
-  hoodie: 'knitwear',
+  footwear: 'footwear',
+  hoodie: 'hoodie',
   jersey: 'jersey',
   knitwear: 'knitwear',
   outerwear: 'outerwear',
-  shorts: 'bottoms',
+  shirting: 'shirting',
+  shorts: 'shorts',
 };
 
 /** Shopify `productType` -> which line drawing to show. */
@@ -113,7 +114,7 @@ const PRODUCT_TYPE_GARMENT: Record<string, GarmentKey> = {
  * leather belt's chart is transposed and carries a "Waist" row, which would
  * otherwise resolve it to the trousers drawing.
  */
-const NON_GARMENT_TYPES = new Set(['accessories', 'footwear']);
+const NON_GARMENT_TYPES = new Set(['accessories']);
 
 /**
  * Long-sleeved pieces, by name. The jersey sketch is a short-sleeve tee, so
@@ -172,6 +173,13 @@ function orientGrid(grid: string[][]): string[][] {
 }
 
 export interface ParsedSizeChart {
+  /**
+   * The chart exactly as authored (after orienting). Charts that aren't
+   * measurements — footwear's EU/US conversion, a belt's S/M | L/XL — are
+   * rendered from this, so no column is lost by forcing them through the
+   * measurement model.
+   */
+  raw: string[][];
   /** Measurement columns, in the order the chart lists them. */
   columns: {index: number; key: MeasurementKey; label: string}[];
   /** Which drawing to render, or null when the chart isn't a garment table. */
@@ -227,6 +235,7 @@ export function parseSizeChart(
   return {
     columns,
     garment: resolveGarment(columns, productType, title, garmentType),
+    raw: grid,
     sizes,
     values,
   };
@@ -235,8 +244,10 @@ export function parseSizeChart(
 /**
  * Pick the drawing. Order matters:
  *
- * 1. Accessories and footwear get no drawing at all.
- * 2. Bottoms measurements then mean trousers, so a denim jacket filed under
+ * 1. Accessories get no drawing at all.
+ * 2. Footwear gets the boot, before the columns check — its chart is an EU/US
+ *    conversion carrying no measurements.
+ * 3. Bottoms measurements then mean trousers, so a denim jacket filed under
  *    "Denim" still gets the jacket sketch.
  * 3. A long-sleeved name beats productType: the jersey sketch is a short-sleeve
  *    tee, and most hoodies and long sleeves are filed as "Jersey" in Shopify.
@@ -249,20 +260,23 @@ function resolveGarment(
   garmentType?: null | string,
 ): GarmentKey | null {
   // An explicit "Garment Type" picked on the size chart in Sanity wins over
-  // every heuristic below — including 'footwear', which maps to null so the
-  // product shows its table with no diagram.
+  // every heuristic below.
   const selection = (garmentType ?? '').toLowerCase().trim();
   if (selection && selection in SELECTION_GARMENT) {
     return SELECTION_GARMENT[selection];
   }
 
-  if (!columns.length) return null;
-
-  // Before anything else: a belt or a shoe is never a garment silhouette. The
-  // belt's chart is transposed and carries a "Waist" row, so checking the
-  // bottoms columns first would resolve it to trousers.
   const type = (productType ?? '').toLowerCase().trim();
+
+  // A belt is never a garment silhouette. Its chart is transposed and carries a
+  // "Waist" row, so checking the bottoms columns first would read as trousers.
   if (NON_GARMENT_TYPES.has(type)) return null;
+
+  // Footwear before the columns check: its chart is an EU/US conversion with no
+  // measurements at all, so it has no columns — but it still gets a drawing.
+  if (type === 'footwear') return 'footwear';
+
+  if (!columns.length) return null;
 
   if (columns.some((c) => BOTTOMS_KEYS.has(c.key))) return 'bottoms';
 

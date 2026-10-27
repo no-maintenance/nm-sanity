@@ -89,6 +89,9 @@ function garment(
 }
 
 export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
+  // Footwear carries no measurement arrows — the chart is an EU/US conversion,
+  // so the drawing sits alongside the table purely as a reference.
+  footwear: garment('/sizeguide/footwear.png', 1723, 1313, {}),
   bottoms: garment('/sizeguide/bottoms.png', 712, 1192, {
     // Rise and inseam both meet at CROTCH, so their arrows end on that row and
     // their leaders run flat to it. Probing in from the arrow (how every other
@@ -152,8 +155,8 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       g: [[0.1998, 0.1646], [0.0495, 0.9483]],
     },
     totalLength: {
-      a: [1.058, 0.079, 1.061, 0.825, 'right'],
-      g: [[0.6605, 0.0809], [0.9544, 0.825]],
+      a: [1.058, 0.086, 1.061, 0.819, 'right'],
+      g: [[0.6605, 0.086], [0.9544, 0.819]],
     },
   }),
   outerwear: garment('/sizeguide/outerwear.png', 1235, 1052, {
@@ -190,6 +193,51 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
     totalLength: {
       a: [1.02, 0.07, 1.02, 0.904, 'right'],
       g: [[0.6449, 0.0697], [0.962, 0.9039]],
+    },
+  }),
+  // Hoodie: arrows and dotted guides measured directly off the four
+  // `hoodie size guide` mockups, normalised to the hoodie drawing's tight bbox.
+  hoodie: garment('/sizeguide/hoodie.png', 2507, 2774, {
+    pitToPit: {
+      a: [0.2229, 0.6009, 0.7955, 0.6009, 'above'],
+      g: [null, null],
+    },
+    shoulder: {
+      a: [0.2488, -0.0486, 0.771, -0.0486, 'above'],
+      g: [[0.2488, 0.3356], [0.771, 0.3071]],
+    },
+    sleeveLength: {
+      a: [0.2083, 0.3096, -0.0594, 0.9523, 'left'],
+      g: [[0.2455, 0.3382], [-0.0754, 0.9361]],
+    },
+    totalLength: {
+      a: [1.1032, 0.2619, 1.1032, 0.8765, 'right'],
+      g: [[0.681, 0.2619], [0.7092, 0.8765]],
+    },
+  }),
+  // Shorts: the denim (bottoms) layout mapped onto the shorts drawing, piecewise
+  // so the rise (waist..crotch) and the short leg (crotch..hem) both scale right
+  // — crotch measured at 0.35, hem at 0.95. First pass — refine against the sketch.
+  shorts: garment('/sizeguide/shorts.png', 1606, 1561, {
+    inseam: {
+      a: [0.6771, 0.3498, 0.6771, 0.9499, 'above'],
+      g: [[0.514, 0.3498], [0.5976, 0.9494]],
+    },
+    legOpening: {
+      a: [0.055, 0.9916, 0.41, 1.0106, 'above'],
+      g: [[0.0618, 0.9314], [0.4171, 0.9454]],
+    },
+    rise: {
+      a: [0.787, 0.0443, 0.787, 0.3498, 'above'],
+      g: [[0.23, 0.0452], [0.514, 0.3498]],
+    },
+    thigh: {
+      a: [0.136, 0.3475, 0.49, 0.3757, 'above'],
+      g: [null, null],
+    },
+    waist: {
+      a: [0.235, -0.0019, 0.792, -0.0019, 'above'],
+      g: [[0.2346, 0.0428], [0.7921, 0.0488]],
     },
   }),
 };

@@ -45,6 +45,7 @@ export default defineType({
           { title: 'Hoodie', value: 'hoodie' },
           { title: 'Knitwear / Jersey Longsleeve', value: 'knitwear' },
           { title: 'Jersey Shortsleeve', value: 'jersey' },
+          { title: 'Shirting', value: 'shirting' },
           { title: 'Shorts', value: 'shorts' },
         ],
       },

@@ -49,6 +49,7 @@ export interface ProductModalBlockProps {
   };
   productSizeChart?: {
     table?: { rows?: TableRow[] };
+    garmentType?: string;
     description?: any;
     image?: { asset?: { url?: string }, alt?: string };
     modelMeasurements?: ModelMeasurements;
@@ -71,6 +72,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
     types: {
       sizeChart: () => (
         <SizeGuide
+          garmentType={sizeChart?.garmentType}
           modelMeasurements={sizeChart?.modelMeasurements}
           productType={productType}
           table={sizeChart?.table}
