@@ -109,6 +109,26 @@ function normaliseHeader(cell: string): MeasurementKey | null {
   return HEADER_ALIASES[k] ?? null;
 }
 
+/**
+ * Put a chart the right way up: sizes down the side, measurements across.
+ *
+ * Nearly every chart is authored that way, but a few (the Johnny Collar knit
+ * polos) were entered transposed — measurements down the side, sizes across.
+ * Rather than ask for those to be retyped, work out which way round it is by
+ * seeing which axis actually carries recognisable measurement names, and flip
+ * when it's the first column. A chart whose names sit on neither axis is left
+ * alone; it falls through to the plain table either way.
+ */
+function orientGrid(grid: string[][]): string[][] {
+  const named = (cells: string[]) =>
+    cells.slice(1).filter((c) => normaliseHeader(c ?? '')).length;
+  const acrossTop = named(grid[0] ?? []);
+  const downSide = named(grid.map((r) => r?.[0] ?? ''));
+  if (downSide <= acrossTop) return grid;
+  const width = Math.max(...grid.map((r) => r.length));
+  return Array.from({length: width}, (_, c) => grid.map((r) => r[c] ?? ''));
+}
+
 export interface ParsedSizeChart {
   /** Measurement columns, in the order the chart lists them. */
   columns: {index: number; key: MeasurementKey; label: string}[];
@@ -129,10 +149,12 @@ export function parseSizeChart(
   table: SizeChartTable | null | undefined,
   productType?: null | string,
 ): null | ParsedSizeChart {
-  const rows = table?.rows?.filter((r) => r?.cells?.length) ?? [];
-  if (rows.length < 2) return null;
+  const raw = table?.rows?.filter((r) => r?.cells?.length) ?? [];
+  if (raw.length < 2) return null;
 
-  const header = rows[0].cells ?? [];
+  const grid = orientGrid(raw.map((r) => r.cells ?? []));
+  const header = grid[0] ?? [];
+  const rows = grid.slice(1).map((cells) => ({cells}));
   const columns: ParsedSizeChart['columns'] = [];
   for (let i = 1; i < header.length; i++) {
     const key = normaliseHeader(header[i] ?? '');
@@ -144,7 +166,7 @@ export function parseSizeChart(
 
   const sizes: string[] = [];
   const values: ParsedSizeChart['values'] = {};
-  for (const row of rows.slice(1)) {
+  for (const row of rows) {
     const cells = row.cells ?? [];
     const size = (cells[0] ?? '').trim();
     if (!size || values[size]) continue;
