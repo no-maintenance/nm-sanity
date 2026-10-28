@@ -31,6 +31,40 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'garmentType',
+      title: 'Garment Type',
+      type: 'string',
+      description:
+        'Which measurement diagram to show for this product. Choose "Footwear" for products that should show the table only (no diagram). Leave blank to auto-detect from the product type.',
+      options: {
+        layout: 'dropdown',
+        list: [
+          { title: 'Bottoms', value: 'bottoms' },
+          { title: 'Outerwear', value: 'outerwear' },
+          { title: 'Footwear', value: 'footwear' },
+          { title: 'Hoodie', value: 'hoodie' },
+          { title: 'Knitwear / Jersey Longsleeve', value: 'knitwear' },
+          { title: 'Jersey Shortsleeve', value: 'jersey' },
+          { title: 'Shirting', value: 'shirting' },
+          { title: 'Shorts', value: 'shorts' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'modelMeasurements',
+      title: 'Model Measurements',
+      type: 'object',
+      description:
+        'Shown beside the size guide diagram. Leave blank to use the site default (6ft 1", size M, chest 35.5", waist 31").',
+      options: { collapsed: true, collapsible: true },
+      fields: [
+        { name: 'height', title: 'Model Height', type: 'string', description: 'e.g. 6ft 1"' },
+        { name: 'sizeWorn', title: 'Size Worn', type: 'string', description: 'e.g. M' },
+        { name: 'chest', title: 'Chest', type: 'string', description: 'e.g. 35.5"' },
+        { name: 'waist', title: 'Waist', type: 'string', description: 'e.g. 31"' },
+      ],
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'richtext',

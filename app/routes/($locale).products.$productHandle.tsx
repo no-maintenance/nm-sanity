@@ -96,6 +96,9 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
     product: {
       ...product,
       sizeChart: cmsProduct?.data?.product?.sizeChart,
+      // `?? undefined` because the Storefront Product type declares this
+      // optional-string, while Sanity hands back string | null.
+      productType: cmsProduct?.data?.product?.store?.productType ?? undefined,
       extraProductInformation: cmsProduct?.data?.product?.extraProductInformation,
     },
     relatedProductsPromise,

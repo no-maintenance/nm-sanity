@@ -13,6 +13,7 @@ import {
 } from '~/components/ui/dialog';
 import { portableTextMarks } from './portableTextMarks';
 import { ProductDetailsBlock, type ProductDetailsBlockProps } from '../../../blocks/extra-product-information-block';
+import { SizeGuide, type ModelMeasurements } from '~/components/product/size-guide';
 import { useProduct } from '@shopify/hydrogen-react';
 
 // Define types for Sanity's table format
@@ -20,46 +21,6 @@ interface TableRow {
   _key?: string;
   _type?: string;
   cells?: string[];
-}
-
-interface SizeChartTableProps {
-  table: { rows?: TableRow[] };
-}
-
-function SizeChartTable({ table }: SizeChartTableProps) {
-  if (!table?.rows || table.rows.length === 0) return null;
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full table-auto bg-white text-[11px] md:text-base">
-        <thead>
-          <tr>
-            {table.rows[0]?.cells?.map((cell: string, i: number) => (
-              <th
-                key={i}
-                className="md:px-4 px-1.5 py-3 font-semibold text-black text-start border-b align-bottom whitespace-nowrap"
-              >
-                {cell}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {table.rows.slice(1).map((row: TableRow, i: number) => (
-            <tr key={row._key || i}>
-              {row.cells?.map((cell: string, j: number) => (
-                <td
-                  key={j}
-                  className="md:px-4 px-1.5 py-3 border-b text-black whitespace-nowrap"
-                >
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
 }
 
 function isSizeChartContent(content: unknown): content is {
@@ -88,8 +49,10 @@ export interface ProductModalBlockProps {
   };
   productSizeChart?: {
     table?: { rows?: TableRow[] };
+    garmentType?: string;
     description?: any;
     image?: { asset?: { url?: string }, alt?: string };
+    modelMeasurements?: ModelMeasurements;
   };
 }
 
@@ -100,30 +63,27 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
   const {product} = useProduct();
   // Use the product's sizeChart if productSizeChart is not provided
   const sizeChart = productSizeChart || (product && 'sizeChart' in product ? (product as any).sizeChart : undefined);
-  console.log(product);
+  // Drives which garment drawing the guide shows; merged onto the product from
+  // Sanity in the product route (the Storefront API doesn't return it).
+  const productType =
+    product && 'productType' in product ? (product as any).productType : undefined;
+  // Footwear's guide is just a boot sketch beside a short EU/US table, so it
+  // doesn't need the wide frame the illustrated guides do — let its modal shrink
+  // to the content instead of stranding it in a mostly-empty 5xl box.
+  const isFootwear =
+    (productType ?? '').toString().toLowerCase() === 'footwear';
   // Custom Portable Text component to inject the product's size chart
   const portableTextComponents = {
     types: {
-      sizeChart: () =>
-        sizeChart ? (
-          <>
-            {sizeChart.table && <SizeChartTable table={sizeChart.table} />}
-            {/* {sizeChart.description && (
-              <div className="mt-4 prose max-w-none">
-                <PortableText value={sizeChart.description} />
-              </div>
-            )}
-            {sizeChart.image?.asset?.url && (
-              <img
-                src={sizeChart.image.asset.url}
-                alt={sizeChart.image.alt || ''}
-                className="mt-4  max-h-64 object-contain mx-auto"
-              />
-            )} */}
-          </>
-        ) : (
-          <div className="text-sm text-gray-500">No size chart available for this product.</div>
-        ),
+      sizeChart: () => (
+        <SizeGuide
+          garmentType={sizeChart?.garmentType}
+          modelMeasurements={sizeChart?.modelMeasurements}
+          productType={productType}
+          table={sizeChart?.table}
+          title={product?.title}
+        />
+      ),
       productDetails: (props: {value: ProductDetailsBlockProps}) => (
         <ProductDetailsBlock {...props.value} />
       ),
@@ -151,6 +111,12 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
     );
   }
 
+  // The illustrated size guide needs a far wider frame than the text-only
+  // modals (Returns, Shipping), so widen only when a sizeChart block is present.
+  const hasSizeChart = (content ?? []).some(
+    (b: any) => b?._type === 'sizeChart',
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -158,15 +124,50 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           {triggerLabel}
         </button>
       </DialogTrigger>
-      <DialogContent variant="wide" className="max-w-2xl w-full md:p-6 p-4 pt-4 ">
-        <div className="flex justify-between items-center ">
-          {modalTitle && <DialogTitle className="text-lg font-medium mb-4">{modalTitle}</DialogTitle>}
+      <DialogContent
+        className={cn(
+          // DialogContent is itself a grid whose implicit column is auto-sized,
+          // so wide children (the size table) stretch it past the viewport on
+          // mobile. Pin the column to minmax(0,1fr) to make overflow scroll
+          // inside the table rather than widening the modal.
+          'w-full grid-cols-[minmax(0,1fr)] p-4 pt-4 md:p-6',
+          // max-h (not a fixed h) + flex column: a chart with no diagram
+          // (footwear, accessories) keeps a modal its own size, while a tall
+          // illustrated one clamps here and its flex-1 drawing shrinks to fit.
+          // overflow-hidden because nothing inside should scroll.
+          hasSizeChart &&
+            'max-h-[92vh] flex flex-col overflow-hidden gap-0 md:p-8',
+          // Footwear hugs its content; the illustrated guides take the wide 5xl
+          // frame they need.
+          hasSizeChart && (isFootwear ? 'sm:w-fit sm:max-w-5xl' : 'sm:max-w-5xl'),
+          !hasSizeChart && 'max-w-2xl',
+        )}
+        variant="wide"
+      >
+        <div className={cn('flex items-center justify-between', hasSizeChart && 'shrink-0')}>
+          {modalTitle && (
+            <DialogTitle
+              className={cn(
+                'text-lg font-medium mb-4',
+                // The mockups show only the close control, no heading.
+                hasSizeChart && 'sr-only mb-0',
+              )}
+            >
+              {modalTitle}
+            </DialogTitle>
+          )}
           <DialogClose asChild>
             <button aria-label="Close" className="text-xl" />
           </DialogClose>
         </div>
         {content && (
-          <div className='prose max-w-none  [&_p]:mt-0'>
+          <div
+            className={cn(
+              hasSizeChart
+                ? 'flex min-h-0 flex-1 flex-col'
+                : 'prose max-w-none [&_p]:mt-0',
+            )}
+          >
             <PortableText value={content} components={portableTextComponents} />
           </div>
         )}

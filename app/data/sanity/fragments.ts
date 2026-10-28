@@ -422,6 +422,7 @@ export const RICHTEXT_FRAGMENT = defineQuery(`{
   _type == 'sizeChart' => {
     _type,
     table,
+    garmentType,
     description,
     image {
       asset->{url},
