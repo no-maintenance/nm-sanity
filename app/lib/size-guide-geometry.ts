@@ -123,22 +123,26 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       g: [[0.2453, 0.0478], [0.7804, 0.056]],
     },
   }),
+  // All four re-measured from the `t-shirt size guide` mockups via
+  // .context/tools/dotted-mockup-geometry.py. Notable corrections: pit to pit
+  // sits lower on the body, the shoulder arrow sits much closer to the garment,
+  // and total length gained its lower leader (it had none).
   jersey: garment('/sizeguide/jersey.png', 1500, 1478, {
     pitToPit: {
-      a: [0.2356, 0.4238, 0.7737, 0.4238, 'above'],
+      a: [0.2043, 0.5432, 0.7858, 0.5455, 'above'],
       g: [null, null],
     },
     shoulder: {
-      a: [0.2247, -0.1108, 0.7677, -0.1108, 'above'],
-      g: [[0.2245, 0.1208], [0.7678, 0.1075]],
+      a: [0.2205, -0.0146, 0.762, -0.0123, 'above'],
+      g: [[0.2196, 0.1289], [0.7629, 0.105]],
     },
     sleeveLength: {
-      a: [0.1337, 0.0634, -0.0325, 0.3099, 'left'],
-      g: [[0.2214, 0.1249], [0.0554, 0.3719]],
+      a: [0.1751, 0.0911, 0.0022, 0.3176, 'left'],
+      g: [[0.217, 0.13], [0.0524, 0.3671]],
     },
     totalLength: {
-      a: [1.0724, 0.0684, 1.0724, 0.9554, 'right'],
-      g: [[0.6733, 0.0686], null],
+      a: [1.0593, 0.061, 1.0575, 0.9469, 'right'],
+      g: [[0.6592, 0.0638], [0.6763, 0.9437]],
     },
   }),
   knitwear: garment('/sizeguide/knitwear.png', 1457, 1500, {
