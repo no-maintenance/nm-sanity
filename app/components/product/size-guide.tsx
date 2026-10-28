@@ -170,14 +170,16 @@ function ReferenceOnlyGuide({
   garment: (typeof GARMENTS)[keyof typeof GARMENTS];
 }) {
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col text-black">
-      <div className="grid min-h-0 min-w-0 flex-1 grid-cols-[minmax(0,1fr)] items-center gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
-        <div className="flex min-h-0 items-center justify-center">
-          <GarmentDrawing garment={garment} measurement={null} value={null} />
-        </div>
-        <div className="min-w-0">
-          <RawTable grid={chart.raw} />
-        </div>
+    // Boot and chart are each sized to themselves and centred together, so the
+    // guide isn't flung to opposite edges of a tall, mostly-empty modal. The
+    // boot sits in a fixed box (its own size, no baked-in padding) beside the
+    // horizontal EU/US table.
+    <div className="flex flex-1 flex-col items-center justify-center gap-6 py-2 text-black md:flex-row md:gap-10">
+      <div className="h-[166px] w-[218px] shrink-0">
+        <GarmentDrawing garment={garment} measurement={null} value={null} />
+      </div>
+      <div className="min-w-0">
+        <RawTable fit transpose grid={chart.raw} />
       </div>
     </div>
   );
@@ -188,19 +190,67 @@ function ReferenceOnlyGuide({
  * (footwear's EU/US, a belt's S/M | L/XL). Running those through the
  * measurement model would drop every column it didn't recognise.
  */
-function RawTable({grid}: {grid: string[][]}) {
+function RawTable({
+  grid,
+  fit,
+  transpose,
+}: {
+  grid: string[][];
+  fit?: boolean;
+  transpose?: boolean;
+}) {
   if (!grid.length) return null;
+  const thCls =
+    'border border-neutral-300 px-1.5 py-1.5 text-start font-semibold uppercase tracking-[0.04em] md:px-4';
+  const tdCls =
+    'border border-neutral-300 px-1.5 py-1.5 whitespace-nowrap md:px-4';
+  // `fit` hugs the table to its content (no empty space to the right of the
+  // numbers); otherwise it stretches to fill its column.
+  const wrap = cn('max-w-full overflow-x-auto', fit ? 'w-fit' : 'w-full');
+  const tableCls = cn(
+    'table-auto border-collapse text-[11px] md:text-sm',
+    !fit && 'w-full',
+  );
+
+  // East-to-west: flip the chart so each original column becomes a row — its
+  // label (EU / US) leads as a header cell and the sizes run across, instead of
+  // stacking down the page.
+  if (transpose) {
+    const w = Math.max(...grid.map((r) => r.length));
+    const rows = Array.from({length: w}, (_, c) => grid.map((r) => r[c] ?? ''));
+    return (
+      <div className={wrap}>
+        <table className={tableCls}>
+          <tbody>
+            {rows.map((row, r) => (
+              <tr key={r}>
+                {row.map((cell, i) =>
+                  i === 0 ? (
+                    <th className={thCls} key={i} scope="row">
+                      {cell}
+                    </th>
+                  ) : (
+                    <td className={tdCls} key={i}>
+                      {cell}
+                    </td>
+                  ),
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   const [head, ...body] = grid;
   return (
-    <div className="w-full max-w-full overflow-x-auto">
-      <table className="w-full table-auto border-collapse text-[11px] md:text-sm">
+    <div className={wrap}>
+      <table className={tableCls}>
         <thead>
           <tr>
             {head.map((c, i) => (
-              <th
-                className="border border-neutral-300 px-1.5 py-1.5 text-start font-semibold uppercase tracking-[0.04em] md:px-4"
-                key={i}
-              >
+              <th className={thCls} key={i}>
                 {c}
               </th>
             ))}
@@ -210,10 +260,7 @@ function RawTable({grid}: {grid: string[][]}) {
           {body.map((row, r) => (
             <tr key={r}>
               {head.map((_, i) => (
-                <td
-                  className="border border-neutral-300 px-1.5 py-1.5 whitespace-nowrap md:px-4"
-                  key={i}
-                >
+                <td className={tdCls} key={i}>
                   {row[i] ?? ''}
                 </td>
               ))}
@@ -339,28 +386,14 @@ function IllustratedGuide({
 }
 
 function ModelBlock({model}: {model: ModelMeasurements}) {
-  if (!model?.height && !model?.chest && !model?.waist) return null;
+  if (!model?.height) return null;
   return (
     <div className="mt-2 space-y-1.5 text-[13px] text-black">
       <p className="uppercase tracking-[0.06em]">Model Measurements</p>
-      {model.height ? (
-        <p>
-          Model is {model.height}
-          {model.sizeWorn ? ` and wears size ${model.sizeWorn}.` : '.'}
-        </p>
-      ) : null}
-      {model.chest ? (
-        <p>
-          <span className="inline-block w-16">Chest</span>
-          {model.chest}
-        </p>
-      ) : null}
-      {model.waist ? (
-        <p>
-          <span className="inline-block w-16">Waist</span>
-          {model.waist}
-        </p>
-      ) : null}
+      <p>
+        Model is {model.height}
+        {model.sizeWorn ? ` and wears size ${model.sizeWorn}.` : '.'}
+      </p>
     </div>
   );
 }
@@ -559,7 +592,9 @@ function PlainTable({
     <div className="w-full max-w-full overflow-x-auto">
       <table
         className={cn(
-          'w-full table-auto border-collapse',
+          // Hug the content so columns are only as wide as their numbers — no
+          // empty space stretched across each cell to fill the modal.
+          'w-fit table-auto border-collapse',
           compact ? 'text-[10px] md:text-xs' : 'text-[11px] md:text-sm',
         )}
       >

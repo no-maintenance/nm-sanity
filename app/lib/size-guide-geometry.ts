@@ -268,10 +268,11 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
  */
 export function viewBoxFor(g: GarmentSpec): string {
   // A drawing with no measurement arrows (footwear) is a plain reference image.
-  // Frame it in a box twice the drawing's size so it renders at half scale,
-  // centred in the panel, rather than filling it.
+  // Frame it exactly to the drawing — its on-screen size and the space around it
+  // are set by the fixed-size box it sits in (see ReferenceOnlyGuide), not by
+  // padding baked into the viewBox.
   if (!Object.values(g.arrows).some(Boolean)) {
-    return [-500, -g.height / 2, 2000, 2 * g.height].join(' ');
+    return [0, 0, 1000, g.height].join(' ');
   }
   let minX = 0;
   let minY = 0;

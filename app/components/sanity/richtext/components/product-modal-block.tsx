@@ -67,6 +67,11 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
   // Sanity in the product route (the Storefront API doesn't return it).
   const productType =
     product && 'productType' in product ? (product as any).productType : undefined;
+  // Footwear's guide is just a boot sketch beside a short EU/US table, so it
+  // doesn't need the wide frame the illustrated guides do — let its modal shrink
+  // to the content instead of stranding it in a mostly-empty 5xl box.
+  const isFootwear =
+    (productType ?? '').toString().toLowerCase() === 'footwear';
   // Custom Portable Text component to inject the product's size chart
   const portableTextComponents = {
     types: {
@@ -126,13 +131,16 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           // mobile. Pin the column to minmax(0,1fr) to make overflow scroll
           // inside the table rather than widening the modal.
           'w-full grid-cols-[minmax(0,1fr)] p-4 pt-4 md:p-6',
-          hasSizeChart
-            // max-h (not a fixed h) + flex column: a chart with no diagram
-            // (footwear, accessories) keeps a modal its own size, while a tall
-            // illustrated one clamps here and its flex-1 drawing shrinks to fit.
-            // overflow-hidden because nothing inside should scroll.
-            ? 'sm:max-w-5xl max-h-[92vh] flex flex-col overflow-hidden gap-0 md:p-8'
-            : 'max-w-2xl',
+          // max-h (not a fixed h) + flex column: a chart with no diagram
+          // (footwear, accessories) keeps a modal its own size, while a tall
+          // illustrated one clamps here and its flex-1 drawing shrinks to fit.
+          // overflow-hidden because nothing inside should scroll.
+          hasSizeChart &&
+            'max-h-[92vh] flex flex-col overflow-hidden gap-0 md:p-8',
+          // Footwear hugs its content; the illustrated guides take the wide 5xl
+          // frame they need.
+          hasSizeChart && (isFootwear ? 'sm:w-fit sm:max-w-5xl' : 'sm:max-w-5xl'),
+          !hasSizeChart && 'max-w-2xl',
         )}
         variant="wide"
       >
