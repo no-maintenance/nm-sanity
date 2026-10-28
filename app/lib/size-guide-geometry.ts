@@ -208,9 +208,13 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       a: [0.2732, -0.0128, 0.7436, -0.0128, 'above'],
       g: [[0.2732, 0.3467], [0.7436, 0.32]],
     },
+    // Re-measured from `hoodie size guide-01` (.context/tools/hoodie-geometry.py).
+    // The lower leader used to anchor at -0.0189, which is *left of* the arrow's
+    // own endpoint — so it pointed away from the garment and dangled in space
+    // instead of meeting the cuff.
     sleeveLength: {
-      a: [0.2367, 0.3224, -0.0045, 0.9237, 'left'],
-      g: [[0.2702, 0.3491], [-0.0189, 0.9085]],
+      a: [0.2409, 0.3224, -0.0017, 0.9132, 'left'],
+      g: [[0.2715, 0.3483], [0.047, 0.9295]],
     },
     totalLength: {
       a: [1.0429, 0.2777, 1.0429, 0.8528, 'right'],
