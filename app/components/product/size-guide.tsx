@@ -454,7 +454,10 @@ function GarmentDrawing({
           markerUnits="strokeWidth"
           markerWidth="7"
           orient="auto"
-          refX="5.6"
+          // Tip exactly on the line's endpoint. refX used to sit 1.4 marker
+          // units short, which pushed every arrowhead 7 user units past the
+          // measurement it marks — enough to poke outside the garment.
+          refX="7"
           refY="3.5"
         >
           <path d="M0,0 L7,3.5 L0,7 z" fill={ARROW_RED} />
@@ -465,7 +468,7 @@ function GarmentDrawing({
           markerUnits="strokeWidth"
           markerWidth="7"
           orient="auto"
-          refX="1.4"
+          refX="0"
           refY="3.5"
         >
           <path d="M7,0 L0,3.5 L7,7 z" fill={ARROW_RED} />

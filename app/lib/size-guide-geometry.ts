@@ -200,13 +200,15 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
   // Hoodie: arrows and dotted guides measured directly off the four
   // `hoodie size guide` mockups, normalised to the hoodie drawing's tight bbox.
   hoodie: garment('/sizeguide/hoodie.png', 1428, 1500, {
+    // All four re-measured from the `hoodie size guide` mockups via
+    // .context/tools/hoodie-geometry.py rather than adjusted by eye.
     pitToPit: {
-      a: [0.2498, 0.5949, 0.7657, 0.5949, 'above'],
+      a: [0.253, 0.5904, 0.7546, 0.5924, 'above'],
       g: [null, null],
     },
     shoulder: {
-      a: [0.2732, -0.0128, 0.7436, -0.0128, 'above'],
-      g: [[0.2732, 0.3467], [0.7436, 0.32]],
+      a: [0.2757, -0.0091, 0.7331, -0.0071, 'above'],
+      g: [[0.2761, 0.3448], [0.7336, 0.3186]],
     },
     // Re-measured from `hoodie size guide-01` (.context/tools/hoodie-geometry.py).
     // The lower leader used to anchor at -0.0189, which is *left of* the arrow's
@@ -217,8 +219,8 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       g: [[0.2715, 0.3483], [0.047, 0.9295]],
     },
     totalLength: {
-      a: [1.0429, 0.2777, 1.0429, 0.8528, 'right'],
-      g: [[0.6625, 0.2777], [0.688, 0.8528]],
+      a: [1.0242, 0.2779, 1.0225, 0.8466, 'right'],
+      g: [[0.6559, 0.2802], [0.6805, 0.8471]],
     },
   }),
   // Shorts: arrows and dotted guides measured directly off the four
