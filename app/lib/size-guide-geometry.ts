@@ -196,9 +196,12 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       a: [0.1872, 0.0849, -0.0744, 0.8481, 'left'],
       g: [[0.284, 0.1213], [0.1323, 0.9247]],
     },
+    // Re-measured from `shirt size guide.png`. The lower leader was a stub
+    // beside the arrow (0.9523); the mockup runs it back along the hem to
+    // 0.7019, matching the upper one.
     totalLength: {
-      a: [1.0091, 0.0791, 1.0091, 0.8961, 'right'],
-      g: [[0.6416, 0.0788], [0.9523, 0.896]],
+      a: [1.0057, 0.0778, 1.0041, 0.8759, 'right'],
+      g: [[0.6473, 0.0803], [0.7019, 0.873]],
     },
   }),
   // Hoodie: arrows and dotted guides measured directly off the four
