@@ -368,8 +368,8 @@ function ModelBlock({model}: {model: ModelMeasurements}) {
 /**
  * The drawing plus exactly one arrow. The SVG shares a coordinate space with
  * the PNG (drawing at 0,0-1000,height) so arrows stay registered to the artwork
- * at any size; viewBoxFor sizes the frame to this garment's own arrows, which
- * keeps the drawing as large as it can be without shifting between tabs.
+ * at any size; viewBoxFor sizes the frame to all of this garment's arrows, so
+ * it is identical on every tab — the drawing never rescales or shifts.
  */
 function GarmentDrawing({
   garment,
@@ -381,6 +381,8 @@ function GarmentDrawing({
   value: null | string;
 }) {
   const arrow = garment.arrows[measurement];
+  // Frame to the full drawing plus only the active arrow, so the garment shows
+  // at full size with no blank margin reserved for the other tabs' lines.
   const vb = viewBoxFor(garment);
   const FONT = 42;
   const textRef = useRef<SVGTextElement>(null);
