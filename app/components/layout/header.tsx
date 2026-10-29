@@ -636,7 +636,7 @@ function PredictiveSearchItem({
         <div
           ref={drawerRef}
           className={
-            'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter shadow-sm'
+            'fixed w-full left-0 bg-background z-40 px-0 lg:px-gutter'
           }
           style={{
             // Anchor to the actual rendered bottom of the header so there is no gap
