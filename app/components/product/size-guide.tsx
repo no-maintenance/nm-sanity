@@ -326,13 +326,16 @@ function IllustratedGuide({
             ))}
           </div>
 
-          {/* Measurements */}
-          <div className="flex flex-wrap">
+          {/* Measurements — kept to a single row on every screen. On mobile the
+              tabs share the width equally and wrap their labels so even five of
+              them (bottoms) fit without spilling onto a second row; on desktop
+              they size to their content as before. */}
+          <div className="flex">
             {tabs.map((c, i) => (
               <button
                 aria-pressed={c.key === active}
                 className={cn(
-                  'border border-black px-3 py-2.5 text-[11px] uppercase tracking-[0.06em] transition-colors',
+                  'flex-1 border border-black px-1 py-2 text-center text-[11px] uppercase leading-tight tracking-[0.02em] transition-colors md:flex-none md:px-3 md:py-2.5 md:tracking-[0.06em]',
                   i > 0 && '-ml-px',
                   c.key === active
                     ? 'bg-black text-white'
