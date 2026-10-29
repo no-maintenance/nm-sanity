@@ -61,6 +61,17 @@ export const links: LinksFunction = () => {
   return [
     {href: studioStyles, rel: 'stylesheet'},
     {href: polarisCss, rel: 'stylesheet'},
+    // The Studio's own favicon. It needs declaring here rather than inheriting
+    // the storefront's: this route defines `meta`, and a Remix v2 route's meta
+    // replaces its ancestors' instead of merging, so the root's favicon links
+    // never reach /cms — the tab has been falling back to a default.
+    // .ico first for anything that only looks for one; PNGs after so modern
+    // browsers pick the size they actually want.
+    {href: '/cms-favicon.ico', rel: 'icon', type: 'image/x-icon'},
+    {href: '/cms-favicon-16.png', rel: 'icon', sizes: '16x16', type: 'image/png'},
+    {href: '/cms-favicon-32.png', rel: 'icon', sizes: '32x32', type: 'image/png'},
+    {href: '/cms-favicon-48.png', rel: 'icon', sizes: '48x48', type: 'image/png'},
+    {href: '/cms-favicon-180.png', rel: 'apple-touch-icon', sizes: '180x180'},
   ];
 };
 
