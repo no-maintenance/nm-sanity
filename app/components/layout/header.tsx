@@ -609,20 +609,34 @@ function PredictiveSearchItem({
     }
   };
 
+  // Track the header's rendered bottom while the drawer is open, so the two
+  // always meet with no sliver of page between them.
+  //
+  // This reads the position every frame rather than on scroll/resize events.
+  // The fluid header moves by setting --fluid-header-top inside its own
+  // requestAnimationFrame, so a scroll listener measures the header *before*
+  // that frame applies — always one step behind. Mid-scroll that's an
+  // invisible lag, but the last scroll event of a gesture leaves the drawer
+  // parked at the header's previous position with no further event to correct
+  // it: a permanent gap the size of the final scroll step, which is exactly
+  // the reported bug. A frame loop can't fall behind, and keeps settling after
+  // momentum scrolling ends.
   useEffect(() => {
     if (!open) return;
     const headerEl = document.querySelector('header');
     if (!headerEl) return;
-    const update = () => {
-      setPopupTop(headerEl.getBoundingClientRect().bottom);
+    let raf = 0;
+    const tick = () => {
+      const bottom = headerEl.getBoundingClientRect().bottom;
+      // Only re-render when it actually moved; sub-pixel noise would otherwise
+      // re-render every frame for no visible change.
+      setPopupTop((prev) =>
+        prev !== null && Math.abs(prev - bottom) < 0.5 ? prev : bottom,
+      );
+      raf = requestAnimationFrame(tick);
     };
-    update();
-    window.addEventListener('resize', update);
-    window.addEventListener('scroll', update, {passive: true});
-    return () => {
-      window.removeEventListener('resize', update);
-      window.removeEventListener('scroll', update);
-    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [open]);
 
   return (
