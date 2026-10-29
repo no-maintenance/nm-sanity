@@ -14,6 +14,7 @@ import {
 import { portableTextMarks } from './portableTextMarks';
 import { ProductDetailsBlock, type ProductDetailsBlockProps } from '../../../blocks/extra-product-information-block';
 import { SizeGuide, type ModelMeasurements } from '~/components/product/size-guide';
+import { modelNoteFromHtml } from '~/lib/size-guide';
 import { useProduct } from '@shopify/hydrogen-react';
 
 // Define types for Sanity's table format
@@ -72,6 +73,13 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
   // to the content instead of stranding it in a mostly-empty 5xl box.
   const isFootwear =
     (productType ?? '').toString().toLowerCase() === 'footwear';
+  // Show the same model/fit note the product copy does, lifted straight from the
+  // description so the two can't drift apart.
+  const modelNote = modelNoteFromHtml(
+    product && 'descriptionHtml' in product
+      ? (product as any).descriptionHtml
+      : undefined,
+  );
   // Custom Portable Text component to inject the product's size chart
   const portableTextComponents = {
     types: {
@@ -79,6 +87,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
         <SizeGuide
           garmentType={sizeChart?.garmentType}
           modelMeasurements={sizeChart?.modelMeasurements}
+          modelNote={modelNote}
           productType={productType}
           table={sizeChart?.table}
           title={product?.title}

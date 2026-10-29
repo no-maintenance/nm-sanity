@@ -104,22 +104,13 @@ export interface ModelMeasurements {
   waist?: string;
 }
 
-/**
- * Shown under the controls when the chart doesn't carry its own. These are the
- * figures the mockups were drawn with; a `modelMeasurements` object on the
- * Sanity size chart overrides them per product.
- */
-const DEFAULT_MODEL: ModelMeasurements = {
-  chest: '35.5"',
-  height: '6ft 1"',
-  sizeWorn: 'M',
-  waist: '31"',
-};
-
 interface Props {
   /** Explicit "Garment Type" from the Sanity size chart; overrides auto-detection. */
   garmentType?: null | string;
   modelMeasurements?: ModelMeasurements | null;
+  /** The model's fit sentence, lifted from the product description so the guide
+      always shows the same model info as the copy on the page. */
+  modelNote?: null | string;
   productType?: null | string;
   table?: null | SizeChartTable;
   /** Product name — decides the drawing when productType is missing or when
@@ -127,7 +118,7 @@ interface Props {
   title?: null | string;
 }
 
-export function SizeGuide({garmentType, modelMeasurements, productType, table, title}: Props) {
+export function SizeGuide({garmentType, modelMeasurements, modelNote, productType, table, title}: Props) {
   const chart = useMemo(
     () => parseSizeChart(table, productType, title, garmentType),
     [table, productType, title, garmentType],
@@ -156,7 +147,8 @@ export function SizeGuide({garmentType, modelMeasurements, productType, table, t
   return (
     <IllustratedGuide
       chart={chart}
-      model={modelMeasurements ?? DEFAULT_MODEL}
+      model={modelMeasurements ?? null}
+      note={modelNote ?? null}
     />
   );
 }
@@ -275,9 +267,11 @@ function RawTable({
 function IllustratedGuide({
   chart,
   model,
+  note,
 }: {
   chart: ParsedSizeChart;
-  model: ModelMeasurements;
+  model: ModelMeasurements | null;
+  note: null | string;
 }) {
   const garment = GARMENTS[chart.garment!];
   // Only offer tabs the drawing can actually point at.
@@ -374,7 +368,7 @@ function IllustratedGuide({
             ))}
           </div>
 
-          <ModelBlock model={model} />
+          <ModelBlock model={model} note={note} />
         </div>
       </div>
 
@@ -385,15 +379,27 @@ function IllustratedGuide({
   );
 }
 
-function ModelBlock({model}: {model: ModelMeasurements}) {
-  if (!model?.height) return null;
+function ModelBlock({
+  model,
+  note,
+}: {
+  model: ModelMeasurements | null;
+  note: null | string;
+}) {
+  // Prefer the fit sentence lifted from the product copy so the two always
+  // match; fall back to a structured figure only if the chart carries one.
+  const line =
+    note ??
+    (model?.height
+      ? `Model is ${model.height}${
+          model.sizeWorn ? ` and wears size ${model.sizeWorn}` : ''
+        }`
+      : null);
+  if (!line) return null;
   return (
     <div className="mt-2 space-y-1.5 text-[13px] text-black">
       <p className="uppercase tracking-[0.06em]">Model Measurements</p>
-      <p>
-        Model is {model.height}
-        {model.sizeWorn ? ` and wears size ${model.sizeWorn}.` : '.'}
-      </p>
+      <p>{line.replace(/[.\s]+$/, '')}.</p>
     </div>
   );
 }
@@ -542,25 +548,37 @@ function GarmentDrawing({
             />
           ))}
           {value && mid ? (
-            <text
-              ref={textRef}
-              // Once measured, the baseline is positioned explicitly so the
-              // ink sits on the line; dominant-baseline is the fallback for
-              // the first frame.
-              dominantBaseline={ink ? undefined : 'middle'}
-              fill="#111"
-              fontFamily={LABEL_FONT}
-              fontSize={FONT}
-              paintOrder="stroke"
-              stroke="#fff"
-              strokeLinejoin="round"
-              strokeWidth={inline ? 4 : 14}
-              textAnchor="middle"
-              x={mid.x + off.x + (ink?.dx ?? 0)}
-              y={mid.y + off.y + (ink?.dy ?? 0)}
-            >
-              {value}
-            </text>
+            <>
+              {/* Solid white plate behind the number. The ink corrections put
+                  the glyphs' centre exactly on (mid + off), so the plate is
+                  centred there too. A stroked halo alone left the drawing's
+                  texture showing between the strokes of a digit. */}
+              {/* Both paddings stay under the FONT*0.42 the break in the line is
+                  sized with, so the plate never eats the arrow it sits in —
+                  horizontally for a flat arrow, vertically for an upright one. */}
+              <rect
+                fill="#fff"
+                height={2 * halfH + FONT * 0.72}
+                width={2 * halfW + FONT * 0.56}
+                x={mid.x + off.x - halfW - FONT * 0.28}
+                y={mid.y + off.y - halfH - FONT * 0.36}
+              />
+              <text
+                ref={textRef}
+                // Once measured, the baseline is positioned explicitly so the
+                // ink sits on the line; dominant-baseline is the fallback for
+                // the first frame.
+                dominantBaseline={ink ? undefined : 'middle'}
+                fill="#111"
+                fontFamily={LABEL_FONT}
+                fontSize={FONT}
+                textAnchor="middle"
+                x={mid.x + off.x + (ink?.dx ?? 0)}
+                y={mid.y + off.y + (ink?.dy ?? 0)}
+              >
+                {value}
+              </text>
+            </>
           ) : null}
         </g>
       ) : null}

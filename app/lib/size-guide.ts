@@ -322,3 +322,34 @@ export function formatMeasurement(raw: string | undefined, unit: Unit): string {
 function trim(n: number): string {
   return String(Number(n.toFixed(2)));
 }
+
+/**
+ * The model's fit note, pulled from the product description — the sentence that
+ * says what size the model wears ("Rob is 5'11, 145lbs and wears size Medium").
+ *
+ * The size guide shows this verbatim so the model info always matches the copy
+ * on the page, rather than a separate hard-coded figure that drifts out of sync
+ * (the model, height and size worn differ from product to product). Returns
+ * null when the description carries no such sentence — footwear, a few tees —
+ * in which case the guide simply omits the line.
+ */
+export function modelNoteFromHtml(html: null | string | undefined): null | string {
+  if (!html) return null;
+  const text = html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#(?:39|x27);|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+  // The model line is the sentence that states the size the model wears.
+  for (const sentence of text.split(/\.\s+/)) {
+    if (/wears?\s+(?:a\s+)?size/i.test(sentence)) {
+      return sentence.trim().replace(/[.\s]+$/, '');
+    }
+  }
+  return null;
+}
