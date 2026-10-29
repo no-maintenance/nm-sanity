@@ -687,7 +687,7 @@ function PredictiveSearchItem({
                        the footer and FW26 newsletter inputs). */
                     id="header-search"
                     className={
-                      'flex-1 h-10 px-2 border rounded-sm font-semibold uppercase'
+                      'flex-1 h-10 px-2 border rounded-sm uppercase'
                     }
                   />
                   &nbsp;
