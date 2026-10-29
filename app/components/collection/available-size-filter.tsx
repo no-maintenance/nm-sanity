@@ -85,6 +85,52 @@ export function sortSizes(sizes: string[]) {
   return [...sizes].sort(compareSizes);
 }
 
+// Belt sizes use a "S/M | L/XL" style label (they contain a slash); we drop
+// them from the size filter entirely.
+function isBeltSize(size: string): boolean {
+  return size.includes('/');
+}
+
+const SIZE_CATEGORY_ORDER = ['TOPS', 'BOTTOMS', 'FOOTWEAR'] as const;
+type SizeCategory = (typeof SIZE_CATEGORY_ORDER)[number];
+
+/**
+ * Bucket a raw size into a category for the grouped filter:
+ * letter sizes (XS…XL, CCL) → Tops, waist numbers 26–39 → Bottoms, EU shoe
+ * numbers 40–50 → Footwear. Belt sizes and anything else (One Size, etc.) are
+ * excluded.
+ */
+function categorizeSize(size: string): SizeCategory | null {
+  const u = size.toUpperCase().trim();
+  if (isBeltSize(u)) return null;
+  const n = Number(u);
+  if (!Number.isNaN(n)) {
+    if (n >= 26 && n <= 39) return 'BOTTOMS';
+    if (n >= 40 && n <= 50) return 'FOOTWEAR';
+    return null;
+  }
+  if (isOneSize(u)) return null;
+  return 'TOPS';
+}
+
+export function groupSizesByCategory(
+  sizes: string[],
+): {label: SizeCategory; sizes: string[]}[] {
+  const buckets: Record<SizeCategory, string[]> = {
+    BOTTOMS: [],
+    FOOTWEAR: [],
+    TOPS: [],
+  };
+  for (const s of sizes) {
+    const cat = categorizeSize(s);
+    if (cat) buckets[cat].push(s);
+  }
+  return SIZE_CATEGORY_ORDER.map((label) => ({
+    label,
+    sizes: sortSizes(buckets[label]),
+  })).filter((g) => g.sizes.length > 0);
+}
+
 function useToggleSize() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -178,49 +224,65 @@ function SizeCheckbox({
 
 export function AvailableSizeFilter({sizes}: {sizes: string[]}) {
   const {selectedSizes, toggleSize} = useToggleSize();
+  const groups = groupSizesByCategory(sizes);
 
-  if (!sizes.length) return null;
+  if (!groups.length) return null;
 
   return (
-    <ul className="py-2">
-      {sizes.map((size) => {
-        const id = `available-size-${size}`;
-        return (
-          <li className="pb-4" key={size}>
-            <SizeCheckbox
-              id={id}
-              size={size}
-              toggleSize={toggleSize}
-              urlChecked={selectedSizes.includes(size)}
-            />
-          </li>
-        );
-      })}
-    </ul>
+    <div className="py-2">
+      {groups.map(({label, sizes: groupSizes}) => (
+        <div className="mb-5 last:mb-0" key={label}>
+          <div className="mb-3 font-medium opacity-60">{label}</div>
+          <ul>
+            {groupSizes.map((size) => {
+              const id = `available-size-${size}`;
+              return (
+                <li className="pb-4 last:pb-0" key={size}>
+                  <SizeCheckbox
+                    id={id}
+                    size={size}
+                    toggleSize={toggleSize}
+                    urlChecked={selectedSizes.includes(size)}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 }
 
 export function MobileAvailableSizeFilter({sizes}: {sizes: string[]}) {
   const {selectedSizes, toggleSize} = useToggleSize();
+  const groups = groupSizesByCategory(sizes);
 
-  if (!sizes.length) return null;
+  if (!groups.length) return null;
 
   return (
-    <ul className="mt-3">
-      {sizes.map((size) => {
-        const id = `available-size-mobile-${size}`;
-        return (
-          <li className="[&_label]:py-3" key={size}>
-            <SizeCheckbox
-              id={id}
-              isMobile
-              size={size}
-              toggleSize={toggleSize}
-              urlChecked={selectedSizes.includes(size)}
-            />
-          </li>
-        );
-      })}
-    </ul>
+    <div className="mt-3">
+      {groups.map(({label, sizes: groupSizes}) => (
+        <div className="mb-6 last:mb-0" key={label}>
+          <div className="mb-2 font-medium opacity-60">{label}</div>
+          <ul>
+            {groupSizes.map((size) => {
+              const id = `available-size-mobile-${size}`;
+              return (
+                <li className="[&_label]:py-3" key={size}>
+                  <SizeCheckbox
+                    id={id}
+                    isMobile
+                    size={size}
+                    toggleSize={toggleSize}
+                    urlChecked={selectedSizes.includes(size)}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 }

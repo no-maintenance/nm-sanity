@@ -113,7 +113,7 @@ export function DesktopFiltersDrawer({
         'border border-[rgb(var(--border))]',
       )}
     >
-      <nav>
+      <nav className="uppercase [&_*]:!text-[12px]">
         <Accordion
           // Open filters by default
           defaultValue={defaultOpen}
