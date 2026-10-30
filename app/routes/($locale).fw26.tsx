@@ -613,7 +613,8 @@ export default function FW26() {
                 title="Velum Jacket"
                 description={VELUM_DESC}
                 price="325"
-                href={NEW_ARRIVALS_LINK}
+                available
+                href="https://nomaintenance.us/products/velum-jacket-olive"
               />
               <HoverProduct
                 name="product-torai-pants"
