@@ -290,14 +290,16 @@ function IllustratedGuide({
   const value = formatMeasurement(raw, unit);
 
   return (
-    // The whole guide is sized to the modal rather than the other way round:
-    // the controls and table take the height they need, and the drawing absorbs
-    // whatever is left, so nothing ever has to scroll.
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col text-black">
+    // Desktop: the guide is sized to the modal — the drawing absorbs the
+    // leftover height and nothing scrolls. Mobile: the stacked content is taller
+    // than the viewport (and in in-app browsers like Instagram `vh` ignores the
+    // toolbars), so the guide takes its natural height and the modal scrolls,
+    // with the drawing given a fixed share of the screen.
+    <div className="flex min-w-0 flex-col text-black md:min-h-0 md:flex-1">
       {/* minmax(0,1fr) on the stacked layout too, or the wide table below sets
           the column's intrinsic width and pushes the modal past the viewport. */}
-      <div className="grid min-h-0 min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
-        <div className="flex min-h-0 items-center justify-center">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 md:min-h-0 md:flex-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10">
+        <div className="flex h-[38dvh] items-center justify-center md:h-auto md:min-h-0">
           <GarmentDrawing
             garment={garment}
             measurement={active}
@@ -305,7 +307,7 @@ function IllustratedGuide({
           />
         </div>
 
-        <div className="flex min-h-0 min-w-0 flex-col gap-4 overflow-hidden md:gap-6 md:pt-2">
+        <div className="flex min-w-0 flex-col gap-4 md:min-h-0 md:overflow-hidden md:gap-6 md:pt-2">
           {/* Sizes */}
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {chart.sizes.map((s) => (

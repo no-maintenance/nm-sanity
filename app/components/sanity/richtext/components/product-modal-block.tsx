@@ -140,12 +140,13 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           // mobile. Pin the column to minmax(0,1fr) to make overflow scroll
           // inside the table rather than widening the modal.
           'w-full grid-cols-[minmax(0,1fr)] p-4 pt-4 md:p-6',
-          // max-h (not a fixed h) + flex column: a chart with no diagram
-          // (footwear, accessories) keeps a modal its own size, while a tall
-          // illustrated one clamps here and its flex-1 drawing shrinks to fit.
-          // overflow-hidden because nothing inside should scroll.
+          // max-h in dvh (not vh) so in-app browsers like Instagram, whose
+          // toolbars shrink the visible area, don't push the modal taller than
+          // the screen. Desktop clamps and the flex-1 drawing shrinks to fit
+          // (overflow-hidden, no scroll); mobile stacks taller than the viewport,
+          // so it scrolls instead of clipping its content.
           hasSizeChart &&
-            'max-h-[92vh] flex flex-col overflow-hidden gap-0 md:p-8',
+            'max-h-[92dvh] flex flex-col overflow-y-auto gap-0 md:overflow-hidden md:p-8',
           // Footwear hugs its content; the illustrated guides take the wide 5xl
           // frame they need.
           hasSizeChart && (isFootwear ? 'sm:w-fit sm:max-w-5xl' : 'sm:max-w-5xl'),
@@ -173,7 +174,7 @@ export default function ProductModalBlock(props: ProductModalBlockProps) {
           <div
             className={cn(
               hasSizeChart
-                ? 'flex min-h-0 flex-1 flex-col'
+                ? 'flex flex-col md:min-h-0 md:flex-1'
                 : 'prose max-w-none [&_p]:mt-0',
             )}
           >
