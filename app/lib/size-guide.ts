@@ -304,19 +304,23 @@ function resolveGarment(
 
 /**
  * Re-express a cell for the chosen unit. Cells are free text ("20.5\"", "25",
- * "29.5 in"), so the number is pulled out and the rest discarded; anything
+ * "29.5 in"), so the numbers are pulled out and the rest discarded; anything
  * without a number is passed through untouched.
+ *
+ * Some charts (the vintage tees) give a *range* — "17-19\"". Keep both ends so
+ * the range survives, converting each; the hyphen is a range separator, not a
+ * minus sign, so only unsigned numbers are matched.
  */
 export function formatMeasurement(raw: string | undefined, unit: Unit): string {
   if (!raw) return '—';
-  const match = raw.match(/-?\d+(\.\d+)?/);
-  if (!match) return raw;
-  const inches = parseFloat(match[0]);
-  if (!Number.isFinite(inches)) return raw;
-  if (unit === 'in') {
-    return `${trim(inches)}"`;
-  }
-  return `${Math.round(inches * 2.54)}cm`;
+  const nums = raw.match(/\d+(\.\d+)?/g);
+  if (!nums) return raw;
+  const parts = nums.map((n) => {
+    const v = parseFloat(n);
+    if (!Number.isFinite(v)) return n;
+    return unit === 'in' ? trim(v) : String(Math.round(v * 2.54));
+  });
+  return `${parts.join('-')}${unit === 'in' ? '"' : 'cm'}`;
 }
 
 function trim(n: number): string {
