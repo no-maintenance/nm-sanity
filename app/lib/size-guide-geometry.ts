@@ -110,9 +110,12 @@ export const GARMENTS: Record<GarmentKey, GarmentSpec> = {
       g: [[0.0794, 0.9391], [0.4204, 0.9505]],
     },
     // Number in a break in the line, as the mockup draws it.
+    // Rise runs down the centre front: a vertical arrow just off the garment's
+    // right edge, with dashed leaders to the waistband top and the crotch — the
+    // placement from the supplied mockup.
     rise: {
-      a: [0.7755, 0.0498, 0.7755, CROTCH[1], 'above'],
-      g: [[0.2408, 0.0511], CROTCH],
+      a: [0.988, 0.074, 0.988, CROTCH[1], 'above'],
+      g: [[0.513, 0.074], CROTCH],
     },
     thigh: {
       a: [0.1506, 0.4596, 0.4904, 0.484, 'above'],
