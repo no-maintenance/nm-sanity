@@ -7,6 +7,10 @@ const GROUPS = [
     default: true,
   },
   {
+    name: 'categories',
+    title: 'Collection Categories',
+  },
+  {
     name: 'announcementBar',
     title: 'Announcement Bar',
   },
@@ -53,6 +57,41 @@ export default defineType({
       name: 'menu',
       group: 'navigation',
       type: 'internationalizedArrayHeaderNavigation',
+    }),
+    defineField({
+      name: 'collectionCategories',
+      title: 'Collection Categories',
+      description:
+        'The category bar across the top of every collection page, left to right. Add, remove, or drag to reorder. If this list is empty the site falls back to the Shopify "mobile-categories" menu.',
+      group: 'categories',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'collectionCategory',
+          title: 'Category',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'Text shown in the bar, e.g. "Denim".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'url',
+              title: 'Link',
+              type: 'string',
+              description:
+                'Where it goes, e.g. /collections/denim. A full https:// link also works.',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {title: 'label', subtitle: 'url'},
+          },
+        },
+      ],
     }),
     defineField({
       name: 'colorScheme',
