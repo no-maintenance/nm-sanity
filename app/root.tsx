@@ -206,7 +206,9 @@ export function Layout({children}: {children: React.ReactNode}) {
 
   const isCmsRoute = pathname.includes('/cms');
   const isProfilerRoute = pathname.includes('/subrequest-profiler');
-  const isSiteProtectedRoute = pathname.includes('/site-protected');
+  const isSiteProtectedRoute =
+    pathname.includes('/site-protected') ||
+    pathname.includes('/fw26-keys-preview');
   // Branded signup landing renders full-bleed (moving background), no header/footer.
   // (/subscription intentionally excluded — it keeps the normal announcement bar
   // + header + footer and renders the signup as an in-page section instead.)

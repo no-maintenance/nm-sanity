@@ -58,6 +58,9 @@ export interface ProtectionConfig {
   countdownExpiredTitle?: any[];
   countdownExpiredMessage?: any[];
 
+  // Locked-gate experience selection (site-wide)
+  gateExperience?: 'default' | 'ss26-glitch' | 'fw26-keys';
+
   // Media and styling
   mediaType?: 'image' | 'video';
   backgroundImage?: any;

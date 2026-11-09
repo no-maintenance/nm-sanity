@@ -124,6 +124,19 @@ export class PasswordSession {
   }
 
   /**
+   * FW26 keys gate: each visitor gets their own random pair of winning key
+   * indices, persisted here so they stay consistent across their attempts.
+   */
+  getKeysWinners(): number[] | null {
+    const winners = this.session.get('keysWinners');
+    return Array.isArray(winners) ? (winners as number[]) : null;
+  }
+
+  setKeysWinners(winners: number[]): void {
+    this.session.set('keysWinners', winners);
+  }
+
+  /**
    * Persist the intended redirect target between requests
    */
   setPendingRedirect(targetPath: string): void {
