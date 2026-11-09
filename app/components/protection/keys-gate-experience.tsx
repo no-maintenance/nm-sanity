@@ -1,4 +1,3 @@
-import {Form} from '@remix-run/react';
 import {useEffect, useRef, useState} from 'react';
 import type {KeyAttemptResult} from '~/lib/fw26-keys-gate/fw26-keys-init.client';
 import {KEYS_TOTAL, pickWinningKeys} from '~/lib/fw26-keys-gate/winning-keys';
@@ -357,36 +356,7 @@ export function KeysGateExperience({
       </svg>
       <div className="fw26-vignette" />
 
-      {/* No visible copy. A visually-hidden password form keeps the gate
-          operable for keyboard / screen-reader visitors (who can't drag). */}
-      <Form
-        method="post"
-        autoComplete="off"
-        aria-label="Enter password"
-        style={{
-          position: 'absolute',
-          width: 1,
-          height: 1,
-          padding: 0,
-          margin: -1,
-          overflow: 'hidden',
-          clip: 'rect(0,0,0,0)',
-          whiteSpace: 'nowrap',
-          border: 0,
-        }}
-      >
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-        <input
-          name="password"
-          type="text"
-          autoComplete="off"
-          autoCapitalize="off"
-          autoCorrect="off"
-          spellCheck={false}
-          aria-label="Password"
-        />
-        <button type="submit">Enter</button>
-      </Form>
+      {/* No password entry — the only way in is finding a winning key. */}
 
       <div className={`fw26-into${zooming ? ' show' : ''}`} />
     </div>
