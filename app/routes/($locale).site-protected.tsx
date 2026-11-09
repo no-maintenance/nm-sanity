@@ -13,6 +13,8 @@ import {PasswordGrantedView} from '~/components/protection/PasswordGrantedView';
 import {CountdownExpiredView} from '~/components/protection/CountdownExpiredView';
 import {ProtectedPuzzleContainer} from '~/components/protection/ProtectedPuzzleContainer';
 import {SaleGateExperience} from '~/components/protection/sale-gate-experience';
+import {KeysGateExperience} from '~/components/protection/keys-gate-experience';
+import {pickWinningKeys} from '~/lib/fw26-keys-gate/winning-keys';
 import {useColorsCssVars} from '~/hooks/use-colors-css-vars';
 import {KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID} from '~/sanity/constants';
 
@@ -59,6 +61,8 @@ interface LoaderData {
   serverTime: string;
   locale: string;
   currentViewState: ProtectionViewState;
+  /** FW26 keys gate: this visitor's own winning key indices. */
+  keysWinners?: number[];
 }
 
 function generateErrorKey(): string {
@@ -146,6 +150,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     name,
     enabled,
     accessMode,
+    gateExperience,
     password,
     countdown,
     title,
@@ -350,6 +355,19 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     });
   }
 
+  // FW26 keys gate: give this visitor their own fresh pair of winning keys,
+  // stored in their session so the pair stays the same across their attempts
+  // but differs from everyone else's. Only the index numbers reach the client.
+  let keysWinners: number[] | undefined;
+  if (protection?.gateExperience === 'fw26-keys') {
+    keysWinners = passwordSession.getKeysWinners() ?? undefined;
+    if (!keysWinners || keysWinners.length === 0) {
+      keysWinners = pickWinningKeys();
+      passwordSession.setKeysWinners(keysWinners);
+      sessionUpdated = true;
+    }
+  }
+
   const jsonHeaders = sessionUpdated
     ? {headers: {'Set-Cookie': await passwordSession.commit()}}
     : undefined;
@@ -368,6 +386,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     serverTime: new Date().toISOString(),
     locale: locale.language,
     currentViewState: protectionState.viewState,
+    keysWinners,
   }, jsonHeaders);
 }
 
@@ -529,6 +548,50 @@ export async function action({context, request}: ActionFunctionArgs) {
     return json({ok: false});
   }
 
+  // Handle FW26 keys-gate attempt: the visitor dragged a key onto the lock.
+  // Each visitor has their own pair of winning key indices, stored in their
+  // session; a key opens the lock only if it's one of theirs.
+  if (actionType === 'key-attempt') {
+    const keyIndex = Number(formData.get('keyIndex'));
+
+    if (!protection) {
+      return json({
+        success: false,
+        error: 'Access is not available right now',
+        errorKey: generateErrorKey(),
+      });
+    }
+
+    const winners = passwordSession.getKeysWinners();
+    const winner =
+      Number.isInteger(keyIndex) &&
+      Array.isArray(winners) &&
+      winners.includes(keyIndex);
+
+    if (!winner) {
+      return json({success: false, errorKey: generateErrorKey()});
+    }
+
+    // A winning key grants full access, exactly like a correct password.
+    if (protectionSource === 'collection' && protection._id) {
+      passwordSession.authenticateFor(protection._id);
+    } else if (protectionSource === 'global') {
+      passwordSession.authenticateGlobally();
+    }
+
+    const targetPath = await resolveRedirectTarget(
+      sanity,
+      protection,
+      redirectTo,
+      context.locale,
+    );
+    passwordSession.clearPendingRedirect();
+    return json(
+      {success: true, redirectUrl: targetPath},
+      {headers: {'Set-Cookie': await passwordSession.commit()}},
+    );
+  }
+
   // Handle puzzle completion
   if (actionType === 'puzzle-completed') {
     // If puzzleGrantsAccess is not enabled, return error
@@ -653,7 +716,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 
 
 export default function SiteProtected() {
-  const {protection, protectionContext, redirectTo, currentViewState} = useLoaderData<typeof loader>();
+  const {protection, protectionContext, redirectTo, currentViewState, keysWinners} = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   // Generate CSS variables for color scheme (must be called before early returns)
@@ -674,13 +737,31 @@ export default function SiteProtected() {
     effectiveViewState = actionData.newState as ProtectionViewState;
   }
 
-  // SS26 sale: the site-wide locked gate uses the custom experience
-  // (3D logo + typed price sheet + glitch). Password is still validated
-  // server-side by the action above against the Sanity protectionConfig.
+  // FW26 keys gate: floating keys the visitor drags onto the lock. The winning
+  // ~25 keys are validated server-side by the `key-attempt` action above.
   if (
     effectiveViewState === 'locked' &&
     protectionContext.type === 'site' &&
-    !protection.embeddedPuzzle
+    !protection.embeddedPuzzle &&
+    protection.gateExperience === 'fw26-keys'
+  ) {
+    return (
+      <KeysGateExperience
+        redirectTo={redirectTo}
+        actionData={actionData as {error?: string; errorKey?: string | number} | null}
+      />
+    );
+  }
+
+  // SS26 sale: the site-wide locked gate uses the custom experience
+  // (3D logo + typed price sheet + glitch). Password is still validated
+  // server-side by the action above against the Sanity protectionConfig.
+  // The default gate is used when gateExperience is 'default'.
+  if (
+    effectiveViewState === 'locked' &&
+    protectionContext.type === 'site' &&
+    !protection.embeddedPuzzle &&
+    protection.gateExperience !== 'default'
   ) {
     return (
       <SaleGateExperience

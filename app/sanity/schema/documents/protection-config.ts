@@ -170,6 +170,23 @@ export default defineType({
       hidden: ({parent}) => !parent?.enabled || !parent?.embeddedPuzzle,
     }),
     defineField({
+      name: 'gateExperience',
+      title: 'Gate Experience',
+      description:
+        'Which locked-gate experience to render for site-wide protection. "Keys (FW26)" shows the floating-keys / drag-to-the-lock experience.',
+      type: 'string',
+      hidden: ({parent}) => !parent?.enabled,
+      options: {
+        list: [
+          {title: 'Default (standard gate)', value: 'default'},
+          {title: 'Glitch Terminal (SS26)', value: 'ss26-glitch'},
+          {title: 'Keys (FW26)', value: 'fw26-keys'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'default',
+    }),
+    defineField({
       name: 'mediaType',
       title: 'Background Media Type',
       description: 'Choose whether to use an image or video as background',
