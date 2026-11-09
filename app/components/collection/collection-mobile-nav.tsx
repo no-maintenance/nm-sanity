@@ -44,7 +44,7 @@ function orderRank(title?: null | string): number {
   return i === -1 ? CATEGORY_ORDER.length : i;
 }
 
-function menuItemPath(item: ShopifyMenuItem): string {
+function menuItemPath(item: {url?: null | string}): string {
   if (!item.url) return '#';
   try {
     return new URL(item.url).pathname;
@@ -53,13 +53,20 @@ function menuItemPath(item: ShopifyMenuItem): string {
   }
 }
 
-type SanityCategory = {_key: string; label?: null | string; url?: null | string};
+type SanityCategory = {
+  _key: string;
+  label?: null | string;
+  textColor?: null | {hex?: null | string};
+  url?: null | string;
+};
+/** One entry in the bar, whichever source it came from. */
+type CategoryItem = {color?: null | string; id: string; title: string; url: string};
 
 /**
  * Pre-CMS behaviour, kept as the fallback: the Shopify "mobile-categories"
  * menu, with All / Footwear / Knitwear injected when missing, in CATEGORY_ORDER.
  */
-function fallbackItems(menu?: ShopifyMenu | null): ShopifyMenuItem[] {
+function fallbackItems(menu?: ShopifyMenu | null): CategoryItem[] {
   const items = [...(menu?.items ?? [])];
 
   // Inject an "All" entry if the menu doesn't already include one.
@@ -102,7 +109,11 @@ function fallbackItems(menu?: ShopifyMenu | null): ShopifyMenuItem[] {
 
   // Apply the desired left-to-right ordering.
   items.sort((a, b) => orderRank(a.title) - orderRank(b.title));
-  return items;
+  return items.map((item) => ({
+    id: item.id,
+    title: item.title ?? '',
+    url: item.url ?? '#',
+  }));
 }
 
 export function CollectionMobileNav({
@@ -130,13 +141,15 @@ export function CollectionMobileNav({
     | {collectionCategories?: SanityCategory[] | null}
     | null
     | undefined;
-  const sanityItems: ShopifyMenuItem[] = (header?.collectionCategories ?? [])
+  const sanityItems: CategoryItem[] = (header?.collectionCategories ?? [])
     .map((c) => ({
+      // Optional per-category text color picked in the CMS; empty = default.
+      color: stegaClean(c.textColor?.hex ?? '') || null,
       id: c._key,
       title: stegaClean(c.label ?? '') ?? '',
       url: stegaClean(c.url ?? '') ?? '',
     }))
-    .filter((c) => c.title.trim() && c.url.trim()) as ShopifyMenuItem[];
+    .filter((c) => c.title.trim() && c.url.trim());
 
   const items = sanityItems.length ? sanityItems : fallbackItems(menu);
 
@@ -278,7 +291,7 @@ function ScrollIndicator({scrollRef}: {scrollRef: RefObject<HTMLElement>}) {
   );
 }
 
-function CategoryLink({item}: {item: ShopifyMenuItem}) {
+function CategoryLink({item}: {item: CategoryItem}) {
   const path = menuItemPath(item);
   const localePath = useLocalePath({path});
 
@@ -287,6 +300,7 @@ function CategoryLink({item}: {item: ShopifyMenuItem}) {
       className={NAV_LINK_CLASS}
       prefetch="none"
       reloadDocument
+      style={item.color ? {color: item.color} : undefined}
       to={localePath}
     >
       {item.title}

@@ -86,6 +86,13 @@ export default defineType({
                 'Where it goes, e.g. /collections/denim. A full https:// link also works.',
               validation: (Rule) => Rule.required(),
             }),
+            defineField({
+              name: 'textColor',
+              title: 'Text color',
+              type: 'colorPicker',
+              description:
+                'Optional. Leave empty for the normal text color; pick a color to highlight this category (e.g. red for a sale).',
+            }),
           ],
           preview: {
             select: {title: 'label', subtitle: 'url'},

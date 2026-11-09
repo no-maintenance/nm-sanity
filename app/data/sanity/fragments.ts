@@ -243,6 +243,7 @@ export const HEADER_FRAGMENT = defineQuery(`{
   collectionCategories[] {
     _key,
     label,
+    textColor { hex },
     url,
   },
   padding,
