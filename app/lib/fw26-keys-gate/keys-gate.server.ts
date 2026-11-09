@@ -16,11 +16,10 @@ import {redirect} from '@shopify/remix-oxygen';
  */
 export const KEYS_GATE_ENABLED = true;
 
-/** Where the standalone gate lives. */
-export const KEYS_GATE_PATH = '/enter';
-
-/** Where winners land once they beat the game. */
-export const KEYS_GATE_SUCCESS_REDIRECT = '/';
+// Path constants live in the client-safe config module (the gate page
+// component needs them); re-exported here for server-side callers.
+import {KEYS_GATE_PATH, KEYS_GATE_SUCCESS_REDIRECT} from './keys-gate.config';
+export {KEYS_GATE_PATH, KEYS_GATE_SUCCESS_REDIRECT};
 
 // Paths that must stay reachable while the gate is up: the gate route itself,
 // the Sanity studio, APIs, and static/meta files. Everything else → the game.

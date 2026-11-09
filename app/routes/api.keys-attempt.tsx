@@ -1,10 +1,13 @@
 import {type ActionFunctionArgs, json} from '@shopify/remix-oxygen';
-import {
-  KEYS_GATE_ENABLED,
-  KEYS_GATE_SUCCESS_REDIRECT,
-} from '~/lib/fw26-keys-gate/keys-gate.server';
+import {KEYS_GATE_ENABLED} from '~/lib/fw26-keys-gate/keys-gate.server';
+import {KEYS_GATE_SUCCESS_REDIRECT} from '~/lib/fw26-keys-gate/keys-gate.config';
 
 const NO_CACHE = {'Cache-Control': 'no-cache, no-store, must-revalidate'};
+
+/** The game only POSTs here; a stray GET gets a clean 405 instead of an error. */
+export async function loader() {
+  return json({success: false}, {status: 405, headers: NO_CACHE});
+}
 
 /**
  * Validates a dragged key for the standalone FW26 keys gate.

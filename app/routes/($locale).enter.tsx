@@ -2,10 +2,10 @@ import {type LoaderFunctionArgs, json, redirect} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import {KeysGateExperience} from '~/components/protection/keys-gate-experience';
 import {pickWinningKeys} from '~/lib/fw26-keys-gate/winning-keys';
-import {
-  KEYS_GATE_ENABLED,
-  KEYS_GATE_SUCCESS_REDIRECT,
-} from '~/lib/fw26-keys-gate/keys-gate.server';
+// Server-only switch (used only in the loader, so it's stripped from the
+// browser bundle). The redirect path comes from the client-safe config.
+import {KEYS_GATE_ENABLED} from '~/lib/fw26-keys-gate/keys-gate.server';
+import {KEYS_GATE_SUCCESS_REDIRECT} from '~/lib/fw26-keys-gate/keys-gate.config';
 
 const NO_CACHE = {'Cache-Control': 'no-cache, no-store, must-revalidate'};
 
