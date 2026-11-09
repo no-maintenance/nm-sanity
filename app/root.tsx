@@ -41,6 +41,10 @@ import tailwindCss from './styles/tailwind.css?url';
 import { Toaster } from '~/components/ui/sonner';
 import { KlaviyoPixel } from './components/klaviyo/klaviyo-pixel';
 import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
+import {
+  KEYS_GATE_ENABLED,
+  requireKeysGateUnlock,
+} from '~/lib/fw26-keys-gate/keys-gate.server';
 
 export type RootLoader = typeof loader;
 
@@ -119,10 +123,15 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const isSiteProtectedRoute = url.pathname.includes('/site-protected');
 
-  // Enforce the site-wide password gate for every route (not just the few
-  // that opted in). The guard self-exempts /api, /cms, assets, the gate
-  // itself, etc., and no-ops when no protection is enabled.
-  await requireUnprotectedAccess(context, request);
+  // Enforce the gate on every route. When the standalone FW26 keys gate is on,
+  // it fully replaces the Sanity password-protection system (self-contained,
+  // reads no CMS). Otherwise fall back to the normal Sanity-driven protection.
+  // Both self-exempt /api, /cms, assets, the gate page, etc.
+  if (KEYS_GATE_ENABLED) {
+    await requireKeysGateUnlock(context, request);
+  } else {
+    await requireUnprotectedAccess(context, request);
+  }
 
   const queryParams = {
     defaultLanguage: DEFAULT_LOCALE.language.toLowerCase(),
@@ -208,7 +217,8 @@ export function Layout({children}: {children: React.ReactNode}) {
   const isProfilerRoute = pathname.includes('/subrequest-profiler');
   const isSiteProtectedRoute =
     pathname.includes('/site-protected') ||
-    pathname.includes('/fw26-keys-preview');
+    pathname.includes('/fw26-keys-preview') ||
+    /(^|\/)enter\/?$/.test(pathname);
   // Branded signup landing renders full-bleed (moving background), no header/footer.
   // (/subscription intentionally excluded — it keeps the normal announcement bar
   // + header + footer and renders the signup as an in-page section instead.)
