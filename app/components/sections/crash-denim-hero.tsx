@@ -2,9 +2,10 @@
  * Home Hero — the full-bleed image + headline at the top of the homepage.
  *
  * Content is editable in Sanity Studio under Header → "Home Hero"
- * (desktop image, mobile image, headline, link). If a field is empty, it falls
- * back to the hardcoded values below, so the hero never renders blank and always
- * matches the last shipped art. Read-path mirrors the announcement bar.
+ * (desktop image, mobile image, headline, link). Image, link and alt fall back
+ * to the hardcoded values below so the hero art never renders blank; the
+ * headline is optional — left empty in the CMS, no text overlay shows. Read-path
+ * mirrors the announcement bar.
  *
  * Desktop shows the full image uncropped (the frame's aspect-ratio follows the
  * uploaded desktop image); mobile is full-bleed, top-anchored so the subject's
@@ -23,8 +24,7 @@ import {useRootLoaderData} from '~/root';
 const FALLBACK_DESKTOP = '/sept11-landing.jpg';
 const FALLBACK_MOBILE = '/sept11-landing-mobile.jpg';
 const FALLBACK_LINK = '/collections/new-arrivals';
-const FALLBACK_HEADLINE = 'FW26 DELIVERY 3: RELEASING 9/11';
-const FALLBACK_ALT = 'FW26 Delivery 3';
+const FALLBACK_ALT = 'New Arrivals';
 const FALLBACK_DESKTOP_RATIO = '2880 / 1360';
 
 const SRCSET_WIDTHS = [750, 1080, 1500, 2000, 2560, 2880, 3840];
@@ -177,7 +177,8 @@ export function CrashDenimHero() {
   const desktop = buildHeroImage(hero?.desktopImage, env);
   const mobile = buildHeroImage(hero?.mobileImage, env);
 
-  const headline = stegaClean(hero?.headline)?.trim() || FALLBACK_HEADLINE;
+  // Optional: empty CMS headline means no text overlay (not a hardcoded one).
+  const headline = stegaClean(hero?.headline)?.trim() || '';
   const link = stegaClean(hero?.link)?.trim() || FALLBACK_LINK;
 
   // Desktop headline: auto-fit to ONE line. `fitVw` is the largest size (in vw)
@@ -205,7 +206,7 @@ export function CrashDenimHero() {
     <Link
       to={link}
       className="crash-denim"
-      aria-label={`Shop ${headline}`}
+      aria-label={headline ? `Shop ${headline}` : 'Shop New Arrivals'}
     >
       <style dangerouslySetInnerHTML={{__html: buildCss(desktopRatio, headlineFontSize, headlineFontSizeMobile)}} />
       <picture>
@@ -224,7 +225,9 @@ export function CrashDenimHero() {
           decoding="async"
         />
       </picture>
-      <h1 className="crash-denim__title">{headline}</h1>
+      {headline ? (
+        <h1 className="crash-denim__title">{headline}</h1>
+      ) : null}
     </Link>
   );
 }
