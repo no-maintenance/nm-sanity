@@ -3,11 +3,13 @@ import type {MenuQuery} from 'types/shopify/storefrontapi.generated';
 import type {RefObject} from 'react';
 
 import {Link} from '@remix-run/react';
+import {stegaClean} from '@sanity/client/stega';
 import {Suspense, useRef, useState} from 'react';
 
 import {useIsomorphicLayoutEffect} from '~/hooks/use-isomorphic-layout-effect';
 import {useLocalePath} from '~/hooks/use-locale-path';
 import {cn} from '~/lib/utils';
+import {useRootLoaderData} from '~/root';
 
 import type {AppliedFilter} from './sort-filter-layout';
 
@@ -51,23 +53,13 @@ function menuItemPath(item: ShopifyMenuItem): string {
   }
 }
 
-export function CollectionMobileNav({
-  appliedFilters,
-  availableSizes,
-  filters,
-  menu,
-  onClearAllFilters,
-  productsCount,
-}: {
-  appliedFilters: AppliedFilter[];
-  availableSizes?: string[];
-  filters: Filter[];
-  menu?: ShopifyMenu | null;
-  onClearAllFilters: () => void;
-  productsCount: number;
-}) {
-  const navRef = useRef<HTMLElement>(null);
+type SanityCategory = {_key: string; label?: null | string; url?: null | string};
 
+/**
+ * Pre-CMS behaviour, kept as the fallback: the Shopify "mobile-categories"
+ * menu, with All / Footwear / Knitwear injected when missing, in CATEGORY_ORDER.
+ */
+function fallbackItems(menu?: ShopifyMenu | null): ShopifyMenuItem[] {
   const items = [...(menu?.items ?? [])];
 
   // Inject an "All" entry if the menu doesn't already include one.
@@ -110,6 +102,43 @@ export function CollectionMobileNav({
 
   // Apply the desired left-to-right ordering.
   items.sort((a, b) => orderRank(a.title) - orderRank(b.title));
+  return items;
+}
+
+export function CollectionMobileNav({
+  appliedFilters,
+  availableSizes,
+  filters,
+  menu,
+  onClearAllFilters,
+  productsCount,
+}: {
+  appliedFilters: AppliedFilter[];
+  availableSizes?: string[];
+  filters: Filter[];
+  menu?: ShopifyMenu | null;
+  onClearAllFilters: () => void;
+  productsCount: number;
+}) {
+  const navRef = useRef<HTMLElement>(null);
+
+  // The list is managed in Sanity (Header → Collection Categories). The
+  // Shopify menu plus the hardcoded extras in fallbackItems() only kick in
+  // when nothing has been entered in the CMS.
+  const {sanityRoot} = useRootLoaderData();
+  const header = sanityRoot?.data?.header as unknown as
+    | {collectionCategories?: SanityCategory[] | null}
+    | null
+    | undefined;
+  const sanityItems: ShopifyMenuItem[] = (header?.collectionCategories ?? [])
+    .map((c) => ({
+      id: c._key,
+      title: stegaClean(c.label ?? '') ?? '',
+      url: stegaClean(c.url ?? '') ?? '',
+    }))
+    .filter((c) => c.title.trim() && c.url.trim()) as ShopifyMenuItem[];
+
+  const items = sanityItems.length ? sanityItems : fallbackItems(menu);
 
   return (
     <div

@@ -240,6 +240,11 @@ export const HEADER_FRAGMENT = defineQuery(`{
     menu[_key == $language][0].value[],
     menu[_key == $defaultLanguage][0].value[],
   )[] ${LINKS_LIST_SELECTION},
+  collectionCategories[] {
+    _key,
+    label,
+    url,
+  },
   padding,
   showSeparatorLine,
   sticky,
