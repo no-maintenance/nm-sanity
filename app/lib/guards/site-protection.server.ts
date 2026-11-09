@@ -1,4 +1,5 @@
 import {redirect} from '@shopify/remix-oxygen';
+import {CacheNone} from '@shopify/hydrogen';
 import {determineProtectionState, type ProtectionConfig as StateProtectionConfig} from '../site-protection-states';
 
 /**
@@ -191,7 +192,11 @@ export async function requireUnprotectedAccess(
       }`;
   }
 
-  const {data} = await sanity.loadQuery(query, queryParams);
+  // Never Oxygen-cache the protection check — gating changes must apply right
+  // away (the Sanity CDN still bounds this to ~60s, which is fine).
+  const {data} = await sanity.loadQuery(query, queryParams, {
+    hydrogen: {cache: CacheNone()},
+  });
 
   // Determine which protection config to use (priority: collection → global)
   let activeProtection: ProtectionConfig | null = null;

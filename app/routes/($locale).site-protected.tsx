@@ -1,5 +1,6 @@
 import type {ActionFunctionArgs, LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {json, redirect} from '@shopify/remix-oxygen';
+import {CacheNone} from '@shopify/hydrogen';
 import {useActionData, useLoaderData} from '@remix-run/react';
 import {
   determineProtectionState,
@@ -255,7 +256,9 @@ export async function loader({context, request}: LoaderFunctionArgs) {
       }`;
   }
 
-  const {data} = await sanity.loadQuery(query, queryParams);
+  const {data} = await sanity.loadQuery(query, queryParams, {
+    hydrogen: {cache: CacheNone()},
+  });
 
   // Determine active protection config and add context names
   let protection: ProtectionConfig | undefined;
@@ -456,7 +459,9 @@ export async function action({context, request}: ActionFunctionArgs) {
       }`;
   }
 
-  const {data} = await sanity.loadQuery(query, queryParams);
+  const {data} = await sanity.loadQuery(query, queryParams, {
+    hydrogen: {cache: CacheNone()},
+  });
 
   // Determine active protection config (same priority logic as loader)
   let protection: ProtectionConfig | undefined;
