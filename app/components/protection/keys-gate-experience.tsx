@@ -191,9 +191,9 @@ export function KeysGateExperience({
     let cancelled = false;
     document.body.style.overflow = 'hidden';
 
-    // Desktop: 852 keys. Mobile: 850 total (both = 2 winners + decoys).
+    // Desktop: 702 keys. Mobile: 700 total (both = 2 winners + decoys).
     const isSmall = window.innerWidth < 760;
-    const defaultCount = isSmall ? 850 : KEYS_TOTAL;
+    const defaultCount = isSmall ? 700 : KEYS_TOTAL;
 
     // This visitor's winning keys. The server picks a fresh random pair per
     // person and passes it in; the preview passes its own. Fall back to a
