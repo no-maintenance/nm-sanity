@@ -1,7 +1,7 @@
 /**
  * "Winning key" selection for the FW26 keys gate.
  *
- * The gate renders a swarm of ~850 keys. For each visitor, a couple of them
+ * The gate renders a swarm of ~700 keys. For each visitor, a couple of them
  * are their own personal "real" keys — a fresh random pair per person, stored
  * in that visitor's password-session cookie (server-side) and sent to the
  * client only as index numbers so it can draw those keys as the distinct hero
@@ -16,7 +16,7 @@
 // How many "real" keys each visitor gets.
 export const KEYS_WINNER_COUNT = 2;
 // Total keys the gate renders by default (desktop); mobile renders fewer.
-export const KEYS_TOTAL = 852;
+export const KEYS_TOTAL = 702;
 // Winner indices come from [0, pool). Must be < the smallest render count.
 export const KEYS_WINNER_POOL = 600;
 
