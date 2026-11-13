@@ -10,7 +10,7 @@
  * manual on/off is cache-clean. The scheduled shut-off needs no deploy: every
  * server starts letting visitors straight in at that exact moment.
  */
-export const KEYS_GATE_ENABLED = true;
+export const KEYS_GATE_ENABLED = false;
 
 /** Fri Nov 13 2026, 11:00 AM Pacific (PST, UTC-8) → 19:00 UTC. */
 export const KEYS_GATE_ENDS_AT = Date.parse('2026-11-13T19:00:00Z');
