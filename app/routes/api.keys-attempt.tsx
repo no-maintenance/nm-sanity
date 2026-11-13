@@ -1,5 +1,5 @@
 import {type ActionFunctionArgs, json} from '@shopify/remix-oxygen';
-import {KEYS_GATE_ENABLED} from '~/lib/fw26-keys-gate/keys-gate.server';
+import {isKeysGateEnabled} from '~/lib/fw26-keys-gate/keys-gate.server';
 import {KEYS_GATE_SUCCESS_REDIRECT} from '~/lib/fw26-keys-gate/keys-gate.config';
 
 const NO_CACHE = {'Cache-Control': 'no-cache, no-store, must-revalidate'};
@@ -20,7 +20,7 @@ export async function loader() {
 export async function action({context, request}: ActionFunctionArgs) {
   const {passwordSession} = context;
 
-  if (!KEYS_GATE_ENABLED || request.method !== 'POST') {
+  if (!isKeysGateEnabled() || request.method !== 'POST') {
     return json({success: false}, {headers: NO_CACHE});
   }
 

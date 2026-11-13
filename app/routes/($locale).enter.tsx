@@ -4,7 +4,7 @@ import {KeysGateExperience} from '~/components/protection/keys-gate-experience';
 import {pickWinningKeys} from '~/lib/fw26-keys-gate/winning-keys';
 // Server-only switch (used only in the loader, so it's stripped from the
 // browser bundle). The redirect path comes from the client-safe config.
-import {KEYS_GATE_ENABLED} from '~/lib/fw26-keys-gate/keys-gate.server';
+import {isKeysGateEnabled} from '~/lib/fw26-keys-gate/keys-gate.server';
 import {KEYS_GATE_SUCCESS_REDIRECT} from '~/lib/fw26-keys-gate/keys-gate.config';
 
 const NO_CACHE = {'Cache-Control': 'no-cache, no-store, must-revalidate'};
@@ -19,7 +19,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   const {passwordSession} = context;
 
   // Gate off, or already unlocked → no reason to be here.
-  if (!KEYS_GATE_ENABLED || passwordSession.isGloballyAuthenticated()) {
+  if (!isKeysGateEnabled() || passwordSession.isGloballyAuthenticated()) {
     throw redirect(KEYS_GATE_SUCCESS_REDIRECT);
   }
 
