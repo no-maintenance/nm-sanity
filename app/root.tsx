@@ -42,7 +42,7 @@ import { Toaster } from '~/components/ui/sonner';
 import { KlaviyoPixel } from './components/klaviyo/klaviyo-pixel';
 import {requireUnprotectedAccess} from '~/lib/guards/site-protection.server';
 import {
-  KEYS_GATE_ENABLED,
+  isKeysGateEnabled,
   requireKeysGateUnlock,
 } from '~/lib/fw26-keys-gate/keys-gate.server';
 
@@ -127,7 +127,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   // it fully replaces the Sanity password-protection system (self-contained,
   // reads no CMS). Otherwise fall back to the normal Sanity-driven protection.
   // Both self-exempt /api, /cms, assets, the gate page, etc.
-  if (KEYS_GATE_ENABLED) {
+  if (isKeysGateEnabled()) {
     await requireKeysGateUnlock(context, request);
   } else {
     await requireUnprotectedAccess(context, request);

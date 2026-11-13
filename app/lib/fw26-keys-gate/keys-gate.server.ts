@@ -10,11 +10,12 @@ import {redirect} from '@shopify/remix-oxygen';
  * them into the real site. Nothing here reads Sanity.
  *
  * ── THE SWITCH ───────────────────────────────────────────────────────────────
- * Flip this to turn the gate on/off. Because toggling it ships a deploy, the
- * edge cache is purged on every flip — so turning it on gates cleanly with no
- * stale-page lag, and turning it off restores the normal store immediately.
+ * Lives in `keys-gate.schedule.ts`: a master on/off (`KEYS_GATE_ENABLED`) plus a
+ * scheduled automatic take-down (`KEYS_GATE_ENDS_AT`). `isKeysGateEnabled()`
+ * combines them and is the only thing callers should check.
  */
-export const KEYS_GATE_ENABLED = true;
+import {isKeysGateEnabled} from './keys-gate.schedule';
+export {KEYS_GATE_ENABLED, KEYS_GATE_ENDS_AT, isKeysGateEnabled} from './keys-gate.schedule';
 
 // Path constants live in the client-safe config module (the gate page
 // component needs them); re-exported here for server-side callers.
@@ -47,7 +48,7 @@ export async function requireKeysGateUnlock(
   context: any,
   request: Request,
 ): Promise<void> {
-  if (!KEYS_GATE_ENABLED) return;
+  if (!isKeysGateEnabled()) return;
 
   const url = new URL(request.url);
   if (isExempt(url.pathname)) return;
