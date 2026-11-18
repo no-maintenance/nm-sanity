@@ -69,7 +69,9 @@ const CSS = `
   letter-spacing: 0.02em;
   text-transform: uppercase;
   text-align: left;
-  padding: 0 1em;
+  /* Left inset puts the caret / typed text exactly where the drawn labels
+     start (x 410 of 1500 = 27.33% of the card; the input starts at 24.9%). */
+  padding: 0 1em 0 2.43cqw;
   font-family: inherit;
 }
 /* Empty + unfocused: transparent so the drawn label in the base shows through.
@@ -81,7 +83,11 @@ const CSS = `
 .nm-ds-input:focus,
 .nm-ds-input:not(:placeholder-shown) { background: ${BG}; }
 .nm-ds-checkbox { position: absolute; background: transparent; border: 0; cursor: pointer; padding: 0; }
-.nm-ds-check { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #111; font-size: 2.4cqw; line-height: 1; }
+/* The tick is an SVG, not a glyph: a text "✕" sits low/right of its em box,
+   so it never looked centred in the drawn square. Sized to the square's inner
+   area (34/1500 of the card) with a little breathing room. */
+.nm-ds-check { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #111; }
+.nm-ds-check svg { width: 2cqw; height: 2cqw; display: block; }
 .nm-ds-submit {
   position: absolute; background: transparent; border: 0; cursor: pointer; padding: 0;
   display: flex; align-items: center; justify-content: center;
@@ -237,9 +243,19 @@ export function DiscountSignup({onClose}: {onClose: () => void}) {
               aria-checked={consent}
               aria-label="I agree to receive recurring marketing emails and automated texts and accept the terms of service & privacy policy."
               onClick={() => setConsent((c) => !c)}
-              style={{left: '23.2%', top: '76.2%', width: '2.9%', height: '2.4%'}}
+              /* Drawn square in signup-base.png: x 351–392, y 1486–1526 of
+                 1500×1950 → centre (24.77%, 77.23%). The button is a larger
+                 invisible hit area centred on that point; the tick centres
+                 inside it. */
+              style={{left: '22.37%', top: '75.18%', width: '4.8%', height: '4.1%'}}
             >
-              {consent && <span className="nm-ds-check">✕</span>}
+              {consent && (
+                <span className="nm-ds-check" aria-hidden="true">
+                  <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="0.9" strokeLinecap="square">
+                    <path d="M1.6 1.6 L8.4 8.4 M8.4 1.6 L1.6 8.4" />
+                  </svg>
+                </span>
+              )}
             </button>
 
             <button
