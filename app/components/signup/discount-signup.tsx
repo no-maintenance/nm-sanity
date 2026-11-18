@@ -143,6 +143,11 @@ const CSS = `
 }
 .nm-ds-done h2 { font-size: 6cqw; text-transform: uppercase; letter-spacing: 0.04em; margin: 0; }
 .nm-ds-done p { font-size: 3cqw; text-transform: uppercase; letter-spacing: 0.03em; margin: 0; color: #444; }
+/* Success screen: the same red-text animation, shifted down so the band
+   (centred ~20% down the artwork) sits centred on the heading (~50.7% down the
+   card, per the mock). The copy is stacked above it. */
+.nm-ds-done-art { position: absolute; left: 0; top: 30.6%; width: 100%; height: 100%; pointer-events: none; }
+.nm-ds-done h2, .nm-ds-done p { position: relative; z-index: 1; }
 `;
 
 export function DiscountSignup({onClose}: {onClose: () => void}) {
@@ -232,6 +237,7 @@ export function DiscountSignup({onClose}: {onClose: () => void}) {
 
         {state === 'ok' ? (
           <div className="nm-ds-done">
+            <RedTextLoop className="nm-ds-done-art" />
             <h2>You&apos;re in</h2>
             <p>Check your inbox for your code.</p>
           </div>
