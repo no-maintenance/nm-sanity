@@ -10,6 +10,44 @@ import {useAnalytics} from '@shopify/hydrogen';
 import { useAnalyticsDebug } from '~/hooks/use-analytics-debug';
 
 // ---------------------------------------------------------------------------
+// Keep Klaviyo's own "Popup Newsletter" onsite form from showing. The site's
+// branded signup popup (SignupOverlay, auto-opens for new visitors) replaces
+// it, and two popups a second apart would be a mess.
+//
+// Klaviyo's onsite script keeps a per-form "last closed" time in
+// localStorage['klaviyoOnsite'] and skips a form until its "don't show again
+// for N days" window has passed. Seeding that time far in the future (before
+// klaviyo.js loads) makes it skip the form every time. Verified against the
+// live site: with this seeded the form never renders. If Klaviyo changes its
+// storage layout this quietly stops working — the form should also be turned
+// off (unpublished) in Klaviyo > Sign-up forms, which is the real fix.
+// ---------------------------------------------------------------------------
+const REPLACED_KLAVIYO_FORM_ID = 'Rc2Qwz';
+const KLAVIYO_ONSITE_STORAGE_KEY = 'klaviyoOnsite';
+const FAR_FUTURE_UNIX_SECONDS = 4102444800; // 2100-01-01
+
+function suppressReplacedKlaviyoForm() {
+  try {
+    const raw = window.localStorage.getItem(KLAVIYO_ONSITE_STORAGE_KEY);
+    const store = raw ? JSON.parse(raw) : {};
+    const viewed = (store.viewedForms ??= {});
+    const modal = (viewed.modal ??= {
+      disabledForms: {},
+      disabledTeasers: {},
+      viewedForms: {},
+    });
+    const disabled = (modal.disabledForms ??= {});
+    disabled[REPLACED_KLAVIYO_FORM_ID] = {
+      ...disabled[REPLACED_KLAVIYO_FORM_ID],
+      lastCloseTime: FAR_FUTURE_UNIX_SECONDS,
+    };
+    window.localStorage.setItem(KLAVIYO_ONSITE_STORAGE_KEY, JSON.stringify(store));
+  } catch {
+    // Storage blocked or unparseable — Klaviyo will behave as before.
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Simplified Klaviyo loader without SPA manual mode
 // ---------------------------------------------------------------------------
 function useLoadKlaviyo(accountId: string, nonce?: string) {
@@ -17,6 +55,9 @@ function useLoadKlaviyo(accountId: string, nonce?: string) {
 
   useEffect(() => {
     if (!accountId || loaded.current || typeof document === 'undefined') return;
+
+    // Must run before klaviyo.js reads its storage.
+    suppressReplacedKlaviyoForm();
 
     // Initialize the queue
     window._klOnsite = window._klOnsite || [];
