@@ -1,5 +1,8 @@
 import {useEffect, useRef} from 'react';
 
+// The red-text artwork. Exported so the overlay can preload it before opening.
+export const RED_TEXT_SRC = '/signup/redtext-blurbig.png?v=17';
+
 /**
  * Animated scattered-red-text header for the signup.
  *
@@ -45,7 +48,7 @@ const CLUSTERS: Array<[number, number, number, number, 'radial' | 'ltr']> = [
 const MARGIN = 12;
 
 export function RedTextLoop({
-  blurSrc = '/signup/redtext-blurbig.png?v=17',
+  blurSrc = RED_TEXT_SRC,
   periodMs = 6000,
   className,
   style,
