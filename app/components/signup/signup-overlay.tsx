@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 
-import {DiscountSignup} from './discount-signup';
+import {BASE_IMAGE, DiscountSignup} from './discount-signup';
+import {RED_TEXT_SRC} from './redtext-loop';
 import {
   OPEN_SIGNUP_EVENT,
   SIGNUP_LAST_SHOWN_KEY,
@@ -8,6 +9,28 @@ import {
   type SignupLogoChoice,
 } from './open-signup';
 
+
+// Fetch + decode both pieces of card artwork once, so the card arrives whole
+// instead of the art popping in piece by piece after the window appears.
+let artReady: Promise<void> | null = null;
+function preloadArt(): Promise<void> {
+  if (artReady) return artReady;
+  const load = (src: string) =>
+    new Promise<void>((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const d = img.decode?.();
+        if (d) d.then(() => resolve(), () => resolve());
+        else resolve();
+      };
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+  artReady = Promise.all([load(BASE_IMAGE), load(RED_TEXT_SRC)]).then(
+    () => undefined,
+  );
+  return artReady;
+}
 // Automatic first-visit popup. Same rules as the Klaviyo "Popup Newsletter"
 // form it replaces: 1s after the page loads, any page, desktop and mobile,
 // not again for 1 day — and never again once the visitor has subscribed.
@@ -50,6 +73,33 @@ function logoFromParam(value: string | null): SignupLogoChoice | null {
  */
 export function SignupOverlay({autoOpen = false}: {autoOpen?: boolean}) {
   const [open, setOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  // Warm the artwork as soon as the page is idle so a later open is instant.
+  useEffect(() => {
+    const idle = (window as any).requestIdleCallback as
+      | ((cb: () => void) => number)
+      | undefined;
+    if (idle) idle(() => void preloadArt());
+    else setTimeout(() => void preloadArt(), 300);
+  }, []);
+
+  // When opening, wait (briefly) for the artwork so the card shows up complete.
+  // Capped so a slow connection can never hold the popup hostage.
+  useEffect(() => {
+    if (!open) {
+      setReady(false);
+      return;
+    }
+    let cancelled = false;
+    const cap = new Promise<void>((r) => setTimeout(r, 1200));
+    Promise.race([preloadArt(), cap]).then(() => {
+      if (!cancelled) setReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
   const [logo, setLogo] = useState<SignupLogoChoice>('logo3d');
 
   // Shareable-link open: read `?signup=` once on mount, then strip it so a
@@ -106,15 +156,21 @@ export function SignupOverlay({autoOpen = false}: {autoOpen?: boolean}) {
       if (e.key === 'Escape') setOpen(false);
     };
     window.addEventListener('keydown', onKey);
-    // Lock background scroll while the overlay is up.
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // Lock background scroll while the overlay is up. Removing the scrollbar
+    // would shift the page sideways, so pad the body by exactly its width.
+    const body = document.body;
+    const prev = {overflow: body.style.overflow, pad: body.style.paddingRight};
+    const scrollbar =
+      window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = 'hidden';
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
     return () => {
       window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prev;
+      body.style.overflow = prev.overflow;
+      body.style.paddingRight = prev.pad;
     };
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !ready) return null;
   return <DiscountSignup onClose={() => setOpen(false)} />;
 }

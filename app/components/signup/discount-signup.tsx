@@ -6,7 +6,7 @@ import {markSignupSubscribed} from './open-signup';
 import {RedTextLoop} from './redtext-loop';
 
 const SIGNUP_LIST_ID = 'Wimtnj';
-const BASE_IMAGE = '/signup/signup-base.png';
+export const BASE_IMAGE = '/signup/signup-base.png';
 // All three layers share this canvas (1500x1950) — width / height.
 const IMAGE_ASPECT = 1500 / 1950;
 // Warm-gray window background, sampled from the design.
@@ -46,9 +46,21 @@ const CSS = `
   /* Sit the window directly beneath the moving announcement bar. */
   padding-top: var(--announcement-bar-height, 36px);
   overflow-y: auto;
+  /* Entrance: the dim fades up first, the card eases in on top of it. */
+  animation: nm-ds-fade 320ms ease-out both;
+}
+@keyframes nm-ds-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nm-ds-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nm-ds-backdrop, .nm-ds-card { animation: none !important; }
 }
 .nm-ds-card {
   position: relative;
+  animation: nm-ds-rise 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 60ms;
   container-type: inline-size;
   width: min(94vw, calc(60vh * ${IMAGE_ASPECT}));
   aspect-ratio: ${IMAGE_ASPECT};
@@ -65,13 +77,21 @@ const CSS = `
   border: 0;
   outline: none;
   color: #111;
-  font-size: max(16px, 2.2cqw) !important;
+  /* Typed text must match the painted labels (cap height 29/1500 of the card
+     => ~2.69cqw font). iOS zooms the page when an input's font-size is under
+     16px, so the CSS font stays 16px and the whole box is scaled down to the
+     label size instead (--k). Width/height/padding are inflated by 1/--k in
+     the inline styles so the on-screen box is exactly the painted cell. */
+  --k: calc(2.69cqw / 16px);
+  font-size: 16px !important;
+  transform: scale(var(--k));
+  transform-origin: 0 0;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   text-align: left;
   /* Left inset puts the caret / typed text exactly where the drawn labels
      start (x 410 of 1500 = 27.33% of the card; the input starts at 24.9%). */
-  padding: 0 1em 0 2.43cqw;
+  padding: 0 1em 0 calc(2.43cqw / var(--k));
   font-family: inherit;
 }
 /* Empty + unfocused: transparent so the drawn label in the base shows through.
@@ -223,9 +243,10 @@ export function DiscountSignup({onClose}: {onClose: () => void}) {
                 className="nm-ds-input"
                 style={{
                   top: `${(f.top + 0.014) * 100}%`,
-                  height: `${(f.height - 0.028) * 100}%`,
                   left: `${(BOX_LEFT + SIDE_INSET) * 100}%`,
-                  width: `${(BOX_WIDTH - 2 * SIDE_INSET) * 100}%`,
+                  // Pre-scale size: inflated by 1/--k so scale(--k) lands on the cell.
+                  height: `calc(${(f.height - 0.028) * 100}% / var(--k))`,
+                  width: `calc(${(BOX_WIDTH - 2 * SIDE_INSET) * 100}% / var(--k))`,
                 }}
                 type={f.type}
                 autoComplete={f.autoComplete}
