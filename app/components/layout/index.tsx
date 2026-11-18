@@ -48,7 +48,7 @@ export function AppLayout({ children = null }: LayoutProps) {
             {children}
           </main>
           <Footer />
-          <ClientOnly fallback={null}>{() => <SignupOverlay />}</ClientOnly>
+          <ClientOnly fallback={null}>{() => <SignupOverlay autoOpen />}</ClientOnly>
           <TailwindIndicator />
           {sanityPreviewMode ? (
             <ClientOnly fallback={null}>
