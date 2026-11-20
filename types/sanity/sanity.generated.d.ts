@@ -37181,6 +37181,10 @@ export type ROOT_QUERYResult = {
     vimeo: string | null;
     youtube: string | null;
   } | null;
+  shippingLabels: Array<{
+    handle: string | null;
+    date: string | null;
+  }>;
   themeContent: {
     account: {
       accountDetails: string | null;

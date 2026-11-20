@@ -11,6 +11,8 @@ export function ProductCardGrid(props: {
     mobile?: null | number;
   };
   products?: ProductCardFragment[];
+  /** Collection pages only: show the Sanity "Shipping begins" pill. */
+  showShippingLabel?: boolean;
   skeleton?: {
     cardsNumber?: number;
   };
@@ -40,6 +42,7 @@ export function ProductCardGrid(props: {
                   mobile: props.columns?.mobile,
                 }}
                 product={product}
+                showShippingLabel={props.showShippingLabel}
               />
             </li>
           ))
