@@ -201,7 +201,7 @@ export function ProductCard(props: {
                       />
                       {firstVariant.compareAtPrice && (
                         <ShopifyMoney
-                          className="text-xs line-through md:text-sm opacity-50"
+                          className="text-sm line-through md:text-base opacity-50"
                           data={firstVariant.compareAtPrice}
                         />
                       )}
