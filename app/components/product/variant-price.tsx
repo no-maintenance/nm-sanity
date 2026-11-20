@@ -40,7 +40,7 @@ export function VariantPrice({
       <div className="flex items-center gap-2">
         {compareAtPrice && (
           <ShopifyMoney
-            className="text-muted-foreground line-through"
+            className="text-sm text-muted-foreground line-through"
             data={compareAtPrice}
           />
         )}
