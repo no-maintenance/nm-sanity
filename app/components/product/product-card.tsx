@@ -29,17 +29,22 @@ export function ProductCard(props: {
     trackingParameters?: string;
     searchTerm?: string;
   };
+  /** Collection pages only: show the Sanity "Shipping begins" pill. */
+  showShippingLabel?: boolean;
   skeleton?: {
     cardsNumber?: number;
   };
 }) {
-  const { columns, product, skeleton } = props;
+  const { columns, product, showShippingLabel, skeleton } = props;
   const { sanityRoot } = useRootLoaderData();
   const { themeContent } = useSanityThemeContent();
   const { data } = stegaClean(sanityRoot);
   const style = data?.settings?.productCards?.style;
   const textAlignment = data?.settings?.productCards?.textAlignment || 'left';
   const aspectRatio = data?.settings?.productCards?.imageAspectRatio || 'video';
+  const shippingBeginsDate = showShippingLabel
+    ? data?.shippingLabels?.find((l) => l.handle === product?.handle)?.date
+    : undefined;
   const variants = product?.variants?.nodes.length
     ? flattenConnection(product?.variants)
     : null;
@@ -167,7 +172,9 @@ export function ProductCard(props: {
                   />
                 )}
                 <ProductBadges
+                  compact={columns?.mobile === 2}
                   layout="card"
+                  shippingBeginsDate={shippingBeginsDate}
                   variants={product?.variants.nodes}
                 />
               </CardMedia>

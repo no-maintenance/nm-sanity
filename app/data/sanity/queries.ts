@@ -64,6 +64,12 @@ export const ROOT_QUERY = defineQuery(`{
   },
   "header": *[_type == "header"][0] ${HEADER_FRAGMENT},
   "settings": *[_type == "settings"][0] ${SETTINGS_FRAGMENT},
+  // Products whose "Shipping label" toggle is on; collection cards look their
+  // handle up here to show the "SHIPPING BEGINS <date>" pill.
+  "shippingLabels": *[_type == "product" && shippingLabel.enabled == true && defined(shippingLabel.date)] {
+    "handle": store.slug.current,
+    "date": shippingLabel.date,
+  },
   "themeContent": *[_type == "themeContent"][0] ${THEME_CONTENT_FRAGMENT},
 }`);
 

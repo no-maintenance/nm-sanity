@@ -57,6 +57,38 @@ export default defineType({
       group: 'editorial',
     }),
     defineField({
+      name: 'shippingLabel',
+      title: 'Shipping label',
+      description:
+        'Adds a black "SHIPPING BEGINS <date>" pill to this product\'s card on collection pages only (next to the SALE badge). Not shown on the product page.',
+      type: 'object',
+      group: 'editorial',
+      options: {collapsible: false},
+      fields: [
+        defineField({
+          name: 'enabled',
+          title: 'Show "Shipping begins" label on collection cards',
+          type: 'boolean',
+          initialValue: false,
+        }),
+        defineField({
+          name: 'date',
+          title: 'Shipping begins on',
+          description: 'Shown as month/day, e.g. 1/7.',
+          type: 'date',
+          options: {dateFormat: 'M/D/YYYY'},
+          hidden: ({parent}) => !parent?.enabled,
+          validation: (Rule) =>
+            Rule.custom((value, context) => {
+              const parent = context.parent as {enabled?: boolean} | undefined;
+              return parent?.enabled && !value
+                ? 'Pick the date shipping begins'
+                : true;
+            }),
+        }),
+      ],
+    }),
+    defineField({
       name: 'extraProductInformation',
       title: 'Details',
       description: 'Detailed product information, displayed as rich text. This can be pulled into product templates via modal or rich text components.',

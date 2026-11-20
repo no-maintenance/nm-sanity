@@ -317,6 +317,7 @@ function InfiniteProducts({
       <ProductCardGrid
         columns={{desktop: columns?.desktop, mobile: columns?.mobile}}
         products={nodes}
+        showShippingLabel
       />
       {hasNextPage && (
         <div

@@ -61,7 +61,9 @@ export default function AllProducts() {
   return (
     <div className="container py-20">
       {products.length > 0 ? (
-        <ProductCardGrid products={products} />
+        // The "ALL" tab of the collection category bar lands here, so it
+        // carries the collection-page shipping label too.
+        <ProductCardGrid products={products} showShippingLabel />
       ) : (
         <p>{themeContent?.collection?.noProductFound}</p>
       )}
