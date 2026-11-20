@@ -92,9 +92,21 @@ export function ProductBadges({
       )}
     >
       {isOnSale && !isSoldOut && (
-        <Badge className={badgeClass} data-type="sale-badge">
-          {themeContent?.product?.sale}
-        </Badge>
+        // Daniel's supplied artwork (the pill cropped losslessly from his
+        // 3000px file, 244×102). Drawn at the old text badge's 22px height
+        // and the same m-1 inset so placement is unchanged.
+        <img
+          alt={themeContent?.product?.sale || 'Sale'}
+          className="m-1 select-none"
+          data-type="sale-badge"
+          // Inline so the global responsive-image rules can't stretch it.
+          style={{height: 22, width: 'auto', maxWidth: 'none'}}
+          decoding="async"
+          draggable={false}
+          height={102}
+          src="/sale-badge.png"
+          width={244}
+        />
       )}
       {isSoldOut && (
         <Badge
