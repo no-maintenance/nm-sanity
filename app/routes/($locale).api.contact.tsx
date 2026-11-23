@@ -4,6 +4,7 @@ import {json} from '@shopify/remix-oxygen';
 
 import {
   GmailSendError,
+  formatMailbox,
   getSendToken,
   parseServiceAccountKey,
   sendGmail,
@@ -126,7 +127,13 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   try {
     const key = parseServiceAccountKey(context.env.GMAIL_SA_KEY_B64);
-    await sendGmail(key, {from, to, replyTo: `${name} <${email}>`, subject: subjectLine, text});
+    await sendGmail(key, {
+      from,
+      to,
+      replyTo: formatMailbox(name, email),
+      subject: subjectLine,
+      text,
+    });
   } catch (error) {
     console.error('[api.contact] send failed:', error);
     return json<ContactResponse>(
