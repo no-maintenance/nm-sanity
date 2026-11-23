@@ -12,7 +12,6 @@ import {useRootLoaderData} from '~/root';
 
 import {VariantPrice} from '../product/variant-price';
 import {useProductVariants} from '../sections/product-information-section';
-import {Badge} from '../ui/badge';
 
 export type PriceBlockProps = NonNullable<
   SectionOfType<'productInformationSection'>['richtext']
@@ -84,10 +83,6 @@ export function ProductBadges({
       parseFloat(selectedVariant?.compareAtPrice?.amount);
   const badgesPosition = stegaClean(data?.settings?.badgesPosition);
 
-  const badgeClass = cn(
-    'm-1 bg-background text-foreground hover:bg-background rounded-(--badges-corner-radius)',
-  );
-
   return (
     <div
       className={cn(
@@ -140,13 +135,25 @@ export function ProductBadges({
         />
       )}
       {isSoldOut && (
-        <Badge
-          className={badgeClass}
+        // Daniel's supplied artwork (the pill cropped losslessly from his
+        // 3000px file, 376×92), drawn at the same 22px height and m-1 inset as
+        // the SALE pill so the two line up.
+        <img
+          alt={
+            themeContent?.product?.soldOutProductBadge ||
+            themeContent?.product?.soldOut ||
+            'Notify me'
+          }
+          className="m-1 select-none"
           data-type="sold-out-badge"
-          variant="secondary"
-        >
-          {themeContent?.product?.soldOutProductBadge || themeContent?.product?.soldOut}
-        </Badge>
+          // Inline so the global responsive-image rules can't stretch it.
+          style={{height: 22, width: 'auto', maxWidth: 'none'}}
+          decoding="async"
+          draggable={false}
+          height={92}
+          src="/notify-me.png"
+          width={376}
+        />
       )}
     </div>
   );
