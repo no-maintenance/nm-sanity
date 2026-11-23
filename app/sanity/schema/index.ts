@@ -72,6 +72,7 @@ import settings from './singletons/settings';
 import themeContent from './singletons/theme-content';
 import stickyTileSection from '~/sanity/schema/objects/sections/sticky-tile-section';
 import tile from '~/sanity/schema/objects/sections/tile';
+import contactRequest from './documents/contact-request';
 import sizeChart from '~/sanity/schema/documents/size-chart';
 import sizeChartTemplate from './documents/size-chart-template';
 import form from './documents/form';
@@ -96,6 +97,7 @@ const documents = [
   productVariant,
   font,
   storePolicy,
+  contactRequest,
   sizeChart,
   sizeChartTemplate,
   form,

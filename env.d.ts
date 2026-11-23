@@ -48,6 +48,12 @@ declare global {
     PINTEREST_PIXEL_ID?: string;
     KLAVIYO_PIXEL_ID?: string;
     DEBUG_TRACKING?: string;
+    /** Contact/appointment form delivery via Gmail (see api.contact). */
+    GMAIL_SA_KEY_B64?: string;
+    CONTACT_FROM?: string;
+    CONTACT_TO?: string;
+    /** Editor-role token; when set, api.contact keeps a copy of each submission. */
+    SANITY_EDITOR_KEY?: string;
   }
 }
 
