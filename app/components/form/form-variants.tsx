@@ -103,6 +103,31 @@ function Honeypot() {
   );
 }
 
+/**
+ * After a submit, lock the button for a cooldown (covers the in-flight
+ * request too) so a double-click or a spam-clicker can't fire the same
+ * submission over and over. Counts down on the button.
+ */
+const SUBMIT_COOLDOWN_MS = 10_000;
+function useSubmitCooldown(ms = SUBMIT_COOLDOWN_MS) {
+  const [until, setUntil] = useState(0);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (until <= Date.now()) return;
+    const t = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(t);
+  }, [until]);
+  const remainingMs = Math.max(0, until - now);
+  return {
+    locked: remainingMs > 0,
+    remainingSeconds: Math.ceil(remainingMs / 1000),
+    start: () => {
+      setNow(Date.now());
+      setUntil(Date.now() + ms);
+    },
+  };
+}
+
 export function ContactForm({submitBtn}: {submitBtn: string}) {
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -115,8 +140,10 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+  const cooldown = useSubmitCooldown();
   const onSubmit = () => {
-    if (!formRef.current) return;
+    if (!formRef.current || cooldown.locked) return;
+    cooldown.start();
     deliverForm(formRef.current, 'contact').then(
       () => {
         form.reset();
@@ -201,8 +228,10 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
           )}
         />
         <Honeypot />
-        <Button type="submit" size={'lg'}>
-          {submitBtn}
+        <Button type="submit" size={'lg'} disabled={cooldown.locked}>
+          {cooldown.locked
+            ? `Please wait ${cooldown.remainingSeconds}s`
+            : submitBtn}
         </Button>
       </form>
     </Form>
@@ -242,8 +271,10 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+  const cooldown = useSubmitCooldown();
   const onSubmit = () => {
-    if (!formRef.current) return;
+    if (!formRef.current || cooldown.locked) return;
+    cooldown.start();
     deliverForm(formRef.current, 'appointment').then(
       () => {
         form.reset();
@@ -344,8 +375,15 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
           )}
         />
         <Honeypot />
-        <Button type="submit" size="lg" className={'w-full'}>
-          {submitBtn}
+        <Button
+          type="submit"
+          size="lg"
+          className={'w-full'}
+          disabled={cooldown.locked}
+        >
+          {cooldown.locked
+            ? `Please wait ${cooldown.remainingSeconds}s`
+            : submitBtn}
         </Button>
       </form>
     </Form>
