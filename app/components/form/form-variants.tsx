@@ -47,6 +47,63 @@ const contactFormSchema = z.object({
   message: z.string(),
 });
 
+const SUPPORT_EMAIL = 'support@nomaintenance.us';
+
+/**
+ * EmailJS (which delivers these forms) answers 426 "Monthly request quota
+ * exceeded" once the account's monthly allowance is used up — every
+ * submission then fails until the plan is upgraded or the month rolls over.
+ * Tell the visitor how to reach us instead of a dead "try again later".
+ */
+function reportSendFailure(
+  error: unknown,
+  what: 'support request' | 'appointment request',
+) {
+  console.error(error);
+  const status = (error as {status?: number} | null)?.status;
+  const overQuota = status === 426;
+  toast(
+    overQuota
+      ? 'Our form is temporarily unavailable.'
+      : 'Uh oh! Something went wrong.',
+    {
+      description: overQuota
+        ? `Please email your ${what} to ${SUPPORT_EMAIL} and we'll get right back to you.`
+        : `There was a problem sending your ${what}. Please try again, or email ${SUPPORT_EMAIL}.`,
+      action: {
+        label: 'Email us',
+        onClick: () => {
+          window.location.href = `mailto:${SUPPORT_EMAIL}`;
+        },
+      },
+      duration: 15000,
+    },
+  );
+}
+
+/**
+ * Honeypot: a field people never see but simple bots fill in. A filled value
+ * skips EmailJS entirely (bots were burning the monthly quota) while still
+ * showing the normal success message.
+ */
+const HONEYPOT_NAME = 'website';
+function isHoneypotFilled(form: HTMLFormElement | null): boolean {
+  const el = form?.elements.namedItem(HONEYPOT_NAME);
+  return el instanceof HTMLInputElement && el.value.trim() !== '';
+}
+function Honeypot() {
+  return (
+    <input
+      aria-hidden="true"
+      autoComplete="off"
+      className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      name={HONEYPOT_NAME}
+      tabIndex={-1}
+      type="text"
+    />
+  );
+}
+
 export function ContactForm({submitBtn}: {submitBtn: string}) {
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -61,6 +118,16 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
   const formRef = useRef<HTMLFormElement>(null);
   const onSubmit = () => {
     if (!formRef.current) return;
+    const onSent = () => {
+      form.reset();
+      toast('Your support request has been submitted.', {
+        description: 'We will review your issue and reply shortly',
+      });
+    };
+    if (isHoneypotFilled(formRef.current)) {
+      onSent();
+      return;
+    }
     emailjs
       .sendForm(
         EMAILJS_SERVICE_ID,
@@ -68,21 +135,7 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
         formRef.current,
         EMAILJS_PUBKEY,
       )
-      .then(
-        (result) => {
-          form.reset();
-          toast('Your support request has been submitted.', {
-            description: 'We will review your issue and reply shortly',
-          });
-        },
-        (error) => {
-          console.error(error);
-          toast('Uh oh! Something went wrong.', {
-            description:
-              'There was a problem with your request. Please try again later.',
-          });
-        },
-      );
+      .then(onSent, (error) => reportSendFailure(error, 'support request'));
   };
 
   return (
@@ -157,6 +210,7 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
             </FormItem>
           )}
         />
+        <Honeypot />
         <Button type="submit" size={'lg'}>
           {submitBtn}
         </Button>
@@ -199,6 +253,17 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
   });
   const formRef = useRef<HTMLFormElement>(null);
   const onSubmit = (values: z.infer<typeof appointmentFormSchema>) => {
+    const onSent = () => {
+      form.reset();
+      toast('Your appointment request has been submitted.', {
+        description:
+          'We will review your request and confirm your appointment time shortly',
+      });
+    };
+    if (isHoneypotFilled(formRef.current)) {
+      onSent();
+      return;
+    }
     emailjs
       .sendForm(
         EMAILJS_SERVICE_ID,
@@ -206,22 +271,7 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
         formRef.current!,
         EMAILJS_PUBKEY,
       )
-      .then(
-        (result) => {
-          form.reset();
-          toast('Your appointment request has been submitted.', {
-            description:
-              'We will review your request and confirm your appointment time shortly',
-          });
-        },
-        (error) => {
-          console.error(error);
-          toast('Uh oh! Something went wrong.', {
-            description:
-              'There was a problem with your request. Please try again later.',
-          });
-        },
-      );
+      .then(onSent, (error) => reportSendFailure(error, 'appointment request'));
   };
 
   return (
@@ -311,6 +361,7 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
             </FormItem>
           )}
         />
+        <Honeypot />
         <Button type="submit" size="lg" className={'w-full'}>
           {submitBtn}
         </Button>
