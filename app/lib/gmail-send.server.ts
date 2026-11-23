@@ -158,6 +158,23 @@ function sanitizeHeader(value: string): string {
   return value.replace(/[\r\n]+/g, ' ').trim();
 }
 
+/**
+ * "Display Name <addr>" done safely. An unquoted comma in a name
+ * ("Harrison, n") reads as TWO addresses in a header, which made Gmail's
+ * Reply bounce with "Your message was not sent". Quote the name (escaping
+ * quotes/backslashes), RFC 2047-encode it if it has non-ASCII characters,
+ * and fall back to the bare address if there's no usable name.
+ */
+export function formatMailbox(name: string | undefined, address: string): string {
+  const addr = sanitizeHeader(address).replace(/[<>"\s]/g, '');
+  const cleanName = sanitizeHeader(name ?? '').replace(/["\\]/g, '');
+  if (!cleanName) return addr;
+  const display = /^[\x20-\x7e]*$/.test(cleanName)
+    ? `"${cleanName}"`
+    : encodeHeaderWord(cleanName);
+  return `${display} <${addr}>`;
+}
+
 export type OutgoingMail = {
   from: string;
   to: string;
