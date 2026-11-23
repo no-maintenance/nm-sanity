@@ -18,16 +18,8 @@ import {Checkbox} from '~/components/ui/checkbox';
 import {Link} from '@remix-run/react';
 import React, {forwardRef, useEffect, useRef, useState} from 'react';
 import {toast} from 'sonner';
-import {
-  EMAILJS_APPOINTMENT_TEMPLATE_ID,
-  EMAILJS_CONTACT_TEMPLATE_ID,
-  EMAILJS_PUBKEY,
-  EMAILJS_SERVICE_ID,
-  KLAVIYO_BASE_URL,
-  KLAVIYO_COMPANY_ID,
-} from '~/sanity/constants';
-
-import emailjs from '@emailjs/browser';
+import {KLAVIYO_BASE_URL, KLAVIYO_COMPANY_ID} from '~/sanity/constants';
+import type {ContactResponse} from '~/routes/($locale).api.contact';
 import {useAnalytics} from '@shopify/hydrogen';
 import { Textarea } from '~/components/ui/textarea';
 import { InputWrapper } from '~/components/ui/input-with-wrapper';
@@ -50,47 +42,54 @@ const contactFormSchema = z.object({
 const SUPPORT_EMAIL = 'support@nomaintenance.us';
 
 /**
- * EmailJS (which delivers these forms) answers 426 "Monthly request quota
- * exceeded" once the account's monthly allowance is used up — every
- * submission then fails until the plan is upgraded or the month rolls over.
- * Tell the visitor how to reach us instead of a dead "try again later".
+ * Deliver a form through our own server (/api/contact → Gmail). Resolves on
+ * success; rejects with the server's response (or a network error).
  */
+async function deliverForm(
+  form: HTMLFormElement,
+  kind: 'contact' | 'appointment',
+): Promise<void> {
+  const body = new FormData(form);
+  body.set('kind', kind);
+  const res = await fetch('/api/contact', {method: 'POST', body});
+  const data = (await res.json().catch(() => null)) as ContactResponse | null;
+  if (!res.ok || !data || data.status !== 'ok') {
+    throw data ?? new Error(`HTTP ${res.status}`);
+  }
+}
+
+/** Dead-end "try again later" helps nobody: give the support address. */
 function reportSendFailure(
   error: unknown,
   what: 'support request' | 'appointment request',
 ) {
   console.error(error);
-  const status = (error as {status?: number} | null)?.status;
-  const overQuota = status === 426;
+  const invalid = (error as ContactResponse | null)?.status === 'error' &&
+    (error as {code?: string}).code === 'invalid';
   toast(
-    overQuota
-      ? 'Our form is temporarily unavailable.'
-      : 'Uh oh! Something went wrong.',
+    invalid ? 'Please check the form.' : 'Our form is temporarily unavailable.',
     {
-      description: overQuota
-        ? `Please email your ${what} to ${SUPPORT_EMAIL} and we'll get right back to you.`
-        : `There was a problem sending your ${what}. Please try again, or email ${SUPPORT_EMAIL}.`,
-      action: {
-        label: 'Email us',
-        onClick: () => {
-          window.location.href = `mailto:${SUPPORT_EMAIL}`;
-        },
-      },
+      description: invalid
+        ? (error as {message: string}).message
+        : `Please email your ${what} to ${SUPPORT_EMAIL} and we'll get right back to you.`,
+      action: invalid
+        ? undefined
+        : {
+            label: 'Email us',
+            onClick: () => {
+              window.location.href = `mailto:${SUPPORT_EMAIL}`;
+            },
+          },
       duration: 15000,
     },
   );
 }
 
 /**
- * Honeypot: a field people never see but simple bots fill in. A filled value
- * skips EmailJS entirely (bots were burning the monthly quota) while still
- * showing the normal success message.
+ * Honeypot: a field people never see but simple bots fill in. The server
+ * drops those submissions silently (it still answers "ok").
  */
 const HONEYPOT_NAME = 'website';
-function isHoneypotFilled(form: HTMLFormElement | null): boolean {
-  const el = form?.elements.namedItem(HONEYPOT_NAME);
-  return el instanceof HTMLInputElement && el.value.trim() !== '';
-}
 function Honeypot() {
   return (
     <input
@@ -118,24 +117,15 @@ export function ContactForm({submitBtn}: {submitBtn: string}) {
   const formRef = useRef<HTMLFormElement>(null);
   const onSubmit = () => {
     if (!formRef.current) return;
-    const onSent = () => {
-      form.reset();
-      toast('Your support request has been submitted.', {
-        description: 'We will review your issue and reply shortly',
-      });
-    };
-    if (isHoneypotFilled(formRef.current)) {
-      onSent();
-      return;
-    }
-    emailjs
-      .sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_CONTACT_TEMPLATE_ID,
-        formRef.current,
-        EMAILJS_PUBKEY,
-      )
-      .then(onSent, (error) => reportSendFailure(error, 'support request'));
+    deliverForm(formRef.current, 'contact').then(
+      () => {
+        form.reset();
+        toast('Your support request has been submitted.', {
+          description: 'We will review your issue and reply shortly',
+        });
+      },
+      (error) => reportSendFailure(error, 'support request'),
+    );
   };
 
   return (
@@ -252,26 +242,18 @@ export function AppointmentForm({submitBtn}: {submitBtn: string}) {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
-  const onSubmit = (values: z.infer<typeof appointmentFormSchema>) => {
-    const onSent = () => {
-      form.reset();
-      toast('Your appointment request has been submitted.', {
-        description:
-          'We will review your request and confirm your appointment time shortly',
-      });
-    };
-    if (isHoneypotFilled(formRef.current)) {
-      onSent();
-      return;
-    }
-    emailjs
-      .sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_APPOINTMENT_TEMPLATE_ID,
-        formRef.current!,
-        EMAILJS_PUBKEY,
-      )
-      .then(onSent, (error) => reportSendFailure(error, 'appointment request'));
+  const onSubmit = () => {
+    if (!formRef.current) return;
+    deliverForm(formRef.current, 'appointment').then(
+      () => {
+        form.reset();
+        toast('Your appointment request has been submitted.', {
+          description:
+            'We will review your request and confirm your appointment time shortly',
+        });
+      },
+      (error) => reportSendFailure(error, 'appointment request'),
+    );
   };
 
   return (

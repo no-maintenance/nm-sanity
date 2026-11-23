@@ -52,6 +52,12 @@ export function envVariables(contextEnv: Env) {
     PINTEREST_PIXEL_ID: env.PINTEREST_PIXEL_ID || '',
     KLAVIYO_PIXEL_ID: env.KLAVIYO_PIXEL_ID || '',
     DEBUG_TRACKING: env.DEBUG_TRACKING === 'true' ? 'true' : 'false',
+    // Contact/appointment form delivery via the store's Gmail (api.contact).
+    GMAIL_SA_KEY_B64: env.GMAIL_SA_KEY_B64 || '',
+    CONTACT_FROM: env.CONTACT_FROM || '',
+    CONTACT_TO: env.CONTACT_TO || '',
+    // Editor-role Sanity token (already provisioned) → copy of each submission.
+    SANITY_EDITOR_KEY: env.SANITY_EDITOR_KEY || '',
   };
 }
 
