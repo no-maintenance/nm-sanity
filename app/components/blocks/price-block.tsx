@@ -136,8 +136,11 @@ export function ProductBadges({
       )}
       {isSoldOut && (
         // Daniel's supplied artwork (the pill cropped losslessly from his
-        // 3000px file, 376×92), drawn at the same 22px height and m-1 inset as
-        // the SALE pill so the two line up.
+        // 3000px file, 376×92). This pill's "NOTIFY ME" letters fill a larger
+        // share of its height (0.413) than the SALE pill's letters do (0.363),
+        // so at an equal 22px height its text reads bigger. Drawn at 19.3px
+        // instead, its letters match the SALE badge's on-screen cap-height
+        // (~8px). Same m-1 inset.
         <img
           alt={
             themeContent?.product?.soldOutProductBadge ||
@@ -147,7 +150,7 @@ export function ProductBadges({
           className="m-1 select-none"
           data-type="sold-out-badge"
           // Inline so the global responsive-image rules can't stretch it.
-          style={{height: 22, width: 'auto', maxWidth: 'none'}}
+          style={{height: 19.3, width: 'auto', maxWidth: 'none'}}
           decoding="async"
           draggable={false}
           height={92}
