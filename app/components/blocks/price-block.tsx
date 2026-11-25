@@ -117,7 +117,7 @@ export function ProductBadges({
           )}
           data-type="shipping-label"
         >
-          Shipping begins {formatShippingBeginsDate(shippingBeginsDate)}
+          Ships {formatShippingBeginsDate(shippingBeginsDate)}
         </span>
       )}
       {isOnSale && !isSoldOut && (
