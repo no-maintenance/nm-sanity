@@ -86,7 +86,10 @@ export function ProductBadges({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center gap-x-3 gap-y-1',
+        // gap-x-0: the only horizontal space between pills is each badge's
+        // 3px side margin (so ~6px between two pills — a tight inset matching
+        // the design). gap-y-1 still spaces wrapped rows.
+        'flex flex-wrap items-center gap-x-0 gap-y-1',
         // Cap at the card's width so a long label + SALE wrap onto two rows
         // (aligned to the badges' side) instead of spilling off the image.
         layout === 'card' && 'absolute z-5 m-2 max-w-[calc(100%-1rem)]',
@@ -106,10 +109,10 @@ export function ProductBadges({
       )}
     >
       {shippingBeginsDate && (
-        // Same 22px height and m-1 inset as the SALE pill so the two line up.
+        // Same 22px height and 3px inset as the SALE pill so the two line up.
         <span
           className={cn(
-            'm-1 inline-flex h-[22px] items-center rounded-full bg-black px-3 text-xs font-semibold uppercase whitespace-nowrap text-white select-none',
+            'm-[3px] inline-flex h-[22px] items-center rounded-full bg-black px-3 text-xs font-semibold uppercase whitespace-nowrap text-white select-none',
             compact && 'max-sm:px-2 max-sm:text-[10px]',
           )}
           data-type="shipping-label"
@@ -120,10 +123,10 @@ export function ProductBadges({
       {isOnSale && !isSoldOut && (
         // Daniel's supplied artwork (the pill cropped losslessly from his
         // 3000px file, 244×102). Drawn at the old text badge's 22px height
-        // and the same m-1 inset so placement is unchanged.
+        // and the same 3px inset as the other pills.
         <img
           alt={themeContent?.product?.sale || 'Sale'}
-          className="m-1 select-none"
+          className="m-[3px] select-none"
           data-type="sale-badge"
           // Inline so the global responsive-image rules can't stretch it.
           style={{height: 22, width: 'auto', maxWidth: 'none'}}
@@ -140,14 +143,14 @@ export function ProductBadges({
         // share of its height (0.413) than the SALE pill's letters do (0.363),
         // so at an equal 22px height its text reads bigger. Drawn at 19.3px
         // instead, its letters match the SALE badge's on-screen cap-height
-        // (~8px). Same m-1 inset.
+        // (~8px). Same 3px inset as the other pills.
         <img
           alt={
             themeContent?.product?.soldOutProductBadge ||
             themeContent?.product?.soldOut ||
             'Notify me'
           }
-          className="m-1 select-none"
+          className="m-[3px] select-none"
           data-type="sold-out-badge"
           // Inline so the global responsive-image rules can't stretch it.
           style={{height: 19.3, width: 'auto', maxWidth: 'none'}}
