@@ -10,10 +10,10 @@
  * manual on/off is cache-clean. The scheduled shut-off needs no deploy: every
  * server starts letting visitors straight in at that exact moment.
  */
-export const KEYS_GATE_ENABLED = false;
+export const KEYS_GATE_ENABLED = true;
 
 /** Fri Nov 13 2026, 11:00 AM Pacific (PST, UTC-8) → 19:00 UTC. */
-export const KEYS_GATE_ENDS_AT = Date.parse('2026-11-13T19:00:00Z');
+export const KEYS_GATE_ENDS_AT = Date.parse('2099-01-01T00:00:00Z'); // LOCAL PREVIEW ONLY — do not commit
 
 export function isKeysGateEnabled(now: number = Date.now()): boolean {
   return KEYS_GATE_ENABLED && now < KEYS_GATE_ENDS_AT;
