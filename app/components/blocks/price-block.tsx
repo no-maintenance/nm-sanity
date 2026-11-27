@@ -112,7 +112,10 @@ export function ProductBadges({
         // Same 22px height and 3px inset as the SALE pill so the two line up.
         <span
           className={cn(
-            'm-[3px] inline-flex h-[22px] items-center rounded-full bg-black px-3 text-xs font-semibold uppercase whitespace-nowrap text-white select-none',
+            // text-[11.3px] (not text-xs/12px) so the uppercase letters match
+            // the SALE badge image's cap-height (~8px); measured SHIPS was ~6%
+            // taller at 12px.
+            'm-[3px] inline-flex h-[22px] items-center rounded-full bg-black px-3 text-[11.3px] font-semibold uppercase whitespace-nowrap text-white select-none',
             compact && 'max-sm:px-2 max-sm:text-[10px]',
           )}
           data-type="shipping-label"
